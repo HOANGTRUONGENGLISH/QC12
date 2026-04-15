@@ -3150,6 +3150,11 @@
                     apple.style.opacity = '0';
 
                     const baseCards = flashcards.slice(0, originalFlashcardsCount);
+
+                    // Re-queue quả hiện tại để làm lại sau
+                    appleGameQueue.push({ word: apple.querySelector('span') ? apple.querySelector('span').textContent : currentData.word, type: correctType });
+
+                    // Thêm 1 quả phạt ngẫu nhiên mới
                     const randomCard = baseCards[Math.floor(Math.random() * baseCards.length)];
                     let t = randomCard.type.toLowerCase().trim();
                     if (t === 'noun' || t === 'n') t = 'n';
@@ -3158,6 +3163,16 @@
                     else if (t === 'adverb' || t === 'adv') t = 'adv';
                     else t = 'n';
                     appleGameQueue.push({ word: randomCard.word, type: t });
+
+                    // Toast "+🍎" báo penalty
+                    const penaltyToast = document.createElement('div');
+                    penaltyToast.textContent = '+🍎';
+                    penaltyToast.style.cssText = `position:absolute; left:${bx}px; top:${by - 40}px; transform:translate(-50%,-100%) scale(0); font-size:1.4rem; font-weight:900; color:#fbbf24; text-shadow:0 2px 8px rgba(0,0,0,0.7); z-index:110; pointer-events:none; transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s ease 0.5s; opacity:1;`;
+                    finalScreenEl.appendChild(penaltyToast);
+                    requestAnimationFrame(() => { requestAnimationFrame(() => {
+                        penaltyToast.style.transform = 'translate(-50%,-100%) scale(1.3)';
+                    }); });
+                    setTimeout(() => { penaltyToast.style.opacity = '0'; setTimeout(() => penaltyToast.remove(), 500); }, 1000);
 
                     setTimeout(() => {
                         apple.remove();
