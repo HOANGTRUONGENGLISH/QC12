@@ -1474,6 +1474,7 @@
         let hintSequence = [];
         let currentHintStep = 0;
         let firesHaveFallen = false;
+        let usedHintForCurrentWord = false;
 
         let step2YesNo = '';
         let origNorm1 = '';
@@ -2790,6 +2791,7 @@
 
         function renderCard() {
             currentCardStartTime = Date.now();
+            usedHintForCurrentWord = false;
 
             const card = flashcards[currentIndex];
             const reviewBtn = document.getElementById('review-btn');
@@ -2959,16 +2961,18 @@
                     pointColorClass = 'text-orange-300 drop-shadow-[0_0_8px_rgba(253,186,116,0.8)]';
                 }
 
-                totalScore += points;
-                document.getElementById('total-score-display').textContent = totalScore;
+                if (!usedHintForCurrentWord && currentIndex < originalFlashcardsCount) {
+                    totalScore += points;
+                    document.getElementById('total-score-display').textContent = totalScore;
 
-                const floatContainer = document.getElementById('floating-score-container');
-                if (floatContainer) {
-                    const floatEl = document.createElement('div');
-                    floatEl.className = `absolute font-black text-xl sm:text-2xl md:text-3xl ${pointColorClass} score-anim`;
-                    floatEl.textContent = `+${points}`;
-                    floatContainer.appendChild(floatEl);
-                    setTimeout(() => { floatEl.remove(); }, 1500);
+                    const floatContainer = document.getElementById('floating-score-container');
+                    if (floatContainer) {
+                        const floatEl = document.createElement('div');
+                        floatEl.className = `absolute font-black text-xl sm:text-2xl md:text-3xl ${pointColorClass} score-anim`;
+                        floatEl.textContent = `+${points}`;
+                        floatContainer.appendChild(floatEl);
+                        setTimeout(() => { floatEl.remove(); }, 1500);
+                    }
                 }
 
                 playSuccessSound();
@@ -3172,6 +3176,7 @@
         }
 
         function giveHint() {
+            usedHintForCurrentWord = true;
             if (currentHintStep < hintSequence.length) {
                 hintSequence[currentHintStep]();
                 currentHintStep++;
