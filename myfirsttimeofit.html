@@ -1709,39 +1709,38 @@
                         </div>
 
                         <!-- Card Tray (3 cards, hidden until box opens) -->
-                        <div id="mystery-card-tray" class="hidden items-center justify-center gap-3 sm:gap-5 w-full max-w-sm pointer-events-auto">
-                            <div class="mystery-card-wrapper flex-1" style="--deal-delay:.1s;--card-rot:-6deg;height:220px;max-width:120px;min-width:90px;" onclick="revealCard(0)">
+                        <div id="mystery-card-tray" class="hidden items-center justify-center gap-3 sm:gap-4 w-full max-w-md pointer-events-auto">
+                            <div class="mystery-card-wrapper" style="--deal-delay:.1s;--card-rot:-6deg;height:290px;width:140px;flex-shrink:0;" onclick="revealCard(0)">
                                 <div class="mystery-card-inner" id="card-inner-0">
                                     <div class="mystery-card-face mystery-card-back">
-                                        <!-- Back face pattern -->
                                         <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 50% 50%,rgba(196,181,253,.6) 0%,transparent 70%);"></div>
-                                        <div class="flex flex-col items-center gap-2">
-                                            <span style="font-size:2.5rem;filter:drop-shadow(0 0 10px rgba(196,181,253,1))">🔮</span>
-                                            <p class="text-[0.6rem] font-bold tracking-widest uppercase" style="color:rgba(196,181,253,.7)">Tap to reveal</p>
+                                        <div class="flex flex-col items-center gap-3">
+                                            <span style="font-size:3rem;filter:drop-shadow(0 0 12px rgba(196,181,253,1))">🔮</span>
+                                            <p class="text-[0.65rem] font-bold tracking-widest uppercase" style="color:rgba(196,181,253,.7)">Tap to reveal</p>
                                         </div>
                                     </div>
                                     <div class="mystery-card-face mystery-card-front" id="card-front-0"></div>
                                 </div>
                             </div>
-                            <div class="mystery-card-wrapper flex-1" style="--deal-delay:.3s;--card-rot:0deg;height:220px;max-width:120px;min-width:90px;" onclick="revealCard(1)">
+                            <div class="mystery-card-wrapper" style="--deal-delay:.3s;--card-rot:0deg;height:290px;width:140px;flex-shrink:0;" onclick="revealCard(1)">
                                 <div class="mystery-card-inner" id="card-inner-1">
                                     <div class="mystery-card-face mystery-card-back">
                                         <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 50% 50%,rgba(196,181,253,.6) 0%,transparent 70%);"></div>
-                                        <div class="flex flex-col items-center gap-2">
-                                            <span style="font-size:2.5rem;filter:drop-shadow(0 0 10px rgba(251,191,36,1))">💬</span>
-                                            <p class="text-[0.6rem] font-bold tracking-widest uppercase" style="color:rgba(196,181,253,.7)">Tap to reveal</p>
+                                        <div class="flex flex-col items-center gap-3">
+                                            <span style="font-size:3rem;filter:drop-shadow(0 0 12px rgba(251,191,36,1))">💬</span>
+                                            <p class="text-[0.65rem] font-bold tracking-widest uppercase" style="color:rgba(196,181,253,.7)">Tap to reveal</p>
                                         </div>
                                     </div>
                                     <div class="mystery-card-face mystery-card-front" id="card-front-1"></div>
                                 </div>
                             </div>
-                            <div class="mystery-card-wrapper flex-1" style="--deal-delay:.5s;--card-rot:6deg;height:220px;max-width:120px;min-width:90px;" onclick="revealCard(2)">
+                            <div class="mystery-card-wrapper" style="--deal-delay:.5s;--card-rot:6deg;height:290px;width:140px;flex-shrink:0;" onclick="revealCard(2)">
                                 <div class="mystery-card-inner" id="card-inner-2">
                                     <div class="mystery-card-face mystery-card-back">
                                         <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 50% 50%,rgba(196,181,253,.6) 0%,transparent 70%);"></div>
-                                        <div class="flex flex-col items-center gap-2">
-                                            <span style="font-size:2.5rem;filter:drop-shadow(0 0 10px rgba(251,191,36,1))">🗝️</span>
-                                            <p class="text-[0.6rem] font-bold tracking-widest uppercase" style="color:rgba(196,181,253,.7)">Tap to reveal</p>
+                                        <div class="flex flex-col items-center gap-3">
+                                            <span style="font-size:3rem;filter:drop-shadow(0 0 12px rgba(251,191,36,1))">🗝️</span>
+                                            <p class="text-[0.65rem] font-bold tracking-widest uppercase" style="color:rgba(196,181,253,.7)">Tap to reveal</p>
                                         </div>
                                     </div>
                                     <div class="mystery-card-face mystery-card-front" id="card-front-2"></div>
@@ -1749,6 +1748,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
                 </div>
 
                 <div class="relative z-0 flex flex-col items-center -mt-8 sm:-mt-12 w-full">
@@ -4176,6 +4177,7 @@
                 });
                 mysteryBoxOpened = false;
                 mysteryBoxOpened_real = false;
+                cardsFlippedCount = 0;
             }
 
             const treeTitle = document.getElementById('tree-title');
@@ -4581,10 +4583,12 @@
             }
         }
 
+        let cardsFlippedCount = 0;
         function revealCard(idx) {
             const inner = document.getElementById(`card-inner-${idx}`);
             if (!inner || inner.classList.contains('flipped')) return;
             inner.classList.add('flipped');
+            cardsFlippedCount++;
 
             // Play appropriate sound
             if (idx === 0) playMagicSound('orb');
@@ -4592,6 +4596,7 @@
             else playMagicSound('code');
 
             // Burst particles at card position
+            const magic = zodiacMagicMap[selectedZodiacEmoji] || zodiacMagicMap['♯'];
             const wrapper = inner.closest('.mystery-card-wrapper');
             if (wrapper) {
                 const rect = wrapper.getBoundingClientRect();
@@ -4599,13 +4604,15 @@
                 const sr = finalScreen.getBoundingClientRect();
                 const cx = rect.left - sr.left + rect.width / 2;
                 const cy = rect.top - sr.top + rect.height / 2;
-                const colors = idx===0?['#c4b5fd','#a78bfa','#f0abfc']:idx===1?['#fde047','#fbbf24','#fef3c7']:['#4ade80','#22d3ee','#a3e635'];
-                for (let i = 0; i < 8; i++) {
+                const colors = idx===0 ? [magic.pColor, magic.ringColor, magic.orbLight]
+                              : idx===1 ? ['#fde047','#fbbf24','#fef3c7']
+                              : ['#4ade80','#22d3ee','#a3e635'];
+                for (let i = 0; i < 12; i++) {
                     const p = document.createElement('div');
-                    const angle = (i / 8) * Math.PI * 2;
-                    const dist = 40 + Math.random() * 30;
-                    const size = 4 + Math.random() * 4;
-                    p.style.cssText = `position:absolute;left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;border-radius:50%;background:${colors[i%colors.length]};box-shadow:0 0 6px ${colors[i%colors.length]};transform:translate(-50%,-50%);transition:all .7s ease;pointer-events:none;z-index:200;`;
+                    const angle = (i / 12) * Math.PI * 2;
+                    const dist = 50 + Math.random() * 40;
+                    const size = 4 + Math.random() * 5;
+                    p.style.cssText = `position:absolute;left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;border-radius:50%;background:${colors[i%colors.length]};box-shadow:0 0 8px ${colors[i%colors.length]};transform:translate(-50%,-50%);transition:all .8s ease;pointer-events:none;z-index:200;`;
                     finalScreen.appendChild(p);
                     requestAnimationFrame(() => { requestAnimationFrame(() => {
                         p.style.left = `${cx + Math.cos(angle)*dist}px`;
@@ -4613,9 +4620,166 @@
                         p.style.opacity = '0';
                         p.style.transform = 'translate(-50%,-50%) scale(0)';
                     }); });
-                    setTimeout(() => p.remove(), 800);
+                    setTimeout(() => p.remove(), 900);
                 }
             }
+
+            // After all 3 flipped, check if >=80 pts for orb showcase
+            if (cardsFlippedCount >= 3 && totalScore >= 80) {
+                setTimeout(() => showOrbShowcase(), 900);
+            }
+        }
+
+        function playAlertSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const master = ctx.createGain();
+                master.gain.value = 0.35;
+                master.connect(ctx.destination);
+                // Dramatic alert: rising major chord + tremolo
+                const notes = [130.8, 164.8, 196, 261.6, 329.6];
+                notes.forEach((freq, i) => {
+                    const o = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    o.type = 'triangle';
+                    o.frequency.value = freq;
+                    const t = ctx.currentTime + i * 0.08;
+                    g.gain.setValueAtTime(0, t);
+                    g.gain.linearRampToValueAtTime(0.4, t + 0.06);
+                    g.gain.setValueAtTime(0.4, t + 0.3);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 1.0);
+                    o.connect(g); g.connect(master);
+                    o.start(t); o.stop(t + 1.0);
+                });
+                // Add a gong-like low thud
+                const og = ctx.createOscillator();
+                const gg = ctx.createGain();
+                og.type = 'sine'; og.frequency.value = 60;
+                gg.gain.setValueAtTime(0.8, ctx.currentTime);
+                gg.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2);
+                og.connect(gg); gg.connect(master); og.start(); og.stop(ctx.currentTime + 2);
+            } catch(e) {}
+        }
+
+        function showOrbShowcase() {
+            const magic = zodiacMagicMap[selectedZodiacEmoji] || zodiacMagicMap['♯'];
+            playAlertSound();
+
+            // Build fullscreen overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'orb-showcase-overlay';
+            overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(5,2,20,0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:background .8s ease;pointer-events:auto;overflow:hidden;`;
+            document.body.appendChild(overlay);
+
+            // Stars bg
+            for(let i=0;i<40;i++) {
+                const s=document.createElement('div');
+                const sz=1+Math.random()*2.5;
+                s.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;border-radius:50%;background:#fff;left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${.2+Math.random()*.6};animation:star-twinkle ${1.5+Math.random()*2}s ease-in-out infinite ${Math.random()}s;`;
+                overlay.appendChild(s);
+            }
+
+            // Fade in overlay
+            requestAnimationFrame(() => { requestAnimationFrame(() => {
+                overlay.style.background = `rgba(5,2,20,0.95)`;
+            }); });
+
+            // Build big orb
+            const orbWrap = document.createElement('div');
+            orbWrap.style.cssText = `position:relative;width:300px;height:300px;transform:scale(0);transition:transform .8s cubic-bezier(.34,1.56,.64,1) .3s;flex-shrink:0;`;
+            orbWrap.innerHTML = buildOrbHTML(magic, 300);
+            overlay.appendChild(orbWrap);
+
+            // Zodiac + skill label
+            const label = document.createElement('div');
+            label.style.cssText = `text-align:center;transform:translateY(30px);opacity:0;transition:all .8s ease .6s;`;
+            label.innerHTML = `
+                <p style="font-size:3rem;line-height:1;filter:drop-shadow(0 0 20px ${magic.orbGlow})">${magic.icon}</p>
+                <p style="font-size:1.4rem;font-weight:900;color:#fff;letter-spacing:.1em;margin:8px 0 4px;text-shadow:0 0 20px ${magic.orbGlow};">${magic.skill}</p>
+                <p style="font-size:.75rem;color:rgba(255,255,255,.7);letter-spacing:.15em;text-transform:uppercase;">${selectedZodiacEmoji || ''} ${(Object.entries(zodiacMagicMap).find(([k,v])=>v===magic) || [''])[0] === selectedZodiacEmoji ? '' : ''}</p>
+            `;
+            overlay.appendChild(label);
+
+            // Flying particles around orb
+            for(let i=0;i<20;i++) {
+                const p=document.createElement('div');
+                const ang=(i/20)*Math.PI*2;
+                const r=160+Math.random()*60;
+                const sz=4+Math.random()*5;
+                const dur=2+Math.random()*3;
+                p.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;border-radius:50%;background:${magic.pColor};box-shadow:0 0 10px ${magic.pColor};left:50%;top:50%;transform:translate(-50%,-50%) rotate(${ang}rad) translateX(${r}px);animation:orbit-particle ${dur}s linear infinite ${Math.random()}s;--r:${r}px;opacity:0;transition:opacity .5s ease .8s;`;
+                orbWrap.appendChild(p);
+            }
+
+            // Animate in
+            requestAnimationFrame(() => { requestAnimationFrame(() => {
+                orbWrap.style.transform = 'scale(1)';
+                label.style.transform = 'translateY(0)';
+                label.style.opacity = '1';
+                // Show particles
+                orbWrap.querySelectorAll('div[style*="orbit-particle"]').forEach(p => p.style.opacity='1');
+            }); });
+
+            // Auto-dismiss after 7 seconds
+            setTimeout(() => {
+                overlay.style.transition = 'opacity .8s ease';
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 900);
+            }, 7000);
+
+            // Click to dismiss early
+            overlay.addEventListener('click', () => {
+                overlay.style.transition = 'opacity .6s ease';
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 700);
+            });
+        }
+
+        function buildOrbHTML(magic, size) {
+            const s = size;
+            const inner = Math.round(s * 0.7);
+            const ringInset = Math.round(s * 0.02);
+            // Each zodiac gets a unique layered orb with distinct elements
+            const sign = Object.entries(zodiacMagicMap).find(([k,v]) => v===magic);
+            const signKey = sign ? sign[0] : '';
+            // Unique shape overlays per element group
+            const extras = {
+                '♈':` <div style="position:absolute;inset:${ringInset*3}px;border-radius:50%;border:3px solid ${magic.pColor};opacity:.4;animation:orb-ring-spin 2s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 20%, rgba(255,200,100,.3) 0%, transparent 50%);"></div>`,
+                '♉':` <div style="position:absolute;inset:${ringInset*5}px;border-radius:50%;border:2px dashed ${magic.pColor};opacity:.5;animation:orb-ring-spin2 6s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 65% 25%, rgba(170,255,170,.25) 0%, transparent 45%);"></div>`,
+                '♊':` <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(45deg,transparent 40%,rgba(180,220,255,.2) 50%,transparent 60%);animation:shimmer-scan 2s linear infinite;"></div>
+                         <div style="position:absolute;inset:${ringInset*4}px;border-radius:50%;border:1px solid ${magic.pColor};opacity:.3;animation:orb-ring-spin 3s linear infinite;"></div>`,
+                '♋':` <div style="position:absolute;inset:${ringInset*2}px;border-radius:50%;border:3px solid rgba(56,189,248,.5);opacity:.6;animation:orb-ring-spin 5s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 50% 80%, rgba(56,189,248,.3) 0%, transparent 55%);"></div>`,
+                '♌':` <div style="position:absolute;inset:${ringInset}px;border-radius:50%;border:4px solid rgba(253,224,71,.6);opacity:.7;animation:orb-ring-spin 1.5s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%, rgba(255,240,100,.4) 0%, transparent 50%);"></div>`,
+                '♍':` <div style="position:absolute;inset:${ringInset*4}px;border-radius:50%;border:2px dotted ${magic.pColor};opacity:.5;animation:orb-ring-spin2 8s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 60% 70%, rgba(110,231,183,.2) 0%, transparent 50%);"></div>`,
+                '♎':` <div style="position:absolute;inset:${ringInset*2}px;border-radius:50%;border:3px solid rgba(216,180,254,.5);opacity:.5;animation:orb-ring-spin 4s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,rgba(216,180,254,.1) 0%,rgba(99,102,241,.15) 100%);"></div>`,
+                '♏':` <div style="position:absolute;inset:${ringInset}px;border-radius:50%;background:radial-gradient(circle at 50% 50%, rgba(124,58,237,.5) 0%, transparent 70%);animation:box-glow-pulse 2s infinite;"></div>
+                         <div style="position:absolute;inset:${ringInset*3}px;border-radius:50%;border:2px solid rgba(167,139,250,.7);opacity:.6;animation:orb-ring-spin 2.5s linear infinite;"></div>`,
+                '♐':` <div style="position:absolute;inset:${ringInset*2}px;border-radius:50%;border:3px dashed rgba(252,211,77,.6);opacity:.6;animation:orb-ring-spin 3.5s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 70% 20%, rgba(255,200,50,.3) 0%, transparent 50%);"></div>`,
+                '♑':` <div style="position:absolute;inset:${ringInset*3}px;border-radius:50%;border:2px solid rgba(168,162,158,.4);opacity:.5;animation:orb-ring-spin2 7s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 60%, rgba(214,211,209,.15) 0%, transparent 55%);"></div>`,
+                '♒':` <div style="position:absolute;inset:${ringInset}px;border-radius:50%;border:4px solid rgba(56,189,248,.7);opacity:.6;animation:orb-ring-spin 1.2s linear infinite;"></div>
+                         <div style="position:absolute;inset:${ringInset*4}px;border-radius:50%;border:2px dashed rgba(186,230,253,.5);animation:orb-ring-spin2 3s linear infinite;"></div>`,
+                '♓':` <div style="position:absolute;inset:${ringInset*2}px;border-radius:50%;border:3px solid rgba(249,168,212,.6);opacity:.6;animation:orb-ring-spin 5s linear infinite;"></div>
+                         <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 30% 70%, rgba(249,168,212,.3) 0%, transparent 55%);"></div>`,
+            };
+            const extraHTML = extras[signKey] || '';
+            return `
+                <div style="width:${s}px;height:${s}px;transform-style:preserve-3d;animation:orb-spin 5s linear infinite;position:relative;">
+                    <div style="position:absolute;inset:${ringInset*3}px;border-radius:50%;
+                        background:radial-gradient(circle at 35% 30%, ${magic.orbLight} 0%, ${magic.orbMid} 45%, ${magic.orbDark} 100%);
+                        box-shadow:0 0 60px ${magic.orbGlow},0 0 120px ${magic.orbGlow},inset -15px -15px 40px rgba(0,0,0,.5),inset 12px 12px 30px rgba(255,255,255,.12);">
+                    </div>
+                    <div style="position:absolute;inset:0;border-radius:50%;border:3px solid ${magic.ringColor};animation:orb-ring-spin 4s linear infinite;"></div>
+                    <div style="position:absolute;inset:-12px;border-radius:50%;border:2px solid ${magic.ringColor2};animation:orb-ring-spin2 3s linear infinite;"></div>
+                    ${extraHTML}
+                </div>`;
         }
 
     </script>
