@@ -1354,55 +1354,64 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front card-crystal p-4 sm:p-6 md:p-8">
                     <div
-                        class="flex-grow flex flex-col justify-center items-center text-center overflow-y-auto no-scrollbar w-full pb-1 min-h-0">
+                        class="flex-grow flex flex-col justify-evenly items-center text-center overflow-y-auto no-scrollbar w-full min-h-0 py-2 sm:py-4 gap-2 sm:gap-4">
+                        
+                        <!-- Nghĩa Tiếng Việt -->
                         <div id="front-magic-container"
-                            class="flex items-center justify-center mb-2 sm:mb-4 mt-auto relative w-full opacity-0">
-                            <div class="relative z-10 flex items-center justify-center">
+                            class="flex items-center justify-center relative w-full opacity-0 shrink-0">
+                            <div class="relative z-10 flex items-center justify-center w-full max-w-[85%]">
                                 <h2 class="crystal-crescent text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-center"
                                     id="word-mean"></h2>
                                 <div id="word-type-container"
-                                    class="absolute left-full ml-2 sm:ml-4 scale-75 sm:scale-90 md:scale-100 lg:scale-110 top-1/2 -translate-y-1/2 origin-left whitespace-nowrap z-20">
+                                    class="absolute left-[calc(100%+0.5rem)] lg:left-[calc(100%+1rem)] scale-75 sm:scale-90 md:scale-100 lg:scale-110 top-1/2 -translate-y-1/2 origin-left whitespace-nowrap z-20">
                                 </div>
                             </div>
                         </div>
-                        <div class="w-12 sm:w-16 h-1 bg-purple-400/50 my-2 sm:my-3 lg:my-4 mx-auto rounded shrink-0">
+
+                        <!-- Đường gạch ngang -->
+                        <div class="w-12 sm:w-16 h-1 bg-purple-400/50 mx-auto rounded shrink-0">
                         </div>
-                        <p class="text-base sm:text-lg md:text-xl lg:text-3xl text-purple-100 font-medium mb-1.5 sm:mb-2 lg:mb-3 leading-snug sm:leading-relaxed"
+
+                        <!-- Câu ví dụ tiếng Anh -->
+                        <p class="text-base sm:text-lg md:text-xl lg:text-3xl text-purple-100 font-medium leading-snug sm:leading-relaxed m-0 shrink-0 px-2"
                             id="word-ex"></p>
 
-
-
-                        <div class="w-full flex flex-col items-center gap-3 sm:gap-4 lg:gap-6 shrink-0">
+                        <!-- Các ô input nhập chữ -->
+                        <div class="w-full flex justify-center shrink-0 min-h-[40px] sm:min-h-[50px]">
                             <div id="letter-inputs-container"
-                                class="flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-2 sm:gap-y-3 lg:gap-y-4">
-                            </div>
-                            <div
-                                class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:gap-4 mt-1 sm:mt-2">
-                                <button onclick="speakCurrentWord()"
-                                    class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 lg:w-11 lg:h-11 bg-violet-900/50 hover:bg-violet-800 text-violet-200 border border-violet-500/30 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-400 shadow-sm"
-                                    title="Nghe phát âm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 lg:h-5 lg:w-5"
-                                        viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <button id="hint-btn" onclick="giveHint()" title="Gợi ý"
-                                    class="text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-fuchsia-900/50 text-fuchsia-200 hover:bg-fuchsia-800 font-medium rounded-full transition-colors flex items-center gap-1 shadow-sm border border-fuchsia-500/30">Hint</button>
-                                <button id="review-btn" onclick="markForReview()" title="Học lại ở cuối bài"
-                                    class="hidden text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-purple-900/50 text-purple-200 hover:bg-purple-800 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-500/30">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                    </svg> Review
-                                </button>
+                                class="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-2 sm:gap-y-3 lg:gap-y-4">
                             </div>
                         </div>
+
+                        <!-- Nhóm nút (Nghe, Hint, Review) -->
                         <div
-                            class="w-full flex justify-center mt-auto mb-auto pt-4 sm:pt-6 shrink-0 transform -translate-y-2 sm:-translate-y-3 md:-translate-y-4">
+                            class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:gap-4 shrink-0">
+                            <button onclick="speakCurrentWord()"
+                                class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 lg:w-11 lg:h-11 bg-violet-900/50 hover:bg-violet-800 text-violet-200 border border-violet-500/30 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-400 shadow-sm"
+                                title="Nghe phát âm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 lg:h-5 lg:w-5"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <button id="hint-btn" onclick="giveHint()" title="Gợi ý"
+                                class="text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-fuchsia-900/50 text-fuchsia-200 hover:bg-fuchsia-800 font-medium rounded-full transition-colors flex items-center gap-1 shadow-sm border border-fuchsia-500/30">Hint</button>
+                            <button id="review-btn" onclick="markForReview()" title="Học lại ở cuối bài"
+                                class="hidden text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-purple-900/50 text-purple-200 hover:bg-purple-800 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-500/30">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg> Review
+                            </button>
+                        </div>
+
+                        <!-- Check Answer Button -->
+                        <div
+                            class="w-full flex justify-center shrink-0">
                             <button onclick="checkAnswer()"
                                 class="btn-crystal w-[75%] sm:w-[50%] md:w-[40%] max-w-[200px] py-2 sm:py-2.5 lg:py-3 text-sm sm:text-base lg:text-lg font-semibold rounded-full flex items-center justify-center gap-2 cursor-pointer">Check
                                 Answer</button>
