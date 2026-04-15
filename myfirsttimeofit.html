@@ -1663,10 +1663,16 @@
         let step2YesNo = '';
         let origNorm1 = '';
         let origNorm2 = '';
+        let origNorm3 = '';
+        let origNorm4 = '';
         let currentWord1 = '';
         let currentWord2 = '';
+        let currentWord3 = '';
+        let currentWord4 = '';
         let transitionedToPart3 = false;
         let transitionedToPart4 = false;
+        let transitionedToPart5 = false;
+        let transitionedToPart6 = false;
         let selectedZodiacEmoji = '';
         let remainingHints = 0;
 
@@ -3445,9 +3451,13 @@
         }
 
         function setupFinalQuestion() {
-            const w1 = document.getElementById('mem-word-1');
-            const w2 = document.getElementById('mem-word-2');
-            if (!w1 || !w2) return;
+            const inputs = [
+                document.getElementById('mem-word-1'),
+                document.getElementById('mem-word-2'),
+                document.getElementById('mem-word-3'),
+                document.getElementById('mem-word-4')
+            ];
+            if (inputs.some(inp => !inp)) return;
 
             const transitionPage = (hideId, showId, focusId) => {
                 const hideEl = document.getElementById(hideId);
@@ -3473,18 +3483,22 @@
             };
 
             const checkWinCondition = () => {
-                const val1 = w1.value.trim().toLowerCase();
-                const val2 = w2.value.trim().toLowerCase();
+                const vals = inputs.map(inp => inp.value.trim().toLowerCase());
                 const validList = flashcards.slice(0, originalFlashcardsCount).map(c => c.word.toLowerCase());
-                if (val1 && val2 && validList.includes(val1) && validList.includes(val2) && val1 !== val2) {
-                    w1.readOnly = true; w2.readOnly = true;
-                    w1.classList.add('opacity-50', 'pointer-events-none');
-                    w2.classList.add('opacity-50', 'pointer-events-none');
-                    w1.classList.remove('input-error'); w2.classList.remove('input-error');
+                
+                const allValidAndPresent = vals.every(v => v && validList.includes(v));
+                const allUnique = new Set(vals).size === vals.length;
+
+                if (allValidAndPresent && allUnique) {
+                    inputs.forEach(inp => {
+                        inp.readOnly = true;
+                        inp.classList.add('opacity-50', 'pointer-events-none');
+                        inp.classList.remove('input-error');
+                    });
                     playSuccessSound();
                     setTimeout(() => {
                         transitionPage('step-1-container', 'step2-part-1');
-                        initStep2(val1, val2);
+                        initStep2(vals[0], vals[1], vals[2], vals[3]);
                     }, 500);
                 }
             };
@@ -3493,31 +3507,39 @@
                 const val = inputEl.value.trim().toLowerCase();
                 const validList = flashcards.slice(0, originalFlashcardsCount).map(c => c.word.toLowerCase());
                 if (val === '') { inputEl.classList.remove('input-error'); return; }
+                
                 if (!validList.includes(val)) {
                     inputEl.classList.add('input-error');
                     playErrorSound();
                 } else {
                     inputEl.classList.remove('input-error');
-                    const otherVal = inputEl === w1 ? w2.value.trim().toLowerCase() : w1.value.trim().toLowerCase();
-                    if (val === otherVal && val !== '') {
+                    
+                    const otherVals = inputs.filter(inp => inp !== inputEl).map(inp => inp.value.trim().toLowerCase());
+                    if (otherVals.includes(val)) {
                         inputEl.classList.add('input-error');
                         playErrorSound();
                     }
                 }
             };
 
-            w1.addEventListener('input', () => { w1.classList.remove('input-error'); checkWinCondition(); });
-            w2.addEventListener('input', () => { w2.classList.remove('input-error'); checkWinCondition(); });
-            w1.addEventListener('blur', () => validateBlur(w1));
-            w2.addEventListener('blur', () => validateBlur(w2));
-            w1.addEventListener('keypress', (e) => { if (e.key === 'Enter') w2.focus(); });
-            w2.addEventListener('keypress', (e) => { if (e.key === 'Enter') w2.blur(); });
+            inputs.forEach((inp, idx) => {
+                inp.addEventListener('input', () => { inp.classList.remove('input-error'); checkWinCondition(); });
+                inp.addEventListener('blur', () => validateBlur(inp));
+                inp.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        if (idx < inputs.length - 1) inputs[idx + 1].focus();
+                        else inp.blur();
+                    }
+                });
+            });
 
             const btnYes = document.getElementById('btn-yes');
             const btnNo = document.getElementById('btn-no');
             const whereInput = document.getElementById('where-input');
             const sentInp1 = document.getElementById('sent-input-1');
             const sentInp2 = document.getElementById('sent-input-2');
+            const sentInp3 = document.getElementById('sent-input-3');
+            const sentInp4 = document.getElementById('sent-input-4');
 
             btnYes.onclick = () => {
                 if (btnYes.disabled || (btnNo.disabled && step2YesNo === 'no')) return;
@@ -3589,6 +3611,20 @@
                     setTimeout(() => { transitionPage('step2-part-3', 'step2-part-4', 'sent-input-2'); }, 600);
                 }
             };
+            const triggerPart5 = () => {
+                if (!transitionedToPart5) {
+                    transitionedToPart5 = true;
+                    playSuccessSound();
+                    setTimeout(() => { transitionPage('step2-part-4', 'step2-part-5', 'sent-input-3'); }, 600);
+                }
+            };
+            const triggerPart6 = () => {
+                if (!transitionedToPart6) {
+                    transitionedToPart6 = true;
+                    playSuccessSound();
+                    setTimeout(() => { transitionPage('step2-part-5', 'step2-part-6', 'sent-input-4'); }, 600);
+                }
+            };
 
             sentInp1.addEventListener('input', () => {
                 const isCorrect = handleSentenceInput(sentInp1, document.getElementById('feedback-1'), document.getElementById('sent-box-1'), origNorm1);
@@ -3600,6 +3636,22 @@
 
             sentInp2.addEventListener('input', () => {
                 const isCorrect = handleSentenceInput(sentInp2, document.getElementById('feedback-2'), document.getElementById('sent-box-2'), origNorm2);
+                if (isCorrect) triggerPart5();
+            });
+            sentInp2.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && normalizeString(sentInp2.value) === origNorm2) triggerPart5();
+            });
+
+            sentInp3.addEventListener('input', () => {
+                const isCorrect = handleSentenceInput(sentInp3, document.getElementById('feedback-3'), document.getElementById('sent-box-3'), origNorm3);
+                if (isCorrect) triggerPart6();
+            });
+            sentInp3.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && normalizeString(sentInp3.value) === origNorm3) triggerPart6();
+            });
+
+            sentInp4.addEventListener('input', () => {
+                const isCorrect = handleSentenceInput(sentInp4, document.getElementById('feedback-4'), document.getElementById('sent-box-4'), origNorm4);
                 if (isCorrect && !appleGameStarted) {
                     appleGameStarted = true;
                     playSuccessSound();
@@ -3611,21 +3663,29 @@
                     }, 1000);
                 }
             });
-            sentInp2.addEventListener('keydown', (e) => {
+            sentInp4.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') e.preventDefault();
             });
         }
 
-        function initStep2(w1, w2) {
-            currentWord1 = w1; currentWord2 = w2;
+        function initStep2(w1, w2, w3, w4) {
+            currentWord1 = w1; currentWord2 = w2; currentWord3 = w3; currentWord4 = w4;
             const card1 = flashcards.find(c => c.word.toLowerCase() === w1);
             const card2 = flashcards.find(c => c.word.toLowerCase() === w2);
+            const card3 = flashcards.find(c => c.word.toLowerCase() === w3);
+            const card4 = flashcards.find(c => c.word.toLowerCase() === w4);
             document.getElementById('label-word-1').textContent = `Sentence with "${w1}":`;
             document.getElementById('label-word-2').textContent = `Sentence with "${w2}":`;
+            document.getElementById('label-word-3').textContent = `Sentence with "${w3}":`;
+            document.getElementById('label-word-4').textContent = `Sentence with "${w4}":`;
             document.getElementById('vi-ex-1').textContent = card1 ? card1.exVi : "";
             document.getElementById('vi-ex-2').textContent = card2 ? card2.exVi : "";
+            document.getElementById('vi-ex-3').textContent = card3 ? card3.exVi : "";
+            document.getElementById('vi-ex-4').textContent = card4 ? card4.exVi : "";
             origNorm1 = normalizeString(getPlainSentence(w1));
             origNorm2 = normalizeString(getPlainSentence(w2));
+            origNorm3 = normalizeString(getPlainSentence(w3));
+            origNorm4 = normalizeString(getPlainSentence(w4));
 
             if (totalScore < 60) remainingHints = 0;
             else if (totalScore <= 70) remainingHints = 1;
@@ -3638,13 +3698,17 @@
         }
 
         function updateHintButtonsUI() {
-            const btn1 = document.getElementById('hint-btn-1');
-            const btn2 = document.getElementById('hint-btn-2');
-            if(!btn1 || !btn2) return;
+            const btns = [
+                document.getElementById('hint-btn-1'),
+                document.getElementById('hint-btn-2'),
+                document.getElementById('hint-btn-3'),
+                document.getElementById('hint-btn-4')
+            ];
+            if(btns.some(b => !b)) return;
 
             const iconStr = selectedZodiacEmoji || '⭐';
 
-            [btn1, btn2].forEach(btn => {
+            btns.forEach(btn => {
                 btn.querySelector('.hint-emoji').textContent = iconStr;
                 btn.querySelector('.hint-count-text').textContent = remainingHints;
                 btn.classList.remove('opacity-0', 'pointer-events-none');
@@ -3667,7 +3731,9 @@
             
             let textToSpeak = '';
             if (partNum === 1) textToSpeak = getPlainSentence(currentWord1);
-            else textToSpeak = getPlainSentence(currentWord2);
+            else if (partNum === 2) textToSpeak = getPlainSentence(currentWord2);
+            else if (partNum === 3) textToSpeak = getPlainSentence(currentWord3);
+            else textToSpeak = getPlainSentence(currentWord4);
 
             const utterance = new SpeechSynthesisUtterance(textToSpeak);
             if (preferredVoice) utterance.voice = preferredVoice;
