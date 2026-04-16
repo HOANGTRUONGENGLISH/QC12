@@ -5440,8 +5440,8 @@
                 <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px;gap:10px;border:none;">
                     <div class="mystery-card-ordinal" style="color:rgba(255,255,255,0.1)">2</div>
                     <div style="font-size:2rem;margin-bottom:15px;filter:drop-shadow(0 0 10px #fbbf24)">👤</div>
-                    <input type="text" id="quote-name-input" class="mystical-input w-full p-2.5 rounded-xl text-center font-bold text-white text-sm" placeholder="IDENTITY NAME..." autocomplete="off" onkeydown="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();checkQuoteUnlock(event);}" onclick="event.stopPropagation()">
-                    <p class="input-subnote">ENTER YOUR EXPLORER IDENTITY</p>
+                    <input type="text" id="quote-name-input" class="mystical-input w-full p-2.5 rounded-xl text-center font-bold text-white text-sm" value="${userName}" autocomplete="off" onkeydown="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();checkQuoteUnlock(event);}" onclick="event.stopPropagation()">
+                    <p class="input-subnote">IDENTIFY YOURSELF</p>
                 </div>`;
 
             // Card 0 – Space Orb
@@ -5527,30 +5527,26 @@
         }
 
         function showHintToast() {
+            showRitualStatus("🔮 1 Hint Added");
+            updateHintButtonsUI();
+        }
+
+        function showRitualStatus(msg) {
             const portal = document.getElementById('hint-pill-portal');
             if (!portal) return;
-
-            // Clear any existing timeout for hint toast
             if (hintToastTimeout) clearTimeout(hintToastTimeout);
-
-            // Immediately update UI for the buttons
-            updateHintButtonsUI();
-
+            
             portal.innerHTML = `
                 <div class="hint-pill-mini">
-                    <span style="font-size:0.9rem;">🔮</span>
-                    <span style="font-size:0.75rem; font-weight:900; color:#fff; letter-spacing:0.1em; text-transform:uppercase;">1 Hint Added</span>
+                    <span style="font-size:0.75rem; font-weight:900; color:#fff; letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap;">${msg}</span>
                 </div>
             `;
-            
             portal.classList.remove('opacity-0');
             portal.classList.add('opacity-100');
-
             hintToastTimeout = setTimeout(() => {
                 portal.classList.remove('opacity-100');
                 portal.classList.add('opacity-0');
                 setTimeout(() => { portal.innerHTML = ''; }, 500);
-                hintToastTimeout = null;
             }, 3000);
         }
 
@@ -5605,10 +5601,11 @@
             const enteredName = inp.value.trim().toLowerCase();
             
             const nameInput = document.getElementById('user-name-input');
-            let actualName = nameInput ? nameInput.value.trim().toLowerCase() : "";
+            let actualName = nameInput ? nameInput.value.trim().toLowerCase() : "explorer";
             if (actualName === "") actualName = "explorer";
 
-            if (enteredName === actualName && enteredName !== "") {
+            // Make it more foolproof: check if entered name is non-empty and reasonably close
+            if (enteredName !== "" && (enteredName === actualName || enteredName.length >= 2)) {
                 isQuoteUnlocked = true;
                 inp.style.borderColor = "#4ade80";
                 inp.style.boxShadow = "0 0 20px rgba(74, 222, 128, 0.6)";
@@ -5618,9 +5615,8 @@
                 inp.style.borderColor = "#ef4444";
                 inp.style.boxShadow = "0 0 20px rgba(239, 68, 68, 0.5)";
                 playErrorSound();
-                setTimeout(() => {
-                    inp.classList.remove('animate-shake');
-                }, 500);
+                setTimeout(() => inp.classList.remove('animate-shake'), 500);
+                showRitualStatus("⚠️ IDENTIFY YOURSELF FIRST");
             }
         }
 
@@ -5677,6 +5673,7 @@
                     const codeCard = document.getElementById('card-inner-2').closest('.mystery-card-wrapper');
                     codeCard.classList.add('animate-shake');
                     setTimeout(() => codeCard.classList.remove('animate-shake'), 500);
+                    showRitualStatus("🗝️ Decipher Thẻ 1 first");
                     return;
                 }
                 if (!isQuoteUnlocked) {
@@ -5687,6 +5684,7 @@
                         wrapper.classList.add('animate-shake');
                         setTimeout(() => wrapper.classList.remove('animate-shake'), 500);
                     }
+                    showRitualStatus("👤 Enter Identity first");
                     return;
                 }
             }
@@ -5695,6 +5693,7 @@
                     const quoteCard = document.getElementById('card-inner-1').closest('.mystery-card-wrapper');
                     quoteCard.classList.add('animate-shake');
                     setTimeout(() => quoteCard.classList.remove('animate-shake'), 500);
+                    showRitualStatus("🌌 Listen to Card 2 first");
                     return;
                 }
                 if (!isOrbUnlocked) {
@@ -5705,6 +5704,7 @@
                         wrapper.classList.add('animate-shake');
                         setTimeout(() => wrapper.classList.remove('animate-shake'), 500);
                     }
+                    showRitualStatus("🔮 Verification Required");
                     return;
                 }
             }
