@@ -1484,17 +1484,29 @@
         }
 
         .summary-card {
-            background: linear-gradient(135deg, rgba(88, 28, 135, 0.4) 0%, rgba(46, 16, 101, 0.4) 100%);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            border-top: 1px solid rgba(216, 180, 254, 0.5);
-            border-radius: 2rem;
-            padding: 40px;
+            background: rgba(15, 12, 41, 0.6);
+            backdrop-blur: 20px;
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 2.5rem;
+            padding: 2rem;
             width: 100%;
-            max-width: 600px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 50px rgba(168, 85, 247, 0.2);
+            max-width: 500px;
+            max-height: 92vh;
+            overflow-y: auto;
             text-align: center;
             position: relative;
-            overflow: hidden;
+            box-shadow: 0 0 100px rgba(124, 58, 237, 0.2);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(167, 139, 250, 0.3) transparent;
+        }
+
+        .summary-card::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .summary-card::-webkit-scrollbar-thumb {
+            background: rgba(167, 139, 250, 0.3);
+            border-radius: 10px;
         }
 
         .summary-nebula {
@@ -4521,6 +4533,9 @@
             const correctAnswer = card.word.replace(/[\s-\/']/g, '').toLowerCase();
 
             if (userAnswer === correctAnswer) {
+                // Initialize ritual start time on first correct answer if not already set
+                if (!ritualStartTime) ritualStartTime = Date.now();
+
                 const timeElapsed = (Date.now() - currentCardStartTime) / 1000;
                 let points = 0;
                 let pointColorClass = '';
@@ -6032,9 +6047,9 @@
 
         function showSummary() {
             ritualEndTime = Date.now();
-            const totalMs = ritualEndTime - ritualStartTime;
+            const totalMs = ritualEndTime - (ritualStartTime || ritualEndTime);
             const totalMin = totalMs / 60000;
-            const formattedTime = totalMin.toFixed(2) + 'm';
+            const formattedTime = totalMin.toFixed(2).replace('.', ':') + ' mins';
 
             // Date & Time: Ngày 17/04/2026 | 04:21:45
             const now = new Date();
@@ -6082,13 +6097,13 @@
 
             // Orb Display (Using Animated Magical Orb)
             const magic = zodiacMagicMap[selectedZodiacEmoji] || zodiacMagicMap['♏'];
-            const orbSize = 180;
+            const orbSize = 130;
             document.getElementById('summary-orb-container').innerHTML = `
-                <div style="display:flex; flex-direction:column; align-items:center; gap:20px;">
-                    <div style="position:relative; width:${orbSize}px; height:${orbSize}px; margin-bottom:10px;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:15px;">
+                    <div style="position:relative; width:${orbSize}px; height:${orbSize}px; margin-bottom:5px;">
                         ${buildOrbHTML(magic, orbSize)}
                     </div>
-                    <p style="font-size:1.1rem; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:0.15em; margin:0; filter:drop-shadow(0 0 10px ${magic.orbGlow});">${magic.skill}</p>
+                    <p style="font-size:1rem; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:0.12em; margin:0; filter:drop-shadow(0 0 10px ${magic.orbGlow});">${magic.skill}</p>
                 </div>
             `;
 
