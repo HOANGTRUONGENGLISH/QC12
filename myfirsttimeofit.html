@@ -595,8 +595,37 @@
             80% { opacity: 0.8; }
         }
 
+        .star-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 4px #ffffff, 0 0 8px #ffffff;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 5;
+            animation: star-twinkle infinite ease-in-out;
+        }
+
+        @keyframes star-twinkle {
+            0%, 100% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
+
+        .review-mode-active #flashcard {
+            transform: scale(1.12);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 40px rgba(168,85,247,0.4);
+            border: 2px solid rgba(168,85,247,0.4);
+            z-index: 100;
+        }
+
+        .review-mode-active .textbook-header {
+            display: none !important;
+        }
+
         .crystal-crescent {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.5) 0%, rgba(56, 189, 248, 0.6) 100%);
+            background: linear-gradient(135deg, rgba(168,85,247,0.5) 0%, rgba(56, 189, 248, 0.6) 100%);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 2px solid rgba(255, 255, 255, 0.6);
@@ -1265,7 +1294,7 @@
                             BOOK 1</h1>
                     </div>
                     <!-- Score/Zodiac Circle next to banner (separated) -->
-                    <div class="crystal-circle-score w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full ml-3 sm:ml-5 z-20">
+                    <div class="crystal-circle-score w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full ml-1.5 sm:ml-3 z-20">
                         <span id="score-icon" class="text-xl sm:text-2xl md:text-3xl drop-shadow-md leading-none"></span>
                         <span id="total-score-display" class="text-white font-black font-mono text-xs sm:text-sm md:text-base leading-none mt-1">0</span>
                         <div id="floating-score-container" class="absolute -top-10 left-1/2 transform -translate-x-1/2 pointer-events-none z-50 whitespace-nowrap"></div>
@@ -1929,6 +1958,7 @@
         let currentIndex = 0;
         let totalCards = flashcards.length;
         const originalFlashcardsCount = flashcards.length;
+        flashcards.forEach(c => c.solved = false);
         let canGoNext = false;
         let hasShownReviewTransition = false;
         let timerInterval;
@@ -3392,8 +3422,10 @@
                 document.getElementById('main-topic-title').textContent = `REVIEW`;
                 reviewBtn.classList.add('hidden');
                 reviewBtn.classList.remove('flex');
+                document.body.classList.add('review-mode-active');
             } else {
                 document.getElementById('main-topic-title').textContent = `BOOK 1`;
+                document.body.classList.remove('review-mode-active');
                 if (card.marked) {
                     reviewBtn.className = "hidden text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-purple-500 text-white hover:bg-purple-600 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-300";
                 } else {
@@ -3415,7 +3447,7 @@
             const blankedEx = card.ex.replace('_______', `<span class="text-fuchsia-300 border-b-2 border-fuchsia-300 inline-block w-16 sm:w-20 md:w-24"></span>`);
             const wordExEl = document.getElementById('word-ex');
             wordExEl.innerHTML = blankedEx;
-            spawnFireflies(document.getElementById('firefly-container'));
+            spawnParticles(document.getElementById('firefly-container'));
 
             inputsContainer.innerHTML = '';
             const words = card.word.split(' ');
@@ -3527,18 +3559,19 @@
             buildHintSequence();
         }
 
-        function spawnFireflies(container) {
+        function spawnParticles(container) {
             if (!container) return;
             container.innerHTML = '';
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 12; i++) {
+                const isStar = Math.random() > 0.5;
                 const f = document.createElement('div');
-                f.className = 'firefly-particle';
+                f.className = isStar ? 'star-particle' : 'firefly-particle';
                 const duration = 2 + Math.random() * 3;
                 const delay = Math.random() * 2;
                 f.style.left = Math.random() * 100 + '%';
                 f.style.top = Math.random() * 100 + '%';
-                f.style.setProperty('--dx', (Math.random() * 40 - 20) + 'px');
-                f.style.setProperty('--dy', (Math.random() * 40 - 20) + 'px');
+                f.style.setProperty('--dx', (Math.random() * 50 - 25) + 'px');
+                f.style.setProperty('--dy', (Math.random() * 50 - 25) + 'px');
                 f.style.animationDuration = duration + 's';
                 f.style.animationDelay = delay + 's';
                 container.appendChild(f);
@@ -3579,8 +3612,9 @@
                 }
 
                 if (currentIndex < originalFlashcardsCount) {
-                    if (!usedHintForCurrentWord) {
+                    if (!usedHintForCurrentWord && !card.solved) {
                         totalScore += points;
+                        card.solved = true;
                         document.getElementById('total-score-display').textContent = totalScore;
                     } else {
                         points = 0;
@@ -3984,7 +4018,7 @@
                         boxEl.classList.add('border-green-500/50');
                         boxEl.classList.remove('border-rose-500/50');
                         feedbackEl.className = 'text-xs sm:text-sm text-green-300 mt-1.5 block font-semibold';
-                        feedbackEl.textContent = '✅ Perfect match!';
+                        feedbackEl.textContent = `${selectedZodiacEmoji} ✅`;
                         return true;
                     } else {
                         inputEl.classList.add('border-rose-400', 'bg-rose-900/40');
