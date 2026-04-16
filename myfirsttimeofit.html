@@ -5492,10 +5492,13 @@
 
             // Card 1 – Quote face
             const q = getNextQuote();
-            globalQuoteWordCount = q.en.split(/\s+/).filter(w => w.length > 0).length;
+            const enWords = q.en.split(/\s+/).filter(w => w.length > 0).length;
+            const viWords = q.vi.split(/\s+/).filter(w => w.length > 0).length;
+            const quotePassword = enWords + viWords + 8;
+            globalQuoteWordCount = quotePassword;
 
             document.getElementById('card-front-1').innerHTML = `
-                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;box-sizing:border-box;position:relative;">
+                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:12px;box-sizing:border-box;position:relative;">
                     <div class="space-card-nebula" style="background:radial-gradient(circle,rgba(251,191,36,0.1) 0%,transparent 70%);"></div>
                     <div style="font-size:1.6rem; filter:drop-shadow(0 0 10px rgba(251,191,36,0.4)); z-index:2;">📜</div>
                     <div style="position:relative; z-index:2; text-align:center; width:100\%;">
@@ -5504,6 +5507,10 @@
                         <p style="font-size:0.6rem; color:rgba(251,191,36,.5); font-style:italic; line-height:1.3; margin:0; padding:0 8px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">${q.vi}</p>
                     </div>
                     <p style="font-size:0.5rem; color:rgba(255,255,255,.2); text-transform:uppercase; letter-spacing:0.1em; margin-top:2px; z-index:2;">${q.author}</p>
+                    <div style="z-index:2; margin-top:4px; display:flex; align-items:center; gap:6px; background:rgba(0,0,0,0.3); padding:4px 10px; border-radius:10px; border:1px solid rgba(251,191,36,0.2);">
+                        <span style="font-size:0.55rem; color:rgba(251,191,36,0.5); font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">Logos Pass:</span>
+                        <span style="font-family:'Space Mono', monospace; font-size:0.75rem; color:#fff; font-weight:900; filter:drop-shadow(0 0 5px rgba(251,191,36,0.6));">#${quotePassword}</span>
+                    </div>
                 </div>`;
 
             document.getElementById('card-back-1').innerHTML = `
