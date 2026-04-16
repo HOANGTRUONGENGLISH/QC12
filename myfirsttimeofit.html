@@ -1422,18 +1422,6 @@
             100% { transform: translate(5%, 5%) scale(1.1); }
         }
 
-        .cipher-text {
-            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-            letter-spacing: 0.15em;
-            text-shadow: 0 0 10px currentColor;
-        }
-
-        .space-card {
-            background: #020617;
-            border: 1px solid rgba(139, 92, 246, 0.4);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(139, 92, 246, 0.2);
-        }
-
         .mystery-card-front {
             transform: rotateY(180deg);
             opacity: 0;
@@ -1649,10 +1637,7 @@
             text-shadow: 0 0 10px rgba(196, 181, 253, 0.8), 0 0 20px rgba(167, 139, 250, 0.4);
             animation: tree-glow-pulse 3s ease-in-out infinite;
         }
-        @keyframes tree-glow-pulse {
-            0%, 100% { text-shadow: 0 0 10px rgba(196, 181, 253, 0.8), 0 0 20px rgba(167, 139, 250, 0.4); }
-            50% { text-shadow: 0 0 20px rgba(196, 181, 253, 1), 0 0 35px rgba(167, 139, 250, 0.6); }
-        }
+
         .hint-pill-mini {
             background: linear-gradient(135deg, rgba(88, 28, 135, 0.6) 0%, rgba(107, 33, 168, 0.8) 100%);
             border: 1px solid rgba(196, 181, 253, 0.4);
@@ -2142,7 +2127,7 @@
                     <span class="wave-word" style="animation-delay: 0.4s;">Tree</span>
                 </h2>
                 <!-- New mini hint portal under the title -->
-                <div id="hint-pill-portal" class="h-8 opacity-0 transition-opacity duration-500 overflow-hidden flex justify-center items-start mt-2"></div>
+                <div id="hint-pill-portal" class="h-10 opacity-0 transition-opacity duration-500 overflow-hidden flex justify-center items-start"></div>
             </div>
             <div class="relative w-full flex flex-col items-center mt-2 sm:mt-4 mb-4">
                 <div id="tree-canopy"
@@ -5433,78 +5418,80 @@
 
             // Card 2 – Secret Code (Ordinal 1)
             document.getElementById('card-front-2').innerHTML = `
-                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:15px;box-sizing:border-box;">
+                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:15px;box-sizing:border-box;">
                     <div class="space-card-nebula"></div>
-                    <!-- Orbital Rings -->
-                    <div style="position:absolute;inset:20px;border:1px solid rgba(139,92,246,0.1);border-radius:50%;pointer-events:none;"></div>
-                    <div style="position:absolute;inset:40px;border:1px solid rgba(139,92,246,0.05);border-radius:50%;pointer-events:none;"></div>
-                    
-                    <p style="font-size:.6rem;font-weight:900;letter-spacing:.3em;color:rgba(196,181,253,.8);text-transform:uppercase;margin:0;z-index:2;">Mystery Ritual</p>
-                    <div style="width:50px;height:2px;background:rgba(167,139,250,.4);z-index:2;"></div>
-                    <p style="font-size:.7rem;color:rgba(196,181,253,.6);text-transform:uppercase;letter-spacing:.1em;margin:0;z-index:2;">Secret Code</p>
-                    <p class="cipher-text" style="font-size:2rem;font-weight:900;color:#fff;margin:0;filter:drop-shadow(0 0 12px rgba(167,139,250,.8));z-index:2;"># ${mysteryCode}</p>
+                    <p style="font-size:.65rem;font-weight:900;letter-spacing:.4em;color:rgba(196,181,253,.8);text-transform:uppercase;margin:0;z-index:2;">Mystery Ritual</p>
+                    <div style="width:40px;height:1px;background:rgba(167,139,250,.6);z-index:2;"></div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;">
+                        <p style="font-size:.7rem;color:rgba(196,181,253,.5);text-transform:uppercase;letter-spacing:.2em;margin:0;">Secret Code</p>
+                        <p class="secret-code" style="font-size:2.2rem;font-weight:900;color:#fff;margin:0;filter:drop-shadow(0 0 15px rgba(167,139,250,1));"># ${mysteryCode}</p>
+                    </div>
+                    <div style="position:absolute;width:120px;height:120px;border:1px dashed rgba(167,139,250,0.2);border-radius:50%;animation:orb-ring-spin 15s linear infinite;"></div>
                 </div>`;
 
             document.getElementById('card-back-2').innerHTML = `
                 <div class="mystery-card-ordinal">1</div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;z-index:10;">
-                    <div style="font-size:2.2rem;filter:drop-shadow(0 0 10px #4ade80)">🔐</div>
-                    <div style="padding:4px 12px;border:1px solid rgba(74,222,128,0.3);border-radius:12px;background:rgba(0,0,0,0.4)">
-                       <span style="font-size:0.65rem;color:rgba(74,222,128,0.8);text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">Reveal Code</span>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;z-index:10;">
+                    <div style="font-size:2.2rem;filter:drop-shadow(0 0 12px #4ade80)">🔐</div>
+                    <div style="padding:6px 14px;border:1px solid rgba(74,222,128,0.4);border-radius:20px;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);">
+                       <span style="font-size:0.65rem;font-weight:700;color:#4ade80;text-transform:uppercase;letter-spacing:0.15em;">Reveal Code</span>
                     </div>
                 </div>`;
 
-            // Card 1 – Quote face (requires Name to flip)
+            // Card 1 – Quote face
             const q = getNextQuote();
             globalQuoteWordCount = q.en.split(/\s+/).filter(w => w.length > 0).length;
 
             document.getElementById('card-front-1').innerHTML = `
-                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px;box-sizing:border-box;">
-                    <div class="space-card-nebula" style="background:radial-gradient(circle at 50% 50%, rgba(251,191,36,0.08) 0%, transparent 60%);"></div>
-                    <p style="font-size:1.6rem;margin:0;filter:drop-shadow(0 0 10px rgba(251,191,36,1));z-index:2;">💬</p>
-                    <p style="font-size:.75rem;color:#e0e7ff;font-style:italic;font-weight:700;text-align:center;line-height:1.4;margin:0;padding:0 2px;z-index:2;">${q.en}</p>
-                    <div style="width:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,0.4),transparent);margin:2px 0;z-index:2;"></div>
-                    <p style="font-size:.65rem;color:rgba(251,191,36,0.7);font-style:italic;text-align:center;line-height:1.3;margin:0;padding:0 2px;z-index:2;">${q.vi}</p>
-                    <p style="font-size:.6rem;color:rgba(255,255,255,.4);text-align:center;margin:0;margin-top:2px;z-index:2;">— ${q.author}</p>
+                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;box-sizing:border-box;position:relative;">
+                    <div class="space-card-nebula" style="background:radial-gradient(circle,rgba(251,191,36,0.08) 0%,transparent 70%);"></div>
+                    <p style="font-size:1.8rem;margin:0;filter:drop-shadow(0 0 12px rgba(251,191,36,0.8));z-index:2;">📜</p>
+                    <p style="font-size:.85rem;color:#fef3c7;font-style:italic;font-weight:600;text-align:center;line-height:1.5;margin:0;z-index:2;">"${q.en}"</p>
+                    <div style="width:40%;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,.4),transparent);margin:4px 0;z-index:2;"></div>
+                    <p style="font-size:.7rem;color:rgba(251,191,36,.6);font-style:italic;text-align:center;line-height:1.4;margin:0;padding:0 5px;z-index:2;">${q.vi}</p>
+                    <p style="font-size:.6rem;color:rgba(255,255,255,.3);text-align:center;margin-top:5px;z-index:2;">— ${q.author}</p>
                 </div>`;
 
             document.getElementById('card-back-1').innerHTML = `
                 <div class="mystery-card-ordinal">2</div>
                 <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;z-index:10;">
-                    <div style="font-size:2.2rem;filter:drop-shadow(0 0 12px rgba(251,191,36,0.5))">📜</div>
-                    <div style="width:85%; display:flex; flex-direction:column; align-items:center;">
-                        <input type="text" id="quote-name-input" class="mystical-input w-full px-3 py-2 rounded-lg text-center font-bold outline-none text-white text-sm" placeholder="YOUR NAME?" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkQuoteUnlock(event); }" onclick="event.stopPropagation()">
-                        <div class="input-subnote">Enter name from header</div>
+                    <div style="font-size:2.2rem;filter:drop-shadow(0 0 15px rgba(251,191,36,0.6))">👤</div>
+                    <div style="width:85%;display:flex;flex-direction:column;align-items:center;">
+                        <input type="text" id="quote-name-input" class="mystical-input w-full px-4 py-3 rounded-xl text-center font-bold outline-none text-white text-base" placeholder="Who are you?" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkQuoteUnlock(event); }" onclick="event.stopPropagation()">
+                        <p class="input-subnote">Enter name from Explorer</p>
                     </div>
                 </div>`;
 
-            // Card 0 – Magical Orb (Ordinal 3)
+            // Card 0 – Magical Orb
             document.getElementById('card-front-0').innerHTML = `
-                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;box-sizing:border-box;">
-                    <div class="space-card-nebula" style="background:radial-gradient(circle at 50% 50%, ${magic.orbGlow.replace('0.9','0.15')} 0%, transparent 60%);"></div>
-                    <p style="font-size:.55rem;font-weight:900;letter-spacing:.25em;color:rgba(196,181,253,.6);text-transform:uppercase;margin:0;z-index:2;">The Magical Orb</p>
-                    <div class="magic-orb-scene" style="transform: scale(0.45); margin: -25px 0; z-index:2;">
+                <div class="space-card-bg" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:15px;box-sizing:border-box;">
+                    <div class="space-card-nebula" style="background:radial-gradient(circle,rgba(167,139,250,0.1) 0%,transparent 70%);"></div>
+                    <p style="font-size:.6rem;font-weight:900;letter-spacing:.3em;color:rgba(196,181,253,.7);text-transform:uppercase;margin:0;z-index:2;">Ritual Complete</p>
+                    <div class="magic-orb-scene" style="transform: scale(0.6); margin: -15px 0; z-index:2;">
                         <div class="magic-orb" style="--orb-light:${magic.orbLight};--orb-mid:${magic.orbMid};--orb-dark:${magic.orbDark};--orb-glow:${magic.orbGlow};--ring-color:${magic.ringColor};--ring-color2:${magic.ringColor2};">
                             <div class="orb-ball"></div>
                         </div>
                     </div>
-                    <p style="font-size:.75rem;font-weight:900;color:#fff;margin:0;text-align:center;z-index:2;">${magic.skill}</p>
-                    <p style="font-size:.55rem;color:rgba(196,181,253,.75);margin:0;text-align:center;line-height:1.3;padding:0 4px;z-index:2;">${magic.desc}</p>
-                    <p style="font-size:.6rem;color:rgba(196,181,253,.4);margin:0;z-index:2;">${selectedZodiacEmoji || '⭐'}</p>
+                    <p style="font-size:.9rem;font-weight:900;color:#fff;margin:0;text-align:center;z-index:2;filter:drop-shadow(0 0 8px ${magic.orbGlow});">${magic.skill}</p>
+                    <p style="font-size:.65rem;color:rgba(196,181,253,.8);margin:0;text-align:center;line-height:1.4;padding:0 10px;z-index:2;">${magic.desc}</p>
+                    <p style="font-size:.8rem;margin-top:5px;z-index:2;">${selectedZodiacEmoji || '⭐'}</p>
                 </div>`;
 
             document.getElementById('card-back-0').innerHTML = `
                 <div class="mystery-card-ordinal">3</div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;z-index:10;">
-                    <div style="font-size:2.2rem;filter:drop-shadow(0 0 10px rgba(167,139,250,0.5))">🔮</div>
-                    <div style="display:flex;flex-direction:column;gap:8px;width:85%; align-items:center;">
-                        <input type="number" id="orb-code-input" class="mystical-input no-spinners w-full px-3 py-2 rounded-lg text-center font-bold outline-none text-white text-sm" placeholder="SECRET CODE" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkOrbUnlock(event); }" onclick="event.stopPropagation()">
-                        <input type="number" id="orb-word-count-input" class="mystical-input no-spinners w-full px-3 py-2 rounded-lg text-center font-bold outline-none text-white text-sm" placeholder="WORD COUNT" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkOrbUnlock(event); }" onclick="event.stopPropagation()">
-                        <div class="input-subnote">Enter Code & Word Count</div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;z-index:10;">
+                    <div style="font-size:2.2rem;filter:drop-shadow(0 0 15px rgba(167,139,250,0.6))">🔮</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;width:85%;align-items:center;">
+                        <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
+                            <input type="number" id="orb-code-input" class="mystical-input no-spinners w-full px-4 py-3 rounded-xl text-center font-bold outline-none text-white text-base" placeholder="SECRET CODE" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkOrbUnlock(event); }" onclick="event.stopPropagation()">
+                        </div>
+                        <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
+                            <input type="number" id="orb-word-count-input" class="mystical-input no-spinners w-full px-4 py-3 rounded-xl text-center font-bold outline-none text-white text-base" placeholder="WORD COUNT" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkOrbUnlock(event); }" onclick="event.stopPropagation()">
+                        </div>
+                        <p class="input-subnote">Enter Code & Word Count</p>
                     </div>
                 </div>`;
         }
-
 
 
         let mysteryBoxOpened_real = false;
