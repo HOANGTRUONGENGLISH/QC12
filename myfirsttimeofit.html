@@ -1889,17 +1889,6 @@
             type="audio/mpeg">
     </audio>
 
-    <button id="music-toggle-btn" onclick="toggleMusic()"
-        class="fixed top-3 sm:top-6 right-3 sm:right-6 z-50 p-2.5 sm:p-3 rounded-full hover:scale-110 transition-all duration-300"
-        title="Bật/Tắt Nhạc Nền">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 opacity-70" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                clip-rule="evenodd" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-        </svg>
     </button>
 
     <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
@@ -1945,13 +1934,13 @@
                         class="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-none drop-shadow-md">1</span>
                 </div>
                 <div id="header-name-container"
-                    class="absolute left-[58%] top-[50%] sm:top-[48%] -translate-x-1/2 -translate-y-1/2 flex items-center z-30 pointer-events-auto">
+                    class="absolute left-[62%] top-[40%] -translate-x-1/2 -translate-y-1/2 flex items-center z-30 pointer-events-auto">
                     <div
-                        class="glass-panel px-3 sm:px-6 py-2 sm:py-2.5 rounded-full border border-white/30 flex items-center gap-3 backdrop-blur-md shadow-2xl transition-all hover:scale-105">
+                        class="glass-panel px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-full border border-white/40 flex items-center gap-4 backdrop-blur-lg shadow-2xl transition-all hover:scale-110 origin-center">
                         <span
-                            class="text-[0.55rem] sm:text-[0.65rem] font-black text-purple-200/70 tracking-[0.3em] uppercase drop-shadow-sm mt-0.5">Explorer</span>
+                            class="text-[0.65rem] sm:text-[0.75rem] font-black text-purple-200 tracking-[0.4em] uppercase drop-shadow-sm mt-0.5">Explorer</span>
                         <input type="text" id="user-name-input"
-                            class="bg-transparent border-none text-sm sm:text-base md:text-lg font-black text-white focus:outline-none w-24 sm:w-32 md:w-48 text-center placeholder-white/20 tracking-wider drop-shadow-md"
+                            class="bg-transparent border-none text-base sm:text-lg md:text-xl font-black text-white focus:outline-none w-32 sm:w-40 md:w-56 text-center placeholder-white/20 tracking-wider drop-shadow-md"
                             placeholder="Enter Name..." value="" autocomplete="off" spellcheck="false">
                     </div>
                 </div>
@@ -2000,9 +1989,19 @@
                                     class="font-timer font-bold tracking-wider text-[0.65rem] sm:text-xs md:text-sm drop-shadow-sm leading-none mt-0.5">00:00</span>
                             </div>
                         </div>
-                        <span id="progress-text"
-                            class="bg-purple-900/60 px-1.5 sm:px-2 py-0.5 rounded-md shadow-sm border border-purple-500/50 text-purple-200">1
-                            / X</span>
+                        <div class="flex flex-col items-center gap-1">
+                            <button id="music-toggle-btn" onclick="toggleMusic()"
+                                class="p-1.5 sm:p-2 rounded-xl bg-purple-900/40 backdrop-blur-md border border-purple-500/30 text-white transition-all hover:scale-110 active:scale-95 group overflow-hidden">
+                                <svg id="music-icon-svg" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-purple-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.12 2-2.5 2S4 20.105 4 19s1.12-2 2.5-2 2.5.895 2.5 2zm12-3c0 1.105-1.12 2-2.5 2S16 17.105 16 16s1.12-2 2.5-2 2.5.895 2.5 2z" />
+                                </svg>
+                                <svg id="music-off-svg" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 hidden text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                                </svg>
+                            </button>
+                            <span id="progress-text"
+                                class="bg-purple-900/60 px-1.5 sm:px-3 py-0.5 rounded-full shadow-sm border border-purple-500/50 text-purple-200 font-bold tracking-widest text-[0.65rem] sm:text-xs">1 / X</span>
+                        </div>
                     </div>
                     <div id="fire-progress-container"
                         class="w-full flex flex-wrap justify-center gap-0.5 sm:gap-1 md:gap-1.5 mt-1 sm:mt-2 min-h-[1.2rem] md:min-h-[1.5rem]">
@@ -5978,11 +5977,11 @@
                         }
                         // Big card clone
                         const bigCard = document.createElement('div');
-                        bigCard.style.cssText = `width:550px;height:850px;border-radius:2rem;overflow:hidden;transform:scale(0);transition:transform .8s cubic-bezier(.34,1.56,.64,1) .2s;flex-shrink:0;box-shadow:0 0 120px ${idx === 1 ? 'rgba(251,191,36,.6)' : 'rgba(74,222,128,.6)'},0 50px 100px rgba(0,0,0,.8);border:4px solid ${idx === 1 ? 'rgba(251,191,36,.5)' : 'rgba(74,222,128,.4)'};`;
+                        bigCard.style.cssText = `width:600px;height:900px;border-radius:2.5rem;overflow:hidden;transform:scale(0);transition:transform .8s cubic-bezier(.34,1.56,.64,1) .2s;flex-shrink:0;box-shadow:0 0 150px ${idx === 1 ? 'rgba(251,191,36,.7)' : 'rgba(74,222,128,.7)'},0 60px 120px rgba(0,0,0,.9);border:5px solid ${idx === 1 ? 'rgba(251,191,36,.6)' : 'rgba(74,222,128,.5)'};`;
                         if (cardFront) {
                             let content = cardFront.innerHTML;
-                            // Scale up internal font sizes (Multiplier increased for Card 1)
-                            const scaleMultiplier = (idx === 1) ? 2.8 : 2.2;
+                            // Scale up internal font sizes (Multiplier increased significantly)
+                            const scaleMultiplier = (idx === 1) ? 3.5 : 2.8;
                             content = content.replace(/font-size:\.?[0-9]*rem/g, (m) => {
                                 const val = parseFloat(m.match(/[0-9.]+/)[0]);
                                 return `font-size:${val * scaleMultiplier}rem`;
@@ -5990,7 +5989,7 @@
                             // Scale up specific paddings/gaps
                             content = content.replace(/gap:\.?[0-9]*px/g, (m) => {
                                 const val = parseFloat(m.match(/[0-9.]+/)[0]);
-                                return `gap:${val * 2.5}px`;
+                                return `gap:${val * 3.0}px`;
                             });
                             bigCard.innerHTML = content;
                         }
