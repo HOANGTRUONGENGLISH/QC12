@@ -1148,7 +1148,7 @@
 
         /* Orb 3D */
         .magic-orb-scene {
-            width:130px; height:130px; margin:0 auto;
+            width:98px; height:98px; margin:0 auto;
             perspective:600px;
         }
         .magic-orb {
@@ -2070,7 +2070,7 @@
             class="text-2xl md:text-4xl lg:text-5xl font-black text-white tracking-widest uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] opacity-0 transform translate-y-4 transition-all duration-500 text-center px-4 z-[10001] mb-2 shrink-0">
             Beautiful Mind</h2>
         <h3 id="review-reminder-text"
-            class="absolute top-[50%] left-0 w-full text-2xl md:text-4xl lg:text-5xl font-black text-fuchsia-200 tracking-[0.15em] uppercase drop-shadow-[0_0_15px_rgba(232,121,249,0.9)] opacity-0 transform -translate-y-1/2 scale-90 transition-all duration-700 text-center px-4 z-[10002] pointer-events-none">
+            class="absolute top-[50%] left-0 w-full text-xl md:text-3xl lg:text-4xl font-black text-fuchsia-200 tracking-[0.15em] uppercase drop-shadow-[0_0_15px_rgba(232,121,249,0.9)] opacity-0 transform -translate-y-1/2 scale-90 transition-all duration-700 text-center px-4 z-[10002] pointer-events-none">
             Let's review the words you may not remember</h3>
         <div id="flower-container"
             class="relative w-full h-[75vh] flex items-center justify-center transition-all duration-1000"></div>
@@ -4162,10 +4162,11 @@
                     playSuccessSound();
                     setTimeout(() => {
                         transitionPage('step-1-container', 'step2-part-1');
+                        initStep2(vals[0], vals[1], vals[2], vals[3]);
+                        // Increment hint AFTER initStep2 sets the baseline
                         remainingHints++;
                         updateHintButtonsUI();
                         showHintToast(); // New visual notification
-                        initStep2(vals[0], vals[1], vals[2], vals[3]);
                     }, 500);
                 }
             };
@@ -5086,11 +5087,23 @@
             if (!inner || inner.classList.contains('flipped')) return;
 
             // Ritual Logic: Code (2) -> Quote (1) -> Orb (0)
-            if (idx === 1 && !document.getElementById('card-inner-2').classList.contains('flipped')) {
-                const codeCard = document.getElementById('card-inner-2').closest('.mystery-card-wrapper');
-                codeCard.classList.add('animate-shake');
-                setTimeout(() => codeCard.classList.remove('animate-shake'), 500);
-                return;
+            if (idx === 1) {
+                if (!document.getElementById('card-inner-2').classList.contains('flipped')) {
+                    const codeCard = document.getElementById('card-inner-2').closest('.mystery-card-wrapper');
+                    codeCard.classList.add('animate-shake');
+                    setTimeout(() => codeCard.classList.remove('animate-shake'), 500);
+                    return;
+                }
+                if (!isQuoteUnlocked) {
+                    const inp = document.getElementById('quote-name-input');
+                    if (inp) {
+                        inp.focus();
+                        const wrapper = inner.closest('.mystery-card-wrapper');
+                        wrapper.classList.add('animate-shake');
+                        setTimeout(() => wrapper.classList.remove('animate-shake'), 500);
+                    }
+                    return;
+                }
             }
             if (idx === 0) {
                 if (!document.getElementById('card-inner-1').classList.contains('flipped')) {
