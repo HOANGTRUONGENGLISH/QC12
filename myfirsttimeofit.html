@@ -676,6 +676,11 @@
         .main-app-container {
             perspective: 1500px;
             transform-style: preserve-3d;
+            display: grid;
+        }
+
+        .main-app-container > * {
+            grid-area: 1 / 1;
         }
 
         .flip-out {
@@ -1465,6 +1470,12 @@
         .mystical-input:focus::placeholder {
             opacity: 0.2;
         }
+
+        .mystical-input.success-unlock {
+            border-color: #4ade80 !important;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5) !important;
+        }
+
         /* No spinners for ritual inputs */
         .no-spinners::-webkit-outer-spin-button,
         .no-spinners::-webkit-inner-spin-button {
@@ -1481,6 +1492,8 @@
             color: rgba(196, 181, 253, 0.5);
             text-transform: uppercase;
             margin-top: 4px;
+            text-align: center;
+            width: 100%;
         }
         .space-card-bg {
             background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 100%);
@@ -1975,19 +1988,20 @@
         <span class="text-xl sm:text-2xl">🎓</span>
     </div>
 
-    <div id="action-toast"
-        class="absolute top-16 md:top-24 left-1/2 transform -translate-x-1/2 translate-y-[-250%] opacity-0 bg-purple-800/90 backdrop-blur-md border border-purple-400/50 text-white px-4 md:px-5 py-2 rounded-full shadow-lg font-semibold text-sm md:text-md z-50 transition-all duration-300 flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-        Review
-    </div>
-
     <div class="max-w-[96%] sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl w-full mx-auto relative transition-all duration-300">
         <div class="w-full mb-3 md:mb-6 mt-1 md:mt-2">
             <div class="textbook-header group">
+                <!-- Nút thông báo Review được dời vào góc phải của header -->
+                <div id="action-toast"
+                    class="absolute top-2 right-2 sm:top-3 sm:right-3 md:right-4 transform translate-y-[-250%] opacity-0 bg-fuchsia-600/95 backdrop-blur-md border border-fuchsia-300/50 text-white px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full shadow-[0_4px_12px_rgba(217,70,239,0.6)] font-bold text-[0.65rem] sm:text-xs md:text-sm z-[100] transition-all duration-300 flex items-center gap-1 sm:gap-1.5 pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Review
+                </div>
+
                 <div class="unit-badge">
                     <span
                         class="text-[0.6rem] sm:text-xs md:text-sm font-black text-purple-200 tracking-widest uppercase mt-1 md:mt-2">Unit</span>
@@ -2005,7 +2019,7 @@
                             placeholder="Enter Name..." value="" autocomplete="off" spellcheck="false">
                     </div>
                 </div>
-                <div class="flex items-center mb-1 md:mb-1.5 mt-2 md:mt-3">
+                <div class="flex items-center mb-0 mt-2 md:mt-3">
                     <div class="ribbon-banner flex items-center gap-2 sm:gap-4 pr-3 sm:pr-4">
                         <h1 id="main-topic-title"
                             class="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold font-rounded tracking-wide uppercase leading-tight text-white m-0">
@@ -2023,7 +2037,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ml-1 md:ml-0">
+                <div class="ml-1 md:ml-0 -mt-0.5 sm:-mt-1">
                     <div
                         class="flex justify-between items-center text-[0.65rem] sm:text-xs md:text-sm font-semibold text-purple-200 mb-0.5">
                         <div class="flex items-center gap-2 sm:gap-4 select-none header-faded">
@@ -2173,11 +2187,11 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front card-crystal p-4 sm:p-6 md:p-8">
                     <div
-                        class="flex-grow flex flex-col justify-evenly items-center text-center overflow-y-auto no-scrollbar w-full min-h-0 py-2 sm:py-4 gap-2 sm:gap-4">
+                        class="flex-grow flex flex-col justify-center items-center text-center overflow-y-auto no-scrollbar w-full min-h-0 py-2 sm:py-4 gap-2 sm:gap-3 lg:gap-4">
 
                         <!-- Nghĩa Tiếng Việt -->
                         <div id="front-magic-container"
-                            class="flex items-center justify-center relative w-full opacity-0 shrink-0">
+                            class="flex items-center justify-center relative w-full opacity-0 shrink-0 mb-2 sm:mb-3">
                             <div class="relative z-10 flex items-center justify-center w-fit max-w-[85%] text-center">
                                 <h2 class="crystal-crescent text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
                                     id="word-mean"></h2>
@@ -2192,14 +2206,14 @@
                         </div>
 
                         <!-- Các ô input nhập chữ -->
-                        <div class="w-full flex justify-center shrink-0 min-h-[40px] sm:min-h-[50px] mt-2 sm:mt-3">
+                        <div class="w-full flex justify-center shrink-0 min-h-[40px] sm:min-h-[50px] mt-1 sm:mt-2">
                             <div id="letter-inputs-container"
                                 class="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-2 sm:gap-y-3 lg:gap-y-4">
                             </div>
                         </div>
 
                         <!-- Câu ví dụ tiếng Anh -->
-                        <div class="relative w-full mt-4 sm:mt-6 mb-2">
+                        <div class="relative w-full mt-2 sm:mt-4 mb-1">
                             <div class="crystal-pill mx-auto">
                                 <p class="text-base sm:text-lg md:text-xl lg:text-3xl font-medium leading-snug sm:leading-relaxed m-0 shrink-0 px-2 ex-glow-en"
                                     id="word-ex"></p>
@@ -2208,36 +2222,38 @@
                             </div>
                         </div>
 
-                        <!-- Nhóm nút (Nghe, Hint, Review) -->
-                        <div
-                            class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:gap-4 shrink-0 mt-1 sm:mt-2.5 mb-1">
-                            <button onclick="speakCurrentWord()"
-                                class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 lg:w-11 lg:h-11 bg-violet-900/50 hover:bg-violet-800 text-violet-200 border border-violet-500/30 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-400 shadow-sm"
-                                title="Nghe phát âm">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 lg:h-5 lg:w-5"
-                                    viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                        <!-- Action Row: Loa + Hint (Trái), Check Answer (Giữa), Review (Phải) -->
+                        <div class="w-full flex flex-row items-center justify-center gap-2 sm:gap-4 shrink-0 mt-3 sm:mt-5 mb-1">
+                            
+                            <!-- Cụm Loa & Hint gộp chung (Thiết kế giống nút Back) -->
+                            <div class="btn-crystal-alt flex items-center rounded-full overflow-hidden h-10 sm:h-11 lg:h-12 shrink-0 p-0 cursor-pointer">
+                                <button onclick="speakCurrentWord()"
+                                    class="px-3 sm:px-4 h-full flex items-center justify-center text-current hover:bg-white/10 transition-colors border-r border-purple-400/30 focus:outline-none"
+                                    title="Nghe phát âm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button id="hint-btn" onclick="giveHint()" title="Gợi ý"
+                                    class="px-3 sm:px-4 h-full flex items-center justify-center text-xs sm:text-sm lg:text-base font-bold text-current hover:bg-white/10 transition-colors tracking-wide focus:outline-none">
+                                    Hint
+                                </button>
+                            </div>
+
+                            <!-- Check Answer -->
+                            <button onclick="checkAnswer()"
+                                class="btn-crystal px-8 sm:px-12 h-10 sm:h-11 lg:h-12 text-sm sm:text-base lg:text-lg font-bold rounded-full flex items-center justify-center cursor-pointer shrink-0 shadow-md">
+                                Check
                             </button>
-                            <button id="hint-btn" onclick="giveHint()" title="Gợi ý"
-                                class="text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-fuchsia-900/50 text-fuchsia-200 hover:bg-fuchsia-800 font-medium rounded-full transition-colors flex items-center gap-1 shadow-sm border border-fuchsia-500/30">Hint</button>
+
+                            <!-- Review -->
                             <button id="review-btn" onclick="markForReview()" title="Học lại ở cuối bài"
-                                class="hidden text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-purple-900/50 text-purple-200 hover:bg-purple-800 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-500/30">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                class="hidden text-xs sm:text-sm lg:text-base px-3 sm:px-4 h-10 sm:h-11 lg:h-12 bg-purple-900/50 text-purple-200 hover:bg-purple-800 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-500/30 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg> Review
                             </button>
-                        </div>
 
-                        <!-- Check Answer Button -->
-                        <div class="w-full flex justify-center shrink-0">
-                            <button onclick="checkAnswer()"
-                                class="btn-crystal w-[75%] sm:w-[50%] md:w-[40%] max-w-[200px] py-2 sm:py-2.5 lg:py-3 text-sm sm:text-base lg:text-lg font-semibold rounded-full flex items-center justify-center gap-2 cursor-pointer">Check
-                                Answer</button>
                         </div>
                     </div>
                     <div
@@ -2251,7 +2267,7 @@
                     <div
                         class="flex-grow flex flex-col justify-center items-center text-center overflow-y-auto no-scrollbar w-full pb-1 min-h-0">
                         <div id="back-magic-container"
-                            class="flex items-center justify-center mb-2 sm:mb-4 lg:mb-6 mt-auto relative w-full opacity-0 -top-1 sm:-top-2">
+                            class="flex items-center justify-center mb-3 sm:mb-4 lg:mb-5 mt-auto relative w-full opacity-0 -top-1 sm:-top-2">
                             <div class="relative z-10 flex items-center justify-center">
                                 <h2 class="crystal-crescent text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight text-center"
                                     id="back-word"></h2>
@@ -2261,7 +2277,7 @@
                             </div>
                         </div>
                         <div
-                            class="flex flex-row items-center justify-center gap-3 sm:gap-4 md:gap-6 mb-2 sm:mb-4 lg:mb-5 w-full flex-wrap z-10 relative">
+                            class="flex flex-row items-center justify-center gap-3 sm:gap-4 md:gap-6 mb-1.5 sm:mb-3 lg:mb-4 w-full flex-wrap z-10 relative">
                             <div
                                 class="flex items-center gap-1.5 sm:gap-2 bg-violet-900/40 border border-violet-400/30 px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-full">
                                 <p class="text-xs sm:text-sm md:text-base lg:text-lg text-violet-200 font-mono font-medium m-0"
@@ -2281,7 +2297,7 @@
                             <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-bold drop-shadow-md m-0 text-center"
                                 id="back-mean"></p>
                         </div>
-                        <div class="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-xl p-3 sm:p-4 md:p-5 w-full max-w-[95%] sm:max-w-lg lg:max-w-3xl mt-1 sm:mt-2 md:mt-3 shrink-0 z-10 relative cursor-pointer group"
+                        <div class="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-xl p-3 sm:p-4 md:p-5 w-full max-w-[95%] sm:max-w-lg lg:max-w-3xl mt-0.5 sm:mt-1 md:mt-2 shrink-0 z-10 relative cursor-pointer group"
                             style="perspective: 1500px;" onclick="toggleExampleFlip()"
                             title="Chạm để xem dịch nghĩa gốc">
                             <div id="example-inner" class="relative w-full transition-transform duration-700"
@@ -2301,7 +2317,7 @@
                             </div>
                         </div>
                         <div
-                            class="flex justify-center gap-3 sm:gap-4 md:gap-6 w-full mt-auto mb-auto pt-4 sm:pt-6 shrink-0 transform -translate-y-2 sm:-translate-y-3 md:-translate-y-4">
+                            class="flex justify-center gap-3 sm:gap-4 md:gap-6 w-full mt-auto mb-auto pt-2 sm:pt-4 shrink-0 transform -translate-y-2 sm:-translate-y-3 md:-translate-y-4">
                             <button onclick="prevCard()"
                                 class="btn-crystal-alt w-[100px] sm:w-[110px] md:w-[130px] lg:w-[150px] py-2 sm:py-2.5 lg:py-3 rounded-full text-xs sm:text-sm md:text-base lg:text-lg cursor-pointer">Back</button>
                             <button onclick="nextCard()" id="next-btn"
@@ -2771,7 +2787,7 @@
             class="text-2xl md:text-4xl lg:text-5xl font-black text-white tracking-widest uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] opacity-0 transform translate-y-4 transition-all duration-500 text-center px-4 z-[10001] mb-2 shrink-0">
             Beautiful Mind</h2>
         <h3 id="review-reminder-text"
-            class="absolute top-[50%] left-0 w-full text-xl md:text-3xl lg:text-4xl font-black text-fuchsia-200 tracking-[0.15em] uppercase drop-shadow-[0_0_15px_rgba(232,121,249,0.9)] opacity-0 transform -translate-y-1/2 scale-90 transition-all duration-700 text-center px-4 z-[10002] pointer-events-none">
+            class="absolute top-[50%] left-0 w-full text-[0.8rem] sm:text-base md:text-xl lg:text-[1.7rem] font-black text-fuchsia-200 tracking-wide uppercase drop-shadow-[0_0_15px_rgba(232,121,249,0.9)] opacity-0 transform -translate-y-1/2 scale-90 transition-all duration-700 text-center px-4 z-[10002] pointer-events-none whitespace-nowrap">
             Let's review the words you may not remember</h3>
         <div id="flower-container"
             class="relative w-full h-[75vh] flex items-center justify-center transition-all duration-1000"></div>
@@ -3216,97 +3232,64 @@
             return true;
         }
 
-        function startZodiacSelection() {
-            if (!validateNameBeforeStart()) return;
+        function performFlipTransition(oldScreenId, newScreenId) {
             playTransitionSound();
-            const startScreen = document.getElementById('start-screen');
-            const zodiacScreen = document.getElementById('zodiac-screen');
-            
-            // Prepare screens for horizontal flip
-            zodiacScreen.classList.remove('hidden', 'screen-hidden', 'screen-active');
-            zodiacScreen.classList.add('flip-prep');
-            void zodiacScreen.offsetWidth; // Reflow
+            const oldScreen = document.getElementById(oldScreenId);
+            const newScreen = document.getElementById(newScreenId);
 
-            // Trigger animations
-            startScreen.classList.add('flip-out');
-            startScreen.classList.remove('screen-active');
-            
-            zodiacScreen.classList.remove('flip-prep');
-            zodiacScreen.classList.add('flip-in');
-            updateHeaderState('zodiac-screen');
+            // Xếp màn hình mới lật ngược ở phía sau
+            newScreen.classList.remove('hidden', 'screen-hidden', 'screen-active', 'flip-out');
+            newScreen.classList.add('flip-prep');
+            void newScreen.offsetWidth; // Ép trình duyệt tính toán lại
+
+            // Bắt đầu lật màn hình cũ đi và lật màn hình mới tới
+            oldScreen.classList.add('flip-out');
+            oldScreen.classList.remove('screen-active');
+
+            newScreen.classList.remove('flip-prep');
+            newScreen.classList.add('flip-in');
+
+            updateHeaderState(newScreenId);
 
             setTimeout(() => {
-                startScreen.classList.add('hidden');
-                startScreen.classList.remove('flip-out');
-                zodiacScreen.classList.remove('flip-in');
-                zodiacScreen.classList.add('screen-active');
+                oldScreen.classList.add('hidden');
+                oldScreen.classList.remove('flip-out');
+                
+                newScreen.classList.remove('flip-in');
+                newScreen.classList.add('screen-active');
             }, 800);
         }
 
-        function selectZodiac(emoji) {
-            playTransitionSound();
+        function startZodiacSelection(event) {
+            if (!validateNameBeforeStart()) return;
+            performFlipTransition('start-screen', 'zodiac-screen');
+        }
+
+        function selectZodiac(emoji, event) {
             selectedZodiacEmoji = emoji;
             document.getElementById('score-icon').textContent = emoji;
 
-            const zodiacScreen = document.getElementById('zodiac-screen');
-            const flashcardEl = document.getElementById('flashcard');
+            performFlipTransition('zodiac-screen', 'flashcard');
 
-            // Prepare screens for horizontal flip
-            flashcardEl.classList.remove('hidden', 'screen-hidden', 'screen-active');
-            flashcardEl.classList.add('flip-prep');
-            void flashcardEl.offsetWidth; // Reflow
-
-            // Trigger animations
-            zodiacScreen.classList.add('flip-out');
-            zodiacScreen.classList.remove('screen-active');
-
-            flashcardEl.classList.remove('flip-prep');
-            flashcardEl.classList.add('flip-in');
-            updateHeaderState('flashcard');
-
-            renderCard();
-            startTimer();
-            const firstEditableInput = document.querySelector('.editable-input');
-            if (firstEditableInput) firstEditableInput.focus();
-
+            // Render Flashcard khi thẻ đang lật giữa chừng
             setTimeout(() => {
-                zodiacScreen.classList.add('hidden');
-                zodiacScreen.classList.remove('flip-out');
-                flashcardEl.classList.remove('flip-in');
-                flashcardEl.classList.add('screen-active');
-            }, 800);
+                renderCard();
+                startTimer();
+                const firstEditableInput = document.querySelector('.editable-input');
+                if (firstEditableInput) firstEditableInput.focus();
+            }, 400); 
         }
 
-        function startLearning() {
+        function startLearning(event) {
             if (!validateNameBeforeStart()) return;
-            playTransitionSound();
-            const startScreen = document.getElementById('start-screen');
-            const flashcardEl = document.getElementById('flashcard');
-            
-            // Prepare screens for horizontal flip
-            flashcardEl.classList.remove('hidden', 'screen-hidden', 'screen-active');
-            flashcardEl.classList.add('flip-prep');
-            void flashcardEl.offsetWidth; // Reflow
-
-            // Trigger animations
-            startScreen.classList.add('flip-out');
-            startScreen.classList.remove('screen-active');
-
-            flashcardEl.classList.remove('flip-prep');
-            flashcardEl.classList.add('flip-in');
-            updateHeaderState('flashcard');
-
-            renderCard();
-            startTimer();
-            const firstEditableInput = document.querySelector('.editable-input');
-            if (firstEditableInput) firstEditableInput.focus();
+            performFlipTransition('start-screen', 'flashcard');
 
             setTimeout(() => {
-                startScreen.classList.add('hidden');
-                startScreen.classList.remove('flip-out');
-                flashcardEl.classList.remove('flip-in');
-                flashcardEl.classList.add('screen-active');
-            }, 800);
+                renderCard();
+                startTimer();
+                const firstEditableInput = document.querySelector('.editable-input');
+                if (firstEditableInput) firstEditableInput.focus();
+            }, 400);
         }
 
         function startTimer() {
@@ -3935,7 +3918,11 @@
             const baseCards = flashcards.slice(0, originalFlashcardsCount);
             const activeFires = [];
             const titleRect = titleObj.getBoundingClientRect();
+            const finalScreenRect = document.getElementById('final-screen').getBoundingClientRect();
             const alignY = titleRect.bottom + 12;
+            const availableWidth = finalScreenRect.width * 0.85; // Giữ trong phạm vi 85% chiều rộng flashcard
+            const spacing = Math.min(window.innerWidth < 640 ? 25 : 45, availableWidth / baseCards.length);
+            const centerX = finalScreenRect.left + (finalScreenRect.width / 2);
             const screenWidth = window.innerWidth;
 
             baseCards.forEach((card, index) => {
@@ -3962,7 +3949,7 @@
                 sourceFire.style.opacity = '0.1';
                 sourceFire.classList.remove('fire-burning');
 
-                const targetX = (screenWidth / 2) + (index - (baseCards.length - 1) / 2) * (screenWidth < 640 ? 30 : 50);
+                const targetX = centerX + (index - (baseCards.length - 1) / 2) * spacing;
                 const targetY = alignY;
 
                 activeFires.push({ el: flyingFire, tx: targetX, ty: targetY, index });
@@ -4450,9 +4437,9 @@
                 document.getElementById('main-topic-title').textContent = `BOOK 1`;
                 document.body.classList.remove('review-mode-active');
                 if (card.marked) {
-                    reviewBtn.className = "hidden text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-purple-500 text-white hover:bg-purple-600 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-300";
+                    reviewBtn.className = "hidden text-xs sm:text-sm lg:text-base px-3 sm:px-4 h-10 sm:h-11 lg:h-12 bg-purple-500 text-white hover:bg-purple-600 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-300 shrink-0";
                 } else {
-                    reviewBtn.className = "hidden text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-purple-900/50 text-purple-200 hover:bg-purple-800 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-500/30";
+                    reviewBtn.className = "hidden text-xs sm:text-sm lg:text-base px-3 sm:px-4 h-10 sm:h-11 lg:h-12 bg-purple-900/50 text-purple-200 hover:bg-purple-800 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-500/30 shrink-0";
                 }
             }
 
@@ -4786,7 +4773,7 @@
                 initFireProgress();
 
                 const reviewBtn = document.getElementById('review-btn');
-                reviewBtn.className = "flex text-xs sm:text-sm lg:text-base px-3 py-1.5 sm:px-4 sm:py-1.5 lg:py-2 h-8 sm:h-9 lg:h-11 bg-purple-500 text-white hover:bg-purple-600 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-300";
+                reviewBtn.className = "flex text-xs sm:text-sm lg:text-base px-3 sm:px-4 h-10 sm:h-11 lg:h-12 bg-purple-500 text-white hover:bg-purple-600 font-medium rounded-full transition-colors items-center gap-1 shadow-sm border border-purple-300 shrink-0";
 
                 const toast = document.getElementById('action-toast');
                 toast.classList.remove('translate-y-[-250%]', 'opacity-0');
@@ -5565,24 +5552,24 @@
                 { skill: 'Magnetic Magical Orb', icon: '🧲', desc: 'Từ trường cực đại — kiểm soát kim loại và lực hút.', orbLight: '#f1f5f9', orbMid: '#64748b', orbDark: '#334155', orbGlow: 'rgba(100,116,139,.9)', ringColor: 'rgba(148,163,184,.7)', ringColor2: 'rgba(203,213,225,.4)', pColor: '#cbd5e1', soundFreq: 180 },
                 { skill: 'Crystal Magical Orb', icon: '💎', desc: 'Tinh thể pha lê — sự hoàn mỹ và độ cứng tuyệt đối.', orbLight: '#f8fafc', orbMid: '#94a3b8', orbDark: '#1e293b', orbGlow: 'rgba(148,163,184,.9)', ringColor: 'rgba(203,213,225,.7)', ringColor2: 'rgba(241,245,249,.4)', pColor: '#cbd5e1', soundFreq: 220 }
             ],
-            '♒': [
-                { skill: 'Storm Call', icon: '⚡', desc: 'Gọi sấm sét từ thinh không — cơn bão chính là ý chí của bạn.', orbLight: '#e0f2fe', orbMid: '#0ea5e9', orbDark: '#082f49', orbGlow: 'rgba(14,165,233,.9)', ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#38bdf8', soundFreq: 277 },
-                { skill: 'Lightning Magical Orb', icon: '🌩️', desc: 'Tia sét rạch trời — quyền năng của lôi thần.', orbLight: '#fff9c4', orbMid: '#fbc02d', orbDark: '#f9a825', orbGlow: 'rgba(251,192,45,.9)', ringColor: 'rgba(255,235,59,.7)', ringColor2: 'rgba(255,245,157,.4)', pColor: '#fff176', soundFreq: 310 },
-                { skill: 'Black Hole Magical Orb', icon: '🌑', desc: 'Lỗ đen vũ trụ — sự kết thúc của mọi thực thể.', orbLight: '#ffffff', orbMid: '#171717', orbDark: '#000000', orbGlow: 'rgba(5,5,5,1)', ringColor: 'rgba(255,255,255,0.4)', ringColor2: 'rgba(100,100,100,0.2)', pColor: '#404040', soundFreq: 100 },
-                { skill: 'Space Magical Orb', icon: '🌌', desc: 'Thao túng không gian — bẻ cong các chiều kích thực tại.', orbLight: '#e0e7ff', orbMid: '#4f46e5', orbDark: '#312e81', orbGlow: 'rgba(79,70,229,.9)', ringColor: 'rgba(99,102,241,.7)', ringColor2: 'rgba(165,180,252,.4)', pColor: '#c7d2fe', soundFreq: 290 }
-            ],
-            ' Pisces ♓': [
-                { skill: 'Dream Walk', icon: '🌀', desc: 'Du hành trong giấc mơ — thực và ảo không còn ranh giới.', orbLight: '#fce7f3', orbMid: '#db2777', orbDark: '#500724', orbGlow: 'rgba(219,39,119,.9)', ringColor: 'rgba(249,168,212,.7)', ringColor2: 'rgba(251,207,232,.4)', pColor: '#f9a8d4', soundFreq: 207 },
-                { skill: 'Elemental Magical Orb', icon: '💠', desc: 'Hòa quyện nguyên tố — sức mạnh tổng hợp từ thiên nhiên.', orbLight: '#d1fae5', orbMid: '#10b981', orbDark: '#064e3b', orbGlow: 'rgba(16,185,129,.9)', ringColor: 'rgba(52,211,153,.7)', ringColor2: 'rgba(167,243,208,.4)', pColor: '#6ee7b7', soundFreq: 220 },
-                { skill: 'Illusory Sea Magical Orb', icon: '🏝️', desc: 'Biển ảo mộng — lạc vào mê cung của những làn sóng.', orbLight: '#bae6fd', orbMid: '#0369a1', orbDark: '#0c4a6e', orbGlow: 'rgba(3,105,161,.9)', ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#7dd3fc', soundFreq: 190 },
-                { skill: 'Ice Magical Orb', icon: '❄️', desc: 'Băng giá vĩnh cửu — đóng băng mọi sự chuyển động.', orbLight: '#f0f9ff', orbMid: '#0ea5e9', orbDark: '#082f49', orbGlow: 'rgba(14,165,233,.8)', ringColor: 'rgba(56,189,248,.6)', ringColor2: 'rgba(186,230,253,.3)', pColor: '#e0f2fe', soundFreq: 250 }
-            ],
-        };
-        let activeSessionOrb = null;
-        function getRandomOrb(emoji) {
-            const pool = Array.isArray(zodiacMagicMap[emoji]) ? zodiacMagicMap[emoji] : [zodiacMagicMap[emoji]];
-            return pool[Math.floor(Math.random() * pool.length)];
-        }
+                '♒': [
+                    { skill: 'Storm Call', icon: '⚡', desc: 'Gọi sấm sét từ thinh không — cơn bão chính là ý chí của bạn.', orbLight: '#e0f2fe', orbMid: '#0ea5e9', orbDark: '#082f49', orbGlow: 'rgba(14,165,233,.9)', ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#38bdf8', soundFreq: 277 },
+                    { skill: 'Lightning Magical Orb', icon: '🌩️', desc: 'Tia sét rạch trời — quyền năng của lôi thần.', orbLight: '#fff9c4', orbMid: '#fbc02d', orbDark: '#f9a825', orbGlow: 'rgba(251,192,45,.9)', ringColor: 'rgba(255,235,59,.7)', ringColor2: 'rgba(255,245,157,.4)', pColor: '#fff176', soundFreq: 310 },
+                    { skill: 'Black Hole Magical Orb', icon: '🌑', desc: 'Lỗ đen vũ trụ — sự kết thúc của mọi thực thể.', orbLight: '#ffffff', orbMid: '#171717', orbDark: '#000000', orbGlow: 'rgba(5,5,5,1)', ringColor: 'rgba(255,255,255,0.4)', ringColor2: 'rgba(100,100,100,0.2)', pColor: '#404040', soundFreq: 100 },
+                    { skill: 'Space Magical Orb', icon: '🌌', desc: 'Thao túng không gian — bẻ cong các chiều kích thực tại.', orbLight: '#e0e7ff', orbMid: '#4f46e5', orbDark: '#312e81', orbGlow: 'rgba(79,70,229,.9)', ringColor: 'rgba(99,102,241,.7)', ringColor2: 'rgba(165,180,252,.4)', pColor: '#c7d2fe', soundFreq: 290 }
+                ],
+                '♓': [
+                    { skill: 'Dream Walk', icon: '🌀', desc: 'Du hành trong giấc mơ — thực và ảo không còn ranh giới.', orbLight: '#fce7f3', orbMid: '#db2777', orbDark: '#500724', orbGlow: 'rgba(219,39,119,.9)', ringColor: 'rgba(249,168,212,.7)', ringColor2: 'rgba(251,207,232,.4)', pColor: '#f9a8d4', soundFreq: 207 },
+                    { skill: 'Elemental Magical Orb', icon: '💠', desc: 'Hòa quyện nguyên tố — sức mạnh tổng hợp từ thiên nhiên.', orbLight: '#d1fae5', orbMid: '#10b981', orbDark: '#064e3b', orbGlow: 'rgba(16,185,129,.9)', ringColor: 'rgba(52,211,153,.7)', ringColor2: 'rgba(167,243,208,.4)', pColor: '#6ee7b7', soundFreq: 220 },
+                    { skill: 'Illusory Sea Magical Orb', icon: '🏝️', desc: 'Biển ảo mộng — lạc vào mê cung của những làn sóng.', orbLight: '#bae6fd', orbMid: '#0369a1', orbDark: '#0c4a6e', orbGlow: 'rgba(3,105,161,.9)', ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#7dd3fc', soundFreq: 190 },
+                    { skill: 'Ice Magical Orb', icon: '❄️', desc: 'Băng giá vĩnh cửu — đóng băng mọi sự chuyển động.', orbLight: '#f0f9ff', orbMid: '#0ea5e9', orbDark: '#082f49', orbGlow: 'rgba(14,165,233,.8)', ringColor: 'rgba(56,189,248,.6)', ringColor2: 'rgba(186,230,253,.3)', pColor: '#e0f2fe', soundFreq: 250 }
+                ],
+            };
+            let activeSessionOrb = null;
+            function getRandomOrb(emoji) {
+                const pool = zodiacMagicMap[emoji] || zodiacMagicMap['♈'];
+                return pool[Math.floor(Math.random() * pool.length)];
+            }
 
 
         // 50 quotes - shuffle order tracked to avoid repeats
@@ -5756,7 +5743,7 @@
                     </div>
                     
                     <div style="display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;">
-                        <span style="font-size:.65rem;color:rgba(196,181,253,.4);text-transform:uppercase;letter-spacing:.3em;font-weight:700;">Access Entropy</span>
+                        <span style="font-size:.65rem;color:rgba(196,181,253,.4);text-transform:uppercase;letter-spacing:.3em;margin-right:-.3em;font-weight:700;text-align:center;">Access Entropy</span>
                         <div style="position:relative; display:flex; align-items:center; justify-content:center;">
                              <div style="position:absolute; inset:-20px; background:radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 70%); filter:blur(10px);"></div>
                              <p class="secret-code" style="font-family:'Space Mono', monospace; font-size:2.4rem;font-weight:900;color:#fff;margin:0;filter:drop-shadow(0 0 15px rgba(167,139,250,0.8));">#${mysteryCode}</p>
@@ -5770,8 +5757,8 @@
                 <div class="mystery-card-ordinal">1</div>
                 <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;z-index:10;">
                     <div style="font-size:2.8rem; filter:drop-shadow(0 0 20px rgba(74,222,128,0.3));">🔐</div>
-                    <div style="width:85%;display:flex;flex-direction:column;align-items:center; gap:8px;">
-                        <input type="text" id="code-name-input" class="mystical-input w-full px-5 py-3 rounded-2xl text-center font-bold outline-none text-white text-base" placeholder="IDENTITY" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkCodeUnlock(event); }" onclick="event.stopPropagation()">
+                    <div style="width:95%;display:flex;flex-direction:column;align-items:center; gap:8px;">
+                        <input type="text" id="code-name-input" class="mystical-input w-[95%] px-2 py-2 rounded-xl text-center font-bold outline-none text-white text-sm" placeholder="IDENTITY" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkCodeUnlock(event); }" onclick="event.stopPropagation()">
                         <p class="input-subnote" style="color:rgba(74,222,128,0.5)">Verify Identity to Decrypt</p>
                     </div>
                 </div>`;
@@ -5803,8 +5790,8 @@
                 <div class="mystery-card-ordinal">2</div>
                 <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;z-index:10;">
                     <div style="font-size:2.8rem;filter:drop-shadow(0 0 20px rgba(251,191,36,0.5))">👤</div>
-                    <div style="width:85%;display:flex;flex-direction:column;align-items:center; gap:8px;">
-                        <input type="number" id="quote-code-input" class="mystical-input no-spinners w-full px-5 py-3 rounded-2xl text-center font-bold outline-none text-white text-base" placeholder="RITUAL CODE" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkQuoteUnlock(event); }" onclick="event.stopPropagation()">
+                    <div style="width:95%;display:flex;flex-direction:column;align-items:center; gap:8px;">
+                        <input type="number" id="quote-code-input" class="mystical-input no-spinners w-[95%] px-2 py-2 rounded-xl text-center font-bold outline-none text-white text-sm" placeholder="RITUAL CODE" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkQuoteUnlock(event); }" onclick="event.stopPropagation()">
                         <p class="input-subnote" style="color:rgba(251,191,36,0.5)">Enter Ritual Code to Reveal</p>
                     </div>
                 </div>`;
@@ -5838,13 +5825,12 @@
                 <div class="mystery-card-ordinal">3</div>
                 <div style="display:flex;flex-direction:column;align-items:center;gap:15px;width:100%;z-index:10;">
                     <div style="font-size:2.8rem;filter:drop-shadow(0 0 20px rgba(167,139,250,0.5))">🔮</div>
-                    <div style="display:flex;flex-direction:column;gap:12px;width:85%;align-items:center;">
-                        <input type="number" id="orb-word-count-input" class="mystical-input no-spinners w-full px-5 py-3.5 rounded-2xl text-center font-bold outline-none text-white text-base" placeholder="LOGOS PASS" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkOrbUnlock(event); }" onclick="event.stopPropagation()">
+                    <div style="display:flex;flex-direction:column;gap:12px;width:95%;align-items:center;">
+                        <input type="number" id="orb-word-count-input" class="mystical-input no-spinners w-[95%] px-2 py-2 rounded-xl text-center font-bold outline-none text-white text-sm" placeholder="LOGOS PASS" autocomplete="off" onkeydown="if(event.key==='Enter' || event.keyCode===13) { event.preventDefault(); checkOrbUnlock(event); }" onclick="event.stopPropagation()">
                         <p class="input-subnote">Enter Logos Pass to Synchronize</p>
                     </div>
                 </div>`;
         }
-
 
         let mysteryBoxOpened_real = false;
         function openMysteryBox() {
@@ -5909,7 +5895,7 @@
                     <span style="font-size:0.75rem; font-weight:900; color:#fff; letter-spacing:0.1em; text-transform:uppercase;">1 Hint Added</span>
                 </div>
             `;
-            
+
             portal.classList.remove('opacity-0');
             portal.classList.add('opacity-100');
 
@@ -5923,23 +5909,24 @@
         let isCodeUnlocked = false;
         function checkCodeUnlock(event) {
             if (event) event.stopPropagation();
+            if (isCodeUnlocked) return;
             const inp = document.getElementById('code-name-input');
             if (!inp) return;
             const enteredName = inp.value.trim().toLowerCase();
-            
+
             const nameInput = document.getElementById('user-name-input');
             let actualName = nameInput ? nameInput.value.trim().toLowerCase() : "";
             if (actualName === "") actualName = "explorer";
 
             if (enteredName === actualName) {
                 isCodeUnlocked = true;
-                inp.style.borderColor = "#4ade80";
+                inp.classList.add('success-unlock');
                 setTimeout(() => revealCard(2, true), 400);
             } else {
-                inp.classList.add('animate-shake');
-                inp.style.borderColor = "#ef4444";
+                playErrorSound();
+                inp.classList.add('shake', 'input-error');
                 setTimeout(() => {
-                    inp.classList.remove('animate-shake');
+                    inp.classList.remove('shake', 'input-error');
                 }, 500);
             }
         }
@@ -5947,6 +5934,7 @@
         let isQuoteUnlocked = false;
         function checkQuoteUnlock(event) {
             if (event) event.stopPropagation();
+            if (isQuoteUnlocked) return;
             const inpCode = document.getElementById('quote-code-input');
             if (!inpCode) return;
 
@@ -5954,19 +5942,20 @@
 
             if (enteredCode === globalMysteryCode) {
                 isQuoteUnlocked = true;
-                inpCode.style.borderColor = "#4ade80";
+                inpCode.classList.add('success-unlock');
                 setTimeout(() => revealCard(1, true), 400);
             } else {
-                inpCode.classList.add('animate-shake');
-                inpCode.style.borderColor = "#ef4444";
+                playErrorSound();
+                inpCode.classList.add('shake', 'input-error');
                 setTimeout(() => {
-                    inpCode.classList.remove('animate-shake');
+                    inpCode.classList.remove('shake', 'input-error');
                 }, 500);
             }
         }
 
         function checkOrbUnlock(event) {
             if (event) event.stopPropagation();
+            if (isOrbUnlocked) return;
             const inpCount = document.getElementById('orb-word-count-input');
             if (!inpCount) return;
 
@@ -5974,13 +5963,13 @@
 
             if (enteredCount === globalQuoteWordCount) {
                 isOrbUnlocked = true;
-                inpCount.style.borderColor = "#4ade80";
+                inpCount.classList.add('success-unlock');
                 setTimeout(() => revealCard(0, true), 400);
             } else {
-                inpCount.classList.add('animate-shake');
-                inpCount.style.borderColor = "#ef4444";
+                playErrorSound();
+                inpCount.classList.add('shake', 'input-error');
                 setTimeout(() => {
-                    inpCount.classList.remove('animate-shake');
+                    inpCount.classList.remove('shake', 'input-error');
                 }, 500);
             }
         }
@@ -5990,21 +5979,57 @@
             const inner = document.getElementById(`card-inner-${idx}`);
             if (!inner) return;
 
+            // Ngăn chặn việc click nhiều lần tạo ra nhiều overlay zoom
+            if (inner.classList.contains('flipped') && inner.dataset.zooming === "true") return;
+
             // Step 1: Handle Initial Flip (Front to Back)
             if (!inner.classList.contains('flipped')) {
-                // Dependency Check: Can't flip Card 1 (Quote) until Card 2 (Code) is flipped
+                // Dependency Check
                 if (idx === 1 && !document.getElementById('card-inner-2').classList.contains('flipped')) {
                     const codeCard = document.getElementById('card-inner-2').closest('.mystery-card-wrapper');
-                    codeCard.classList.add('animate-shake');
-                    setTimeout(() => codeCard.classList.remove('animate-shake'), 500);
+                    codeCard.classList.add('shake');
+                    setTimeout(() => codeCard.classList.remove('shake'), 500);
                     return;
                 }
-                // Dependency Check: Can't flip Card 0 (Orb) until Card 1 (Quote) is flipped
                 if (idx === 0 && !document.getElementById('card-inner-1').classList.contains('flipped')) {
                     const quoteCard = document.getElementById('card-inner-1').closest('.mystery-card-wrapper');
-                    quoteCard.classList.add('animate-shake');
-                    setTimeout(() => quoteCard.classList.remove('animate-shake'), 500);
+                    quoteCard.classList.add('shake');
+                    setTimeout(() => quoteCard.classList.remove('shake'), 500);
                     return;
+                }
+
+                // Không cho lật thẻ nếu chưa giải mã (chỉ áp dụng khi click tay thủ công)
+                if (!forceReveal) {
+                    if (idx === 2 && !isCodeUnlocked) {
+                        const inp = document.getElementById('code-name-input');
+                        if (inp) {
+                            inp.focus();
+                            const wrapper = inner.closest('.mystery-card-wrapper');
+                            wrapper.classList.add('shake');
+                            setTimeout(() => wrapper.classList.remove('shake'), 500);
+                        }
+                        return;
+                    }
+                    if (idx === 1 && !isQuoteUnlocked) {
+                        const inp = document.getElementById('quote-code-input');
+                        if (inp) {
+                            inp.focus();
+                            const wrapper = inner.closest('.mystery-card-wrapper');
+                            wrapper.classList.add('shake');
+                            setTimeout(() => wrapper.classList.remove('shake'), 500);
+                        }
+                        return;
+                    }
+                    if (idx === 0 && !isOrbUnlocked) {
+                        const inp = document.getElementById('orb-word-count-input');
+                        if (inp) {
+                            inp.focus();
+                            const wrapper = inner.closest('.mystery-card-wrapper');
+                            wrapper.classList.add('shake');
+                            setTimeout(() => wrapper.classList.remove('shake'), 500);
+                        }
+                        return;
+                    }
                 }
 
                 inner.classList.add('flipped');
@@ -6012,45 +6037,15 @@
                 if (idx === 0) playMagicSound('orb');
                 else if (idx === 1) playMagicSound('quote');
                 else playMagicSound('code');
-                
-                // If auto-reveal is triggered via Enter/Correct input, proceed to overlay after flip
+
                 if (forceReveal) {
                     setTimeout(() => revealCard(idx), 600);
                 }
                 return;
             }
 
-            // Step 2: Handle Reveal (Zoom overlay if already flipped and unlocked)
-            if (idx === 2 && !isCodeUnlocked) {
-                const inp = document.getElementById('code-name-input');
-                if (inp) {
-                    inp.focus();
-                    const wrapper = inner.closest('.mystery-card-wrapper');
-                    wrapper.classList.add('animate-shake');
-                    setTimeout(() => wrapper.classList.remove('animate-shake'), 500);
-                }
-                return;
-            }
-            if (idx === 1 && !isQuoteUnlocked) {
-                const inp = document.getElementById('quote-code-input');
-                if (inp) {
-                    inp.focus();
-                    const wrapper = inner.closest('.mystery-card-wrapper');
-                    wrapper.classList.add('animate-shake');
-                    setTimeout(() => wrapper.classList.remove('animate-shake'), 500);
-                }
-                return;
-            }
-            if (idx === 0 && !isOrbUnlocked) {
-                const inp = document.getElementById('orb-word-count-input');
-                if (inp) {
-                    inp.focus();
-                    const wrapper = inner.closest('.mystery-card-wrapper');
-                    wrapper.classList.add('animate-shake');
-                    setTimeout(() => wrapper.classList.remove('animate-shake'), 500);
-                }
-                return;
-            }
+            // Đánh dấu thẻ này đang thực hiện zoom để tránh bấm nhiều lần
+            inner.dataset.zooming = "true";
 
             // Burst particles at card position
             const magic = activeSessionOrb;
@@ -6063,7 +6058,7 @@
                 const cy = rect.top - sr.top + rect.height / 2;
                 const colors = idx === 0 ? [magic.pColor, magic.ringColor, magic.orbLight]
                     : idx === 1 ? ['#fde047', '#fbbf24', '#fef3c7']
-                    : ['#4ade80', '#22d3ee', '#a3e635'];
+                        : ['#4ade80', '#22d3ee', '#a3e635'];
                 for (let i = 0; i < 12; i++) {
                     const p = document.createElement('div');
                     const angle = (i / 12) * Math.PI * 2;
@@ -6082,48 +6077,63 @@
                     setTimeout(() => p.remove(), 900);
                 }
 
-                // Show Zoom Overlay
+                // Show Zoom Overlay (Auto responsive scaling via CQI)
                 if (idx === 1 || idx === 2) {
                     setTimeout(() => {
                         const cardFront = document.getElementById(`card-front-${idx}`);
                         const overlay = document.createElement('div');
                         overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(5,2,20,0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:background .6s ease;pointer-events:auto;overflow:hidden;cursor:pointer;`;
                         document.body.appendChild(overlay);
-                        // Stars bg
+                        
                         for (let s = 0; s < 30; s++) {
                             const star = document.createElement('div');
                             const sz = 1 + Math.random() * 2.5;
                             star.style.cssText = `position:absolute;width:${sz}px;height:${sz}px;border-radius:50%;background:#fff;left:${Math.random() * 100}%;top:${Math.random() * 100}%;opacity:${.2 + Math.random() * .6};animation:star-twinkle ${1.5 + Math.random() * 2}s ease-in-out infinite ${Math.random()}s;`;
                             overlay.appendChild(star);
                         }
-                        // Big card clone (80% Height Constraint)
+                        
+                        // Scale big card using the precise aspect ratio of the original tray card (140x290)
                         const bigCard = document.createElement('div');
-                        bigCard.style.cssText = `height:80vh; width:52vh; border-radius:3rem; overflow:hidden; transform:scale(0); transition:transform .8s cubic-bezier(.34,1.56,.64,1) .2s; flex-shrink:0; box-shadow:0 0 150px ${idx === 1 ? 'rgba(251,191,36,.7)' : 'rgba(74,222,128,.7)'}, 0 60px 120px rgba(0,0,0,0.9); border:5px solid ${idx === 1 ? 'rgba(251,191,36,.6)' : 'rgba(74,222,128,.5)'};`;
+                        bigCard.style.cssText = `height:85vh; max-width:90vw; aspect-ratio:140/290; border-radius:3rem; overflow:hidden; transform:scale(0); transition:transform .8s cubic-bezier(.34,1.56,.64,1) .2s; flex-shrink:0; box-shadow:0 0 150px ${idx === 1 ? 'rgba(251,191,36,.7)' : 'rgba(74,222,128,.7)'}, 0 60px 120px rgba(0,0,0,0.9); border:5px solid ${idx === 1 ? 'rgba(251,191,36,.6)' : 'rgba(74,222,128,.5)'}; display:flex; flex-direction:column;`;
+                        
                         if (cardFront) {
-                            let content = cardFront.innerHTML;
-                            // Scale up internal font sizes (Optimized for 80vh)
-                            const scaleMultiplier = (idx === 1) ? 3.6 : 2.8;
-                            content = content.replace(/font-size:\.?[0-9]*rem/g, (m) => {
-                                const val = parseFloat(m.match(/[0-9.]+/)[0]);
-                                return `font-size:${val * scaleMultiplier}rem`;
-                            });
-                            // Scale up specific paddings/gaps
-                            content = content.replace(/gap:\.?[0-9]*px/g, (m) => {
-                                const val = parseFloat(m.match(/[0-9.]+/)[0]);
-                                return `gap:${val * 3.0}px`;
-                            });
-                            bigCard.innerHTML = content;
+                            let overlayHtml = cardFront.innerHTML;
+                            
+                            // Phóng to cỡ chữ và khoảng cách khi zoom lên theo yêu cầu
+                            if (idx === 1) {
+                                overlayHtml = overlayHtml.replace(/font-size:0\.75rem/g, 'font-size: 28px; line-height: 1.4');
+                                overlayHtml = overlayHtml.replace(/font-size:0\.6rem/g, 'font-size: 24px; line-height: 1.4');
+                                overlayHtml = overlayHtml.replace(/font-size:0\.55rem/g, 'font-size: 22px');
+                                overlayHtml = overlayHtml.replace(/font-size:0\.5rem/g, 'font-size: 20px');
+                                overlayHtml = overlayHtml.replace(/font-size:1\.6rem/g, 'font-size: 64px');
+                                overlayHtml = overlayHtml.replace(/gap:5px/g, 'gap: 24px');
+                                overlayHtml = overlayHtml.replace(/padding:12px/g, 'padding: 32px');
+                            } else if (idx === 2) {
+                                overlayHtml = overlayHtml.replace(/font-size:\.6rem/g, 'font-size: 28px');
+                                overlayHtml = overlayHtml.replace(/font-size:\.65rem/g, 'font-size: 24px');
+                                overlayHtml = overlayHtml.replace(/font-size:2\.4rem/g, 'font-size: 64px');
+                                overlayHtml = overlayHtml.replace(/gap:20px/g, 'gap: 40px');
+                                overlayHtml = overlayHtml.replace(/padding:20px/g, 'padding: 40px');
+                            }
+                            
+                            // Bỏ giới hạn số dòng để hiển thị trọn vẹn văn bản khi phóng to
+                            overlayHtml = overlayHtml.replace(/-webkit-line-clamp:3/g, '-webkit-line-clamp: 10');
+                            
+                            bigCard.innerHTML = overlayHtml;
                         }
                         overlay.appendChild(bigCard);
-                        // Fade in overlay
+                        
                         requestAnimationFrame(() => {
                             requestAnimationFrame(() => {
                                 overlay.style.background = 'rgba(5,2,20,0.92)';
                                 bigCard.style.transform = 'scale(1)';
                             });
                         });
-                        // Dismiss
+                        
                         const dismiss = () => {
+                            if (overlay.dataset.dismissing) return;
+                            overlay.dataset.dismissing = "true";
+                            inner.dataset.zooming = "false";
                             overlay.style.transition = 'opacity .5s ease';
                             overlay.style.opacity = '0';
                             setTimeout(() => overlay.remove(), 600);
@@ -6131,10 +6141,12 @@
                         overlay.addEventListener('click', dismiss);
                         setTimeout(dismiss, 7000);
                     }, 500);
+                } else {
+                    // Reset trạng thái zooming cho lá bài không có overlay (Lá 0)
+                    setTimeout(() => { inner.dataset.zooming = "false"; }, 1500);
                 }
             }
 
-            // After all 3 flipped, show summary trigger and optional orb showcase
             if (cardsFlippedCount >= 3) {
                 const rBtn = document.getElementById('restart-btn');
                 if (rBtn) {
@@ -6157,23 +6169,19 @@
             const totalMin = totalMs / 60000;
             const formattedTime = totalMin.toFixed(2).replace('.', ':') + ' mins';
 
-            // Date & Time: Ngày 17/04/2026 | 04:21:45
             const now = new Date();
             const dStr = `Ngày ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
             const tStr = now.toLocaleTimeString('vi-VN', { hour12: false });
             document.getElementById('summary-date').textContent = `${dStr} | ${tStr}`;
 
-            // User Name
             const nameInput = document.getElementById('user-name-input');
             const userName = nameInput ? nameInput.value.trim().toUpperCase() : "EXPLORER";
             document.getElementById('summary-user').textContent = userName;
 
-            // Stats
             document.getElementById('stat-correct').textContent = solvedFirstTryCount;
             document.getElementById('stat-time').textContent = formattedTime;
             document.getElementById('stat-score').textContent = totalScore;
 
-            // Review List
             const reviewListEl = document.getElementById('summary-review-list');
             reviewListEl.innerHTML = '';
             if (reviewWordsList.length === 0) {
@@ -6187,33 +6195,31 @@
                 });
             }
 
-            // Classification
+            // Cosmic Orange Classification
             const badge = document.getElementById('summary-classification');
             let label = "";
             let colors = "";
-            if (totalScore >= 100) { label = "Xuất sắc"; colors = "background: linear-gradient(135deg, #fef3c7, #f59e0b); color: #78350f; box-shadow: 0 0 40px rgba(251,191,36,0.6);"; }
-            else if (totalScore >= 91) { label = "Ưu tú"; colors = "background: linear-gradient(135deg, #ddd6fe, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(139,92,246,0.6);"; }
-            else if (totalScore >= 80) { label = "Giỏi"; colors = "background: linear-gradient(135deg, #fde047, #eab308); color: #713f12; box-shadow: 0 0 25px rgba(234,179,8,0.5);"; }
-            else if (totalScore >= 70) { label = "Tốt"; colors = "background: linear-gradient(135deg, #def7ec, #0694a2); color: #fff; box-shadow: 0 0 20px rgba(6,148,162,0.4);"; }
-            else if (totalScore >= 60) { label = "Khá"; colors = "background: linear-gradient(135deg, #e1effe, #1c64f2); color: #fff; box-shadow: 0 0 15px rgba(28,100,242,0.3);"; }
-            else { label = "Học lại"; colors = "background: linear-gradient(135deg, #fde8e8, #e02424); color: #fff; box-shadow: 0 0 15px rgba(224,36,36,0.3);"; }
-            
+            if (totalScore >= 100) { label = "Xuất sắc"; colors = "background: linear-gradient(135deg, #fffbeb 0%, #f97316 40%, #ea580c 100%); color: #fff; box-shadow: 0 10px 25px -5px rgba(234,88,12,0.8), inset 0 2px 4px rgba(255,255,255,0.6); border: 1px solid rgba(251,146,60,0.8); text-shadow: 0 2px 4px rgba(0,0,0,0.4);"; }
+            else if (totalScore >= 91) { label = "Ưu tú"; colors = "background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 50%, #d97706 100%); color: #fff; box-shadow: 0 8px 20px -5px rgba(217,119,6,0.7), inset 0 2px 4px rgba(255,255,255,0.5); border: 1px solid rgba(252,211,77,0.7); text-shadow: 0 2px 4px rgba(0,0,0,0.3);"; }
+            else if (totalScore >= 80) { label = "Giỏi"; colors = "background: linear-gradient(135deg, #ffedd5 0%, #fb923c 50%, #c2410c 100%); color: #fff; box-shadow: 0 8px 15px -4px rgba(194,65,12,0.6), inset 0 2px 4px rgba(255,255,255,0.4); border: 1px solid rgba(253,186,116,0.6); text-shadow: 0 1px 3px rgba(0,0,0,0.3);"; }
+            else if (totalScore >= 70) { label = "Tốt"; colors = "background: linear-gradient(135deg, #fed7aa 0%, #f97316 50%, #9a3412 100%); color: #fff; box-shadow: 0 6px 12px -3px rgba(154,52,18,0.5), inset 0 1px 3px rgba(255,255,255,0.3); border: 1px solid rgba(251,146,60,0.5); text-shadow: 0 1px 2px rgba(0,0,0,0.3);"; }
+            else if (totalScore >= 60) { label = "Khá"; colors = "background: linear-gradient(135deg, #ffedd5 0%, #ea580c 50%, #7c2d12 100%); color: #ffedd5; box-shadow: 0 4px 10px -2px rgba(124,45,18,0.4), inset 0 1px 2px rgba(255,255,255,0.2); border: 1px solid rgba(234,88,12,0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.4);"; }
+            else { label = "Học lại"; colors = "background: linear-gradient(135deg, #431407 0%, #7c2d12 50%, #9a3412 100%); color: #fdba74; box-shadow: 0 4px 10px -2px rgba(67,20,7,0.6), inset 0 1px 2px rgba(255,255,255,0.1); border: 1px solid rgba(124,45,18,0.5); text-shadow: 0 1px 2px rgba(0,0,0,0.6);"; }
+
             badge.textContent = label;
             badge.style.cssText = colors;
 
-            // Orb Display (Using Animated Magical Orb)
+            // Orb Display
             const magic = activeSessionOrb;
-            const orbSize = 100;
             document.getElementById('summary-orb-container').innerHTML = `
                 <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
-                    <div style="position:relative; width:${orbSize}px; height:${orbSize}px; margin-bottom:0;">
-                        ${buildOrbHTML(magic, orbSize)}
+                    <div style="position:relative; width:100px; height:100px; margin-bottom:0;">
+                        ${buildOrbHTML(magic, '100%')}
                     </div>
                     <p style="font-size:0.9rem; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:0.1em; margin:0; filter:drop-shadow(0 0 8px ${magic.orbGlow});">${magic.skill}</p>
                 </div>
             `;
 
-            // Final Reveal
             const overlay = document.getElementById('summary-overlay');
             overlay.style.display = 'flex';
             overlay.style.opacity = '0';
@@ -6229,7 +6235,6 @@
                 const master = ctx.createGain();
                 master.gain.value = 0.35;
                 master.connect(ctx.destination);
-                // Dramatic alert: rising major chord + tremolo
                 const notes = [130.8, 164.8, 196, 261.6, 329.6];
                 notes.forEach((freq, i) => {
                     const o = ctx.createOscillator();
@@ -6244,7 +6249,6 @@
                     o.connect(g); g.connect(master);
                     o.start(t); o.stop(t + 1.0);
                 });
-                // Add a gong-like low thud
                 const og = ctx.createOscillator();
                 const gg = ctx.createGain();
                 og.type = 'sine'; og.frequency.value = 60;
@@ -6258,13 +6262,11 @@
             const magic = activeSessionOrb;
             playAlertSound();
 
-            // Build fullscreen overlay
             const overlay = document.createElement('div');
             overlay.id = 'orb-showcase-overlay';
             overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(5,2,20,0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:background .8s ease;pointer-events:auto;overflow:hidden;`;
             document.body.appendChild(overlay);
 
-            // Stars bg
             for (let i = 0; i < 40; i++) {
                 const s = document.createElement('div');
                 const sz = 1 + Math.random() * 2.5;
@@ -6272,20 +6274,17 @@
                 overlay.appendChild(s);
             }
 
-            // Fade in overlay
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     overlay.style.background = `rgba(5,2,20,0.95)`;
                 });
             });
 
-            // Build big orb
             const orbWrap = document.createElement('div');
-            orbWrap.style.cssText = `position:relative;width:600px;height:600px;transform:scale(0);transition:transform .8s cubic-bezier(.34,1.56,.64,1) .3s;flex-shrink:0;`;
-            orbWrap.innerHTML = buildOrbHTML(magic, 600);
+            orbWrap.style.cssText = `position:relative;width:600px;height:600px;max-width:85vw;max-height:85vw;transform:scale(0);transition:transform .8s cubic-bezier(.34,1.56,.64,1) .3s;flex-shrink:0;`;
+            orbWrap.innerHTML = buildOrbHTML(magic, '100%');
             overlay.appendChild(orbWrap);
 
-            // Zodiac + skill label
             const label = document.createElement('div');
             label.style.cssText = `text-align:center;transform:translateY(30px);opacity:0;transition:all .8s ease .6s;`;
             label.innerHTML = `
@@ -6295,7 +6294,6 @@
             `;
             overlay.appendChild(label);
 
-            // Flying particles around orb
             for (let i = 0; i < 20; i++) {
                 const p = document.createElement('div');
                 const ang = (i / 20) * Math.PI * 2;
@@ -6306,25 +6304,21 @@
                 orbWrap.appendChild(p);
             }
 
-            // Animate in
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     orbWrap.style.transform = 'scale(1)';
                     label.style.transform = 'translateY(0)';
                     label.style.opacity = '1';
-                    // Show particles
                     orbWrap.querySelectorAll('div[style*="orbit-particle"]').forEach(p => p.style.opacity = '1');
                 });
             });
 
-            // Auto-dismiss after 7 seconds
             setTimeout(() => {
                 overlay.style.transition = 'opacity .8s ease';
                 overlay.style.opacity = '0';
                 setTimeout(() => overlay.remove(), 900);
             }, 7000);
 
-            // Click to dismiss early
             overlay.addEventListener('click', () => {
                 overlay.style.transition = 'opacity .6s ease';
                 overlay.style.opacity = '0';
@@ -6332,50 +6326,46 @@
             });
         }
 
-        function buildOrbHTML(magic, size) {
-            const s = size;
-            const inner = Math.round(s * 0.7);
-            const ringInset = Math.round(s * 0.02);
-            // Each zodiac gets a unique layered orb with distinct elements
+        function buildOrbHTML(magic, cssSize) {
+            const ringInset = 2; // 2% 
             const orbList = Object.values(zodiacMagicMap).flat();
             const sign = orbList.find(o => o.skill === magic.skill) || magic;
             const signKey = sign.skill || '';
-            // Unique shape overlays per element group
             const extras = {
-                '♈': ` <div style="position:absolute;inset:${ringInset * 3}px;border-radius:50%;border:3px solid ${magic.pColor};opacity:.4;animation:orb-ring-spin 2s linear infinite;"></div>
+                '♈': ` <div style="position:absolute;inset:${ringInset * 3}%;border-radius:50%;border:3px solid ${magic.pColor};opacity:.4;animation:orb-ring-spin 2s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 20%, rgba(255,200,100,.3) 0%, transparent 50%);"></div>`,
-                '♉': ` <div style="position:absolute;inset:${ringInset * 5}px;border-radius:50%;border:2px dashed ${magic.pColor};opacity:.5;animation:orb-ring-spin2 6s linear infinite;"></div>
+                '♉': ` <div style="position:absolute;inset:${ringInset * 5}%;border-radius:50%;border:2px dashed ${magic.pColor};opacity:.5;animation:orb-ring-spin2 6s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 65% 25%, rgba(170,255,170,.25) 0%, transparent 45%);"></div>`,
                 '♊': ` <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(45deg,transparent 40%,rgba(180,220,255,.2) 50%,transparent 60%);animation:shimmer-scan 2s linear infinite;"></div>
-                         <div style="position:absolute;inset:${ringInset * 4}px;border-radius:50%;border:1px solid ${magic.pColor};opacity:.3;animation:orb-ring-spin 3s linear infinite;"></div>`,
-                '♋': ` <div style="position:absolute;inset:${ringInset * 2}px;border-radius:50%;border:3px solid rgba(56,189,248,.5);opacity:.6;animation:orb-ring-spin 5s linear infinite;"></div>
+                         <div style="position:absolute;inset:${ringInset * 4}%;border-radius:50%;border:1px solid ${magic.pColor};opacity:.3;animation:orb-ring-spin 3s linear infinite;"></div>`,
+                '♋': ` <div style="position:absolute;inset:${ringInset * 2}%;border-radius:50%;border:3px solid rgba(56,189,248,.5);opacity:.6;animation:orb-ring-spin 5s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 50% 80%, rgba(56,189,248,.3) 0%, transparent 55%);"></div>`,
-                '♌': ` <div style="position:absolute;inset:${ringInset}px;border-radius:50%;border:4px solid rgba(253,224,71,.6);opacity:.7;animation:orb-ring-spin 1.5s linear infinite;"></div>
+                '♌': ` <div style="position:absolute;inset:${ringInset}%;border-radius:50%;border:4px solid rgba(253,224,71,.6);opacity:.7;animation:orb-ring-spin 1.5s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 30%, rgba(255,240,100,.4) 0%, transparent 50%);"></div>`,
-                '♍': ` <div style="position:absolute;inset:${ringInset * 4}px;border-radius:50%;border:2px dotted ${magic.pColor};opacity:.5;animation:orb-ring-spin2 8s linear infinite;"></div>
+                '♍': ` <div style="position:absolute;inset:${ringInset * 4}%;border-radius:50%;border:2px dotted ${magic.pColor};opacity:.5;animation:orb-ring-spin2 8s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 60% 70%, rgba(110,231,183,.2) 0%, transparent 50%);"></div>`,
-                '♎': ` <div style="position:absolute;inset:${ringInset * 2}px;border-radius:50%;border:3px solid rgba(216,180,254,.5);opacity:.5;animation:orb-ring-spin 4s linear infinite;"></div>
+                '♎': ` <div style="position:absolute;inset:${ringInset * 2}%;border-radius:50%;border:3px solid rgba(216,180,254,.5);opacity:.5;animation:orb-ring-spin 4s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,rgba(216,180,254,.1) 0%,rgba(99,102,241,.15) 100%);"></div>`,
-                '♏': ` <div style="position:absolute;inset:${ringInset}px;border-radius:50%;background:radial-gradient(circle at 50% 50%, rgba(124,58,237,.5) 0%, transparent 70%);animation:box-glow-pulse 2s infinite;"></div>
-                         <div style="position:absolute;inset:${ringInset * 3}px;border-radius:50%;border:2px solid rgba(167,139,250,.7);opacity:.6;animation:orb-ring-spin 2.5s linear infinite;"></div>`,
-                '♐': ` <div style="position:absolute;inset:${ringInset * 2}px;border-radius:50%;border:3px dashed rgba(252,211,77,.6);opacity:.6;animation:orb-ring-spin 3.5s linear infinite;"></div>
+                '♏': ` <div style="position:absolute;inset:${ringInset}%;border-radius:50%;background:radial-gradient(circle at 50% 50%, rgba(124,58,237,.5) 0%, transparent 70%);animation:box-glow-pulse 2s infinite;"></div>
+                         <div style="position:absolute;inset:${ringInset * 3}%;border-radius:50%;border:2px solid rgba(167,139,250,.7);opacity:.6;animation:orb-ring-spin 2.5s linear infinite;"></div>`,
+                '♐': ` <div style="position:absolute;inset:${ringInset * 2}%;border-radius:50%;border:3px dashed rgba(252,211,77,.6);opacity:.6;animation:orb-ring-spin 3.5s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 70% 20%, rgba(255,200,50,.3) 0%, transparent 50%);"></div>`,
-                '♑': ` <div style="position:absolute;inset:${ringInset * 3}px;border-radius:50%;border:2px solid rgba(168,162,158,.4);opacity:.5;animation:orb-ring-spin2 7s linear infinite;"></div>
+                '♑': ` <div style="position:absolute;inset:${ringInset * 3}%;border-radius:50%;border:2px solid rgba(168,162,158,.4);opacity:.5;animation:orb-ring-spin2 7s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 60%, rgba(214,211,209,.15) 0%, transparent 55%);"></div>`,
-                '♒': ` <div style="position:absolute;inset:${ringInset}px;border-radius:50%;border:4px solid rgba(56,189,248,.7);opacity:.6;animation:orb-ring-spin 1.2s linear infinite;"></div>
-                         <div style="position:absolute;inset:${ringInset * 4}px;border-radius:50%;border:2px dashed rgba(186,230,253,.5);animation:orb-ring-spin2 3s linear infinite;"></div>`,
-                '♓': ` <div style="position:absolute;inset:${ringInset * 2}px;border-radius:50%;border:3px solid rgba(249,168,212,.6);opacity:.6;animation:orb-ring-spin 5s linear infinite;"></div>
+                '♒': ` <div style="position:absolute;inset:${ringInset}%;border-radius:50%;border:4px solid rgba(56,189,248,.7);opacity:.6;animation:orb-ring-spin 1.2s linear infinite;"></div>
+                         <div style="position:absolute;inset:${ringInset * 4}%;border-radius:50%;border:2px dashed rgba(186,230,253,.5);animation:orb-ring-spin2 3s linear infinite;"></div>`,
+                '♓': ` <div style="position:absolute;inset:${ringInset * 2}%;border-radius:50%;border:3px solid rgba(249,168,212,.6);opacity:.6;animation:orb-ring-spin 5s linear infinite;"></div>
                          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 30% 70%, rgba(249,168,212,.3) 0%, transparent 55%);"></div>`,
             };
             const extraHTML = extras[signKey] || '';
             return `
-                <div style="width:${s}px;height:${s}px;transform-style:preserve-3d;animation:orb-spin 5s linear infinite;position:relative;">
-                    <div style="position:absolute;inset:${ringInset * 3}px;border-radius:50%;
+                <div style="width:${cssSize};aspect-ratio:1/1;transform-style:preserve-3d;animation:orb-spin 5s linear infinite;position:relative;margin:0 auto;">
+                    <div style="position:absolute;inset:${ringInset * 3}%;border-radius:50%;
                         background:radial-gradient(circle at 35% 30%, ${magic.orbLight} 0%, ${magic.orbMid} 45%, ${magic.orbDark} 100%);
-                        box-shadow:0 0 60px ${magic.orbGlow},0 0 120px ${magic.orbGlow},inset -15px -15px 40px rgba(0,0,0,.5),inset 12px 12px 30px rgba(255,255,255,.12);">
+                        box-shadow:0 0 60px ${magic.orbGlow},0 0 120px ${magic.orbGlow},inset -10% -10% 40px rgba(0,0,0,.5),inset 10% 10% 30px rgba(255,255,255,.12);">
                     </div>
                     <div style="position:absolute;inset:0;border-radius:50%;border:3px solid ${magic.ringColor};animation:orb-ring-spin 4s linear infinite;"></div>
-                    <div style="position:absolute;inset:-12px;border-radius:50%;border:2px solid ${magic.ringColor2};animation:orb-ring-spin2 3s linear infinite;"></div>
+                    <div style="position:absolute;inset:-4%;border-radius:50%;border:2px solid ${magic.ringColor2};animation:orb-ring-spin2 3s linear infinite;"></div>
                     ${extraHTML}
                 </div>`;
         }
