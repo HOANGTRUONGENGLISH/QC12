@@ -678,14 +678,15 @@
         }
 
         .ripple-wipe {
-            mask-image: radial-gradient(circle at center, black var(--ripple-percent), transparent 0%);
-            -webkit-mask-image: radial-gradient(circle at center, black var(--ripple-percent), transparent 0%);
-            animation: ripple-wipe-anim 1s ease-in-out forwards;
+            clip-path: circle(var(--ripple-percent) at center);
+            -webkit-clip-path: circle(var(--ripple-percent) at center);
+            animation: ripple-wipe-anim 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             pointer-events: auto !important;
             opacity: 1 !important;
             transform: scale(1) !important;
             filter: blur(0px) !important;
             z-index: 50 !important;
+            visibility: visible !important;
         }
 
         @keyframes ripple-wipe-anim {
@@ -3224,15 +3225,16 @@
             const startScreen = document.getElementById('start-screen');
             const zodiacScreen = document.getElementById('zodiac-screen');
             
-            // Apply ripple wipe to the NEW screen
-            zodiacScreen.classList.remove('hidden');
+            // Prepare the NEW screen
+            zodiacScreen.classList.remove('hidden', 'screen-hidden');
+            void zodiacScreen.offsetWidth; // Force Reflow
             zodiacScreen.classList.add('ripple-wipe');
             updateHeaderState('zodiac-screen');
 
             setTimeout(() => {
                 startScreen.classList.add('hidden', 'screen-hidden');
                 startScreen.classList.remove('screen-active');
-                zodiacScreen.classList.remove('ripple-wipe', 'screen-hidden');
+                zodiacScreen.classList.remove('ripple-wipe');
                 zodiacScreen.classList.add('screen-active');
             }, 1000);
         }
@@ -3245,8 +3247,9 @@
             const zodiacScreen = document.getElementById('zodiac-screen');
             const flashcardEl = document.getElementById('flashcard');
 
-            // Apply ripple wipe to the NEW screen
-            flashcardEl.classList.remove('hidden');
+            // Prepare the NEW screen
+            flashcardEl.classList.remove('hidden', 'screen-hidden');
+            void flashcardEl.offsetWidth; // Force Reflow
             flashcardEl.classList.add('ripple-wipe');
             updateHeaderState('flashcard');
 
@@ -3258,7 +3261,7 @@
             setTimeout(() => {
                 zodiacScreen.classList.add('hidden', 'screen-hidden');
                 zodiacScreen.classList.remove('screen-active');
-                flashcardEl.classList.remove('ripple-wipe', 'screen-hidden');
+                flashcardEl.classList.remove('ripple-wipe');
                 flashcardEl.classList.add('screen-active');
             }, 1000);
         }
@@ -3269,8 +3272,9 @@
             const startScreen = document.getElementById('start-screen');
             const flashcardEl = document.getElementById('flashcard');
             
-            // Apply ripple wipe to the NEW screen
-            flashcardEl.classList.remove('hidden');
+            // Prepare the NEW screen
+            flashcardEl.classList.remove('hidden', 'screen-hidden');
+            void flashcardEl.offsetWidth; // Force Reflow
             flashcardEl.classList.add('ripple-wipe');
             updateHeaderState('flashcard');
 
@@ -3282,7 +3286,7 @@
             setTimeout(() => {
                 startScreen.classList.add('hidden', 'screen-hidden');
                 startScreen.classList.remove('screen-active');
-                flashcardEl.classList.remove('ripple-wipe', 'screen-hidden');
+                flashcardEl.classList.remove('ripple-wipe');
                 flashcardEl.classList.add('screen-active');
             }, 1000);
         }
