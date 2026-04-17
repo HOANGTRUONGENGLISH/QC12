@@ -5428,66 +5428,78 @@
         // ═══════════════════════════════════════════
 
         const zodiacMagicMap = {
-            '♈': {
-                skill: 'Pyrokinesis', icon: '🔥', desc: 'Kiểm soát lửa thuần thục — ngọn lửa của bạn không thể tắt.',
-                orbLight: '#fde68a', orbMid: '#ef4444', orbDark: '#450a0a', orbGlow: 'rgba(239,68,68,.9)',
-                ringColor: 'rgba(252,165,165,.7)', ringColor2: 'rgba(254,202,202,.4)', pColor: '#fca5a5', soundFreq: 220
-            },
-            '♉': {
-                skill: 'Nature Harmony', icon: '🌿', desc: 'Gọi cây xanh sinh trưởng tức thì — đất dưới chân bạn nở hoa.',
-                orbLight: '#bbf7d0', orbMid: '#16a34a', orbDark: '#052e16', orbGlow: 'rgba(22,163,74,.9)',
-                ringColor: 'rgba(134,239,172,.7)', ringColor2: 'rgba(187,247,208,.4)', pColor: '#86efac', soundFreq: 196
-            },
-            '♊': {
-                skill: 'Mirror Split', icon: '🪞', desc: 'Tạo phân thân ảo — kẻ thù không biết đâu là thật.',
-                orbLight: '#e0f2fe', orbMid: '#0284c7', orbDark: '#0c4a6e', orbGlow: 'rgba(2,132,199,.9)',
-                ringColor: 'rgba(125,211,252,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#7dd3fc', soundFreq: 246
-            },
-            '♋': {
-                skill: 'Tide Mastery', icon: '🌊', desc: 'Điều khiển thủy triều — đại dương nghe lời bạn.',
-                orbLight: '#bae6fd', orbMid: '#0369a1', orbDark: '#0a192f', orbGlow: 'rgba(3,105,161,.9)',
-                ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#38bdf8', soundFreq: 185
-            },
-            '♌': {
-                skill: 'Solar Radiance', icon: '✨', desc: 'Tỏa hào quang mặt trời — bạn chói rạng như ngôi sao.',
-                orbLight: '#fef9c3', orbMid: '#ca8a04', orbDark: '#422006', orbGlow: 'rgba(234,179,8,.9)',
-                ringColor: 'rgba(253,224,71,.7)', ringColor2: 'rgba(254,240,138,.4)', pColor: '#fde047', soundFreq: 261
-            },
-            '♍': {
-                skill: 'Alchemy', icon: '📿', desc: 'Giả kim thuật — biến mọi thứ thành vàng ròng.',
-                orbLight: '#d1fae5', orbMid: '#059669', orbDark: '#022c22', orbGlow: 'rgba(5,150,105,.9)',
-                ringColor: 'rgba(110,231,183,.7)', ringColor2: 'rgba(167,243,208,.4)', pColor: '#6ee7b7', soundFreq: 174
-            },
-            '♎': {
-                skill: 'Fate Balance', icon: '⚖️', desc: 'Cân bằng vận mệnh — không ai thoát khỏi sự công bằng của bạn.',
-                orbLight: '#f3e8ff', orbMid: '#a855f7', orbDark: '#2e1065', orbGlow: 'rgba(168,85,247,.9)',
-                ringColor: 'rgba(216,180,254,.7)', ringColor2: 'rgba(233,213,255,.4)', pColor: '#d8b4fe', soundFreq: 233
-            },
-            '♏': {
-                skill: 'Dark Vision', icon: '🔮', desc: 'Nhìn xuyên màn đêm — bí mật nào cũng hiển hiện trước mắt bạn.',
-                orbLight: '#ede9fe', orbMid: '#7c3aed', orbDark: '#1e0a3c', orbGlow: 'rgba(124,58,237,.9)',
-                ringColor: 'rgba(167,139,250,.7)', ringColor2: 'rgba(196,181,253,.4)', pColor: '#a78bfa', soundFreq: 155
-            },
-            '♐': {
-                skill: 'Star Arrow', icon: '🏹', desc: 'Mũi tên xuyên không gian — không khoảng cách nào là trở ngại.',
-                orbLight: '#fef3c7', orbMid: '#d97706', orbDark: '#451a03', orbGlow: 'rgba(217,119,6,.9)',
-                ringColor: 'rgba(252,211,77,.7)', ringColor2: 'rgba(253,230,138,.4)', pColor: '#fcd34d', soundFreq: 196
-            },
-            '♑': {
-                skill: 'Earth Armor', icon: '🏔️', desc: 'Giáp thạch đất — không gì có thể xuyên qua lớp phòng thủ của bạn.',
-                orbLight: '#d6d3d1', orbMid: '#57534e', orbDark: '#1c1917', orbGlow: 'rgba(87,83,78,.9)',
-                ringColor: 'rgba(168,162,158,.7)', ringColor2: 'rgba(214,211,209,.4)', pColor: '#a8a29e', soundFreq: 165
-            },
-            '♒': {
-                skill: 'Storm Call', icon: '⚡', desc: 'Gọi sấm sét từ thinh không — cơn bão chính là ý chí của bạn.',
-                orbLight: '#e0f2fe', orbMid: '#0ea5e9', orbDark: '#082f49', orbGlow: 'rgba(14,165,233,.9)',
-                ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#38bdf8', soundFreq: 277
-            },
-            '♓': {
-                skill: 'Dream Walk', icon: '🌀', desc: 'Du hành trong giấc mơ — thực và ảo không còn ranh giới.',
-                orbLight: '#fce7f3', orbMid: '#db2777', orbDark: '#500724', orbGlow: 'rgba(219,39,119,.9)',
-                ringColor: 'rgba(249,168,212,.7)', ringColor2: 'rgba(251,207,232,.4)', pColor: '#f9a8d4', soundFreq: 207
-            },
+            '♈': [
+                { skill: 'Pyrokinesis', icon: '🔥', desc: 'Kiểm soát lửa thuần thục — ngọn lửa của bạn không thể tắt.', orbLight: '#fde68a', orbMid: '#ef4444', orbDark: '#450a0a', orbGlow: 'rgba(239,68,68,.9)', ringColor: 'rgba(252,165,165,.7)', ringColor2: 'rgba(254,202,202,.4)', pColor: '#fca5a5', soundFreq: 220 },
+                { skill: 'Bloodlust Magical Orb', icon: '🩸', desc: 'Sức mạnh từ cơn cuồng nộ — càng chiến đấu càng mạnh mẽ.', orbLight: '#fca5a5', orbMid: '#991b1b', orbDark: '#450a0a', orbGlow: 'rgba(153,27,27,.9)', ringColor: 'rgba(239,68,68,.7)', ringColor2: 'rgba(127,29,29,.4)', pColor: '#f87171', soundFreq: 180 },
+                { skill: 'Crimson Flame Magical Orb', icon: '🧧', desc: 'Ngọn lửa đỏ thẫm từ địa ngục — thiêu rụi mọi rào cản.', orbLight: '#fef3c7', orbMid: '#b91c1c', orbDark: '#7f1d1d', orbGlow: 'rgba(185,28,28,.9)', ringColor: 'rgba(248,113,113,.7)', ringColor2: 'rgba(153,27,27,.4)', pColor: '#fb7185', soundFreq: 210 },
+                { skill: 'Crimson Magical Orb', icon: '🏮', desc: 'Sắc đỏ của sự hủy diệt — tập trung quyền năng tối thượng.', orbLight: '#ffe4e6', orbMid: '#e11d48', orbDark: '#4c0519', orbGlow: 'rgba(225,29,72,.9)', ringColor: 'rgba(251,113,133,.7)', ringColor2: 'rgba(190,18,60,.4)', pColor: '#fda4af', soundFreq: 230 }
+            ],
+            '♉': [
+                { skill: 'Nature Harmony', icon: '🌿', desc: 'Gọi cây xanh sinh trưởng tức thì — đất dưới chân bạn nở hoa.', orbLight: '#bbf7d0', orbMid: '#16a34a', orbDark: '#052e16', orbGlow: 'rgba(22,163,74,.9)', ringColor: 'rgba(134,239,172,.7)', ringColor2: 'rgba(187,247,208,.4)', pColor: '#86efac', soundFreq: 196 },
+                { skill: 'Earth Magical Orb', icon: '⛰️', desc: 'Lực lượng của đại địa — kiên cố và không thể lay chuyển.', orbLight: '#fef3c7', orbMid: '#92400e', orbDark: '#451a03', orbGlow: 'rgba(146,64,14,.9)', ringColor: 'rgba(217,119,6,.7)', ringColor2: 'rgba(251,191,36,.4)', pColor: '#fbbf24', soundFreq: 170 },
+                { skill: 'Wood Magical Orb', icon: '🪵', desc: 'Sức sống bền bỉ — khả năng phục hồi thần tốc từ thiên nhiên.', orbLight: '#ecfdf5', orbMid: '#065f46', orbDark: '#064e3b', orbGlow: 'rgba(6,95,70,.8)', ringColor: 'rgba(16,185,129,.6)', ringColor2: 'rgba(5,150,105,.3)', pColor: '#34d399', soundFreq: 200 },
+                { skill: 'Metal Magical Orb', icon: '🛡️', desc: 'Tinh hoa thép lạnh — biến cơ thể thành pháo đài bất khả xâm phạm.', orbLight: '#f1f5f9', orbMid: '#475569', orbDark: '#1e293b', orbGlow: 'rgba(71,85,105,.9)', ringColor: 'rgba(148,163,184,.7)', ringColor2: 'rgba(203,213,225,.4)', pColor: '#94a3b8', soundFreq: 150 }
+            ],
+            '♊': [
+                { skill: 'Mirror Split', icon: '🪞', desc: 'Tạo phân thân ảo — kẻ thù không biết đâu là thật.', orbLight: '#e0f2fe', orbMid: '#0284c7', orbDark: '#0c4a6e', orbGlow: 'rgba(2,132,199,.9)', ringColor: 'rgba(125,211,252,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#7dd3fc', soundFreq: 246 },
+                { skill: 'Windrider Magical Orb', icon: '🦅', desc: 'Cưỡi lên những cơn gió — tốc độ vượt xa tầm mắt.', orbLight: '#f0fdfa', orbMid: '#0d9488', orbDark: '#134e4a', orbGlow: 'rgba(13,148,136,.9)', ringColor: 'rgba(45,212,191,.7)', ringColor2: 'rgba(20,184,166,.4)', pColor: '#5eead4', soundFreq: 280 },
+                { skill: 'Wind Magical Orb', icon: '🌬️', desc: 'Gió lốc cuồng phong — thổi bay mọi chướng ngại vật.', orbLight: '#ecfeff', orbMid: '#0891b2', orbDark: '#164e63', orbGlow: 'rgba(8,145,178,.9)', ringColor: 'rgba(34,211,238,.7)', ringColor2: 'rgba(6,182,212,.4)', pColor: '#67e8f9', soundFreq: 260 },
+                { skill: 'Smoke Magical Orb', icon: '🌫️', desc: 'Màn sương che mắt — tan biến vào hư không trong tích tắc.', orbLight: '#f8fafc', orbMid: '#64748b', orbDark: '#334155', orbGlow: 'rgba(100,116,139,.8)', ringColor: 'rgba(148,163,184,.6)', ringColor2: 'rgba(203,213,225,.3)', pColor: '#cbd5e1', soundFreq: 220 }
+            ],
+            '♋': [
+                { skill: 'Tide Mastery', icon: '🌊', desc: 'Điều khiển thủy triều — đại dương nghe lời bạn.', orbLight: '#bae6fd', orbMid: '#0369a1', orbDark: '#0a192f', orbGlow: 'rgba(3,105,161,.9)', ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#38bdf8', soundFreq: 185 },
+                { skill: 'Moonlight Magical Orb', icon: '🌙', desc: 'Ánh trăng huyền ảo — soi sáng những góc tối của tâm hồn.', orbLight: '#fefce8', orbMid: '#fde047', orbDark: '#422006', orbGlow: 'rgba(253,224,71,.8)', ringColor: 'rgba(254,240,138,.6)', ringColor2: 'rgba(253,224,71,.3)', pColor: '#fef08a', soundFreq: 210 },
+                { skill: 'Water Magical Orb', icon: '💧', desc: 'Dòng nước thanh tẩy — xoa dịu nỗi đau và phục hồi năng lượng.', orbLight: '#eff6ff', orbMid: '#2563eb', orbDark: '#1e3a8a', orbGlow: 'rgba(37,99,235,.9)', ringColor: 'rgba(96,165,250,.7)', ringColor2: 'rgba(191,219,254,.4)', pColor: '#93c5fd', soundFreq: 190 },
+                { skill: 'Tidal Magical Orb', icon: '🐚', desc: 'Sóng thần cuộn trào — sức mạnh hủy diệt từ biển sâu.', orbLight: '#dcfce7', orbMid: '#059669', orbDark: '#064e3b', orbGlow: 'rgba(5,150,105,.9)', ringColor: 'rgba(52,211,153,.7)', ringColor2: 'rgba(167,243,208,.4)', pColor: '#6ee7b7', soundFreq: 175 }
+            ],
+            '♌': [
+                { skill: 'Solar Radiance', icon: '✨', desc: 'Tỏa hào quang mặt trời — bạn chói rạng như ngôi sao.', orbLight: '#fef9c3', orbMid: '#ca8a04', orbDark: '#422006', orbGlow: 'rgba(234,179,8,.9)', ringColor: 'rgba(253,224,71,.7)', ringColor2: 'rgba(254,240,138,.4)', pColor: '#fde047', soundFreq: 261 },
+                { skill: 'Solar Flare Magical Orb', icon: '💥', desc: 'Bão mặt trời — thiêu cháy mọi thứ trong phạm vi ảnh hưởng.', orbLight: '#fff7ed', orbMid: '#ea580c', orbDark: '#7c2d12', orbGlow: 'rgba(234,88,12,.9)', ringColor: 'rgba(251,146,60,.7)', ringColor2: 'rgba(253,186,116,.4)', pColor: '#fdba74', soundFreq: 300 },
+                { skill: 'Fire Magical Orb', icon: '🔥', desc: 'Ngọn lửa vĩnh cửu — nguồn năng lượng không bao giờ cạn.', orbLight: '#fff1f2', orbMid: '#e11d48', orbDark: '#881337', orbGlow: 'rgba(225,29,72,.9)', ringColor: 'rgba(251,113,133,.7)', ringColor2: 'rgba(253,164,175,.4)', pColor: '#fda4af', soundFreq: 280 },
+                { skill: 'Strong Magical Orb', icon: '💪', desc: 'Sức mạnh cường hóa — phá vỡ mọi giới hạn vật lý.', orbLight: '#fdf4ff', orbMid: '#c026d3', orbDark: '#701a75', orbGlow: 'rgba(192,38,211,.9)', ringColor: 'rgba(232,121,249,.7)', ringColor2: 'rgba(245,208,254,.4)', pColor: '#f5d0fe', soundFreq: 250 }
+            ],
+            '♍': [
+                { skill: 'Alchemy', icon: '📿', desc: 'Giả kim thuật — biến mọi thứ thành vàng ròng.', orbLight: '#d1fae5', orbMid: '#059669', orbDark: '#022c22', orbGlow: 'rgba(5,150,105,.9)', ringColor: 'rgba(110,231,183,.7)', ringColor2: 'rgba(167,243,208,.4)', pColor: '#6ee7b7', soundFreq: 174 },
+                { skill: 'Blossom Magical Orb', icon: '🌸', desc: 'Hoa nở rực rỡ — mang lại vẻ đẹp và sự sống muôn nơi.', orbLight: '#fff1f2', orbMid: '#db2777', orbDark: '#831843', orbGlow: 'rgba(219,39,119,.8)', ringColor: 'rgba(251,113,133,.6)', ringColor2: 'rgba(252,165,165,.3)', pColor: '#fbcfe8', soundFreq: 220 },
+                { skill: 'Flower Magical Orb', icon: '🌻', desc: 'Hương thơm quyến rũ — làm say mê và xoa dịu tâm hồn.', orbLight: '#fef9c3', orbMid: '#ca8a04', orbDark: '#713f12', orbGlow: 'rgba(234,179,8,.8)', ringColor: 'rgba(253,224,71,.6)', ringColor2: 'rgba(254,240,138,.3)', pColor: '#fef08a', soundFreq: 190 },
+                { skill: 'Wood Magical Orb', icon: '🌳', desc: 'Bản nguyên từ gỗ — sự linh hoạt và dẻo dai tuyệt đối.', orbLight: '#f0fdf4', orbMid: '#166534', orbDark: '#064e3b', orbGlow: 'rgba(22,101,52,.9)', ringColor: 'rgba(74,222,128,.7)', ringColor2: 'rgba(187,247,208,.4)', pColor: '#86efac', soundFreq: 160 }
+            ],
+            '♎': [
+                { skill: 'Fate Balance', icon: '⚖️', desc: 'Cân bằng vận mệnh — không ai thoát khỏi sự công bằng của bạn.', orbLight: '#f3e8ff', orbMid: '#a855f7', orbDark: '#2e1065', orbGlow: 'rgba(168,85,247,.9)', ringColor: 'rgba(216,180,254,.7)', ringColor2: 'rgba(233,213,255,.4)', pColor: '#d8b4fe', soundFreq: 233 },
+                { skill: 'Judgement Magical Orb', icon: '🏛️', desc: 'Lời phán xét cuối cùng — chính nghĩa luôn chiến thắng.', orbLight: '#fafafa', orbMid: '#404040', orbDark: '#171717', orbGlow: 'rgba(64,64,64,.9)', ringColor: 'rgba(163,163,163,.7)', ringColor2: 'rgba(212,212,212,.4)', pColor: '#d4d4d4', soundFreq: 200 },
+                { skill: 'Iridescent Magical Orb', icon: '🌈', desc: 'Màu sắc cầu vồng — biến đổi vô hình vạn trạng.', orbLight: '#fdf4ff', orbMid: '#d946ef', orbDark: '#701a75', orbGlow: 'rgba(217,70,239,.9)', ringColor: 'rgba(240,171,252,.7)', ringColor2: 'rgba(245,208,254,.4)', pColor: '#f5d0fe', soundFreq: 250 },
+                { skill: 'Yin-Yang Magical Orb', icon: '☯️', desc: 'Sự hòa hợp âm dương — lưỡng cực cân bằng vũ trụ.', orbLight: '#ffffff', orbMid: '#171717', orbDark: '#000000', orbGlow: 'rgba(23,23,23,1)', ringColor: 'rgba(255,255,255,0.8)', ringColor2: 'rgba(0,0,0,0.5)', pColor: '#e5e5e5', soundFreq: 210 }
+            ],
+            '♏': [
+                { skill: 'Dark Vision', icon: '🔮', desc: 'Nhìn xuyên màn đêm — bí mật nào cũng hiển hiện trước mắt bạn.', orbLight: '#ede9fe', orbMid: '#7c3aed', orbDark: '#1e0a3c', orbGlow: 'rgba(124,58,237,.9)', ringColor: 'rgba(167,139,250,.7)', ringColor2: 'rgba(196,181,253,.4)', pColor: '#a78bfa', soundFreq: 155 },
+                { skill: 'Abyss Magical Orb', icon: '🕳️', desc: 'Vực thẳm sâu thẳm — nơi nuốt chửng mọi ánh sáng.', orbLight: '#f8fafc', orbMid: '#0f172a', orbDark: '#020617', orbGlow: 'rgba(15,23,42,1)', ringColor: 'rgba(51,65,85,.8)', ringColor2: 'rgba(30,41,59,.5)', pColor: '#475569', soundFreq: 130 },
+                { skill: 'Forbidden Magical Orb', icon: '⚔️', desc: 'Cấm thuật cổ xưa — quyền năng bị phong ấn ngàn năm.', orbLight: '#fee2e2', orbMid: '#991b1b', orbDark: '#450a0a', orbGlow: 'rgba(153,27,27,.9)', ringColor: 'rgba(185,28,28,.7)', ringColor2: 'rgba(127,29,29,.4)', pColor: '#ef4444', soundFreq: 160 },
+                { skill: 'Mind Control Magical Orb', icon: '🧠', desc: 'Thao túng tâm trí — điều khiển ý chí của kẻ đối diện.', orbLight: '#fae8ff', orbMid: '#a21caf', orbDark: '#4a044e', orbGlow: 'rgba(162,28,175,.9)', ringColor: 'rgba(217,70,239,.7)', ringColor2: 'rgba(240,171,252,.4)', pColor: '#d946ef', soundFreq: 180 }
+            ],
+            '♐': [
+                { skill: 'Star Arrow', icon: '🏹', desc: 'Mũi tên xuyên không gian — không khoảng cách nào là trở ngại.', orbLight: '#fef3c7', orbMid: '#d97706', orbDark: '#451a03', orbGlow: 'rgba(217,119,6,.9)', ringColor: 'rgba(252,211,77,.7)', ringColor2: 'rgba(253,230,138,.4)', pColor: '#fcd34d', soundFreq: 196 },
+                { skill: 'Seiya Magical Orb', icon: '🌠', desc: 'Băng tinh tinh tú — cú đấm mạnh mẽ như sao băng.', orbLight: '#ecfeff', orbMid: '#0891b2', orbDark: '#164e63', orbGlow: 'rgba(8,145,178,.9)', ringColor: 'rgba(34,211,238,.7)', ringColor2: 'rgba(6,182,212,.4)', pColor: '#67e8f9', soundFreq: 240 },
+                { skill: 'Summoning Magical Orb', icon: '🧬', desc: 'Triệu hồi linh thú — gọi lên những sinh vật huyền thoại.', orbLight: '#f5f3ff', orbMid: '#7c3aed', orbDark: '#4c1d95', orbGlow: 'rgba(124,58,237,.9)', ringColor: 'rgba(167,139,250,.7)', ringColor2: 'rgba(196,181,253,.4)', pColor: '#a78bfa', soundFreq: 210 },
+                { skill: 'Dragon Transformation Magical Orb', icon: '🐉', desc: 'Hóa thân thành rồng — uy quyền tối cao của loài rồng.', orbLight: '#fffbeb', orbMid: '#d97706', orbDark: '#78350f', orbGlow: 'rgba(217,119,6,1)', ringColor: 'rgba(251,191,36,0.8)', ringColor2: 'rgba(180,83,9,0.5)', pColor: '#fbbf24', soundFreq: 180 }
+            ],
+            '♑': [
+                { skill: 'Earth Armor', icon: '🏔️', desc: 'Giáp thạch đất — không gì có thể xuyên qua lớp phòng thủ của bạn.', orbLight: '#d6d3d1', orbMid: '#57534e', orbDark: '#1c1917', orbGlow: 'rgba(87,83,78,.9)', ringColor: 'rgba(168,162,158,.7)', ringColor2: 'rgba(214,211,209,.4)', pColor: '#a8a29e', soundFreq: 165 },
+                { skill: 'Gravity Magical Orb', icon: '🪐', desc: 'Điều khiển trọng lực — nghiền nát mọi thứ dưới sức nặng.', orbLight: '#f8fafc', orbMid: '#334155', orbDark: '#0f172a', orbGlow: 'rgba(51,65,85,.9)', ringColor: 'rgba(100,116,139,.7)', ringColor2: 'rgba(70,85,105,.4)', pColor: '#94a3b8', soundFreq: 140 },
+                { skill: 'Magnetic Magical Orb', icon: '🧲', desc: 'Từ trường cực đại — kiểm soát kim loại và lực hút.', orbLight: '#f1f5f9', orbMid: '#64748b', orbDark: '#334155', orbGlow: 'rgba(100,116,139,.9)', ringColor: 'rgba(148,163,184,.7)', ringColor2: 'rgba(203,213,225,.4)', pColor: '#cbd5e1', soundFreq: 180 },
+                { skill: 'Crystal Magical Orb', icon: '💎', desc: 'Tinh thể pha lê — sự hoàn mỹ và độ cứng tuyệt đối.', orbLight: '#f8fafc', orbMid: '#94a3b8', orbDark: '#1e293b', orbGlow: 'rgba(148,163,184,.9)', ringColor: 'rgba(203,213,225,.7)', ringColor2: 'rgba(241,245,249,.4)', pColor: '#cbd5e1', soundFreq: 220 }
+            ],
+            '♒': [
+                { skill: 'Storm Call', icon: '⚡', desc: 'Gọi sấm sét từ thinh không — cơn bão chính là ý chí của bạn.', orbLight: '#e0f2fe', orbMid: '#0ea5e9', orbDark: '#082f49', orbGlow: 'rgba(14,165,233,.9)', ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#38bdf8', soundFreq: 277 },
+                { skill: 'Lightning Magical Orb', icon: '🌩️', desc: 'Tia sét rạch trời — quyền năng của lôi thần.', orbLight: '#fff9c4', orbMid: '#fbc02d', orbDark: '#f9a825', orbGlow: 'rgba(251,192,45,.9)', ringColor: 'rgba(255,235,59,.7)', ringColor2: 'rgba(255,245,157,.4)', pColor: '#fff176', soundFreq: 310 },
+                { skill: 'Black Hole Magical Orb', icon: '🌑', desc: 'Lỗ đen vũ trụ — sự kết thúc của mọi thực thể.', orbLight: '#ffffff', orbMid: '#171717', orbDark: '#000000', orbGlow: 'rgba(5,5,5,1)', ringColor: 'rgba(255,255,255,0.4)', ringColor2: 'rgba(100,100,100,0.2)', pColor: '#404040', soundFreq: 100 },
+                { skill: 'Space Magical Orb', icon: '🌌', desc: 'Thao túng không gian — bẻ cong các chiều kích thực tại.', orbLight: '#e0e7ff', orbMid: '#4f46e5', orbDark: '#312e81', orbGlow: 'rgba(79,70,229,.9)', ringColor: 'rgba(99,102,241,.7)', ringColor2: 'rgba(165,180,252,.4)', pColor: '#c7d2fe', soundFreq: 290 }
+            ],
+            ' Pisces ♓': [
+                { skill: 'Dream Walk', icon: '🌀', desc: 'Du hành trong giấc mơ — thực và ảo không còn ranh giới.', orbLight: '#fce7f3', orbMid: '#db2777', orbDark: '#500724', orbGlow: 'rgba(219,39,119,.9)', ringColor: 'rgba(249,168,212,.7)', ringColor2: 'rgba(251,207,232,.4)', pColor: '#f9a8d4', soundFreq: 207 },
+                { skill: 'Elemental Magical Orb', icon: '💠', desc: 'Hòa quyện nguyên tố — sức mạnh tổng hợp từ thiên nhiên.', orbLight: '#d1fae5', orbMid: '#10b981', orbDark: '#064e3b', orbGlow: 'rgba(16,185,129,.9)', ringColor: 'rgba(52,211,153,.7)', ringColor2: 'rgba(167,243,208,.4)', pColor: '#6ee7b7', soundFreq: 220 },
+                { skill: 'Illusory Sea Magical Orb', icon: '🏝️', desc: 'Biển ảo mộng — lạc vào mê cung của những làn sóng.', orbLight: '#bae6fd', orbMid: '#0369a1', orbDark: '#0c4a6e', orbGlow: 'rgba(3,105,161,.9)', ringColor: 'rgba(56,189,248,.7)', ringColor2: 'rgba(186,230,253,.4)', pColor: '#7dd3fc', soundFreq: 190 },
+                { skill: 'Ice Magical Orb', icon: '❄️', desc: 'Băng giá vĩnh cửu — đóng băng mọi sự chuyển động.', orbLight: '#f0f9ff', orbMid: '#0ea5e9', orbDark: '#082f49', orbGlow: 'rgba(14,165,233,.8)', ringColor: 'rgba(56,189,248,.6)', ringColor2: 'rgba(186,230,253,.3)', pColor: '#e0f2fe', soundFreq: 250 }
+            ],
         };
         let activeSessionOrb = null;
         function getRandomOrb(emoji) {
@@ -5590,7 +5602,7 @@
                     o1.connect(g1); g1.connect(master); o1.start(); o1.stop(ctx.currentTime + .5);
                 } else if (type === 'orb') {
                     // Magical orb drone + shimmer
-                    const freq = (zodiacMagicMap[selectedZodiacEmoji] || { soundFreq: 300 }).soundFreq;
+                    const freq = (activeSessionOrb || { soundFreq: 300 }).soundFreq;
                     [0, 1, 2].forEach(i => {
                         const o = ctx.createOscillator(); const g = ctx.createGain();
                         o.type = i === 0 ? 'sine' : i === 1 ? 'triangle' : 'sawtooth';
@@ -5655,7 +5667,7 @@
             const mysteryCode = (nameLen + totalScore + wordsLen) * 5;
             globalMysteryCode = mysteryCode;
 
-            const magic = zodiacMagicMap[selectedZodiacEmoji] || zodiacMagicMap['♏'];
+            const magic = activeSessionOrb;
 
             // Card 2 – Secret Code (Ordinal 1)
             document.getElementById('card-front-2').innerHTML = `
@@ -5964,7 +5976,7 @@
             }
 
             // Burst particles at card position
-            const magic = getRandomOrb(selectedZodiacEmoji);
+            const magic = activeSessionOrb;
             const wrapper = inner.closest('.mystery-card-wrapper');
             if (wrapper) {
                 const rect = wrapper.getBoundingClientRect();
