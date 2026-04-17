@@ -5489,6 +5489,12 @@
                 ringColor: 'rgba(249,168,212,.7)', ringColor2: 'rgba(251,207,232,.4)', pColor: '#f9a8d4', soundFreq: 207
             },
         };
+        let activeSessionOrb = null;
+        function getRandomOrb(emoji) {
+            const pool = Array.isArray(zodiacMagicMap[emoji]) ? zodiacMagicMap[emoji] : [zodiacMagicMap[emoji]];
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
+
 
         // 50 quotes - shuffle order tracked to avoid repeats
         const quotesPool = [
@@ -5635,6 +5641,7 @@
             }
 
             // Prepare card contents
+            activeSessionOrb = getRandomOrb(selectedZodiacEmoji);
             prepareMysteryCards();
 
             setTimeout(() => playMagicSound('box'), 300);
@@ -5957,7 +5964,7 @@
             }
 
             // Burst particles at card position
-            const magic = zodiacMagicMap[selectedZodiacEmoji] || zodiacMagicMap['♏'];
+            const magic = getRandomOrb(selectedZodiacEmoji);
             const wrapper = inner.closest('.mystery-card-wrapper');
             if (wrapper) {
                 const rect = wrapper.getBoundingClientRect();
@@ -6106,7 +6113,7 @@
             badge.style.cssText = colors;
 
             // Orb Display (Using Animated Magical Orb)
-            const magic = zodiacMagicMap[selectedZodiacEmoji] || zodiacMagicMap['♏'];
+            const magic = activeSessionOrb;
             const orbSize = 100;
             document.getElementById('summary-orb-container').innerHTML = `
                 <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
@@ -6159,7 +6166,7 @@
         }
 
         function showOrbShowcase() {
-            const magic = zodiacMagicMap[selectedZodiacEmoji] || zodiacMagicMap['♯'];
+            const magic = activeSessionOrb;
             playAlertSound();
 
             // Build fullscreen overlay
@@ -6241,8 +6248,9 @@
             const inner = Math.round(s * 0.7);
             const ringInset = Math.round(s * 0.02);
             // Each zodiac gets a unique layered orb with distinct elements
-            const sign = Object.entries(zodiacMagicMap).find(([k, v]) => v === magic);
-            const signKey = sign ? sign[0] : '';
+            const orbList = Object.values(zodiacMagicMap).flat();
+            const sign = orbList.find(o => o.skill === magic.skill) || magic;
+            const signKey = sign.skill || '';
             // Unique shape overlays per element group
             const extras = {
                 '♈': ` <div style="position:absolute;inset:${ringInset * 3}px;border-radius:50%;border:3px solid ${magic.pColor};opacity:.4;animation:orb-ring-spin 2s linear infinite;"></div>
