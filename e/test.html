@@ -1,379 +1,276 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đề Thi Thử Số 03 - Tiếng Anh</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* CSS cho thanh cuộn bên trong ứng dụng đẹp hơn */
-        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        #passage-container::-webkit-scrollbar, #questions-container::-webkit-scrollbar { width: 8px; }
-        #passage-container::-webkit-scrollbar-track, #questions-container::-webkit-scrollbar-track { background: transparent; }
-        #passage-container::-webkit-scrollbar-thumb, #questions-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; border: 2px solid white; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đề Thi Thử Số 05 - Tiếng Anh</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS cho thanh cuộn bên trong ứng dụng đẹp hơn */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    #passage-container::-webkit-scrollbar,
+    #questions-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #passage-container::-webkit-scrollbar-track,
+    #questions-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #passage-container::-webkit-scrollbar-thumb,
+    #questions-container::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+      border: 2px solid white;
+    }
+  </style>
 </head>
+
 <body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
-    
-    <div id="app" class="flex flex-col h-full w-full"></div>
 
-    <script>
-        const quizData = [
+  <div id="app" class="flex flex-col h-full w-full"></div>
+
+  <script>
+    const quizData = [
+      {
+        title: "Part 1: Guided Cloze Test - Corporate Communications",
+        instruction: "Read the following message and mark the letter A, B, C or D on your answer sheet to indicate the option that best fits each of the numbered blanks from 1 to 6.",
+        passage: "Corporate Communications Department Memorandum\n\nTO: All Staff Members\nFROM: IT Support Team\nDATE: October 25, 2025\nRE: New Phone System Implementation\n\nDear Colleagues,\nWe are pleased to announce that our company has successfully (1) ______ over to a state-of-the-art digital telephone system. This upgrade will enhance communication efficiency across all departments.\n\n1. Key Features\nThe new system provides (2) ______ of advanced capabilities including call forwarding, voicemail-to-email, conference calling, and automated attendant services.\n\n2. Making Calls\nTo place external calls, dial 9 first, (3) ______ enter the complete phone number including area code. Internal extensions remain unchanged.\n\n3. Technical Support\nOur (4) ______ help desk team is available 24/7 to address any technical issues. For assistance, please call extension 5000 (5) ______ submit a support ticket through the company portal.\n\nWe encourage everyone to (6) ______ themselves with the new system’s user manual, which has been emailed to all staff members. Training sessions will be conducted next week.\n\nThank you for your cooperation.",
+        passageTranslation: "Bản ghi nhớ của Phòng Truyền thông Doanh nghiệp\n\nGửi: Tất cả nhân viên\nTừ: Đội ngũ Hỗ trợ IT\nNgày: 25 tháng 10, 2025\nV/v: Triển khai hệ thống điện thoại mới\n\nKính gửi các đồng nghiệp,\nChúng tôi vui mừng thông báo rằng công ty chúng ta đã chuyển đổi thành công sang một hệ thống điện thoại kỹ thuật số hiện đại. Việc nâng cấp này sẽ tăng cường hiệu quả giao tiếp trên tất cả các phòng ban.\n\n1. Tính năng chính\nHệ thống mới cung cấp một loạt các khả năng tiên tiến bao gồm chuyển tiếp cuộc gọi, thư thoại qua email, gọi hội nghị, và các dịch vụ trả lời tự động.\n\n2. Thực hiện cuộc gọi\nĐể gọi ra ngoài, hãy quay số 9 trước, sau đó nhập đầy đủ số điện thoại bao gồm mã vùng. Số máy lẻ nội bộ không thay đổi.\n\n3. Hỗ trợ kỹ thuật\nĐội ngũ hỗ trợ kỹ thuật tận tâm và đa ngôn ngữ của chúng tôi có mặt 24/7 để giải quyết bất kỳ vấn đề kỹ thuật nào. Để được hỗ trợ, vui lòng gọi số máy lẻ 5000 hoặc gửi yêu cầu hỗ trợ qua cổng thông tin công ty.\n\nChúng tôi khuyến khích mọi người làm quen với hướng dẫn sử dụng của hệ thống mới, vốn đã được gửi email tới toàn bộ nhân viên. Các buổi đào tạo sẽ được tổ chức vào tuần tới.\n\nCảm ơn sự hợp tác của các bạn.",
+        questions: [
+          { id: 1, text: "Question 1", options: ["switched", "transferred", "converted", "transformed"], correct: 0, explanation: "Cụm động từ 'switch over to' có nghĩa là chuyển đổi sang một hệ thống hoặc phương pháp mới. Phù hợp nhất với ngữ cảnh thay đổi hệ thống điện thoại." },
+          { id: 2, text: "Question 2", options: ["an array", "a volume", "an amount", "a quantity"], correct: 0, explanation: "Cụm từ 'an array of' mang nghĩa là một loạt các thứ đa dạng (các tính năng, dịch vụ). Các từ còn lại chủ yếu chỉ số lượng đơn thuần." },
+          { id: 3, text: "Question 3", options: ["then", "so", "yet", "for"], correct: 0, explanation: "Trạng từ 'then' (sau đó) được dùng để chỉ trình tự các hành động: quay số 9 trước, SAU ĐÓ nhập số điện thoại." },
+          { id: 4, text: "Question 4", options: ["dedicated technical multilingual", "multilingual dedicated technical", "technical multilingual dedicated", "multilingual technical dedicated"], correct: 0, explanation: "Quy tắc trật tự tính từ OSASCOMP: Opinion (dedicated - tận tâm) -> Type/Origin (multilingual - đa ngôn ngữ) -> Purpose (technical - kỹ thuật)." },
+          { id: 5, text: "Question 5", options: ["or", "and", "but", "nor"], correct: 0, explanation: "Liên từ 'or' mang ý nghĩa lựa chọn (hoặc): bạn có thể gọi số 5000 HOẶC gửi yêu cầu (ticket)." },
+          { id: 6, text: "Question 6", options: ["familiarize", "accustom", "habituate", "orientate"], correct: 0, explanation: "Cụm từ cố định 'familiarize oneself with something' có nghĩa là tự làm quen, tìm hiểu về một cái gì đó (hướng dẫn sử dụng)." }
+        ]
+      },
+      {
+        title: "Part 2: Guided Cloze Test - Public Education Systems",
+        instruction: "Read the following passage and mark the letter A, B, C or D on your answer sheet to indicate the option that best fits each of the numbered blanks from 7 to 11.",
+        passage: "Public education systems emerged in the 19th century as nations recognized the importance of an educated citizenry. (7) _______. This movement reflected growing beliefs that literacy and basic knowledge were essential for economic development and social progress.\n\nEarly public schools faced numerous challenges, including inadequate funding and resistance from traditional institutions. (8) _______. Despite these obstacles, reformers continued advocating for universal access to education, arguing it would reduce poverty and crime.\n\nThe establishment of compulsory attendance laws marked a turning point in educational history. (9) _______. This legislation ensured that children from all social classes received at least elementary instruction in reading, writing, and arithmetic.\n\nTeacher training programs evolved to meet the demands of expanding school systems across Europe and America. (10) _______. These institutions helped standardize educational practices and improve the quality of instruction in public classrooms.\n\nBy the early 20th century, public education had become a cornerstone of modern society. (11) _______. Today, access to free education is widely recognized as a fundamental human right and a prerequisite for democratic participation.",
+        passageTranslation: "Hệ thống giáo dục công cộng xuất hiện vào thế kỷ 19 khi các quốc gia nhận ra tầm quan trọng của một công dân có học thức. Phổ đã thiết lập việc học tập miễn phí, do nhà nước tài trợ trong suốt đầu những năm 1800, một mô hình mà các quốc gia châu Âu khác sau đó đã áp dụng. Phong trào này phản ánh niềm tin ngày càng tăng rằng xóa mù chữ và kiến thức cơ bản là thiết yếu đối với phát triển kinh tế và tiến bộ xã hội.\n\nCác trường công lập thời kỳ đầu đối mặt với vô số thách thức, bao gồm việc thiếu kinh phí và sự chống đối từ các thể chế truyền thống. Nhiều gia đình phụ thuộc vào sức lao động của trẻ em để có thu nhập; do đó, việc đi học đồng nghĩa với việc mất đi những nhân công quý giá. Bất chấp những trở ngại này, các nhà cải cách vẫn tiếp tục vận động cho quyền tiếp cận giáo dục phổ cập, lập luận rằng nó sẽ giúp giảm nghèo đói và tội phạm.\n\nViệc ban hành các luật bắt buộc đi học đã đánh dấu một bước ngoặt trong lịch sử giáo dục. Các chính phủ đã thiết lập việc bắt buộc đi học cho trẻ em từ 6 đến 14 tuổi trong thời kỳ này. Pháp luật này đảm bảo rằng trẻ em thuộc mọi tầng lớp xã hội đều nhận được ít nhất nền tảng giáo dục tiểu học về đọc, viết và toán số.\n\nCác chương trình đào tạo giáo viên đã tiến hóa để đáp ứng nhu cầu mở rộng của các hệ thống trường học trên khắp châu Âu và châu Mỹ. Các trường sư phạm được thành lập để chuẩn bị cho các cá nhân theo nghề dạy học, cung cấp cả đào tạo học thuật và thực hành. Những thể chế này đã giúp chuẩn hóa thực tiễn giáo dục và nâng cao chất lượng giảng dạy tại các lớp học công lập.\n\nVào đầu thế kỷ 20, giáo dục công cộng đã trở thành nền tảng của xã hội hiện đại. Các hệ thống giáo dục tiếp tục mở rộng các cơ hội, cung cấp sự hướng dẫn chuyên biệt giúp học sinh chuẩn bị cho những sự nghiệp đa dạng. Ngày nay, quyền tiếp cận giáo dục miễn phí được công nhận rộng rãi là quyền cơ bản của con người và là điều kiện tiên quyết cho sự tham gia dân chủ.",
+        questions: [
           {
-            title: "Part 1: Sentence Arrangement",
-            instruction: "Mark the letter A, B, C or D to indicate the best arrangement of utterances or sentences to make a cohesive and coherent exchange or text.",
-            questions: [
-              {
-                id: 1,
-                text: "a. After digital signatures, disbursement will be transferred to your account within one business day.\nb. For assistance, contact your loan officer or reply to this message directly.\nc. We are pleased to confirm your personal loan application has been formally approved today.\nd. Note that the offer expires in seven days and rates may adjust if lapsed.\ne. Please review the attached agreement and upload required documents through the secure borrower portal.",
-                options: ["c-a-e-d-b", "e-c-a-d-b", "c-e-a-d-b", "c-e-d-a-b"],
-                correct: 2,
-                explanation: `Thứ tự hợp lý là c-e-a-d-b. Câu c mở đầu thông báo chấp thuận khoản vay, sau đó câu e yêu cầu xem xét hợp đồng và tải tài liệu, tiếp theo câu a thông báo về việc giải ngân sau khi ký số, câu d nhắc nhở về thời hạn hiệu lực của đề nghị, và cuối cùng câu b cung cấp thông tin liên hệ hỗ trợ. Đây là trình tự logic của một thư xác nhận khoản vay từ thông báo chấp thuận đến hướng dẫn thực hiện và thông tin liên hệ.
-A. SAI - Thứ tự c-a-e-d-b không logic vì câu a nói về giải ngân sau khi ký số nhưng lại đặt trước câu e yêu cầu xem xét hợp đồng và tải tài liệu.
-B. SAI - Thứ tự e-c-a-d-b bắt đầu bằng yêu cầu xem xét hợp đồng trước khi thông báo chấp thuận khoản vay, điều này không hợp lý về mặt giao tiếp.
-C. ĐÚNG - Thứ tự c-e-a-d-b tuân theo logic: thông báo chấp thuận → yêu cầu xem xét và tải tài liệu → giải ngân sau ký số → nhắc nhở thời hạn → thông tin liên hệ.
-D. SAI - Thứ tự c-e-d-a-b đặt câu d về thời hạn hiệu lực trước câu a về giải ngân, làm gián đoạn luồng thông tin về quy trình thực hiện.`,
-                translation: `c. Chúng tôi vui mừng xác nhận đơn xin vay cá nhân của quý khách đã được chính thức phê duyệt hôm nay.\ne. Vui lòng xem xét hợp đồng đính kèm và tải lên các tài liệu yêu cầu thông qua cổng thông tin người vay bảo mật.\na. Sau khi ký số, khoản giải ngân sẽ được chuyển vào tài khoản của quý khách trong vòng một ngày làm việc.\nd. Lưu ý rằng đề nghị này có hiệu lực trong bảy ngày và lãi suất có thể điều chỉnh nếu quá hạn.\nb. Để được hỗ trợ, vui lòng liên hệ với nhân viên tư vấn khoản vay của quý khách hoặc trả lời trực tiếp tin nhắn này.`
-              },
-              {
-                id: 2,
-                text: "a. Lisa: Don’t worry about it. I can work through this section on my own.\nb. David: Then let me know if you change your mind. I’m free all evening.\nc. David: Hey Lisa, I noticed you’re struggling with the physics assignment. Would you like some help?",
-                options: ["c-b-a", "b-c-a", "c-a-b", "a-c-b"],
-                correct: 2,
-                explanation: `Thứ tự hợp lý là c-a-b. Câu c là lời đề nghị giúp đỡ của David khi thấy Lisa gặp khó khăn với bài tập vật lý, câu a là lời từ chối lịch sự của Lisa, và câu b là lời đáp lại của David để Lisa biết có thể liên hệ nếu thay đổi ý định. Đây là cấu trúc đối thoại tự nhiên: đề nghị → từ chối → đáp lại.
-A. SAI - Thứ tự c-b-a không logic vì câu b nói "if you change your mind" nhưng chưa có lời từ chối nào trước đó.
-B. SAI - Thứ tự b-c-a bắt đầu bằng câu b về việc thay đổi ý định trước khi có lời đề nghị giúp đỡ, không hợp lý.
-C. ĐÚNG - Thứ tự c-a-b tuân theo logic đối thoại tự nhiên: David đề nghị giúp đỡ → Lisa từ chối → David đáp lại sẵn sàng giúp nếu cần.
-D. SAI - Thứ tự a-c-b bắt đầu bằng lời từ chối trước khi có lời đề nghị, không hợp lý về mặt giao tiếp.`,
-                translation: `c. David: Này Lisa, tôi để ý cậu đang gặp khó khăn với bài tập vật lý. Cậu có muốn được giúp không?\na. Lisa: Đừng lo lắng về điều đó. Tôi có thể tự làm phần này.\nb. David: Vậy hãy cho tôi biết nếu cậu thay đổi ý định. Tôi rảnh cả tối.`
-              },
-              {
-                id: 3,
-                text: "a. Construction efforts subsequently led to the establishment of underground tunnels beneath major thoroughfares, fundamentally altering the city’s transportation infrastructure.\nb. The initiative reflects Ho Chi Minh City’s commitment to sustainable urban mobility and reducing persistent traffic congestion.\nc. Since its inception in the early 2010s, Ho Chi Minh City’s metro system has evolved into a transformative infrastructure endeavor.\nd. Additionally, elevated railway sections were constructed along key corridors, connecting densely populated districts with commercial hubs.\ne. These structural improvements were accompanied by the modernisation of station facilities, incorporating advanced ticketing systems and passenger amenities.",
-                options: ["c-b-a-d-e", "c-a-d-e-b", "b-c-a-e-d", "c-d-a-b-e"],
-                correct: 1,
-                explanation: `Thứ tự hợp lý là c-a-d-e-b. Câu c giới thiệu về hệ thống metro TP.HCM từ đầu những năm 2010, câu a nói về các đường hầm ngầm, câu d nói về các tuyến đường sắt trên cao, câu e nói về cải tiến cơ sở vật chất nhà ga, và cuối cùng câu b tổng kết về cam kết phát triển giao thông bền vững.
-A. SAI - Thứ tự c-b-a-d-e đặt câu b về cam kết bền vững quá sớm trước khi mô tả các công trình cụ thể.
-B. ĐÚNG - Thứ tự c-a-d-e-b tuân theo logic: giới thiệu dự án → đường hầm ngầm → đường sắt trên cao → cải tiến nhà ga → ý nghĩa tổng thể.
-C. SAI - Thứ tự b-c-a-e-d bắt đầu bằng tổng kết về cam kết trước khi giới thiệu dự án, không hợp lý.
-D. SAI - Thứ tự c-d-a-b-e đặt đường sắt trên cao (d) trước đường hầm ngầm (a), nhưng văn cảnh cho thấy đường hầm được xây dựng trước.`,
-                translation: `c. Kể từ khi khởi công vào đầu những năm 2010, hệ thống metro của Thành phố Hồ Chí Minh đã phát triển thành một nỗ lực cơ sở hạ tầng mang tính chuyển đổi.\na. Các nỗ lực xây dựng sau đó đã dẫn đến việc thiết lập các đường hầm ngầm bên dưới các trục đường chính, thay đổi căn bản cơ sở hạ tầng giao thông của thành phố.\nd. Thêm vào đó, các tuyến đường sắt trên cao được xây dựng dọc theo các hành lang chính, kết nối các quận đông dân cư với các trung tâm thương mại.\ne. Những cải tiến cấu trúc này đi kèm với việc hiện đại hóa các cơ sở nhà ga, kết hợp các hệ thống bán vé tiên tiến và tiện nghi cho hành khách.\nb. Sáng kiến này phản ánh cam kết của Thành phố Hồ Chí Minh đối với việc di chuyển đô thị bền vững và giảm tình trạng tắc nghẽn giao thông dai dẳng.`
-              },
-              {
-                id: 4,
-                text: "a. Sophie: That’s true, but online learning allows access to more global resources.\nb. Sophie: Would you rather study at school or take online courses?\nc. Sophie: I think combining both methods could lead to the best learning outcome.\nd. Daniel: And it encourages self-discipline and digital collaboration, which are valuable skills.\ne. Daniel: I like online classes for flexibility, but studying at school keeps me focused.",
-                options: ["b-e-a-d-c", "a-c-b-e-d", "c-b-a-d-e", "a-b-d-c-e"],
-                correct: 0,
-                explanation: `Thứ tự hợp lý là b-e-a-d-c. Câu b là câu hỏi mở đầu của Sophie, câu e là câu trả lời của Daniel, câu a là ý kiến bổ sung của Sophie, câu d là bổ sung thêm của Daniel, và câu c là kết luận của Sophie về việc kết hợp cả hai phương pháp.
-A. ĐÚNG - Thứ tự b-e-a-d-c tuân theo logic: Sophie hỏi → Daniel trả lời → Sophie bổ sung → Daniel bổ sung thêm → Sophie kết luận.
-B. SAI - Thứ tự a-c-b-e-d bắt đầu bằng câu a về tài nguyên toàn cầu trước khi có câu hỏi, không hợp lý.
-C. SAI - Thứ tự c-b-a-d-e bắt đầu bằng kết luận về kết hợp phương pháp trước khi thảo luận, không logic.
-D. SAI - Thứ tự a-b-d-c-e không có câu trả lời ban đầu của Daniel sau câu hỏi, làm gián đoạn luồng đối thoại.`,
-                translation: `b. Sophie: Bạn thích học ở trường hay tham gia các khóa học trực tuyến hơn?\ne. Daniel: Tôi thích lớp học trực tuyến vì tính linh hoạt, nhưng học ở trường giúp tôi tập trung hơn.\na. Sophie: Điều đó đúng, nhưng học trực tuyến cho phép tiếp cận nhiều nguồn tài nguyên toàn cầu hơn.\nd. Daniel: Và nó khuyến khích tự kỷ luật và hợp tác kỹ thuật số, những kỹ năng có giá trị.\nc. Sophie: Tôi nghĩ việc kết hợp cả hai phương pháp có thể dẫn đến kết quả học tập tốt nhất.`
-              },
-              {
-                id: 5,
-                text: "a. At the beginning of the academic year, I struggled to juggle multiple assignments and extracurricular activities simultaneously.\nb. I tried to spread myself too thin, believing I could handle everything without proper planning or prioritization.\nc. This lesson stuck with me and transformed how I approach my responsibilities in every aspect of life.\nd. However, I ended up missing deadlines and disappointing both my teachers and myself with incomplete work.\ne. Afterward, I learned to prioritize tasks and say no to commitments that would overwhelm my schedule.",
-                options: ["a-d-b-e-c", "b-a-d-c-e", "a-b-d-e-c", "c-a-b-d-e"],
-                correct: 2,
-                explanation: `Thứ tự hợp lý là a-b-d-e-c. Câu a giới thiệu tình huống ban đầu, câu b mô tả hành động sai lầm, câu d nói về hậu quả tiêu cực, câu e nói về bài học rút ra, và câu c kết luận về tác động lâu dài của bài học này.
-A. SAI - Thứ tự a-d-b-e-c đặt hậu quả (d) trước hành động sai lầm (b), không hợp lý về mặt nhân quả.
-B. SAI - Thứ tự b-a-d-c-e bắt đầu bằng hành động sai lầm trước khi giới thiệu bối cảnh tình huống.
-C. ĐÚNG - Thứ tự a-b-d-e-c tuân theo logic: tình huống khó khăn → hành động sai lầm → hậu quả tiêu cực → bài học rút ra → tác động lâu dài.
-D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động trước khi kể câu chuyện, không hợp lý.`,
-                translation: `a. Vào đầu năm học, tôi gặp khó khăn trong việc xoay xở nhiều bài tập và hoạt động ngoại khóa cùng một lúc.\nb. Tôi cố gắng làm quá nhiều thứ, tin rằng mình có thể xử lý mọi thứ mà không cần lập kế hoạch hoặc ưu tiên hợp lý.\nd. Tuy nhiên, tôi đã bỏ lỡ thời hạn và làm thất vọng cả giáo viên lẫn bản thân với những bài làm chưa hoàn thành.\ne. Sau đó, tôi học được cách sắp xếp ưu tiên công việc và từ chối những cam kết sẽ làm quá tải lịch trình của mình.\nc. Bài học này đã in sâu vào tôi và thay đổi cách tôi tiếp cận trách nhiệm của mình trong mọi khía cạnh của cuộc sống.`
-              }
-            ]
+            id: 7, text: "Question 7", options: [
+              "Prussia instituted free, state-funded schooling during the early 1800s, a model other European nations subsequently adopted",
+              "State-funded schooling introduction occurred in other European countries following Prussia’s early 1800s free school adoption",
+              "Other European countries emulated free schooling after Prussia introduced state-funded schools throughout the early 1800s",
+              "Free schooling adoption by Prussia prompted other European nations to institute state-funded educational systems in the early 1800s"
+            ], correct: 0, explanation: "Đáp án A nêu bật thông tin logic và mạch lạc nhất khi nối tiếp với câu mở đoạn: Phổ là quốc gia đầu tiên thiết lập hệ thống trường học miễn phí vào đầu những năm 1800, và sau đó được các nước châu Âu khác áp dụng."
           },
           {
-            title: "Part 2: Guided Cloze Test - Oceanview Resort",
-            instruction: "Read the following letter and choose the option that best fits each of the numbered blanks from 6 to 11.",
-            passage: "Oceanview Resort & Spa\nDear Mr. Johnson,\n\nThank you for choosing Oceanview Resort for your upcoming vacation. We are delighted to confirm your reservation and have (6) ______ every arrangement to ensure your stay exceeds expectations.\n\n1. Booking Details\nCheck-in: March 15, 2025 | Check-out: March 20, 2025\nRoom Type: Deluxe Ocean Suite\n\n2. Complimentary Services\nYou will receive (7) ______ of welcome amenities including champagne, fresh fruit, and chocolates upon arrival. Our facilities include a spa, fitness center, (8) ______ three beachfront restaurants.\n\n3. Room Features\nYour (9) ______ balcony suite offers breathtaking views and modern conveniences. Early check-in is available (10) ______ request, subject to room availability.\n\nWe pride ourselves (11) ______ delivering personalized service and creating memorable experiences for our guests. Should you require any special arrangements, please contact our concierge team.\n\nWarm regards,\nSarah Mitchell\nReservations Manager",
-            passageTranslation: `Oceanview Resort & Spa\nKính gửi Ông Johnson,\n\nCảm ơn Ông đã lựa chọn Oceanview Resort cho kỳ nghỉ sắp tới của mình. Chúng tôi rất vui mừng xác nhận đặt phòng của Ông và đã (6) hoàn tất mọi sắp xếp để đảm bảo kỳ nghỉ của Ông vượt quá mong đợi.\n\n1. Chi tiết đặt phòng:\nNhận phòng: 15 tháng 3, 2025 | Trả phòng: 20 tháng 3, 2025\nLoại phòng: Phòng Suite Đại Dương Cao Cấp\n\n2. Dịch vụ miễn phí:\nÔng sẽ nhận được (7) một tuyển chọn các tiện nghi chào mừng bao gồm rượu champagne, trái cây tươi và sô-cô-la khi đến. Cơ sở vật chất của chúng tôi bao gồm spa, trung tâm thể dục, (8) và ba nhà hàng ven biển.\n\n3. Đặc điểm phòng:\nPhòng suite ban công (9) rộng rãi riêng tư ven biển của Ông mang đến tầm nhìn ngoạn mục và tiện nghi hiện đại. Nhận phòng sớm có sẵn (10) theo yêu cầu, tùy thuộc vào tình trạng phòng trống.\n\nChúng tôi tự hào (11) về việc cung cấp dịch vụ được cá nhân hóa và tạo ra những trải nghiệm đáng nhớ cho khách của chúng tôi. Nếu Ông cần bất kỳ sắp xếp đặc biệt nào, vui lòng liên hệ với đội ngũ lễ tân của chúng tôi.\n\nTrân trọng,\nSarah Mitchell\nQuản lý Đặt phòng`,
-            questions: [
-              { 
-                id: 6, text: "Question 6", options: ["finalized", "concluded", "terminated", "completed"], correct: 0,
-                explanation: `A. finalized /ˈfaɪnəlaɪzd/ (động từ): hoàn tất, hoàn thiện\nB. concluded /kənˈkluːdɪd/ (động từ): kết thúc, kết luận\nC. terminated /ˈtɜːmɪneɪtɪd/ (động từ): chấm dứt, kết thúc (thường có nghĩa tiêu cực)\nD. completed /kəmˈpliːtɪd/ (động từ): hoàn thành\n\nGiải thích: Trong ngữ cảnh "have finalized every arrangement", từ "finalized" phù hợp nhất để diễn tả việc hoàn tất mọi sắp xếp một cách chính thức và chu đáo cho kỳ nghỉ của khách.\nA. ĐÚNG - Phù hợp với ngữ cảnh khách sạn.\nB. SAI - Thường dùng để kết thúc một quá trình.\nC. SAI - Mang nghĩa chấm dứt tiêu cực.\nD. SAI - Không chuyên nghiệp bằng "finalized".`
-              },
-              { 
-                id: 7, text: "Question 7", options: ["an assortment", "a quantity", "a multitude", "a volume"], correct: 0,
-                explanation: `A. an assortment /ən əˈsɔːtmənt/ (danh từ): một tuyển chọn, một loạt đa dạng\nB. a quantity /ə ˈkwɒntəti/ (danh từ): một số lượng\nC. a multitude /ə ˈmʌltɪtjuːd/ (danh từ): một lượng lớn, đám đông\nD. a volume /ə ˈvɒljuːm/ (danh từ): khối lượng, âm lượng\n\nGiải thích: "an assortment" phù hợp nhất để mô tả một tuyển chọn đa dạng các món quà chào mừng.\nA. ĐÚNG - Diễn tả bộ sưu tập đa dạng.\nB. SAI - Chỉ số lượng.\nC. SAI - Dùng cho đám đông người.\nD. SAI - Dùng đo khối lượng/âm thanh.`
-              },
-              { 
-                id: 8, text: "Question 8", options: ["yet", "and", "so", "for"], correct: 1,
-                explanation: `A. yet (nhưng)\nB. and (và)\nC. so (vì vậy)\nD. for (bởi vì)\n\nGiải thích: Liên từ "and" được dùng để nối các danh sách các tiện ích song song (spa, fitness center, AND restaurants).`
-              },
-              { 
-                id: 9, text: "Question 9", options: ["spacious private oceanfront", "private spacious oceanfront", "oceanfront spacious private", "private oceanfront spacious"], correct: 0,
-                explanation: `Giải thích: Trật tự tính từ: Size (kích thước) - Opinion (đặc điểm) - Location (vị trí).\n"spacious" (rộng rãi) - "private" (riêng tư) - "oceanfront" (ven biển).\nA. ĐÚNG.`
-              },
-              { 
-                id: 10, text: "Question 10", options: ["upon", "at", "by", "in"], correct: 0,
-                explanation: `Cụm từ "upon request" là một cụm cố định trong tiếng Anh, có nghĩa là "theo yêu cầu".\nA. ĐÚNG - "Upon request" là cụm chuẩn xác nhất.`
-              },
-              { 
-                id: 11, text: "Question 11", options: ["in", "on", "at", "with"], correct: 1,
-                explanation: `Cụm động từ "pride oneself on" là một cụm cố định, có nghĩa là "tự hào về điều gì đó".\nB. ĐÚNG.`
-              }
-            ]
+            id: 8, text: "Question 8", options: [
+              "Numerous families depended on children’s labor for income; consequently, school attendance entailed losing valuable workers",
+              "Children’s labor constituted valuable workers for families, making school attendance equivalent to income loss",
+              "Sending children to school meant families relinquished valuable workers upon whom they relied for income",
+              "Valuable workers were dispatched to school, representing income loss for families dependent on children’s labor"
+            ], correct: 0, explanation: "Cụm từ 'consequently' (do đó) nối hai mệnh đề nguyên nhân - kết quả rõ ràng nhất: Nhiều gia đình phụ thuộc vào sức lao động của trẻ em; do đó, đi học có nghĩa là làm mất đi những nhân công có giá trị này."
           },
           {
-            title: "Part 3: Guided Cloze Test - Papermaking",
-            instruction: "Read the following passage and choose the option that best fits each of the numbered blanks from 12 to 16.",
-            passage: "Papermaking originated in ancient China during the Han Dynasty, revolutionizing how information was recorded and shared. (12) _______. This knowledge remained closely guarded for centuries, giving Chinese scholars and administrators a significant advantage in documentation and communication.\n\nThe technique gradually spread westward along the Silk Road through trade and cultural exchange. (13) _______. These craftsmen established workshops in major cities, adapting the process to local materials and needs while maintaining the core principles of the craft.\n\nBy the 12th century, paper mills had appeared across Europe, transforming intellectual life on the continent. (14) _______. The availability of this affordable writing material enabled the Renaissance and the subsequent explosion of printed literature.\n\nThe impact of papermaking on global civilization cannot be overstated. (15) _______. From scientific journals to personal letters, paper became the primary medium for human expression and record-keeping for nearly a millennium.\n\nModern technology has introduced digital alternatives, yet paper remains essential in many contexts. (16) _______. This enduring relevance demonstrates how a simple invention can fundamentally shape human society across centuries and cultures.",
-            passageTranslation: `Nghề làm giấy bắt nguồn từ Trung Quốc cổ đại trong thời nhà Hán, cách mạng hóa cách thức ghi chép và chia sẻ thông tin. (12) Các quan chức Trung Quốc nhiệt tình bảo vệ các phương pháp độc quyền được sử dụng trong việc tạo ra hàng hóa có giá trị này khỏi sự chiếm đoạt của nước ngoài. Kiến thức này vẫn được bảo vệ chặt chẽ trong nhiều thế kỷ, mang lại cho các học giả và nhà quản lý Trung Quốc một lợi thế đáng kể trong việc lập tài liệu và giao tiếp.\n\nKỹ thuật này dần lan dần về phía tây dọc theo Con đường Tơ lụa thông qua thương mại và trao đổi văn hóa. (13) Các thương nhân Ả Rập đã gặp các tù nhân Trung Quốc am hiểu về các phương pháp làm giấy trong Trận chiến Talas năm 751. Những người thợ thủ công này đã thành lập các xưởng ở các thành phố lớn, điều chỉnh quy trình cho phù hợp với nguyên liệu và nhu cầu địa phương trong khi vẫn duy trì các nguyên tắc cốt lõi của nghề.\n\nĐến thế kỷ 12, các nhà máy giấy đã xuất hiện khắp châu Âu, chuyển đổi đời sống trí tuệ trên lục địa. (14) Trước đây, da thuộc đắt tiền đã hạn chế phân phối; sách sau đó trở nên dễ tiếp cận hơn với các nhóm học giả và sinh viên. Sự sẵn có của vật liệu viết giá rẻ này đã tạo điều kiện cho thời kỳ Phục hưng và sự bùng nổ tiếp theo của văn học in ấn.\n\nTác động của việc làm giấy đối với nền văn minh toàn cầu không thể bị phóng đại. (15) Nó tạo điều kiện cho giáo dục, quản trị và thương mại bằng cách cung cấp một phương tiện kinh tế để lưu trữ và truyền tải thông tin. Từ các tạp chí khoa học đến thư cá nhân, giấy trở thành phương tiện chính cho sự biểu đạt và lưu giữ hồ sơ của con người trong gần một thiên niên kỷ.\n\nCông nghệ hiện đại đã giới thiệu các phương án thay thế kỹ thuật số, nhưng giấy vẫn cần thiết trong nhiều bối cảnh. (16) Các tổ chức giáo dục và doanh nghiệp thương mại duy trì sự phụ thuộc vào giấy bất chấp sự phổ biến của các nền tảng giao tiếp kỹ thuật số. Sự phù hợp lâu dài này cho thấy một phát minh đơn giản có thể định hình căn bản xã hội loài người qua nhiều thế kỷ và nền văn hóa.`,
-            questions: [
-              { 
-                id: 12, text: "Question 12", options: [
-                "Chinese officials zealously guarded the proprietary methodologies employed in creating this valuable commodity from foreign acquisition",
-                "Proprietary methodologies remained concealed by Chinese officials, who prevented foreigners from accessing techniques for valuable material creation",
-                "Foreigners were systematically prevented from acquiring valuable materials, as Chinese officials safeguarded proprietary methodologies from external learning",
-                "Valuable materials emerged from proprietary techniques, access to which Chinese officials denied foreign entities"
-              ], correct: 0,
-                explanation: `Giải thích: Câu sau nói "This knowledge remained closely guarded for centuries" (Kiến thức này vẫn được bảo vệ chặt chẽ trong nhiều thế kỷ), do đó câu cần điền phải giải thích việc Trung Quốc bảo vệ bí mật làm giấy.\nA. ĐÚNG - Diễn đạt rõ ràng việc các quan chức Trung Quốc bảo vệ phương pháp làm giấy khỏi người nước ngoài.\nB, C, D. SAI - Cách diễn đạt không tự nhiên hoặc sai trọng tâm.`
-              },
-              { 
-                id: 13, text: "Question 13", options: [
-                "During the 751 Battle of Talas, Arab merchants encountered Chinese prisoners possessing papermaking expertise",
-                "Papermaking expertise transferred when Chinese prisoners, encountered by Arab merchants during the 751 Battle of Talas, possessed this knowledge",
-                "Arab merchants encountered Chinese prisoners conversant with papermaking methodologies during the Battle of Talas in 751",
-                "Papermaking techniques became known as Chinese prisoners encountered Arab merchants throughout the Battle of Talas in 751"
-              ], correct: 2,
-                explanation: `Giải thích: Đoạn văn nói về việc kỹ thuật làm giấy lan dần về phía tây. Câu sau nói "These craftsmen established workshops", do đó câu cần điền phải nói về việc các thợ thủ công Trung Quốc truyền bá kiến thức làm giấy.\nC. ĐÚNG - Câu này diễn đạt rõ ràng và tự nhiên về việc các thương nhân Ả Rập gặp tù nhân Trung Quốc có kiến thức làm giấy trong trận chiến Talas.`
-              },
-              { 
-                id: 14, text: "Question 14", options: [
-                "Books achieved greater accessibility among scholars and students, whereas expensive parchment had previously constrained their distribution",
-                "Previously, expensive parchment had restricted distribution; books subsequently became more accessible to scholarly and student populations",
-                "Scholars and students gained enhanced book access, as expensive parchment’s previous distribution constraints were alleviated",
-                "Book distribution to scholars and students increased accessibility, while expensive parchment had previously imposed limitations"
-              ], correct: 1,
-                explanation: `Giải thích: Đoạn văn mô tả sự chuyển biến (thế kỷ 12 giấy xuất hiện, sau đó sách bùng nổ).\nB. ĐÚNG - Câu này diễn đạt rõ ràng trình tự thời gian: trước đây da thuộc đắt hạn chế phân phối, sau đó giấy làm sách dễ tiếp cận hơn.`
-              },
-              { 
-                id: 15, text: "Question 15", options: [
-                "Despite digital communication platforms’ proliferation, educational institutions and commercial enterprises continue paper reliance",
-                "It facilitated education, governance, and commerce by furnishing an economical medium for information storage and transmission",
-                "Educational facilitation occurred through governance, which furnished commercial entities with economical information storage methodologies",
-                "An economical storage medium enabled education while facilitating governance provision to commercial enterprises"
-              ], correct: 1,
-                explanation: `Giải thích: Cần một câu giải thích sự tác động to lớn của giấy đối với văn minh toàn cầu.\nB. ĐÚNG - Câu này giải thích rõ ràng cách giấy tạo điều kiện cho giáo dục, quản trị và thương mại bằng cách cung cấp phương tiện lưu trữ thông tin giá rẻ.`
-              },
-              { 
-                id: 16, text: "Question 16", options: [
-                "Paper utilization continues expanding despite commercial pressure, while educational institutions maintain digital communication platform reliance",
-                "Despite institutional preferences, commercial enterprises perpetuate paper reliance alongside digital communication platform adoption",
-                "Educational institutions and commercial enterprises maintain paper dependency notwithstanding digital communication platforms’ proliferation",
-                "Digital communication platforms drive commercial reliance, prompting educational institutions to continue paper utilization expansion despite them"
-              ], correct: 2,
-                explanation: `Giải thích: Cần một câu kết luận tại sao giấy vẫn quan trọng trong thời đại số.\nC. ĐÚNG - Diễn đạt rõ ràng việc các tổ chức giáo dục và doanh nghiệp vẫn phụ thuộc vào giấy bất chấp sự phổ biến của công nghệ số.`
-              }
-            ]
+            id: 9, text: "Question 9", options: [
+              "Governments instituted mandatory school attendance for children aged six to fourteen during this epoch",
+              "This period witnessed governments initiating compulsory school attendance requirements for children aged six to fourteen",
+              "School attendance became obligatory for children between six and fourteen as governments established requirements during this period",
+              "Children aged six to fourteen experienced this period when governments mandated school attendance"
+            ], correct: 0, explanation: "Câu A là câu chủ động trực tiếp, mạch lạc nhất bổ nghĩa cho câu trước đó về 'compulsory attendance laws'."
           },
           {
-            title: "Part 4: Guided Cloze Test - Hanoi Convention",
-            instruction: "Read the following announcement and choose the option that best fits each of the numbered blanks from 17 to 22.",
-            passage: "General Secretary Receives International Delegates for Hanoi Convention Signing Ceremony\n\nHANOI – General Secretary Tô Lâm welcomed delegation heads from fifteen nations (17) ______ participated in the official signing ceremony of the Hanoi Convention on Cooperation and Development, (18) ______ at the Presidential Palace yesterday morning.\n\nThe convention establishes frameworks for regional (19) ______ across economic development, environmental protection, and cultural exchange. Delegation leaders expressed strong (20) ______ for Vietnam’s initiative in organizing this historic diplomatic event. General Secretary Lâm emphasized the convention’s significance in strengthening multilateral ties and promoting sustainable development throughout Southeast Asia.\n\nThe ceremony concluded with representatives (21) ______ the convention documents, followed by a state banquet. Over the coming months, participating nations will (22) ______ comprehensive action plans to implement the convention’s provisions effectively.",
-            passageTranslation: `Tổng Bí thư Tiếp Các Đại Biểu Quốc Tế Cho Lễ Ký Kết Công Ước Hà Nội\n\nHÀ NỘI – Tổng Bí thư Tô Lâm đã đón tiếp các trưởng đoàn từ mười lăm quốc gia (17) những người đã tham gia vào lễ ký kết chính thức Công ước Hà Nội về Hợp tác và Phát triển, (18) được tổ chức tại Phủ Chủ tịch sáng hôm qua.\n\nCông ước này thiết lập các khuôn khổ cho (19) sự hợp tác khu vực về phát triển kinh tế, bảo vệ môi trường và trao đổi văn hóa. Các trưởng đoàn bày tỏ sự (20) ủng hộ mạnh mẽ đối với sáng kiến của Việt Nam trong việc tổ chức sự kiện ngoại giao lịch sử này. Tổng Bí thư Lâm nhấn mạnh tầm quan trọng của công ước trong việc tăng cường quan hệ đa phương và thúc đẩy phát triển bền vững trên toàn Đông Nam Á.\n\nLễ kết thúc với các đại diện (21) ký các tài liệu công ước, tiếp theo là bữa tiệc quốc yến. Trong những tháng tới, các quốc gia tham gia sẽ (22) soạn thảo các kế hoạch hành động toàn diện để thực hiện các điều khoản của công ước một cách hiệu quả.`,
-            questions: [
-              { 
-                id: 17, text: "Question 17", options: ["at which", "when", "where", "who"], correct: 3,
-                explanation: `Giải thích: Bổ nghĩa cho "delegation heads" (các trưởng đoàn - người), do đó phải dùng "who".\nD. ĐÚNG.`
-              },
-              { 
-                id: 18, text: "Question 18", options: ["held", "to hold", "hold", "being held"], correct: 0,
-                explanation: `Giải thích: Rút gọn mệnh đề quan hệ bị động "which was held", bổ nghĩa cho "ceremony".\nA. ĐÚNG - "Held" là dạng phân từ 2.`
-              },
-              { 
-                id: 19, text: "Question 19", options: ["cooperate", "cooperative", "cooperation", "cooperatively"], correct: 2,
-                explanation: `Giải thích: "frameworks for regional cooperation", sau tính từ "regional" cần một danh từ.\nC. ĐÚNG - "cooperation" là danh từ (sự hợp tác).`
-              },
-              { 
-                id: 20, text: "Question 20", options: ["enforcement", "endorsement", "endowment", "entrenchment"], correct: 1,
-                explanation: `Giải thích: "endorsement" có nghĩa là sự ủng hộ, phù hợp với việc các trưởng đoàn bày tỏ sự ủng hộ mạnh mẽ sáng kiến.\nB. ĐÚNG.`
-              },
-              { 
-                id: 21, text: "Question 21", options: ["signing", "signed", "to sign", "having signed"], correct: 0,
-                explanation: `Giải thích: Cấu trúc "concluded with + O + V-ing".\nA. ĐÚNG - "Signing" là dạng V-ing đúng ngữ pháp.`
-              },
-              { 
-                id: 22, text: "Question 22", options: ["draw up", "put off", "call for", "take over"], correct: 0,
-                explanation: `Giải thích: "draw up" có nghĩa là soạn thảo, lập kế hoạch.\nA. ĐÚNG.`
-              }
-            ]
+            id: 10, text: "Question 10", options: [
+              "Normal schools were established to prepare individuals for teaching careers, providing both academic and practical training",
+              "Individuals received academic training through normal schools established for teaching career preparation with practical components",
+              "Teaching career preparation occurred through normal school establishment, offering individuals both academic and practical training",
+              "Academic and practical training characterized normal schools established to prepare individuals for teaching professions"
+            ], correct: 0, explanation: "Câu A làm rõ chủ ngữ 'Normal schools' (Trường sư phạm/đào tạo giáo viên) được thành lập để phục vụ cho nhu cầu đào tạo vừa được đề cập ở câu ngay phía trước."
           },
           {
-            title: "Part 5: Reading Comprehension - Data Localization",
-            instruction: "Read the passage and indicate the best answer to each of the following questions from 23 to 30.",
-            passage: "Data localization, sometimes conflated with data residency, mandates that personal records tied to a country be first collected, processed, and stored within its borders before any outbound transfer occurs. Such transfers, if permitted, typically follow compliance steps – notice, explicit consent, and disclosure of use. The principle is grounded in data sovereignty: data is governed by the laws of the jurisdiction where it is gathered. While sovereignty speaks to legal authority over data, localization operationalizes that authority by front-loading domestic handling prior to any cross-border movement.\n\nGovernments and enterprises advance localization for several intertwined reasons. It is framed as a bulwark for security, keeping sensitive assets on home soil. It anchors privacy under specific regimes (for instance, GDPR), reassures national sovereignty over citizens’ information, and can catalyze domestic jobs by compelling in-country infrastructure. Proponents also cite performance: services may respond faster when data sits nearer to users, reducing latency. Critics, however, warn that these justifications vary in weight depending on sector, threat surface, and institutional capacity.\n\nLocalization unfolds through on-premises facilities, sovereign-region clouds, and carefully choreographed transfers and processing. Firms may replicate datasets, yet regulators can stipulate sequencing constraints on erasure. Under certain regimes, foreign copies relating to local residents must be deleted only after deletion has occurred on systems inside the data subject’s country. In practice, they may sit in local and foreign environments concurrently until compliance steps are satisfied. These regimes translate policy into architecture, procurement, and audit trails that prove the chain of custody.\n\nThe calculus is double-edged. Security, privacy alignment, local job creation, and reduced latency represent tangible dividends; yet costs balloon with duplicate data centers, legal complexity, and operational overhead. Access can narrow across borders, interoperability may fray, and trade can be hampered when vendors cannot freely move information. Policymakers thus juggle economic development with openness, attempting to codify controls without stifling transnational services. Outcomes hinge on implementation nuance: exemptions, adequacy findings, and verifiable controls can temper the sharpest frictions.",
-            passageTranslation: `Bản địa hóa dữ liệu, đôi khi bị nhầm lẫn với cư trú dữ liệu, yêu cầu rằng các hồ sơ cá nhân gắn với một quốc gia phải được thu thập, xử lý và lưu trữ đầu tiên trong biên giới của nước đó trước khi bất kỳ chuyển giao ra nước ngoài nào xảy ra. Các chuyển giao như vậy, nếu được phép, thường tuân theo các bước tuân thủ – thông báo, sự đồng ý rõ ràng và công bố việc sử dụng. Nguyên tắc này được dựa trên chủ quyền dữ liệu: dữ liệu được điều chỉnh bởi luật pháp của khu vực pháp lý nơi nó được thu thập. Trong khi chủ quyền nói về thẩm quyền pháp lý đối với dữ liệu, bản địa hóa vận hành thẩm quyền đó bằng cách ưu tiên xử lý trong nước trước bất kỳ di chuyển xuyên biên giới nào.\n\nCác chính phủ và doanh nghiệp thúc đẩy bản địa hóa vì nhiều lý do đan xen. Nó được khung như một thành trì cho an ninh, giữ các tài sản nhạy cảm trên đất nhà. Nó neo giữ quyền riêng tư theo các chế độ cụ thể (ví dụ, GDPR), đảm bảo chủ quyền quốc gia đối với thông tin công dân, và có thể thúc đẩy việc làm trong nước bằng cách bắt buộc cơ sở hạ tầng trong nước. Những người ủng hộ cũng trích dẫn hiệu suất: dịch vụ có thể phản hồi nhanh hơn khi dữ liệu nằm gần người dùng hơn, giảm độ trễ. Tuy nhiên, những người chỉ trích cảnh báo rằng những lý do này khác nhau về trọng lượng tùy thuộc vào lĩnh vực, bề mặt đe dọa và năng lực thể chế.\n\nBản địa hóa diễn ra thông qua các cơ sở tại chỗ, đám mây khu vực có chủ quyền, và chuyển giao và xử lý được dàn dựng cẩn thận. Các công ty có thể sao chép các bộ dữ liệu, nhưng các cơ quan quản lý có thể quy định các ràng buộc trình tự về việc xóa. Theo một số chế độ nhất định, các bản sao nước ngoài liên quan đến cư dân địa phương chỉ phải được xóa sau khi việc xóa đã xảy ra trên các hệ thống bên trong quốc gia của chủ thể dữ liệu. Trong thực tế, chúng có thể nằm trong cả môi trường địa phương và nước ngoài đồng thời cho đến khi các bước tuân thủ được thỏa mãn. Các chế độ này dịch chính sách thành kiến trúc, mua sắm và dấu vết kiểm toán chứng minh chuỗi giám sát.\n\nTính toán là hai lưỡi gươm. An ninh, sự phù hợp về quyền riêng tư, tạo việc làm địa phương và giảm độ trễ đại diện cho những lợi ích hữu hình; nhưng chi phí phồng lên với các trung tâm dữ liệu trùng lặp, sự phức tạp pháp lý và chi phí vận hành. Truy cập có thể thu hẹp qua biên giới, khả năng tương tác có thể suy yếu, và thương mại có thể bị cản trở khi các nhà cung cấp không thể tự do di chuyển thông tin. Do đó, các nhà hoạch định chính sách phải cân bằng phát triển kinh tế với sự cởi mở, cố gắng hợp thức hóa các biện pháp kiểm soát mà không kìm hãm các dịch vụ xuyên quốc gia. Kết quả phụ thuộc vào sắc thái triển khai: các miễn trừ, phát hiện đầy đủ và biện pháp kiểm soát có thể xác minh có thể làm dịu những ma sát sắc nhọn nhất.`,
-            questions: [
-              { 
-                id: 23, text: "Which of the following is NOT mentioned in paragraph 2 as a reason for data localization?", options: ["Enhancing security for sensitive information", "Asserting national sovereignty over citizens’ data", "Generating domestic jobs via in-country infrastructure", "Reducing environmental footprints through greener data centers"], correct: 3,
-                explanation: `Đoạn 2 nêu rõ các lý do: an ninh (security), chủ quyền quốc gia (national sovereignty), tạo việc làm trong nước (domestic jobs), giảm độ trễ (reducing latency). KHÔNG có đề cập nào về giảm dấu chân môi trường (reducing environmental footprints).\nD. ĐÚNG.`
-              },
-              { 
-                id: 24, text: "The word mandates in paragraph 1 can be best replaced by ______?", options: ["requires", "tolerates", "broadcasts", "reimburses"], correct: 0,
-                explanation: `mandates (động từ): yêu cầu, bắt buộc, ra lệnh.\nA. ĐÚNG - "Requires" có nghĩa là yêu cầu, đòi hỏi.`
-              },
-              { 
-                id: 25, text: "The word hampered in paragraph 4 is OPPOSITE in meaning to ______.", options: ["facilitated", "hindered", "obstructed", "undermined"], correct: 0,
-                explanation: `hampered (động từ): bị cản trở. Trái nghĩa là được tạo thuận lợi.\nA. ĐÚNG - "Facilitated" (được tạo thuận lợi) trái nghĩa với "hampered".`
-              },
-              { 
-                id: 26, text: "The word they in paragraph 3 refers to ______.", options: ["domestic systems inside the country", "foreign regulators imposing deletion orders", "replicated personal records stored in both locations", "cloud providers operating sovereign regions"], correct: 2,
-                explanation: `Từ ngữ cảnh, "they" đề cập đến "datasets" hoặc "copies" - các bản sao dữ liệu được lưu trữ ở cả hai nơi.\nC. ĐÚNG.`
-              },
-              { 
-                id: 27, text: "Which of the following best paraphrases the underlined sentence in paragraph 3?", options: [
-                "Certain regulations mandate that domestic deletion precedes foreign erasure to ensure compliance with sovereignty principles.",
-                "Some laws require erasing foreign copies only after local systems have removed the same residents’ data.",
-                "Some jurisdictions stipulate concurrent deletion across all locations to prevent regulatory arbitrage and data leakage.",
-                "Regulations in certain countries require synchronized erasure procedures, with domestic systems initiating the deletion sequence."
-              ], correct: 1,
-                explanation: `Câu gốc nói rằng các bản sao nước ngoài chỉ được xóa sau khi dữ liệu đã được xóa trong hệ thống trong nước.\nB. ĐÚNG - Diễn giải chính xác ý nghĩa này.`
-              },
-              { 
-                id: 28, text: "Which of the following is TRUE according to paragraph 1?", options: [
-                "Data sovereignty and data localization are identical concepts and operate without legal distinctions.",
-                "Data may be transferred abroad first, then retroactively brought into compliance if users later consent.",
-                "Cross-border transfers usually follow local compliance steps, including notice and obtaining user consent.",
-                "Residency rules never require domestic processing before any storage occurs in a foreign jurisdiction."
-              ], correct: 2,
-                explanation: `Đoạn 1 nói rõ: "Such transfers, if permitted, typically follow compliance steps – notice, explicit consent, and disclosure of use".\nC. ĐÚNG.`
-              },
-              { 
-                id: 29, text: "Which paragraph mentions the sequencing of deleting foreign versus local copies?", options: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"], correct: 2,
-                explanation: `Đoạn 3 có câu: "foreign copies relating to local residents must be deleted only after deletion has occurred on systems inside the data subject's country".\nC. ĐÚNG.`
-              },
-              { 
-                id: 30, text: "Which paragraph mentions improved service performance due to proximity to users?", options: ["Paragraph 1", "Paragraph 3", "Paragraph 4", "Paragraph 2"], correct: 3,
-                explanation: `Đoạn 2 có câu: "services may respond faster when data sits nearer to users, reducing latency".\nD. ĐÚNG - Đáp án D tham chiếu đến Paragraph 2.`
-              }
-            ]
-          },
-          {
-            title: "Part 6: Reading Comprehension - Data Is Labor",
-            instruction: "Read the passage and indicate the best answer to each of the following questions from 31 to 40.",
-            passage: "The nineteenth-century “Mill Girls” remind us that solidarity can transmute private hardship into public leverage. They refused the oppressing hand of avarice, stitched wages to dignity, and helped seed modern unions. Today, something analogous is happening: individuals no longer merely vend hours; they continuously emit monetizable traces. [I] If those traces are corralled collectively – rather than siphoned asymmetrically by platforms – then communities can bargain for remuneration the way workers once bargained for safer looms, shorter shifts, and transparent accounts.\n\nAcross jurisdictions, lawmakers are cautiously legitimising intermediaries that pool personal data on behalf of members. The EU’s forthcoming Data Governance Act explicitly entertains “data cooperatives” as brokers between subjects and users; GDPR already distinguishes controllers and processors. Because personal data is non-rival, multiple firms can exploit the same records simultaneously without depletion. [II] This abundance intensifies power imbalances unless communities acquire vehicles – unions, cooperatives, collectives – to negotiate access terms, constrain misuse, and redirect flows of value back to participants.\n\nData pricing remains skewed because incumbents both define the product and set its price; arbitrageurs are scarce. Swash, for instance, surfaces how browsers monetise clickstreams and invites counter-offers; litigation campaigns like the Data Dividend Project contest mispricing and misuse in court. Even when people are not organizing for wages, they can still organise their data to create community income, shifting value from platforms to participants. [III] When legal victories and transparent markets converge, third parties can finally “arb” fairer prices for communities’ digital exhaust.\n\nThere are three mutually reinforcing paths: Policy that recognises data-subject cooperatives; Lawsuits that indemnify communities for misuse; and Tech that automates consent, measurement, and distribution. [IV] If these paths mature together, they could reframe economics, ethics, and human rights around #DataIsLabor, normalising the idea that participation entitles people to a dividend. Dozens of emergent unions already incubate this future, from browser-level plugins to nonprofit trusts, each experimenting with governance that returns agency – and proceeds – to those who generate the raw material.",
-            passageTranslation: `Những "Cô gái nhà máy" thế kỷ 19 nhắc nhở chúng ta rằng sự đoàn kết có thể biến khó khăn riêng tư thành đòn bẩy công cộng. Họ từ chối bàn tay áp bức của lòng tham, gắn tiền công với phẩm giá, và giúp gieo mầm cho các công đoàn hiện đại. Ngày nay, điều gì đó tương tự đang xảy ra: các cá nhân không còn chỉ bán giờ; họ liên tục phát ra các dấu vết có thể kiếm tiền. [I] Nếu những dấu vết đó được tập hợp lại một cách tập thể – thay vì bị hút một cách bất đối xứng bởi các nền tảng – thì các cộng đồng có thể thương lượng để nhận thù lao theo cách mà công nhân đã từng thương lượng để có khung cửi an toàn hơn, ca làm việc ngắn hơn và tài khoản minh bạch.\n\nTrên các khu vực pháp lý, các nhà lập pháp đang thận trọng hợp pháp hóa các trung gian tập hợp dữ liệu cá nhân thay mặt cho các thành viên. Đạo luật Quản trị Dữ liệu sắp tới của EU rõ ràng xem xét "các hợp tác xã dữ liệu" như các nhà môi giới giữa chủ thể và người dùng; GDPR đã phân biệt các bộ điều khiển và bộ xử lý. Bởi vì dữ liệu cá nhân không cạnh tranh, nhiều công ty có thể khai thác cùng một hồ sơ đồng thời mà không bị cạn kiệt. [II] Sự dồi dào này làm tăng cường mất cân bằng quyền lực trừ khi các cộng đồng có được các phương tiện – công đoàn, hợp tác xã, tập thể – để đàm phán các điều khoản truy cập, hạn chế lạm dụng và chuyển hướng dòng giá trị trở lại cho những người tham gia.\n\nĐịnh giá dữ liệu vẫn bị lệch vì các đương nhiệm vừa xác định sản phẩm vừa đặt giá của nó; những người chênh lệch giá khan hiếm. Ví dụ, Swash bề mặt cách các trình duyệt kiếm tiền từ luồng nhấp chuột và mời các đề nghị ngược lại; các chiến dịch kiện tụng như Data Dividend Project tranh chấp định giá sai và lạm dụng tại tòa án. Ngay cả khi mọi người không tổ chức để đòi tiền công, họ vẫn có thể tổ chức dữ liệu của mình để tạo ra thu nhập cộng đồng, chuyển giá trị từ nền tảng sang người tham gia. [III] Khi các chiến thắng pháp lý và thị trường minh bạch hội tụ, các bên thứ ba cuối cùng có thể "chênh lệch giá" cho khí thải kỹ thuật số của cộng đồng với giá công bằng hơn.\n\nCó ba con đường củng cố lẫn nhau: Chính sách công nhận các hợp tác xã chủ thể dữ liệu; Các vụ kiện bồi thường cho cộng đồng vì lạm dụng; và Công nghệ tự tự động hóa sự đồng ý, đo lường và phân phối. [IV] Nếu những con đường này phát triển cùng nhau, chúng có thể tái định nghĩa kinh tế, đạo đức và quyền con người xung quanh #DataIsLabor, chuẩn hóa ý tưởng rằng sự tham gia cho phép mọi người nhận được cổ tức. Hàng chục công đoàn mới nổi đã ấp ủ tương lai này, từ các plugin cấp trình duyệt đến các quỹ phi lợi nhuận, mỗi cái đều thử nghiệm với quản trị trả lại quyền đại diện – và thu nhập – cho những người tạo ra nguyên liệu thô.`,
-            questions: [
-              { 
-                id: 31, text: "According to paragraph 2, because data is non-rival, ______.", options: [
-                "several firms can exploit identical datasets without reducing anyone else’s usable supply",
-                "exclusive ownership rights always prevent duplication across interoperable digital markets",
-                "regulators must license a single controller to maintain scarcity and orderly competition",
-                "platforms necessarily destroy originals whenever purchasers request processed derivatives"
-              ], correct: 0,
-                explanation: `Đoạn 2 nói rõ: "Because personal data is non-rival, multiple firms can exploit the same records simultaneously without depletion".\nA. ĐÚNG - Nhiều công ty có thể sử dụng cùng dữ liệu mà không làm giảm nguồn cung (usable supply) của người khác.`
-              },
-              { 
-                id: 32, text: "The word remuneration in paragraph 1 mostly means ______.", options: ["ceremonial tribute", "financial compensation", "social recognition", "contractual obligation"], correct: 1,
-                explanation: `remuneration (danh từ): tiền công, thù lao.\nB. ĐÚNG - "Financial compensation" (bồi thường tài chính, tiền công) gần nghĩa nhất với "remuneration".`
-              },
-              { 
-                id: 33, text: "Which of the following best summarises paragraph 1?", options: [
-                "Historical labor unions illustrate how collective leverage can reclaim value from extractive intermediaries.",
-                "Wage exploitation vanished once factories improved conditions and mechanized most dangerous tasks.",
-                "Data traces have replaced labor entirely, making industrial precedents irrelevant to digital markets.",
-                "Individual bargaining power is adequate when platforms publish clear privacy policies and dashboards."
-              ], correct: 0,
-                explanation: `Đoạn 1 nói về "Mill Girls" từ chối bóc lột và giúp tạo ra các công đoàn hiện đại, so sánh với việc cộng đồng ngày nay có thể thương lượng để nhận thù lao cho dữ liệu.\nA. ĐÚNG - Tóm tắt chính xác sự so sánh với công đoàn lịch sử.`
-              },
-              { 
-                id: 34, text: "What problem does the author describe as a “market failure” in paragraph 3?", options: [
-                "Platforms unilaterally define data, set prices, and exclude arbitrage that could balance valuations.",
-                "Users overshare information, causing unavoidable leakage regardless of governance or incentives.",
-                "Governments overregulate consent, dismantling innovative services and undermining entrepreneurship.",
-                "Cooperatives demand excessive fees, eroding member payouts and distorting normal market signals."
-              ], correct: 0,
-                explanation: `Đoạn 3 nói: "Data pricing remains skewed because incumbents both define the product and set its price; arbitrageurs are scarce".\nA. ĐÚNG.`
-              },
-              { 
-                id: 35, text: "What is Swash, as mentioned in paragraph 3?", options: ["A browser data-union app", "A European court ruling", "A centralized ad exchange", "A nonprofit trust"], correct: 0,
-                explanation: `Đoạn 3 nói: "Swash, for instance, surfaces how browsers monetise clickstreams".\nA. ĐÚNG - Swash là một ứng dụng/công cụ công đoàn dữ liệu liên quan đến trình duyệt.`
-              },
-              { 
-                id: 36, text: "The phrase oppressing hand of avarice in paragraph 1 refers to ______.", options: ["corporate greed", "state censors", "labor idleness", "data scarcity"], correct: 0,
-                explanation: `Trong ngữ cảnh "oppressing hand of avarice" (bàn tay áp bức của lòng tham), cụm từ này đề cập đến sự bóc lột của chủ xưởng, tức lòng tham doanh nghiệp.\nA. ĐÚNG - "Corporate greed".`
-              },
-              { 
-                id: 37, text: "Which of the following best paraphrases the underlined sentence in paragraph 3?", options: [
-                "Should individuals refrain from wage bargaining entirely, platforms will proactively establish profit-sharing whenever processing behavioral telemetry, recognizing voluntary distribution enhances retention.",
-                "Absent traditional labor mobilization, communities may construct alternative revenue streams through coordinated information stewardship, effectively rechanneling surplus platforms previously appropriated.",
-                "Unless users maintain network participation, collective monetization pathways remain foreclosed because platforms retain ownership over interaction logs, rendering cooperatives legally unviable.",
-                "On condition regulators prohibit microtargeting, individuals can independently commercialize informational exhaust without cooperatives, as restrictions eliminate platforms’ asymmetric value derivation."
-              ], correct: 1,
-                explanation: `Câu gốc: "Even when people are not organizing for wages, they can still organise their data to create community income, shifting value from platforms to participants."\nB. ĐÚNG - Diễn giải chính xác việc cộng đồng tạo dòng doanh thu qua dữ liệu.`
-              },
-              { 
-                id: 38, text: "Which of the following can be inferred from the passage?", options: [
-                "Recognition in EU law will likely legitimate data-union practices elsewhere by signalling feasibility, thereby accelerating experiments that blend policy, litigation, and tooling.",
-                "Data unions will obviate privacy law because collective bargaining inherently secures informed consent and renders statutory safeguards redundant across sectors.",
-                "Browser plugins alone can resolve mispricing, since transparent dashboards remove any need for courts, regulators, or collective governance structures.",
-                "Centralized platforms prefer third-party arbitrage because it simplifies accounting and usually increases the prices they must pay for user information."
-              ], correct: 0,
-                explanation: `Từ việc EU hợp pháp hóa (đoạn 2) và 3 con đường củng cố lẫn nhau (đoạn 4).\nA. ĐÚNG - Sự công nhận trong luật EU sẽ hợp pháp hóa và thúc đẩy các thực hành này ở nơi khác.`
-              },
-              { 
-                id: 39, text: "Where in the passage does the following sentence best fit?\nSome unions already pilot plug-ins that meter contributions and route micropayments back to members.", options: ["[I]", "[II]", "[III]", "[IV]"], correct: 2,
-                explanation: `Câu đưa ra về "plugin đo lường đóng góp" là ví dụ hoàn hảo đứng ngay sau câu "họ vẫn có thể tổ chức dữ liệu của mình để tạo ra thu nhập cộng đồng" ở đoạn 3.\nC. ĐÚNG - Vị trí [III].`
-              },
-              { 
-                id: 40, text: "Which of the following best summarises the passage?", options: [
-                "By treating data as labor, communities can unionise through policy, lawsuits, and technology to redirect value and secure a data dividend from powerful platforms.",
-                "Because data is infinite, markets cannot value it, so governments should nationalise datasets and prohibit private use to prevent corporate profiteering.",
-                "Traditional unions have no relevance to digital economies, which depend primarily on intellectual property, not collective bargaining or revenue-sharing mechanisms.",
-                "Litigation is the sole credible path to compensation; cooperatives and technical distribution tools add complexity without delivering measurable community benefits."
-              ], correct: 0,
-                explanation: `Tóm tắt toàn bài: coi dữ liệu như lao động, dùng 3 con đường (chính sách, kiện tụng, công nghệ) để lập công đoàn, giành lại giá trị.\nA. ĐÚNG.`
-              }
-            ]
+            id: 11, text: "Question 11", options: [
+              "Educational systems persist in expanding opportunities, furnishing specialized instruction that prepares students for diverse careers",
+              "Specialized instruction facilitates diverse career preparation as educational systems continue opportunity expansion for students",
+              "Diverse careers receive specialized instruction through educational systems continuing opportunity expansion for student preparation",
+              "Students receive preparation through educational systems perpetually expanding opportunities and providing specialized instruction"
+            ], correct: 0, explanation: "Đáp án A sử dụng chủ ngữ 'Educational systems' rất phù hợp để tiếp tục đà ý tưởng về sự mở rộng cơ hội học tập và hướng nghiệp của thế kỷ 20."
           }
-        ];
+        ]
+      },
+      {
+        title: "Part 3: Reading Comprehension - Influencer Marketing",
+        instruction: "Read the passage and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions from 12 to 19.",
+        passage: "Influencer marketing leverages creators whose audiences trust their recommendations to publicize a brand’s offer. Rather than renting attention through ads, brands borrow credibility, reaching people predisposed to care. The practice typically remunerates creators to deliver content from a negotiated brief and timeline; outcomes are then tracked. Because the creator’s authority is pre-existing, such campaigns can rival paid media for efficiency, especially when audience–product fit is tight. In short, influence works by converting trust into action across preferred platforms.\n\nDefining an influencer hinges on demonstrable pull: the capacity to nudge followers to click, read, subscribe, or purchase. Creators range from nano and micro to macro and mega tiers. Budget matters, but suitability matters more: audience relevance and engagement rates are pivotal. Micro creators often sustain 3–7% engagement, whereas mega figures hover nearer 1%. As follower counts swell, passive onlookers accumulate, diluting interaction. Consequently, many brands court smaller, highly-engaged niches where persuasion feels conversational rather than broadcast.\n\nBrands pursue influencers because results are both potent and legible. Marketers widely judge the channel effective, not least since audiences treat creator guidance as credible and specific. Partnerships also filter for better customers by targeting communities already intrigued by a category. Crucially, sponsored posts yield measurable signals – conversions, click-throughs, views, and reach – so performance can be attributed to particular creators and platforms. When numbers clarify what works, budgets migrate accordingly; they also encourage repeat collaborations that scale what already resonates.\n\nA typical program proceeds methodically: find aligned creators; agree a brief; manage production; approve assets; publish; measure ROI. Contracts codify deliverables, deadlines, tracking links, and ownership, while disclosures keep campaigns lawful. Brands should plan in detail yet leave room for the creator’s distinctive voice. Integration with wider efforts – ads, SEO, email – amplifies impact, and network choice follows the target audience, whether Instagram, YouTube, LinkedIn, or emerging streams. Above all, transparent labeling ensures content is compliant with advertising rules.",
+        passageTranslation: "Tiếp thị qua người ảnh hưởng (Influencer marketing) tận dụng các nhà sáng tạo nội dung, những người có tệp khán giả tin tưởng vào các đề xuất của họ để quảng bá về ưu đãi của một thương hiệu. Thay vì 'thuê' sự chú ý thông qua quảng cáo, các thương hiệu mượn sự uy tín, tiếp cận những người đã có xu hướng quan tâm. Hoạt động này thường trả thù lao cho người sáng tạo để sản xuất nội dung dựa trên một bản tóm tắt và mốc thời gian đã được thỏa thuận; các kết quả sau đó được theo dõi. Bởi vì quyền uy của người sáng tạo là có sẵn từ trước, các chiến dịch này có thể cạnh tranh với truyền thông trả phí về mặt hiệu quả, đặc biệt khi sự phù hợp giữa khán giả và sản phẩm là rất sát. Tóm lại, ảnh hưởng hoạt động bằng cách chuyển đổi sự tin tưởng thành hành động trên các nền tảng được ưa chuộng.\n\nViệc định nghĩa một người ảnh hưởng phụ thuộc vào sức hút có thể chứng minh được: khả năng thúc đẩy người theo dõi nhấp chuột, đọc, đăng ký hoặc mua hàng. Người sáng tạo dao động từ hạng nano, micro cho tới macro và mega. Ngân sách là quan trọng, nhưng sự phù hợp còn quan trọng hơn: mức độ liên quan của khán giả và tỷ lệ tương tác là then chốt. Những người sáng tạo micro (nhỏ) thường duy trì tỷ lệ tương tác từ 3-7%, trong khi các nhân vật mega (lớn) chỉ lơ lửng ở mức gần 1%. Khi số lượng người theo dõi phình to, những người xem thụ động tích tụ lại, làm loãng sự tương tác. Do đó, nhiều thương hiệu 'tán tỉnh' những thị trường ngách nhỏ hơn nhưng có độ tương tác cao, nơi sự thuyết phục có cảm giác như một cuộc trò chuyện thay vì một chương trình phát sóng.\n\nCác thương hiệu theo đuổi những người ảnh hưởng vì kết quả mang lại vừa mạnh mẽ vừa rõ ràng (legible). Các nhà tiếp thị đánh giá rộng rãi kênh này là hiệu quả, không phải vì điều gì khác ngoài việc khán giả coi các hướng dẫn của người sáng tạo là đáng tin cậy và cụ thể. Quan hệ đối tác cũng giúp lọc ra những khách hàng chất lượng hơn bằng cách nhắm mục tiêu vào các cộng đồng đã tò mò về một danh mục sản phẩm nào đó. Yếu tố cốt lõi là các bài đăng được tài trợ mang lại những tín hiệu có thể đo lường được – số chuyển đổi, lượt nhấp chuột, lượt xem, và phạm vi tiếp cận – để hiệu suất có thể được ghi nhận cho những người sáng tạo và nền tảng cụ thể. Khi các con số làm sáng tỏ những gì đang hoạt động tốt, ngân sách sẽ dịch chuyển tương ứng; chúng (they) cũng khuyến khích sự hợp tác lặp lại để nhân rộng những gì vốn đã tạo ra tiếng vang.\n\nMột chương trình điển hình diễn ra có phương pháp: tìm kiếm người sáng tạo phù hợp; chốt bản tóm tắt (brief); quản lý sản xuất; phê duyệt tài liệu; xuất bản; đo lường ROI (lợi tức đầu tư). Hợp đồng mã hóa các hạng mục chuyển giao, hạn chót, liên kết theo dõi, và quyền sở hữu, trong khi các tiết lộ giữ cho chiến dịch hợp pháp. Các thương hiệu nên lập kế hoạch chi tiết nhưng vẫn cần chừa không gian cho tiếng nói đặc trưng của người sáng tạo. Tích hợp cùng với các nỗ lực rộng lớn hơn – như quảng cáo, SEO, email – sẽ khuếch đại sự tác động, và việc lựa chọn mạng lưới đi theo khán giả mục tiêu, dù là Instagram, YouTube, LinkedIn, hay các luồng xu hướng mới nổi. Trên hết, việc dán nhãn minh bạch đảm bảo nội dung tuân thủ đúng luật quảng cáo.",
+        questions: [
+          { id: 12, text: "Which of the following is NOT mentioned in paragraph 2 as a factor when selecting influencers?", options: ["audience relevance", "engagement rates", "production equipment quality", "budget considerations"], correct: 2, explanation: "Đoạn 2 liệt kê các yếu tố: Budget matters (ngân sách), audience relevance (mức độ liên quan), engagement rates (tỷ lệ tương tác). KHÔNG có đề cập đến 'production equipment quality' (Chất lượng thiết bị sản xuất)." },
+          { id: 13, text: "The word legible in paragraph 3 can be best replaced by ______?", options: ["decipherable", "ornamental", "precarious", "redundant"], correct: 0, explanation: "Từ 'legible' thường mang nghĩa 'rõ ràng, có thể đọc/thấy được' (tương tự như decipherable - có thể giải mã/hiểu được). Ngữ cảnh ở đây nói về kết quả rõ ràng, đo lường được." },
+          { id: 14, text: "The word compliant in paragraph 4 is OPPOSITE in meaning to ______.", options: ["defiant", "obedient", "amenable", "acquiescent"], correct: 0, explanation: "Từ 'compliant' mang nghĩa 'tuân thủ'. Trái nghĩa với tuân thủ là 'defiant' (chống đối, bất tuân)." },
+          { id: 15, text: "The word they in paragraph 3 refers to ______.", options: ["budgets", "numbers", "collaborations", "platforms"], correct: 1, explanation: "Trong câu: 'When numbers clarify what works, budgets migrate accordingly; they also encourage repeat collaborations'. Đại từ 'they' ở đây dùng để chỉ 'numbers' (các con số chỉ số đo lường)." },
+          {
+            id: 16, text: "Which of the following best paraphrases the underlined sentence in paragraph 4?", options: [
+              "Thorough preparation is necessary, though brands must allow creators sufficient latitude to maintain their unique personal style.",
+              "Detailed planning is essential, but creators should retain stylistic freedom to engage their audiences authentically.",
+              "Comprehensive planning should balance brand consistency with preserving the creator’s signature communication approach.",
+              "Strategic planning requires precision, yet accommodating the creator’s authentic expression strengthens campaign resonance."
+            ], correct: 1, explanation: "Câu gốc 'Brands should plan in detail yet leave room for the creator’s distinctive voice' khuyên rằng thương hiệu nên lập kế hoạch chi tiết, nhưng vẫn phải chừa chỗ cho phong cách đặc trưng của người sáng tạo. Câu B diễn đạt lại chính xác nhất thông điệp này."
+          },
+          {
+            id: 17, text: "Which of the following is TRUE according to paragraph 1?", options: [
+              "Influencer campaigns convert existing audience trust into action, often matching paid ads in efficiency.",
+              "Influencer posts cannot be tracked reliably, so outcomes are mostly inferred from brand sentiment.",
+              "Brands usually avoid briefs and timelines, preferring spontaneous content to increase authenticity.",
+              "Audience–product fit is ignored because reach is the only determinant of campaign performance."
+            ], correct: 0, explanation: "Đoạn 1 nêu rõ rằng chiến dịch influencer biến sự tin tưởng thành hành động và có thể cạnh tranh (rival) với các kênh media trả phí về mặt hiệu quả."
+          },
+          { id: 18, text: "Which paragraph mentions that micro creators often maintain higher engagement percentages than mega figures?", options: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"], correct: 1, explanation: "Thông tin này được đề cập ở Đoạn 2: 'Micro creators often sustain 3–7% engagement, whereas mega figures hover nearer 1%'." },
+          { id: 19, text: "Which paragraph mentions legal disclosure and adherence to advertising rules?", options: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"], correct: 3, explanation: "Đoạn 4 có chứa câu: 'while disclosures keep campaigns lawful' và 'transparent labeling ensures content is compliant with advertising rules'." }
+        ]
+      },
+      {
+        title: "Part 4: Reading Comprehension - Right to Repair",
+        instruction: "Read the passage and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions from 20 to 29.",
+        passage: "Right to Repair affirms that if you bought a device, you should be free to fix it – yourself or wherever you choose. Many manufacturers corral repairs into proprietary channels, imposing restrictive regimes that gatekeep diagnostics and parts. [I] This consolidation creates a monopoly on repair, letting companies name their price, dictate turnaround, and decline “uneconomical” fixes, with predictable fallout: gadgets are discarded prematurely. Legally and ethically, critics argue, such lock-ins externalize waste while eroding consumer autonomy and local repair economies.\n\nLegislative proposals seek to redress that asymmetry by requiring manufacturers to supply repair documentation, parts, and tools to consumers and independent shops. By mandating open access to manuals, parts, and tools, lawmakers aim to puncture manufacturers’ repair monopolies rather than micromanage how people repair. The practical effect would be to normalize community repair and allow informed DIY. [II] Opponents warn about safety and intellectual property; supporters counter that transparency, not secrecy, is the credible route to safe, affordable, environmentally prudent maintenance.\n\nSince 2003, iFixit has agitated for repair-friendly design and policy. Early on, industry largely ignored these calls; persistence turned iFixit into a repair authority that publishes teardowns, assigns repairability scores, and publicly calls out unfixable designs. In 2014, the group helped craft the first-ever electronics Right to Repair bill. [III] Subsequent campaigns have supported legislation in forty-six U.S. states and in the European Union, building a transatlantic coalition that reframes repair as infrastructure, not niche hobby.\n\nAdvocacy has been concrete as well as conceptual: iFixit publicly urged New York Governor Kathy Hochul to sign a state repair bill via a billboard along her commute. It even drove a tractor to the Colorado legislature to celebrate the first agricultural repair law’s passage. The group co-sponsored California’s bill, which cleared the State Senate in June 2023. [IV] In Europe, iFixit has been a founding member of coalitions such as Repair.eu and Runder Tisch Reparatur, sustaining momentum.",
+        passageTranslation: "Quyền Sửa chữa (Right to Repair) khẳng định rằng nếu bạn mua một thiết bị, bạn phải được tự do sửa chữa nó – tự làm hoặc tại bất cứ nơi nào bạn chọn. Nhiều nhà sản xuất khoanh vùng việc sửa chữa vào các kênh độc quyền, áp đặt các chế độ hạn chế nhằm kiểm soát chẩn đoán và linh kiện. [I] Sự hợp nhất này tạo ra thế độc quyền về sửa chữa, cho phép các công ty tự định giá, ấn định thời gian xoay vòng, và từ chối những sửa chữa 'không hiệu quả kinh tế', với hậu quả dễ đoán: các thiết bị bị vứt bỏ sớm. Về mặt pháp lý và đạo đức, các nhà phê bình lập luận rằng sự trói buộc này đẩy lượng rác thải ra bên ngoài trong khi làm xói mòn quyền tự chủ của người tiêu dùng và nền kinh tế sửa chữa địa phương.\n\nCác đề xuất lập pháp tìm cách khắc phục sự bất cân xứng đó bằng cách yêu cầu các nhà sản xuất cung cấp tài liệu sửa chữa, linh kiện và công cụ cho người tiêu dùng và các cửa hàng độc lập. Bằng cách bắt buộc mở quyền truy cập vào sách hướng dẫn, linh kiện và công cụ, các nhà làm luật nhắm đến việc đâm thủng sự độc quyền sửa chữa của nhà sản xuất thay vì quản lý vi mô cách mọi người sửa chữa. Tác động thực tế sẽ là bình thường hóa việc sửa chữa tại cộng đồng và cho phép phong trào DIY (tự tay làm) có thông tin. [II] Những người phản đối cảnh báo về độ an toàn và tài sản trí tuệ; những người ủng hộ phản bác rằng minh bạch, chứ không phải bí mật, mới là con đường đáng tin cậy dẫn đến việc bảo trì an toàn, giá cả phải chăng, và thận trọng với môi trường.\n\nKể từ năm 2003, iFixit đã vận động cho các thiết kế và chính sách thân thiện với việc sửa chữa. Thuở ban đầu, ngành công nghiệp phần lớn phớt lờ những lời kêu gọi này; nhưng sự kiên trì đã biến iFixit thành một thế lực thẩm quyền về sửa chữa, chuyên xuất bản các bài 'mổ xẻ' thiết bị, chấm điểm khả năng sửa chữa, và công khai bêu tên các thiết kế không thể sửa chữa. Năm 2014, nhóm đã giúp soạn thảo dự luật Quyền Sửa chữa thiết bị điện tử đầu tiên. [III] Các chiến dịch tiếp theo đã hỗ trợ lập pháp tại 46 bang của Hoa Kỳ và ở Liên minh Châu Âu, xây dựng một liên minh xuyên Đại Tây Dương nhằm tái định hình việc sửa chữa như một cơ sở hạ tầng thiết yếu chứ không phải một sở thích ngách.\n\nSự ủng hộ đã rất cụ thể cũng như mang tính khái niệm: iFixit công khai hối thúc Thống đốc New York Kathy Hochul ký một dự luật sửa chữa của bang thông qua một biển quảng cáo dọc tuyến đường đi làm của bà. Nhóm thậm chí còn lái một chiếc máy kéo đến cơ quan lập pháp Colorado để ăn mừng việc thông qua luật sửa chữa máy móc nông nghiệp đầu tiên. Nhóm cũng đồng tài trợ cho dự luật của bang California, dự luật vừa được Thượng viện Bang thông qua vào tháng 6 năm 2023. [IV] Tại Châu Âu, iFixit là thành viên sáng lập của các liên minh như Repair.eu và Runder Tisch Reparatur, nhằm duy trì đà phát triển.",
+        questions: [
+          {
+            id: 20, text: "According to paragraph 1, the manufacturers’ repair monopoly allows them to ______.", options: [
+              "set high prices and refuse fixes, hastening devices’ needless disposal",
+              "standardize community repair, reducing e-waste through shared service manuals",
+              "expand consumer choice by licensing any shop without rigorous oversight",
+              "subsidize neighborhood workshops to ensure equitable access to routine maintenance"
+            ], correct: 0, explanation: "Đoạn 1 nêu: 'creates a monopoly on repair, letting companies name their price, dictate turnaround, and decline 'uneconomical' fixes, with predictable fallout: gadgets are discarded prematurely'."
+          },
+          { id: 21, text: "The word restrictive in paragraph 1 mostly means ______.", options: ["severely limiting", "loosely generous", "overtly permissive", "mildly expansive"], correct: 0, explanation: "Từ 'restrictive' có nghĩa là mang tính hạn chế, kìm hãm, rất sát nghĩa với 'severely limiting' (hạn chế nghiêm ngặt)." },
+          {
+            id: 22, text: "Which of the following best summarises paragraph 2?", options: [
+              "Lawmakers propose transparency mandates providing manuals, parts, and tools, to break repair monopolies while encouraging safe DIY and community repair practices.",
+              "Governments plan to nationalize repair centers and set uniform prices, ensuring consumer protection through centralized oversight and technical certification.",
+              "Proposals focus on banning independent shops entirely to minimize safety risks and reduce counterfeit parts entering fragile consumer markets.",
+              "Parliamentary committees encourage secrecy around manuals and tools to protect intellectual property while promoting extended warranties as the only remedy."
+            ], correct: 0, explanation: "Đoạn 2 xoay quanh các đề xuất lập pháp yêu cầu nhà sản xuất cung cấp tài liệu, phụ tùng và công cụ nhằm phá vỡ thế độc quyền và thúc đẩy cộng đồng tự sửa chữa an toàn. Câu A tóm tắt đúng nhất."
+          },
+          {
+            id: 23, text: "What helped iFixit become regarded as an authority on repair?", options: [
+              "Persisted with teardowns and repairability scores, publicly challenging unfixable, opaque product designs.",
+              "Purchased major manufacturers and redirected their service divisions toward consumer education initiatives.",
+              "Filed dozens of patents to control diagnostic tools and license them globally.",
+              "Shifted into retail, selling only new gadgets and discontinuing community forums entirely."
+            ], correct: 0, explanation: "Đoạn 3 có đoạn: 'persistence turned iFixit into a repair authority that publishes teardowns, assigns repairability scores, and publicly calls out unfixable designs'."
+          },
+          { id: 24, text: "What happened to California’s Right to Repair bill in June 2023?", options: ["It cleared the State Senate.", "It died in committee.", "It was signed by Hochul.", "It replaced the federal statute."], correct: 0, explanation: "Cuối đoạn 4 có ghi rõ: 'California’s bill, which cleared the State Senate in June 2023'." },
+          { id: 25, text: "The phrase a monopoly on repair in paragraph 1 refers to ______.", options: ["manufacturers", "consumers", "legislators", "recyclers"], correct: 0, explanation: "Việc nhà sản xuất (manufacturers) thu hẹp các kênh sửa chữa đã tạo ra một thế độc quyền trong ngành sửa chữa do họ nắm giữ." },
+          {
+            id: 26, text: "Which of the following best paraphrases the underlined sentence in paragraph 2?", options: [
+              "Legislative interventions mandate unrestricted diagnostic resource availability to erode proprietary concentration while deliberately refraining from prescriptive specification of acceptable maintenance methodologies.",
+              "Governmental initiatives propose replacing decentralized repairs with regulated facilities providing standardized protocols, ensuring quality through mandatory certification guiding citizens systematically.",
+              "Policy frameworks primarily subsidize manufacturers’ proprietary platforms, granting conditional manual access while requiring professional certification before citizens may legally attempt disassembly.",
+              "Legislative proposals seek prohibiting independent repair enterprises, asserting consumer protection mandates exclusive brand-controlled servicing guaranteeing compliance with evolving safety standards."
+            ], correct: 0, explanation: "Câu gốc muốn nói rằng thay vì kiểm soát vi mô (micromanage) người dân, luật nhắm tới việc phá bỏ độc quyền của nhà sản xuất bằng cách bắt buộc cung cấp nguồn lực mở. Lựa chọn A diễn đạt sát nghĩa nhất với ngôn từ trang trọng hơn."
+          },
+          {
+            id: 27, text: "Which of the following can be inferred from the passage?", options: [
+              "If documentation and parts become widely accessible, fewer devices will be discarded prematurely because more owners and local shops can attempt safe, cost-effective repairs.",
+              "iFixit’s advocacy relies exclusively on courtroom litigation, avoiding symbolic public actions that might alienate potential legislative allies or confuse general audiences.",
+              "Right to Repair is principally concerned with strengthening manufacturers’ intellectual property claims against unauthorized reuse of manuals, diagnostic software, and replacement components.",
+              "European organizations like Repair.eu emerged independently of iFixit’s efforts and explicitly oppose cooperation with American repair advocates on transatlantic policy."
+            ], correct: 0, explanation: "Có thể suy luận logic từ bài đọc: Việc mở quyền truy cập tài liệu và phụ kiện sửa chữa sẽ giúp giảm tình trạng vứt bỏ thiết bị sớm do chi phí sửa rẻ hơn và cộng đồng có khả năng tự sửa."
+          },
+          { id: 28, text: "Where in the passage does the following sentence best fit?\nSuch access would allow independent shops to offer safe, affordable repairs.", options: ["[I]", "[II]", "[III]", "[IV]"], correct: 1, explanation: "Câu này đứng hoàn hảo nhất tại vị trí [II] ở cuối đoạn 2 hoặc giữa đoạn 2, bởi nó bổ sung trực tiếp cho việc 'mandating open access' và 'normalize community repair'." },
+          {
+            id: 29, text: "Which of the following best summarises the passage?", options: [
+              "The text argues for Right to Repair, outlines legislation, and profiles iFixit’s advocacy across states and Europe using public, strategic pressure.",
+              "It explains how smartphones are designed, comparing component layouts and benchmarking repair times across several flagship devices released between 2019 and 2024.",
+              "It proposes a technical manual for DIY repairs, listing specific instructions, torque settings, and soldering techniques for consumer electronics and agricultural machinery.",
+              "It surveys warranty law and corporate taxation, prioritizing liability allocation over consumer rights or environmental externalities associated with premature disposal."
+            ], correct: 0, explanation: "Toàn bài xoay quanh việc phân tích Quyền Sửa chữa (Right to Repair), luật pháp liên quan, và đặc biệt làm nổi bật tổ chức iFixit với các chiến dịch vận động chiến lược."
+          }
+        ]
+      },
+      {
+        title: "Part 5: Guided Cloze Test - Pickleball Training Program",
+        instruction: "Read the following announcement and mark the letter A, B, C or D on your answer sheet to indicate the option that best fits each of the numbered blanks from 30 to 35.",
+        passage: "Da Nang University Launches Groundbreaking Pickleball Training Program\n\nProgram Overview\nDa Nang University of Physical Education and Sports has introduced Vietnam’s first specialized pickleball training program, (30) ______ offers comprehensive instruction in this rapidly growing sport. The curriculum combines practical skills development with sports management and coaching methodologies.\n\nCurriculum Details\nStudents (31) ______ in the program will study biomechanics, nutrition science, and advanced training techniques alongside technical pickleball skills. The university has invested in state-of-the-art facilities featuring a considerable (32) ______ of professional courts and equipment. Faculty members include international coaches (33) ______ expertise spans competitive play and sports science research.\n\nCareer Prospects\nGraduates will be (34) ______ positioned to pursue careers as professional athletes, coaches, or sports administrators as pickleball continues its explosive growth across Asia. The program aims to (35) ______ Vietnam’s potential in developing world-class pickleball talent and establishing the nation as a regional training hub.\n\nApplications open March 1st. Visit https://dnupes.edu.vn/pickleball-program for enrollment information.",
+        passageTranslation: "Đại học Đà Nẵng ra mắt chương trình đào tạo Pickleball đột phá\n\nTổng quan chương trình\nĐại học Thể dục Thể thao Đà Nẵng đã giới thiệu chương trình đào tạo pickleball chuyên sâu đầu tiên của Việt Nam, chương trình mà cung cấp (30) hướng dẫn toàn diện trong môn thể thao đang phát triển nhanh chóng này. Khung chương trình kết hợp phát triển kỹ năng thực hành với các phương pháp quản lý thể thao và huấn luyện.\n\nChi tiết chương trình học\nCác sinh viên ghi danh (31) vào chương trình sẽ học về cơ sinh học, khoa học dinh dưỡng, và các kỹ thuật đào tạo nâng cao bên cạnh các kỹ năng pickleball chuyên môn. Trường đại học đã đầu tư vào các cơ sở vật chất hiện đại, có sự góp mặt của một tập hợp (32) đáng kể các sân thi đấu và thiết bị chuyên nghiệp. Các thành viên giảng viên bao gồm những huấn luyện viên quốc tế có chuyên môn (33) trải dài từ thi đấu cạnh tranh đến nghiên cứu khoa học thể thao.\n\nTriển vọng nghề nghiệp\nCác sinh viên tốt nghiệp sẽ được định vị một cách chiến lược (34) để theo đuổi sự nghiệp như một vận động viên chuyên nghiệp, huấn luyện viên, hoặc nhà quản trị thể thao trong bối cảnh pickleball tiếp tục sự bùng nổ của nó khắp châu Á. Chương trình nhằm mục đích khai thác (35) tiềm năng của Việt Nam trong việc phát triển nhân tài pickleball đẳng cấp thế giới và thiết lập quốc gia như một trung tâm đào tạo của khu vực.\n\nĐơn đăng ký mở vào ngày 1 tháng 3. Truy cập https://dnupes.edu.vn/pickleball-program để biết thông tin tuyển sinh.",
+        questions: [
+          { id: 30, text: "Question 30", options: ["which", "where", "when", "whom"], correct: 0, explanation: "Đại từ quan hệ 'which' thay thế cho cụm danh từ 'specialized pickleball training program' đóng vai trò làm chủ ngữ cho mệnh đề 'offers comprehensive instruction...'." },
+          { id: 31, text: "Question 31", options: ["enroll", "enrolled", "enrolling", "to enroll"], correct: 2, explanation: "Sử dụng dạng rút gọn mệnh đề quan hệ dạng chủ động (V-ing): Students (who are) enrolling in the program -> Students enrolling..." },
+          { id: 32, text: "Question 32", options: ["collection", "selection", "assembly", "accumulation"], correct: 0, explanation: "Cụm từ 'a considerable collection of...' nghĩa là một bộ sưu tập/tập hợp đáng kể (sân bãi và thiết bị chuyên nghiệp)." },
+          { id: 33, text: "Question 33", options: ["that", "whose", "who", "of which"], correct: 1, explanation: "Đại từ quan hệ sở hữu 'whose' chỉ sự sở hữu của 'international coaches' đối với 'expertise' (có chuyên môn trải dài...)." },
+          { id: 34, text: "Question 34", options: ["strategically", "strategic", "strategize", "strategy"], correct: 0, explanation: "Chỗ trống cần một trạng từ để bổ nghĩa cho động từ 'positioned' ở dạng bị động. 'strategically positioned' = được định vị một cách chiến lược." },
+          { id: 35, text: "Question 35", options: ["set aside", "bring about", "tap into", "look after"], correct: 2, explanation: "Cụm động từ 'tap into' có nghĩa là khai thác, tận dụng (khai thác tiềm năng của Việt Nam)." }
+        ]
+      },
+      {
+        title: "Part 6: Sentence Arrangement",
+        instruction: "Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances or sentences to make a cohesive and coherent exchange or text in each of the following questions from 36 to 40.",
+        passage: "",
+        passageTranslation: "",
+        questions: [
+          { id: 36, text: "a. Sophie: Thanks so much! I promise I’ll return it by tomorrow afternoon.\nb. Sophie: Could I possibly borrow your English literature textbook for tonight’s assignment?\nc. Mark: Sure, no problem at all. Just take good care of it, please.", options: ["b-a-c", "a-b-c", "b-c-a", "c-b-a"], correct: 2, explanation: "Đoạn hội thoại hợp lý: Sophie ngỏ lời mượn sách (b) -> Mark đồng ý cho mượn (c) -> Sophie cảm ơn và hứa trả lại (a)." },
+          { id: 37, text: "a. Concurrently, public awareness campaigns were launched, encouraging households to participate actively in separation schemes at the source.\nb. Recycling facilities were expanded considerably, with specialized plants dedicated to processing plastic, organic matter, and electronic waste.\nc. This transformation signifies a paradigm shift towards circular economy principles and environmental stewardship in Vietnamese urban centers.\nd. Major cities like Hanoi and Da Nang initiated comprehensive waste segregation programs beginning in the late 2010s.\ne. The implementation was further reinforced by stringent penalties for non-compliance, ensuring widespread adherence to new regulations.", options: ["d-a-b-e-c", "d-b-a-c-e", "c-d-b-a-e", "d-b-e-a-c"], correct: 0, explanation: "Thứ tự: Giới thiệu chương trình ở Hà Nội, ĐN (d) -> Phát động chiến dịch nhận thức (a) -> Mở rộng nhà máy tái chế (b) -> Củng cố bằng hình phạt (e) -> Kết luận về ý nghĩa (c)." },
+          { id: 38, text: "a. We are introducing a diversified investment and protection package tailored to moderate risk profiles.\nb. To begin, complete the suitability assessment and share income statements through our encrypted link.\nc. Our advisors will construct an allocation and confirm underwriting results within three business days.\nd. Please note, introductory bonuses apply to applications submitted before 30 September this year.\ne. For a consultation, reply to this email or schedule via the client portal.", options: ["a-b-c-d-e", "b-a-c-d-e", "a-c-b-d-e", "a-b-d-c-e"], correct: 0, explanation: "Thứ tự thư chào hàng chuẩn: Giới thiệu gói đầu tư (a) -> Hướng dẫn bước đầu tiên (b) -> Lời hứa của tư vấn viên (c) -> Lưu ý thời hạn ưu đãi (d) -> Gọi hành động liên hệ (e)." },
+          { id: 39, text: "a. After receiving harsh feedback on my literature essay, I initially felt discouraged and wanted to give up entirely.\nb. My teacher pointed out numerous weaknesses, yet I had expected praise for what I considered excellent work.\nc. This difficult moment ultimately helped me develop a growth mindset and embrace constructive criticism more openly.\nd. I decided to meet with my teacher regularly and worked hard to strengthen my analytical writing skills.\ne. During sophomore year, I submitted what I believed was my best analytical essay about Shakespeare’s themes.", options: ["e-b-a-d-c", "a-e-b-d-c", "e-a-b-c-d", "c-e-b-a-d"], correct: 0, explanation: "Mạch truyện logic: Nộp bài tâm đắc nhất (e) -> Bị giáo viên chỉ ra nhiều lỗi (b) -> Cảm thấy chán nản (a) -> Quyết định rèn luyện chăm chỉ (d) -> Bài học trưởng thành (c)." },
+          { id: 40, text: "a. Rachel: Do you still read printed newspapers every morning?\nb. Tom: Exactly, that’s why traditional journalism still carries a sense of credibility.\nc. Tom: Not really. I mostly scroll through social media for quick updates.\nd. Rachel: Yes, both platforms inform the public in their own unique ways.\ne. Rachel: I agree, but social media spreads unverified news quite often.", options: ["a-b-c-d-e", "a-b-d-c-e", "b-a-c-e-d", "a-c-e-b-d"], correct: 3, explanation: "Hội thoại: Rachel hỏi (a) -> Tom trả lời không, dùng MXH (c) -> Rachel nói MXH hay lan truyền tin giả (e) -> Tom đồng ý, đó là lý do báo chí truyền thống vẫn uy tín (b) -> Rachel kết luận (d)." }
+        ]
+      }
+    ];
 
-        // State quản lý
-        const state = {
-            answers: {},
-            isSubmitted: false,
-            score: 0,
-            currentPartIndex: 0,
-            showPassageTranslation: false,
-            expandedExplanations: {} // key là question id
-        };
+    // State quản lý
+    const state = {
+      answers: {},
+      isSubmitted: false,
+      score: 0,
+      currentPartIndex: 0,
+      showPassageTranslation: false,
+      expandedExplanations: {}
+    };
 
-        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
-        const allQuestions = quizData.flatMap(s => s.questions);
+    const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+    const allQuestions = quizData.flatMap(s => s.questions);
 
-        // Hàm render giao diện chính
-        function renderApp() {
-            const app = document.getElementById('app');
-            const answeredCount = Object.keys(state.answers).length;
-            const currentSection = quizData[state.currentPartIndex];
-            
-            // Lưu vị trí cuộn
-            const qContainer = document.getElementById('questions-container');
-            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+    // Hàm render giao diện chính
+    function renderApp() {
+      const app = document.getElementById('app');
+      const answeredCount = Object.keys(state.answers).length;
+      const currentSection = quizData[state.currentPartIndex];
 
-            let html = `
+      // Lưu vị trí cuộn
+      const qContainer = document.getElementById('questions-container');
+      const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+      let html = `
                 <!-- Header -->
                 <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
                     <div>
                         <h1 class="text-xl font-bold text-blue-700 flex items-center gap-2">
                             <i class="fa-regular fa-file-lines text-blue-600"></i>
-                            Đề Thi Thử Số 03 - Tích hợp Lời Giải
+                            Đề Thi Thử Số 05 - Tiếng Anh
                         </h1>
                         <p class="text-sm text-slate-500">Mã đề: 1126 | Thời gian làm bài: 50 phút</p>
                     </div>
                     ${!state.isSubmitted ? `
-                    <div class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200">
+                    <div class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200 hidden md:block">
                         Đã làm: ${answeredCount} / ${totalQuestions}
                     </div>
                     ` : `
@@ -384,7 +281,7 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                 </div>
 
                 <!-- Main Body -->
-                <div class="flex-1 flex flex-col min-h-0 w-full max-w-6xl mx-auto px-2 md:px-4 py-3 md:py-4 gap-4">
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-7xl mx-auto px-2 md:px-4 py-3 md:py-4 gap-4">
                     
                     ${state.isSubmitted ? `
                     <div class="flex-none bg-white p-4 rounded-xl border border-green-200 shadow-sm flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-4 animate-in fade-in duration-500">
@@ -394,7 +291,7 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                                 <h2 class="text-xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
                                 <p class="text-slate-600 text-sm">
                                     Số câu đúng: <strong class="text-green-600 text-lg">${state.score}</strong> / ${totalQuestions} &nbsp;—&nbsp; 
-                                    <span class="italic">Nhấn "Xem giải thích chi tiết" ở mỗi câu để tự học nhé.</span>
+                                    <span class="italic hidden md:inline">Nhấn "Xem giải thích chi tiết" ở mỗi câu để tự học nhé.</span>
                                 </p>
                             </div>
                         </div>
@@ -410,15 +307,16 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                                 <h2 class="text-base md:text-lg font-bold text-blue-900">${currentSection.title}</h2>
                                 ${currentSection.instruction ? `<p class="text-xs md:text-sm text-slate-600 mt-0.5 italic line-clamp-1 md:line-clamp-none">${currentSection.instruction}</p>` : ''}
                             </div>
-                            <span class="flex-none text-xs md:text-sm font-bold text-slate-700 bg-white border border-slate-300 px-3 py-1.5 rounded-lg shadow-sm">
+                            <span class="flex-none text-xs md:text-sm font-bold text-slate-700 bg-white border border-slate-300 px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap ml-2">
                                 Phần ${state.currentPartIndex + 1}/${quizData.length}
                             </span>
                         </div>
                         
-                        <div class="flex-1 flex flex-col min-h-0">
+                        <!-- CHIA CỘT DỌC TẠI ĐÂY -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
                             ${currentSection.passage ? `
-                            <div id="passage-container" class="flex-none h-[40%] md:h-[45%] overflow-y-auto bg-slate-50/80 border-b-[3px] border-blue-200 p-4 md:p-6 shadow-inner">
-                                <div class="flex justify-between items-center mb-3 pb-2 border-b border-blue-100/50">
+                            <div id="passage-container" class="flex-none h-[40%] md:h-full md:flex-1 md:w-1/2 overflow-y-auto bg-slate-50/80 border-b-[3px] md:border-b-0 md:border-r-[3px] border-blue-200 p-4 md:p-6 lg:p-8 shadow-inner">
+                                <div class="flex justify-between items-center mb-3 pb-2 border-b border-blue-100/50 sticky top-0 bg-slate-50/90 backdrop-blur-sm z-10 py-2">
                                     <div class="font-bold text-blue-800 flex items-center gap-2 text-sm uppercase tracking-wide">
                                         <i class="fa-regular fa-file-lines"></i> Đoạn Văn Bài Đọc
                                     </div>
@@ -435,8 +333,8 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                             </div>
                             ` : ''}
 
-                            <div id="questions-container" class="flex-1 overflow-y-auto p-4 md:p-6 bg-white">
-                                <div class="max-w-4xl mx-auto space-y-6">
+                            <div id="questions-container" class="flex-1 ${currentSection.passage ? 'md:w-1/2' : 'w-full'} overflow-y-auto p-4 md:p-6 lg:p-8 bg-white">
+                                <div class="max-w-3xl mx-auto space-y-6">
                                     ${currentSection.questions.map(q => renderQuestion(q)).join('')}
 
                                     ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
@@ -474,80 +372,80 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                         </div>
                         <div class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar">
                             ${allQuestions.map(q => {
-                                const isAnswered = state.answers[q.id] !== undefined;
-                                let btnClass = "shrink-0 w-9 h-9 rounded-lg text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
-                                
-                                if (!state.isSubmitted) {
-                                    btnClass += isAnswered 
-                                    ? "bg-blue-600 text-white border-blue-600 shadow-sm" 
-                                    : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
-                                } else {
-                                    const isCorrect = state.answers[q.id] === q.correct;
-                                    btnClass += isCorrect 
-                                    ? "bg-green-500 text-white border-green-500 shadow-sm" 
-                                    : "bg-red-500 text-white border-red-500 shadow-sm";
-                                }
+        const isAnswered = state.answers[q.id] !== undefined;
+        let btnClass = "shrink-0 w-9 h-9 rounded-lg text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
 
-                                return `<button onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
-                            }).join('')}
+        if (!state.isSubmitted) {
+          btnClass += isAnswered
+            ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+            : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+        } else {
+          const isCorrect = state.answers[q.id] === q.correct;
+          btnClass += isCorrect
+            ? "bg-green-500 text-white border-green-500 shadow-sm"
+            : "bg-red-500 text-white border-red-500 shadow-sm";
+        }
+
+        return `<button onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+      }).join('')}
                         </div>
                     </div>
                 </div>
             `;
 
-            app.innerHTML = html;
+      app.innerHTML = html;
 
-            // Phục hồi scroll
-            const newQContainer = document.getElementById('questions-container');
-            if (newQContainer) newQContainer.scrollTop = scrollPos;
+      // Phục hồi scroll
+      const newQContainer = document.getElementById('questions-container');
+      if (newQContainer) newQContainer.scrollTop = scrollPos;
+    }
+
+    // Render từng câu hỏi
+    function renderQuestion(q) {
+      const isAnswered = state.answers[q.id] !== undefined;
+      const isCorrect = state.answers[q.id] === q.correct;
+      const showExp = state.expandedExplanations[q.id];
+
+      let containerClass = `p-4 md:p-5 rounded-xl border transition-all `;
+      if (state.isSubmitted) {
+        containerClass += isCorrect ? 'bg-green-50/50 border-green-200' : 'bg-red-50/50 border-red-200';
+      } else {
+        containerClass += isAnswered ? 'bg-slate-50 border-blue-200' : 'bg-white border-slate-200 hover:border-slate-300';
+      }
+
+      let optionsHtml = q.options.map((option, optIdx) => {
+        const isSelected = state.answers[q.id] === optIdx;
+        const isOptionCorrect = optIdx === q.correct;
+
+        let optionClass = "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ";
+        let iconHtml = '';
+
+        if (!state.isSubmitted) {
+          optionClass += isSelected
+            ? "bg-blue-50 border-blue-400 shadow-sm"
+            : "bg-white border-slate-200 hover:bg-slate-50";
+        } else {
+          optionClass += "cursor-default ";
+          if (isOptionCorrect) {
+            optionClass += "bg-green-100 border-green-500 font-medium ";
+            iconHtml = `<i class="fa-solid fa-check text-green-600 mt-1"></i>`;
+          } else if (isSelected && !isOptionCorrect) {
+            optionClass += "bg-red-100 border-red-400 ";
+            iconHtml = `<i class="fa-solid fa-xmark text-red-500 mt-1"></i>`;
+          } else {
+            optionClass += "bg-white/50 border-slate-200 opacity-60 ";
+          }
         }
 
-        // Render từng câu hỏi
-        function renderQuestion(q) {
-            const isAnswered = state.answers[q.id] !== undefined;
-            const isCorrect = state.answers[q.id] === q.correct;
-            const showExp = state.expandedExplanations[q.id];
+        let circleClass = `w-6 h-6 shrink-0 rounded-full border-2 flex items-center justify-center text-xs font-bold mt-0.5 transition-colors bg-white `;
+        if (isSelected) {
+          circleClass += (state.isSubmitted && !isOptionCorrect) ? 'border-red-500 text-red-500' : 'border-blue-500 text-blue-500';
+        } else {
+          circleClass += 'border-slate-300 text-slate-400';
+        }
+        if (state.isSubmitted && isOptionCorrect) circleClass += ' border-green-600 text-green-600';
 
-            let containerClass = `p-4 md:p-5 rounded-xl border transition-all `;
-            if (state.isSubmitted) {
-                containerClass += isCorrect ? 'bg-green-50/50 border-green-200' : 'bg-red-50/50 border-red-200';
-            } else {
-                containerClass += isAnswered ? 'bg-slate-50 border-blue-200' : 'bg-white border-slate-200 hover:border-slate-300';
-            }
-
-            let optionsHtml = q.options.map((option, optIdx) => {
-                const isSelected = state.answers[q.id] === optIdx;
-                const isOptionCorrect = optIdx === q.correct;
-                
-                let optionClass = "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ";
-                let iconHtml = '';
-
-                if (!state.isSubmitted) {
-                    optionClass += isSelected 
-                    ? "bg-blue-50 border-blue-400 shadow-sm" 
-                    : "bg-white border-slate-200 hover:bg-slate-50";
-                } else {
-                    optionClass += "cursor-default ";
-                    if (isOptionCorrect) {
-                        optionClass += "bg-green-100 border-green-500 font-medium ";
-                        iconHtml = `<i class="fa-solid fa-check text-green-600 mt-1"></i>`;
-                    } else if (isSelected && !isOptionCorrect) {
-                        optionClass += "bg-red-100 border-red-400 ";
-                        iconHtml = `<i class="fa-solid fa-xmark text-red-500 mt-1"></i>`;
-                    } else {
-                        optionClass += "bg-white/50 border-slate-200 opacity-60 ";
-                    }
-                }
-
-                let circleClass = `w-6 h-6 shrink-0 rounded-full border-2 flex items-center justify-center text-xs font-bold mt-0.5 transition-colors bg-white `;
-                if (isSelected) {
-                    circleClass += (state.isSubmitted && !isOptionCorrect) ? 'border-red-500 text-red-500' : 'border-blue-500 text-blue-500';
-                } else {
-                    circleClass += 'border-slate-300 text-slate-400';
-                }
-                if (state.isSubmitted && isOptionCorrect) circleClass += ' border-green-600 text-green-600';
-
-                return `
+        return `
                     <label class="${optionClass}">
                         <input type="radio" name="question-${q.id}" class="hidden" ${isSelected ? 'checked' : ''} ${state.isSubmitted ? 'disabled' : ''} onchange="handleOptionChange(${q.id}, ${optIdx})">
                         <div class="${circleClass}">${String.fromCharCode(65 + optIdx)}</div>
@@ -555,18 +453,18 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                         ${iconHtml}
                     </label>
                 `;
-            }).join('');
+      }).join('');
 
-            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+      let errorHtml = (state.isSubmitted && !isCorrect) ? `
                 <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/50 p-3 rounded-lg border border-red-200">
                     <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
                     <p>Bạn đã chọn sai. Đáp án đúng là <strong>${String.fromCharCode(65 + q.correct)}</strong>.</p>
                 </div>
             ` : '';
 
-            let explanationHtml = '';
-            if (state.isSubmitted && q.explanation) {
-                explanationHtml = `
+      let explanationHtml = '';
+      if (state.isSubmitted && q.explanation) {
+        explanationHtml = `
                     <div class="mt-5 border-t border-slate-200/60 pt-4">
                         <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-blue-600 hover:text-blue-800'}">
                             <i class="fa-solid fa-book-open"></i>
@@ -589,9 +487,9 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                         ` : ''}
                     </div>
                 `;
-            }
+      }
 
-            return `
+      return `
                 <div id="question-${q.id}" class="${containerClass}">
                     <div class="flex gap-3">
                         <div class="font-bold text-slate-700 min-w-[65px] pt-0.5">
@@ -608,95 +506,187 @@ D. SAI - Thứ tự c-a-b-d-e bắt đầu bằng kết luận về tác động
                     </div>
                 </div>
             `;
+    }
+
+    // Event Handlers
+    window.handleOptionChange = (qId, optIdx) => {
+      if (state.isSubmitted) return;
+      state.answers[qId] = optIdx;
+      renderApp();
+    };
+
+    window.calculateScore = () => {
+      let currentScore = 0;
+      quizData.forEach(section => {
+        section.questions.forEach(q => {
+          if (state.answers[q.id] === q.correct) {
+            currentScore += 1;
+          }
+        });
+      });
+      state.score = currentScore;
+      state.isSubmitted = true;
+      renderApp();
+    };
+
+    window.changePart = (newIndex) => {
+      state.currentPartIndex = newIndex;
+      state.showPassageTranslation = false; // Reset dịch khi đổi bài
+      renderApp();
+      setTimeout(() => {
+        const qContainer = document.getElementById('questions-container');
+        if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        const pContainer = document.getElementById('passage-container');
+        if (pContainer) pContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 50);
+    };
+
+    window.resetQuiz = () => {
+      if (confirm('Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án hiện tại sẽ bị xóa.')) {
+        state.answers = {};
+        state.isSubmitted = false;
+        state.score = 0;
+        state.expandedExplanations = {};
+        changePart(0);
+      }
+    };
+
+    window.togglePassageTranslation = () => {
+      state.showPassageTranslation = !state.showPassageTranslation;
+      renderApp();
+    };
+
+    window.toggleExplanation = (qId) => {
+      state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+      renderApp();
+    };
+
+    window.performScroll = (id) => {
+      const container = document.getElementById('questions-container');
+      const el = document.getElementById(`question-${id}`);
+
+      if (container && el) {
+        const containerTop = container.getBoundingClientRect().top;
+        const elTop = el.getBoundingClientRect().top;
+        const currentScroll = container.scrollTop;
+        const targetScroll = currentScroll + (elTop - containerTop) - 16;
+
+        container.scrollTo({
+          top: targetScroll,
+          behavior: "smooth"
+        });
+      }
+    };
+
+    window.scrollToQuestion = (id) => {
+      const targetPartIndex = quizData.findIndex(section =>
+        section.questions.some(q => q.id === id)
+      );
+
+      if (targetPartIndex !== -1 && targetPartIndex !== state.currentPartIndex) {
+        state.currentPartIndex = targetPartIndex;
+        state.showPassageTranslation = false;
+        renderApp();
+        setTimeout(() => performScroll(id), 100);
+      } else {
+        performScroll(id);
+      }
+    };
+
+    // Khởi chạy lần đầu
+    renderApp();
+
+    // ==========================================
+    // TÍNH NĂNG QUÉT KHỐI - TỰ ĐỘNG DỊCH VÀ ĐỌC TO (GIỌNG NỮ MIỀN NAM)
+    // ==========================================
+
+    // Nạp danh sách các giọng nói có sẵn trên hệ thống
+    let availableVoices = [];
+    function loadVoices() {
+      if ('speechSynthesis' in window) {
+        availableVoices = window.speechSynthesis.getVoices();
+      }
+    }
+
+    if ('speechSynthesis' in window) {
+      // Lắng nghe sự kiện thay đổi danh sách giọng đọc (một số trình duyệt nạp bất đồng bộ)
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    document.addEventListener('mouseup', handleSelection);
+    document.addEventListener('touchend', (e) => {
+      setTimeout(() => handleSelection(e), 150);
+    });
+
+    async function handleSelection() {
+      const selection = window.getSelection();
+      const text = selection.toString().trim();
+
+      // Giới hạn độ dài đoạn text để tránh API quá tải
+      if (text.length > 0 && text.length < 1500) {
+        try {
+          // Gọi API miễn phí của Google Translate ngầm
+          const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+          const data = await res.json();
+
+          // Lấy kết quả dịch tiếng Việt
+          const currentViText = data[0].map(item => item[0]).join('');
+
+          // Tự động đọc to bằng tiếng Việt
+          speakText(currentViText);
+
+        } catch (err) {
+          console.error("Lỗi dịch thuật:", err);
+        }
+      } else if (text.length === 0) {
+        // Tắt âm thanh ngay lập tức nếu người dùng click ra ngoài (hủy quét khối)
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+      }
+    }
+
+    // Hàm sử dụng Web Speech API để tìm và đọc giọng miền Nam
+    function speakText(text) {
+      if (!text || !('speechSynthesis' in window)) return;
+
+      window.speechSynthesis.cancel(); // Tắt ngay luồng đọc cũ nếu đang đọc dở
+
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Cố gắng tìm giọng Nữ Miền Nam phụ thuộc vào hệ điều hành
+      if (availableVoices.length === 0) loadVoices();
+
+      // Lọc ra tất cả các giọng tiếng Việt có sẵn
+      const viVoices = availableVoices.filter(v => v.lang.includes('vi'));
+      let selectedVoice = null;
+
+      if (viVoices.length > 0) {
+        // Trên Windows: "Microsoft HoaiMy" là giọng nữ miền Nam.
+        // Trên iOS/macOS: "Linh" là giọng nữ miền Nam.
+        selectedVoice = viVoices.find(v =>
+          v.name.includes('HoaiMy') ||
+          v.name.includes('Linh') ||
+          v.name.toLowerCase().includes('southern') ||
+          v.name.toLowerCase().includes('nam')
+        );
+
+        // Nếu không tìm thấy giọng miền Nam, tự động dùng giọng tiếng Việt mặc định
+        if (!selectedVoice) {
+          selectedVoice = viVoices[0];
         }
 
-        // Event Handlers
-        window.handleOptionChange = (qId, optIdx) => {
-            if (state.isSubmitted) return;
-            state.answers[qId] = optIdx;
-            renderApp();
-        };
+        utterance.voice = selectedVoice;
+      } else {
+        // Fallback nếu không quét được danh sách (ví dụ trên một số mobile browser)
+        utterance.lang = 'vi-VN';
+      }
 
-        window.calculateScore = () => {
-            let currentScore = 0;
-            quizData.forEach(section => {
-                section.questions.forEach(q => {
-                    if (state.answers[q.id] === q.correct) {
-                        currentScore += 1;
-                    }
-                });
-            });
-            state.score = currentScore;
-            state.isSubmitted = true;
-            renderApp();
-        };
-
-        window.changePart = (newIndex) => {
-            state.currentPartIndex = newIndex;
-            state.showPassageTranslation = false; // Reset dịch khi đổi bài
-            renderApp();
-            setTimeout(() => {
-                const qContainer = document.getElementById('questions-container');
-                if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
-                const pContainer = document.getElementById('passage-container');
-                if (pContainer) pContainer.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 50);
-        };
-
-        window.resetQuiz = () => {
-            if (confirm('Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án hiện tại sẽ bị xóa.')) {
-                state.answers = {};
-                state.isSubmitted = false;
-                state.score = 0;
-                state.expandedExplanations = {};
-                changePart(0);
-            }
-        };
-
-        window.togglePassageTranslation = () => {
-            state.showPassageTranslation = !state.showPassageTranslation;
-            renderApp();
-        };
-
-        window.toggleExplanation = (qId) => {
-            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
-            renderApp();
-        };
-
-        window.performScroll = (id) => {
-            const container = document.getElementById('questions-container');
-            const el = document.getElementById(`question-${id}`);
-            
-            if (container && el) {
-                const containerTop = container.getBoundingClientRect().top;
-                const elTop = el.getBoundingClientRect().top;
-                const currentScroll = container.scrollTop;
-                const targetScroll = currentScroll + (elTop - containerTop) - 16; 
-                
-                container.scrollTo({
-                    top: targetScroll,
-                    behavior: "smooth"
-                });
-            }
-        };
-
-        window.scrollToQuestion = (id) => {
-            const targetPartIndex = quizData.findIndex(section => 
-                section.questions.some(q => q.id === id)
-            );
-
-            if (targetPartIndex !== -1 && targetPartIndex !== state.currentPartIndex) {
-                state.currentPartIndex = targetPartIndex;
-                state.showPassageTranslation = false;
-                renderApp();
-                setTimeout(() => performScroll(id), 100);
-            } else {
-                performScroll(id);
-            }
-        };
-
-        // Khởi chạy lần đầu
-        renderApp();
-    </script>
+      utterance.rate = 1.5; // Tốc độ đọc nhanh hơn (1.5x)
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
 </body>
+
 </html>
