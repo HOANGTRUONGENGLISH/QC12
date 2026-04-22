@@ -823,6 +823,7 @@
 
         // --- Tính năng Text-to-Speech ---
         let preferredVoice = null;
+        let currentFallbackAudio = null; // Biến lưu trữ audio dự phòng hiện tại để tránh chồng âm
 
         function loadVoices() {
             const voices = window.speechSynthesis.getVoices();
@@ -857,9 +858,18 @@
 
         // Thêm API phát âm thanh dự phòng (Fallback)
         function playFallbackAudio(word) {
+            // Dừng bất kỳ âm thanh dự phòng nào đang phát
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+
             // Sử dụng API phát âm MP3 thay thế (type=2 là giọng chuẩn Mỹ)
-            const audio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
-            audio.play().catch(e => console.log("Không thể phát âm thanh fallback: ", e));
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+            currentFallbackAudio.play().catch(e => {
+                console.log("Không thể phát âm thanh fallback: ", e);
+                currentFallbackAudio = null;
+            });
         }
 
         function speakCurrentWord(e) {
@@ -868,34 +878,49 @@
             const card = flashcards[currentIndex];
             const wordToSpeak = card.word.replace(/-/g, ' ');
 
+            // 1. Dừng ngay lập tức âm thanh dự phòng nếu đang phát
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+
             try {
-                // Sửa lỗi kẹt giọng nói bằng cách dùng cancel() + setTimeout (Lỗi phổ biến trên Safari/Chrome)
+                // 2. Hủy các yêu cầu đọc TTS hiện có
                 window.speechSynthesis.cancel();
 
+                // 3. Thiết lập utterance mới
+                const utterance = new SpeechSynthesisUtterance(wordToSpeak);
+                if (preferredVoice) {
+                    utterance.voice = preferredVoice;
+                }
+                utterance.lang = 'en-US';
+                utterance.rate = 1.0;  // Trả về tốc độ chuẩn (1.0) để phát âm chính xác hơn
+                utterance.pitch = 1.0; // Trả về cao độ chuẩn (1.0)
+
+                let hasStarted = false;
+                utterance.onstart = () => {
+                    hasStarted = true;
+                };
+
+                utterance.onerror = (err) => {
+                    console.log("TTS Error:", err);
+                    playFallbackAudio(wordToSpeak);
+                };
+
+                // Đọc từ
+                window.speechSynthesis.speak(utterance);
+
+                // 4. Cơ chế kiểm tra: Nếu sau 500ms mà SpeechSynthesis chưa bắt đầu phát, dùng fallback
                 setTimeout(() => {
-                    const utterance = new SpeechSynthesisUtterance(wordToSpeak);
-                    if (preferredVoice) {
-                        utterance.voice = preferredVoice;
+                    if (!hasStarted) {
+                        console.log("SpeechSynthesis slow or failed, using fallback...");
+                        window.speechSynthesis.cancel();
+                        playFallbackAudio(wordToSpeak);
                     }
-                    utterance.lang = 'en-US';
-                    utterance.rate = 0.85;
-                    utterance.pitch = 1.15;
+                }, 500);
 
-                    let isSpeaking = false;
-                    utterance.onstart = () => { isSpeaking = true; };
-                    utterance.onerror = () => { playFallbackAudio(wordToSpeak); };
-
-                    window.speechSynthesis.speak(utterance);
-
-                    // Nếu sau 200ms API mặc định không hoạt động (do trình duyệt chặn), gọi API âm thanh dự phòng
-                    setTimeout(() => {
-                        if (!isSpeaking) {
-                            playFallbackAudio(wordToSpeak);
-                        }
-                    }, 200);
-
-                }, 50);
             } catch (err) {
+                console.log("Speak catch-all error:", err);
                 playFallbackAudio(wordToSpeak);
             }
         }
