@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards Từ Vựng: Life Stories 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1c1917;
+            /* stone-900 */
+        }
+
+        /* --- CSS cho Nền Động Bình Minh (Sunrise) --- */
+        .scenery-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: linear-gradient(to bottom, #4c0519 0%, #be123c 40%, #f59e0b 100%);
+            overflow: hidden;
+        }
+
+        .hill {
+            position: absolute;
+            bottom: -50px;
+            width: 120%;
+            height: 40%;
+            background: #1c1917;
+            /* stone-900 */
+            border-radius: 50% 50% 0 0;
+            left: -10%;
+            box-shadow: inset 0px 20px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .hill2 {
+            position: absolute;
+            bottom: -80px;
+            width: 100%;
+            height: 35%;
+            background: #44403c;
+            /* stone-700 */
+            border-radius: 50% 50% 0 0;
+            right: -20%;
+            box-shadow: inset 0px 20px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .star {
+            position: absolute;
+            color: #fef08a;
+            animation: twinkle ease-in-out infinite alternate;
+            user-select: none;
+            filter: drop-shadow(0 0 5px rgba(253, 224, 71, 0.5));
+            opacity: 0.5;
+            /* Mờ hơn vì trời đang sáng */
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.1;
+                transform: scale(0.7);
+            }
+
+            100% {
+                opacity: 0.6;
+                transform: scale(1.2);
+            }
+        }
+
+        .moon {
+            position: absolute;
+            font-size: 6rem;
+            animation: floatSun 15s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 40px rgba(253, 224, 71, 1));
+            user-select: none;
+            top: 15%;
+            right: 15%;
+        }
+
+        @keyframes floatSun {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+
+            100% {
+                transform: translateY(-15px) scale(1.05);
+            }
+        }
+
+        .house {
+            position: absolute;
+            font-size: 3.5rem;
+            bottom: 18%;
+            right: 25%;
+            filter: drop-shadow(0 0 30px rgba(250, 204, 21, 0.6));
+            user-select: none;
+            z-index: -8;
+        }
+
+        .firefly {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fef08a;
+            border-radius: 50%;
+            box-shadow: 0 0 12px 4px #fde047;
+            animation: flyFirefly ease-in-out infinite alternate;
+            z-index: -7;
+        }
+
+        @keyframes flyFirefly {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0.2;
+            }
+
+            25% {
+                opacity: 1;
+                transform: translate(25px, -20px);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: translate(-15px, -35px);
+            }
+
+            75% {
+                opacity: 1;
+                transform: translate(-30px, 15px);
+            }
+
+            100% {
+                transform: translate(20px, 25px);
+                opacity: 0.2;
+            }
+        }
+
+        .flip-card {
+            perspective: 1000px;
+            width: 100%;
+            height: 480px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 520px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 560px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4);
+            background-color: rgba(255, 255, 255, 0.98);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        input:focus {
+            box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.4);
+            /* rose-400 */
+            outline: none;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .input-error {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #b91c1c !important;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #fb7185;
+            border-radius: 10px;
+        }
+
+        /* rose-400 */
+    </style>
+</head>
+
+<body class="text-stone-800 p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+
+    <div class="scenery-bg">
+        <div class="hill2"></div>
+        <div class="hill"></div>
+        <div class="moon">☀️</div>
+        <div class="star" style="top: 10%; left: 15%; animation-duration: 2.5s;">✨</div>
+        <div class="star" style="top: 5%; left: 45%; animation-duration: 3.5s;">⭐</div>
+        <div class="star" style="top: 25%; left: 75%; animation-duration: 3s;">✨</div>
+        <div class="star" style="top: 15%; left: 90%; animation-duration: 4.5s;">⭐</div>
+        <div class="house">🏡</div>
+        <div class="firefly" style="bottom: 25%; left: 20%; animation-duration: 5s;"></div>
+        <div class="firefly" style="bottom: 15%; left: 45%; animation-duration: 7s; animation-delay: -2s;"></div>
+        <div class="firefly" style="bottom: 30%; left: 70%; animation-duration: 6s; animation-delay: -4s;"></div>
+        <div class="firefly" style="bottom: 20%; left: 85%; animation-duration: 8s; animation-delay: -1s;"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-white/95 backdrop-blur-md border-2 border-rose-500 text-rose-800 px-6 py-3 rounded-full shadow-2xl font-bold text-lg z-50 flex items-center gap-3">
+        <span>⏰</span>
+        <span id="toast-message">Chủ đề mới: Life Stories 3</span>
+        <span>✨</span>
+    </div>
+
+    <div class="max-w-2xl w-full mx-auto relative z-10">
+
+        <!-- TRANG TỔNG HỢP (WELCOME SCREEN) -->
+        <div id="welcome-screen"
+            class="bg-stone-900/90 backdrop-blur-xl rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.6)] p-5 sm:p-8 text-center border-2 border-rose-500/50 flex flex-col max-h-[90vh]">
+            <h1
+                class="text-3xl sm:text-5xl font-black text-white mb-2 tracking-widest drop-shadow-[0_0_10px_rgba(251,113,133,0.8)]">
+                LIFE STORIES 3</h1>
+            <p class="text-rose-200 font-medium mb-5 italic text-sm sm:text-lg border-b border-rose-500/30 pb-3">Nắm
+                vững danh sách từ vựng trước khi thực hành</p>
+
+            <div
+                class="flex-grow overflow-y-auto custom-scrollbar mb-6 border border-rose-500/20 rounded-xl bg-stone-950/50 shadow-inner">
+                <table class="w-full text-left text-xs sm:text-base border-collapse">
+                    <thead class="sticky top-0 bg-rose-600 text-white z-10">
+                        <tr>
+                            <th class="p-4 font-bold uppercase tracking-wider">Từ vựng</th>
+                            <th class="p-4 font-bold uppercase tracking-wider">Loại</th>
+                            <th class="p-4 font-bold uppercase tracking-wider">Nghĩa tiếng Việt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcome-table-body" class="divide-y divide-rose-900/30 text-rose-50">
+                        <!-- Chèn bằng JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="startStudy()"
+                class="w-full py-4 bg-rose-500 hover:bg-rose-400 text-white font-black text-xl rounded-xl shadow-[0_0_20px_rgba(244,63,94,0.6)] transform transition hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest">
+                BẮT ĐẦU ÔN TẬP 🚀
+            </button>
+
+            <div class="mt-4 pt-2 border-t border-rose-500/20">
+                <p class="text-[11px] font-bold italic text-rose-400/70 text-center tracking-wide uppercase">&copy;
+                    Copyright by Hoang Truong English</p>
+            </div>
+        </div>
+
+        <!-- PHẦN CHÍNH -->
+        <div id="main-content" class="hidden">
+            <!-- Nút quay lại -->
+            <button id="top-prev-btn" onclick="prevCard()"
+                class="absolute left-0 sm:left-2 top-0 sm:top-2 flex items-center justify-center p-1.5 text-rose-200 hover:text-white hover:bg-white/20 rounded-full transition-colors hidden z-20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </button>
+
+            <!-- Nút nhạc -->
+            <button onclick="toggleMusic()"
+                class="absolute right-0 sm:right-2 top-0 sm:top-2 flex items-center justify-center p-1.5 text-rose-200 hover:text-white hover:bg-white/20 rounded-full transition-colors z-20">
+                <span id="music-icon" class="text-2xl">🔇</span>
+            </button>
+
+            <!-- Header -->
+            <div
+                class="mb-4 bg-rose-950/70 backdrop-blur-md border border-rose-400/30 rounded-xl px-4 py-2 sm:py-3 shadow-[0_0_20px_rgba(244,63,94,0.5)] mx-10 sm:mx-14">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-0">
+                    <h1 id="main-topic-title"
+                        class="text-base sm:text-lg font-bold text-white tracking-tight uppercase">LIFE STORIES 3</h1>
+                    <div class="flex items-center gap-2">
+                        <div id="live-timer"
+                            class="bg-rose-900/50 px-2 py-0.5 rounded border border-rose-400/30 text-rose-100 font-mono text-xs">
+                            <span id="timer-display">00:00</span>
+                        </div>
+                        <p class="text-rose-200 text-xs font-medium"><span id="progress-text">1 / X</span></p>
+                    </div>
+                </div>
+                <div class="w-full bg-rose-900/50 rounded-full h-1.5 mt-2 overflow-hidden border border-rose-800">
+                    <div id="progress-bar"
+                        class="bg-rose-400 h-full transition-all duration-300 shadow-[0_0_10px_#fb7185]"
+                        style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Flashcard -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+                    <!-- Mặt trước -->
+                    <div class="flip-card-front p-5 sm:p-8 border-2 sm:border-4 border-rose-500">
+                        <div class="flex-grow flex flex-col justify-center items-center text-center">
+                            <div class="flex items-center justify-center gap-2 mb-2 flex-wrap">
+                                <h2 class="text-xl sm:text-3xl font-bold text-stone-800" id="word-mean"></h2>
+                                <span
+                                    class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 rounded font-semibold text-xs uppercase"
+                                    id="word-type"></span>
+                            </div>
+                            <div class="w-12 h-1 bg-rose-200 my-3 mx-auto rounded"></div>
+                            <p class="text-base sm:text-xl font-medium text-stone-700 mb-2 leading-relaxed"
+                                id="word-ex"></p>
+                            <p class="text-xs sm:text-base text-gray-500 italic mb-4" id="word-exVi"></p>
+
+                            <div class="w-full flex flex-col items-center gap-4">
+                                <div id="letter-inputs-container"
+                                    class="flex flex-wrap justify-center gap-x-1 gap-y-2 w-full"></div>
+                                <div class="flex items-center justify-center gap-3 w-full flex-wrap mt-1">
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="w-10 h-10 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-full flex items-center justify-center transition-colors shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                    <button id="hint-btn" onclick="giveHint()"
+                                        class="px-5 h-10 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold rounded-full border border-amber-200 disabled:opacity-50">Hint</button>
+                                    <button onclick="checkAnswer()"
+                                        class="px-6 h-10 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-full shadow-md active:scale-95 transition-colors">Check
+                                        Answer</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-auto w-full pt-4 border-t border-rose-100">
+                            <p
+                                class="text-[10px] sm:text-[11px] font-semibold italic text-rose-300 text-center tracking-wide pointer-events-none">
+                                &copy; Copyright by Hoang Truong English</p>
+                        </div>
+                    </div>
+
+                    <!-- Mặt sau -->
+                    <div class="flip-card-back p-5 sm:p-8 border-2 sm:border-4 border-rose-500">
+                        <div id="result-header" class="text-center py-1.5 rounded-lg font-bold text-lg mb-3"></div>
+                        <div class="flex-grow flex flex-col justify-center items-center text-center">
+                            <h2 class="text-3xl sm:text-5xl font-bold text-rose-900 mb-1" id="back-word"></h2>
+                            <div
+                                class="flex items-center gap-2 mb-3 bg-rose-50 border border-rose-100 px-4 py-1 rounded-full">
+                                <p class="text-lg text-rose-700 font-mono font-medium" id="back-phonetic"></p>
+                                <button onclick="speakCurrentWord(event)" class="text-rose-600 hover:text-rose-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="text-base sm:text-lg text-gray-600 font-medium mb-3" id="back-mean"></p>
+                            <div class="bg-rose-50 border border-rose-100 rounded-lg p-4 w-full max-w-md shadow-sm">
+                                <p class="text-rose-900 text-sm sm:text-lg font-medium leading-relaxed" id="back-ex">
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-auto w-full pt-4">
+                            <div class="flex gap-3 mb-3">
+                                <button onclick="prevCard()"
+                                    class="flex-1 py-2 bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold rounded-lg transition-colors">Quay
+                                    lại</button>
+                                <button onclick="nextCard()" id="next-btn"
+                                    class="flex-1 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg shadow-md transition-colors">Tiếp
+                                    theo</button>
+                            </div>
+                            <div class="border-t border-rose-100 pt-2">
+                                <p
+                                    class="text-[10px] sm:text-[11px] font-semibold italic text-rose-300 text-center tracking-wide pointer-events-none">
+                                    &copy; Copyright by Hoang Truong English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng điểm -->
+        <div id="final-screen"
+            class="hidden bg-stone-900/95 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 text-center border-4 border-rose-600 max-w-md mx-auto w-full flex flex-col">
+            <h2 class="text-2xl sm:text-3xl font-black text-white mb-4">HOÀN THÀNH!</h2>
+            <div class="text-6xl mb-6">🌅</div>
+            <div
+                class="bg-rose-950/50 border border-rose-500/30 rounded-xl p-5 text-left mb-6 shadow-inner text-sm text-rose-50">
+                <p class="flex justify-between border-b border-rose-500/20 pb-2 mb-2"><span>🕒 Hoàn thành:</span> <span
+                        id="finish-time" class="font-medium text-rose-200"></span></p>
+                <p class="flex justify-between border-b border-rose-500/20 pb-2 mb-2"><span>⏳ Thời gian học:</span>
+                    <span id="elapsed-time" class="font-bold text-rose-300"></span></p>
+                <p class="flex justify-between border-b border-rose-500/20 pb-2 mb-2"><span>✅ Đúng tuyệt đối:</span>
+                    <span id="correct-count" class="font-bold text-emerald-400"></span></p>
+                <p class="flex justify-between"><span>💡 Có dùng Hint:</span> <span id="hint-count"
+                        class="font-bold text-amber-400"></span></p>
+
+                <div id="hint-list-container" class="mt-4 hidden">
+                    <p
+                        class="text-xs text-rose-300 font-bold mb-1 border-t border-rose-500/20 pt-2 uppercase tracking-tighter">
+                        Từ vựng đã xem Hint:</p>
+                    <ul id="hint-words-list"
+                        class="list-disc list-inside text-amber-200 text-xs grid grid-cols-2 gap-1 font-medium"></ul>
+                </div>
+            </div>
+            <button onclick="resetQuizToSummary()"
+                class="py-4 bg-rose-600 hover:bg-rose-500 text-white font-bold text-lg rounded-xl shadow-lg transform transition active:scale-95 uppercase tracking-wider">Học
+                lại từ đầu</button>
+            <div class="border-t border-rose-500/20 pt-3 mt-4">
+                <p
+                    class="text-[10px] sm:text-[11px] font-semibold italic text-rose-400/70 text-center tracking-wide pointer-events-none">
+                    &copy; Copyright by Hoang Truong English</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            { topic: "Life Stories 3", word: "determined", phonetic: "/dɪˈtɜːmɪnd/", type: "adj", mean: "quyết tâm", ex: "She is _______ to reach her goals, even when she faces many challenges in life.", exVi: "Cô ấy quyết tâm đạt được mục tiêu của mình, ngay cả khi đối mặt với nhiều thử thách trong cuộc sống." },
+            { topic: "Life Stories 3", word: "inspirational", phonetic: "/ˌɪnspəˈreɪʃənl/", type: "adj", mean: "truyền cảm hứng", ex: "His story is _______ and encourages many young people to follow their dreams.", exVi: "Câu chuyện của anh ấy rất truyền cảm hứng và khuyến khích nhiều bạn trẻ theo đuổi ước mơ của họ." },
+            { topic: "Life Stories 3", word: "memorable", phonetic: "/ˈmemərəbl/", type: "adj", mean: "đáng nhớ", ex: "That experience is _______ because it teaches him an important lesson about life.", exVi: "Trải nghiệm đó thật đáng nhớ vì nó dạy cho anh ấy một bài học quan trọng về cuộc sống." },
+            { topic: "Life Stories 3", word: "successful", phonetic: "/səkˈsesfl/", type: "adj", mean: "thành công", ex: "She is _______ because she works hard and always believes in her ability.", exVi: "Cô ấy thành công vì luôn làm việc chăm chỉ và luôn tin tưởng vào khả năng của mình." },
+            { topic: "Life Stories 3", word: "courageous", phonetic: "/kəˈreɪdʒəs/", type: "adj", mean: "dũng cảm", ex: "It is _______ to face your fears and try again after failure.", exVi: "Thật dũng cảm khi đối mặt với nỗi sợ hãi và thử lại sau khi thất bại." },
+            { topic: "Life Stories 3", word: "emotional", phonetic: "/ɪˈməʊʃənl/", type: "adj", mean: "xúc động", ex: "He becomes _______ when he talks about his difficult childhood.", exVi: "Anh ấy trở nên xúc động khi nói về tuổi thơ khó khăn của mình." },
+            { topic: "Life Stories 3", word: "motivated", phonetic: "/ˈməʊtɪveɪtɪd/", type: "adj", mean: "có động lực", ex: "She feels _______ when she sees progress in her studies and receives support from others.", exVi: "Cô ấy cảm thấy có động lực khi thấy sự tiến bộ trong học tập và nhận được sự hỗ trợ từ người khác." },
+            { topic: "Life Stories 3", word: "resilient", phonetic: "/rɪˈzɪliənt/", type: "adj", mean: "kiên cường", ex: "_______ people stay strong and positive even during very hard times.", exVi: "Những người kiên cường vẫn giữ được sự mạnh mẽ và tích cực ngay cả trong những khoảng thời gian rất khó khăn." },
+            { topic: "Life Stories 3", word: "hopeful", phonetic: "/ˈhəʊpfl/", type: "adj", mean: "đầy hy vọng", ex: "He remains _______ about the future despite many difficulties around him.", exVi: "Anh ấy vẫn tràn đầy hy vọng về tương lai bất chấp nhiều khó khăn xung quanh." },
+            { topic: "Life Stories 3", word: "remarkable", phonetic: "/rɪˈmɑːkəbl/", type: "adj", mean: "đáng chú ý", ex: "Her progress is _______ because she starts from a very difficult situation.", exVi: "Sự tiến bộ của cô ấy rất đáng chú ý vì cô ấy bắt đầu từ một hoàn cảnh rất khó khăn." },
+            { topic: "Life Stories 3", word: "passionate about", phonetic: "/ˈpæʃənət əˈbaʊt/", type: "adj", mean: "đam mê về", ex: "She is _______ helping others and spends a lot of time doing volunteer work.", exVi: "Cô ấy đam mê việc giúp đỡ người khác và dành nhiều thời gian làm công việc tình nguyện." },
+            { topic: "Life Stories 3", word: "independent", phonetic: "/ˌɪndɪˈpendənt/", type: "adj", mean: "độc lập", ex: "Living alone helps him become more _______ and responsible in daily life.", exVi: "Sống một mình giúp anh ấy trở nên độc lập và có trách nhiệm hơn trong cuộc sống hàng ngày." },
+            { topic: "Life Stories 3", word: "thoughtful", phonetic: "/ˈθɔːtfl/", type: "adj", mean: "chu đáo", ex: "He is _______ and always considers other people's feelings before making decisions.", exVi: "Anh ấy rất chu đáo và luôn cân nhắc cảm xúc của người khác trước khi đưa ra quyết định." },
+            { topic: "Life Stories 3", word: "loyal", phonetic: "/ˈlɔɪəl/", type: "adj", mean: "trung thành", ex: "A _______ friend stays with you and supports you in both good and bad times.", exVi: "Một người bạn trung thành luôn ở bên và ủng hộ bạn trong cả những lúc thuận lợi lẫn khó khăn." },
+            { topic: "Life Stories 3", word: "confident", phonetic: "/ˈkɒnfɪdənt/", type: "adj", mean: "tự tin", ex: "She feels _______ when she prepares carefully and understands the topic well.", exVi: "Cô ấy cảm thấy tự tin khi chuẩn bị kỹ lưỡng và hiểu rõ chủ đề." },
+            { topic: "Life Stories 3", word: "faithful", phonetic: "/ˈfeɪθfl/", type: "adj", mean: "trung thành, chung thủy", ex: "He remains _______ to his values and never changes his beliefs easily.", exVi: "Anh ấy vẫn trung thành với các giá trị của mình và không bao giờ dễ dàng thay đổi niềm tin." },
+            { topic: "Life Stories 3", word: "influential", phonetic: "/ˌɪnfluˈenʃl/", type: "adj", mean: "có ảnh hưởng", ex: "Teachers play an _______ role in shaping students’ attitudes and behavior.", exVi: "Giáo viên đóng một vai trò có ảnh hưởng trong việc hình thành thái độ và hành vi của học sinh." },
+            { topic: "Life Stories 3", word: "supportive", phonetic: "/səˈpɔːtɪv/", type: "adj", mean: "hay hỗ trợ", ex: "A _______ family gives strength and encouragement during difficult times.", exVi: "Một gia đình luôn hỗ trợ sẽ mang lại sức mạnh và sự khích lệ trong những lúc khó khăn." },
+            { topic: "Life Stories 3", word: "compassionate", phonetic: "/kəmˈpæʃənət/", type: "adj", mean: "giàu lòng trắc ẩn", ex: "_______ people understand others' pain and try to help them sincerely.", exVi: "Những người giàu lòng trắc ẩn thấu hiểu nỗi đau của người khác và cố gắng giúp đỡ họ một cách chân thành." },
+            { topic: "Life Stories 3", word: "decisive", phonetic: "/dɪˈsaɪsɪv/", type: "adj", mean: "quyết đoán", ex: "Being _______ helps people make quick and effective choices in important situations.", exVi: "Sự quyết đoán giúp con người đưa ra những lựa chọn nhanh chóng và hiệu quả trong các tình huống quan trọng." },
+            { topic: "Life Stories 3", word: "reflective", phonetic: "/rɪˈflektɪv/", type: "adj", mean: "hay suy ngẫm", ex: "A _______ person often thinks carefully about past experiences to learn from them.", exVi: "Một người hay suy ngẫm thường suy nghĩ cẩn thận về những trải nghiệm trong quá khứ để học hỏi từ chúng." },
+            { topic: "Life Stories 3", word: "generous", phonetic: "/ˈdʒenərəs/", type: "adj", mean: "hào phóng", ex: "He is _______ and always shares his time and resources with those in need.", exVi: "Anh ấy rất hào phóng và luôn chia sẻ thời gian cũng như nguồn lực của mình với những người gặp khó khăn." },
+            { topic: "Life Stories 3", word: "sensitive", phonetic: "/ˈsensətɪv/", type: "adj", mean: "nhạy cảm", ex: "_______ people easily understand others' feelings but can also get hurt quickly.", exVi: "Những người nhạy cảm dễ dàng thấu hiểu cảm xúc của người khác nhưng cũng có thể nhanh chóng bị tổn thương." },
+            { topic: "Life Stories 3", word: "respectful", phonetic: "/rɪˈspektfl/", type: "adj", mean: "tôn trọng", ex: "Being _______ helps build strong and healthy relationships with others.", exVi: "Sự tôn trọng giúp xây dựng những mối quan hệ bền chặt và lành mạnh với người khác." },
+            { topic: "Life Stories 3", word: "self-aware", phonetic: "/ˌself əˈweə(r)/", type: "adj", mean: "tự nhận thức", ex: "A _______ person understands their strengths and weaknesses clearly.", exVi: "Một người tự nhận thức hiểu rõ những điểm mạnh và điểm yếu của mình." },
+            { topic: "Life Stories 3", word: "rational", phonetic: "/ˈræʃənl/", type: "adj", mean: "lý trí", ex: "_______ thinking helps people make better decisions in difficult situations.", exVi: "Suy nghĩ lý trí giúp con người đưa ra những quyết định tốt hơn trong các tình huống khó khăn." },
+            { topic: "Life Stories 3", word: "gentle", phonetic: "/ˈdʒentl/", type: "adj", mean: "nhẹ nhàng", ex: "She has a _______ personality and treats everyone with kindness and care.", exVi: "Cô ấy có tính cách nhẹ nhàng và đối xử với mọi người bằng sự tử tế và quan tâm." },
+            { topic: "Life Stories 3", word: "optimistic", phonetic: "/ˌɒptɪˈmɪstɪk/", type: "adj", mean: "lạc quan", ex: "_______ people always look for positive solutions even in hard times.", exVi: "Những người lạc quan luôn tìm kiếm những giải pháp tích cực ngay cả trong những thời điểm khó khăn." },
+            { topic: "Life Stories 3", word: "fearless", phonetic: "/ˈfɪələs/", type: "adj", mean: "không sợ hãi", ex: "He appears _______ when facing challenges, but he still thinks carefully before acting.", exVi: "Anh ấy tỏ ra không sợ hãi khi đối mặt với thử thách, nhưng vẫn suy nghĩ cẩn thận trước khi hành động." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'start') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.4);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.15, now + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1.0);
+                osc.start(now);
+                osc.stop(now + 1.0);
+            } else if (type === 'success') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(783.99, now);
+                osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.1);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.1, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                osc.start(now);
+                osc.stop(now + 0.6);
+            } else if (type === 'error') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(349.23, now);
+                osc.frequency.exponentialRampToValueAtTime(261.63, now + 0.2);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.1, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="border-b border-rose-900/20 hover:bg-rose-500/10 transition-colors">
+                    <td class="p-4 font-black text-rose-300 sm:text-lg tracking-wide">${item.word}</td>
+                    <td class="p-4"><span class="px-2 py-1 bg-rose-500/30 text-white rounded-md text-[10px] uppercase font-black border border-rose-400/30">${item.type}</span></td>
+                    <td class="p-4 text-rose-50 font-medium leading-relaxed">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) { currentFallbackAudio.pause(); }
+
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            const utter = new SpeechSynthesisUtterance(word);
+            utter.lang = 'en-US';
+            utter.rate = 0.9;
+
+            let started = false;
+            utter.onstart = () => started = true;
+            utter.onerror = () => playFallback(word);
+            window.speechSynthesis.speak(utter);
+            setTimeout(() => { if (!started) { window.speechSynthesis.cancel(); playFallback(word); } }, 500);
+        }
+
+        function playFallback(word) {
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+            currentFallbackAudio.play().catch(e => console.log(e));
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="text-rose-600 border-b-2 border-rose-600 inline-block w-24"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl font-bold text-rose-300 self-center px-0.5';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'char-input editable-input w-7 h-9 sm:w-9 sm:h-11 text-center text-lg font-bold border-2 border-rose-200 rounded-lg focus:border-rose-500 bg-white text-rose-800 shadow-inner transition-all';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toLowerCase();
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) inputs[prev].focus();
+                            } else if (e.key === 'Enter') checkAnswer();
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const s = document.createElement('div'); s.className = 'w-3'; container.appendChild(s);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+            document.getElementById('top-prev-btn').classList.toggle('hidden', currentIndex === 0);
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.char-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+            const count = target.length <= 6 ? 1 : 2;
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'char-input w-7 h-9 sm:w-9 sm:h-11 text-center font-bold border-2 border-amber-400 bg-amber-50 text-amber-800 rounded-lg';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.char-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                const header = document.getElementById('result-header');
+                header.textContent = "🎉 TUYỆT VỜI!";
+                header.className = "text-center py-2 rounded-lg font-bold text-lg mb-4 bg-rose-100 text-rose-800 uppercase tracking-widest";
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean} (${card.type})`;
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="font-black text-rose-700 underline decoration-2">${card.word}</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+            } else {
+                playSound('error');
+                document.getElementById('letter-inputs-container').classList.add('shake');
+                setTimeout(() => document.getElementById('letter-inputs-container').classList.remove('shake'), 400);
+            }
+        }
+
+        function nextCard() {
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+            }, 300);
+        }
+
+        function prevCard() {
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => { if (currentIndex > 0) { currentIndex--; renderCard(); } }, 300);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const total = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(total / 60); const s = total % 60;
+            const now = new Date();
+
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('final-screen').classList.remove('hidden');
+            document.getElementById('finish-time').textContent = now.toLocaleTimeString('vi-VN') + " - " + now.toLocaleDateString('vi-VN');
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m} phút ` : '') + `${s} giây`;
+            document.getElementById('correct-count').textContent = flashcards.length - hintedWords.size;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const list = document.getElementById('hint-words-list');
+            list.innerHTML = '';
+            if (hintedWords.size > 0) {
+                document.getElementById('hint-list-container').classList.remove('hidden');
+                hintedWords.forEach(w => { const li = document.createElement('li'); li.textContent = w; list.appendChild(li); });
+            }
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            populateWelcomeTable();
+        }
+
+        document.addEventListener('DOMContentLoaded', populateWelcomeTable);
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').classList.contains('hidden')) return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.shiftKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.shiftKey) {
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
