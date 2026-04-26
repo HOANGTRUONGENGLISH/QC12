@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary - Hoàng Trường English</title>
+    
+    <!-- Tích hợp Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tích hợp Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Tích hợp Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" type="image/png" href="https://hoangtruongenglish.com/image/favicon.png">
+    <!-- Cấu hình màu sắc và phông chữ -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#CD9A3A',
+                            light: '#DFB564',
+                            dark: '#A67926',
+                            50: '#FDF8F0'
+                        },
+                        dark: '#2A3135',
+                        surface: '#FAFAFA'
+                    },
+                    fontFamily: {
+                        serif: ['Cambria', 'Georgia', 'serif'],
+                        sans: ['Cambria', 'Georgia', 'sans-serif'],
+                        times: ['"Times New Roman"', 'Times', 'serif'],
+                        artistic: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #FAFAFA; font-size: 105%; }
+        .hover-card { transition: all 0.3s ease; }
+        .hover-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(205, 154, 58, 0.15); border-color: #CD9A3A; }
+        
+        .slide-in {
+            animation: slideIn 0.3s forwards ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-sans text-dark antialiased">
+    <!-- Header / Navbar -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between gap-4">
+            
+            <!-- Logo -->
+            <a href="https://hoangtruongenglish.com/" class="flex items-center transition-transform hover:scale-105 duration-300 flex-shrink-0">
+                <img src="https://hoangtruongenglish.com/image/logo.png" alt="Anh Ngữ Hoàng Trường Logo" class="h-16 md:h-20 w-auto object-contain" onerror="this.src='https://via.placeholder.com/200x80?text=Hoang+Truong+English'">
+            </a>
+
+            <!-- Thanh tra từ điển đa nền tảng -->
+            <div class="hidden lg:flex flex-1 max-w-lg mx-auto">
+                <form onsubmit="searchDictionary(event)" class="w-full relative flex items-center group bg-gray-50 border border-gray-200 rounded-full focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary focus-within:bg-white transition-all shadow-sm">
+                    
+                    <div class="relative flex items-center border-r border-gray-200 h-full">
+                        <i data-lucide="book-text" class="w-4 h-4 text-gray-500 absolute left-4 pointer-events-none"></i>
+                        <select id="dictSelector" class="bg-transparent text-gray-700 text-sm font-semibold py-3 pl-10 pr-8 outline-none cursor-pointer appearance-none hover:text-primary transition-colors rounded-l-full">
+                            <option value="cambridge">Cambridge</option>
+                            <option value="oxford">Oxford</option>
+                            <option value="longman">Longman</option>
+                            <option value="ozdic">Ozdic</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-2 pointer-none"></i>
+                    </div>
+                    
+                    <input type="text" id="dictSearchInput" placeholder="Nhập từ cần tra..." 
+                           class="w-full bg-transparent text-gray-800 text-sm rounded-r-full pl-4 pr-12 py-3 focus:outline-none">
+                    
+                    <button type="submit" class="absolute right-2 p-1.5 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-full transition-colors" title="Tra cứu">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Social Icons -->
+            <div class="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/share/18bxWRN2oa/?mibextid=wwXIfr" target="_blank" rel="noopener" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white shadow-[0_4px_15px_-3px_rgba(0,0,0,0.07)] flex items-center justify-center hover:-translate-y-1 hover:shadow-[0_8px_20px_-4px_rgba(24,119,242,0.2)] transition-all duration-300" title="Facebook">
+                    <svg class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12.0733C24 5.40533 18.627 0 12 0C5.373 0 0 5.40533 0 12.0733C0 18.1067 4.388 23.0947 10.125 24V15.56H7.078V12.0733H10.125V9.41333C10.125 6.38667 11.916 4.716 14.657 4.716C15.97 4.716 17.343 4.952 17.343 4.952V7.92533H15.83C14.34 7.92533 13.875 8.85733 13.875 9.816V12.0733H17.203L16.671 15.56H13.875V24C19.612 23.0947 24 18.1067 24 12.0733Z" fill="#1877F2"/>
+                        <path d="M16.671 15.56L17.203 12.0733H13.875V9.816C13.875 8.85733 14.34 7.92533 15.83 7.92533H17.343V4.952C17.343 4.952 15.97 4.716 14.657 4.716C11.916 4.716 10.125 6.38667 10.125 9.41333V12.0733H7.078V15.56H10.125V24C10.741 24.096 11.366 24.1467 12 24.1467C12.634 24.1467 13.259 24.096 13.875 24V15.56H16.671Z" fill="white"/>
+                    </svg>
+                </a>
+                <!-- Spotify -->
+                <a href="https://www.youtube.com/watch?si=IwY55Ur1FYE2Qsz1&v=f_LgWgzCPnQ&feature=youtu.be" target="_blank" rel="noopener" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white shadow-[0_4px_15px_-3px_rgba(0,0,0,0.07)] flex items-center justify-center hover:-translate-y-1 hover:shadow-[0_8px_20px_-4px_rgba(29,185,84,0.2)] transition-all duration-300" title="Spotify">
+                    <svg class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="#1DB954" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.241 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.84.241 1.2zM20.16 9.6C15.84 7.08 9.12 6.96 5.28 8.16c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.32-1.32 11.76-1.2 16.68 1.68.54.36.72 1.08.36 1.62-.36.54-1.08.72-1.62.36z"/>
+                    </svg>
+                </a>
+                <!-- Youtube -->
+                <a href="https://www.youtube.com/watch?si=NH0LjQUMVm3OJFhX&v=NMzuwMzHQkw&feature=youtu.be" target="_blank" rel="noopener" class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white shadow-[0_4px_15px_-3px_rgba(0,0,0,0.07)] flex items-center justify-center hover:-translate-y-1 hover:shadow-[0_8px_20px_-4px_rgba(255,0,0,0.2)] transition-all duration-300" title="Youtube">
+                    <svg class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M23.498 6.186a2.936 2.936 0 0 0-2.064-2.074C19.615 3.618 12 3.618 12 3.618s-7.615 0-9.434.494a2.936 2.936 0 0 0-2.064 2.074C.008 8.016 0 12 0 12s.008 3.984.502 5.814a2.936 2.936 0 0 0 2.064 2.074c1.819.494 9.434.494 9.434.494s7.615 0 9.434-.494a2.936 2.936 0 0 0 2.064-2.074C23.992 15.984 24 12 24 12s-.008-3.984-.502-5.814ZM9.6 15.6V8.4l6.4 3.6-6.4 3.6Z" fill="#FF0000"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        
+        <!-- Breadcrumb & Header -->
+        <div class="mb-8 flex items-center gap-2 text-sm font-semibold text-gray-500">
+            <a href="../../index.html" class="hover:text-primary transition-colors flex items-center gap-1"><i data-lucide="home" class="w-4 h-4"></i> Trang chủ</a>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            <span class="text-primary">Vocabulary</span>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="text-center max-w-4xl mx-auto mb-16 relative">
+            <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white text-primary-dark text-sm font-bold tracking-widest uppercase mb-6 border border-primary/20 shadow-sm">
+                <i data-lucide="book-a" class="w-5 h-5"></i>
+                Học Từ Vựng
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-times font-bold mb-8 leading-tight text-gray-800 tracking-wide">
+                KHO TỪ VỰNG <br>
+                <span class="relative inline-block mt-2">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-light font-normal">THEO CHỦ ĐỀ</span>
+                    <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-40"></span>
+                </span>
+            </h1>
+
+            <div class="flex justify-center items-center gap-3 opacity-70">
+                <span class="w-16 h-[1px] bg-primary"></span>
+                <i data-lucide="sparkle" class="w-4 h-4 text-primary"></i>
+                <span class="w-16 h-[1px] bg-primary"></span>
+            </div>
+        </section>
+
+        <!-- Dynamic Content Container -->
+        <div id="appContainer" class="min-h-[400px]">
+            <!-- Nội dung sẽ được tạo tự động bởi JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-serif text-primary font-semibold text-lg mb-2">Niềm tin - Chất lượng</p>
+            <p class="text-gray-400 text-sm">© 2026 Anh Ngữ Hoàng Trường. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // ======= DỮ LIỆU CẤU TRÚC THƯ MỤC =======
+        // Hướng dẫn: Thêm hoặc sửa đổi một đối tượng vào danh sách bên dưới 
+        // để tạo thêm thư mục mới. Hệ thống sẽ tự động vẽ ra giao diện.
+        const vocabularyData = [
+            {
+                folder: "reviseG12",                 
+                name: "Revise Grade 12",             
+                description: "Chương trình ôn tập toàn diện cho học sinh lớp 12.",
+                icon: "book-open-check",             // Lấy icon từ thư viện Lucide (https://lucide.dev/icons/)
+                colorClass: "text-green-600 bg-green-100",  
+                hoverClass: "group-hover:bg-green-600 group-hover:text-white", 
+                files: [                             // Các file thuộc thư mục
+                    { path: "PTQGlifestories1.html", name: "Life Stories - Bài 1" },
+                    { path: "PTQGlifestories2.html", name: "Life Stories - Bài 2" },
+                    { path: "PTQGlifestories3.html", name: "Life Stories - Bài 3" },
+                    { path: "PTQGlifestories4.html", name: "Life Stories - Bài 4" },
+                    { path: "PTQGlifestories5.html", name: "Life Stories - Bài 5" }
+                ]
+            },
+            {
+                folder: "reviseB2C1NR",
+                name: "Revise B2-C1 NR",
+                description: "Tuyển tập từ vựng cấp độ B2-C1 nâng cao chuyên sâu.",
+                icon: "award",
+                colorClass: "text-blue-600 bg-blue-100",
+                hoverClass: "group-hover:bg-blue-600 group-hover:text-white",
+                files: []
+            }
+        ];
+
+        // ======= LOGIC HIỂN THỊ ========
+        const appContainer = document.getElementById('appContainer');
+
+        function renderFolderList() {
+            let html = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 slide-in">
+            `;
+            
+            vocabularyData.forEach((folder, index) => {
+                html += `
+                    <div onclick="renderFileList(${index})" class="hover-card bg-white rounded-2xl p-6 border border-gray-150 relative group overflow-hidden cursor-pointer">
+                        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 shadow-sm ${folder.colorClass} ${folder.hoverClass}">
+                            <i data-lucide="${folder.icon}" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 text-gray-800 transition-colors group-hover:text-primary">${folder.name}</h3>
+                        <p class="text-gray-500 mb-4">${folder.description}</p>
+                        <div class="flex items-center text-sm font-medium text-gray-400">
+                            <i data-lucide="folder-open" class="w-4 h-4 mr-2"></i> ${folder.files.length} bài học
+                        </div>
+                        <div class="absolute top-6 right-6 w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0 translate-x-4">
+                            <i data-lucide="arrow-right" class="w-5 h-5 text-gray-600 group-hover:text-primary"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            appContainer.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function renderFileList(folderIndex) {
+            const folder = vocabularyData[folderIndex];
+            
+            let html = `
+                <div class="slide-in">
+                    <button onclick="renderFolderList()" class="mb-8 inline-flex items-center text-gray-500 hover:text-primary transition-colors font-semibold group px-4 py-2 rounded-lg hover:bg-primary/5">
+                        <i data-lucide="arrow-left" class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform"></i>
+                        Quay lại danh sách
+                    </button>
+                    
+                    <div class="bg-white rounded-3xl p-8 border border-gray-150 shadow-sm mb-8 flex items-center gap-6">
+                        <div class="w-20 h-20 rounded-2xl flex items-center justify-center ${folder.colorClass}">
+                            <i data-lucide="${folder.icon}" class="w-10 h-10"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-bold mb-2 text-gray-800">${folder.name}</h2>
+                            <p class="text-gray-500 text-lg">${folder.description}</p>
+                        </div>
+                    </div>
+
+                    <div class="max-w-4xl mx-auto">
+                        ${folder.files.length > 0 ? `
+                            <div class="space-y-4">
+                                ${folder.files.map((file, idx) => `
+                                    <a href="${folder.folder}/${file.path}" class="flex items-center p-5 bg-white border border-gray-100 hover:border-primary/30 rounded-2xl group transition-all duration-300 hover:shadow-md">
+                                        <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors flex-shrink-0">
+                                            <span class="font-bold text-lg">${idx + 1}</span>
+                                        </div>
+                                        <div class="ml-6 flex-1">
+                                            <h4 class="text-xl font-bold text-gray-800 mb-1 group-hover:text-primary transition-colors">${file.name}</h4>
+                                            <p class="text-sm text-gray-500 font-mono">${folder.folder}/${file.path}</p>
+                                        </div>
+                                        <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white text-gray-400 transition-all duration-300">
+                                            <i data-lucide="play" class="w-5 h-5 ml-1"></i>
+                                        </div>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <div class="text-center py-16 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                <i data-lucide="inbox" class="w-16 h-16 text-primary/40 mx-auto mb-4"></i>
+                                <h3 class="text-xl font-semibold text-gray-600 mb-2">Chưa có bài học nào</h3>
+                                <p class="text-gray-400">Nội dung đang được cập nhật. Bạn có thể thêm file vào thư mục và cấu hình lại file index này.</p>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+            
+            appContainer.innerHTML = html;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            lucide.createIcons();
+        }
+
+        function searchDictionary(event) {
+            event.preventDefault();
+            const word = document.getElementById('dictSearchInput').value.trim();
+            const dict = document.getElementById('dictSelector').value;
+            
+            if (word) {
+                let url = '';
+                const encodedWord = encodeURIComponent(word.toLowerCase().replace(/\s+/g, '-'));
+                
+                if (dict === 'cambridge') {
+                    url = `https://dictionary.cambridge.org/dictionary/english-vietnamese/${encodedWord}`;
+                } else if (dict === 'oxford') {
+                    url = `https://www.oxfordlearnersdictionaries.com/definition/english/${encodedWord}`;
+                } else if (dict === 'longman') {
+                    url = `https://www.ldoceonline.com/dictionary/${encodedWord}`;
+                } else if (dict === 'ozdic') {
+                    url = `https://ozdic.com/collocation/${encodedWord}`;
+                }
+                
+                window.open(url, '_blank');
+                document.getElementById('dictSearchInput').value = '';
+            }
+        }
+
+        // Khởi tạo giao diện lần đầu tiên
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFolderList();
+        });
+    </script>
+</body>
+</html>
