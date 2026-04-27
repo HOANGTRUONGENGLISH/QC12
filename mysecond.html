@@ -5069,7 +5069,7 @@
                     finalScreen.classList.remove('hidden');
                     finalScreen.classList.add('flex');
                     updateHeaderState('final-screen');
-                    stopTimer();
+                    // Không gọi stopTimer() ở đây để đồng hồ tiếp tục chạy trong lúc làm các minigame và ritual
                 }
             }, 700);
         }
@@ -5797,7 +5797,7 @@
                 if (!reviewScreen.classList.contains('hidden')) { e.preventDefault(); startReviewPhase(); return; }
                 if (!finalScreenObj.classList.contains('hidden')) {
                     e.preventDefault();
-                    if (window.completedShown) resetQuiz();
+                    // Loại bỏ resetQuiz() để không vô tình reset điểm/thời gian khi nhấn Enter ở final-screen
                     return;
                 }
                 if (flashcardEl.classList.contains('flipped') && canGoNext) { e.preventDefault(); nextCard(); return; }
@@ -7183,6 +7183,8 @@
         window.finalChosenOrb = null;
 
         function showFinalSummary(orb1, orb2) {
+            stopTimer(); // Dừng đồng hồ khi hoàn thành xong hết nghi lễ và chuẩn bị hiện bảng
+
             const existing = document.getElementById('final-summary-overlay');
             if (existing) existing.remove();
 
