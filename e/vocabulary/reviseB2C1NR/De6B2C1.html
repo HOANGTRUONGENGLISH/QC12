@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Từ Vựng Vũ Trụ - Đề 06 (Pro)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animations */
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+                box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .animate-twinkle {
+            animation: twinkle ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        .animate-float-fast {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .animate-float-slow {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .animate-float-slower {
+            animation: float 12s ease-in-out infinite;
+        }
+
+        @keyframes shootingStar {
+            0% {
+                transform: translateX(0) translateY(0) rotate(-45deg);
+                opacity: 1;
+                width: 0;
+            }
+
+            30% {
+                width: 100px;
+            }
+
+            100% {
+                transform: translateX(-1000px) translateY(1000px) rotate(-45deg);
+                opacity: 0;
+                width: 0;
+            }
+        }
+
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 1));
+            animation: shootingStar 6s linear infinite;
+        }
+
+        /* UI Styles */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Markdown Bold Styling */
+        .question-text strong {
+            color: #a78bfa;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        /* Prevent scrolling on body when not needed */
+        body {
+            overflow-x: hidden;
+            background-color: black;
+        }
+
+        /* Đảm bảo class hidden luôn hoạt động kể cả khi Tailwind load chậm */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="text-white font-sans min-h-screen relative flex items-center justify-center p-4">
+
+    <!-- Vũ trụ Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-indigo-950 to-black"></div>
+
+        <!-- Stars Container -->
+        <div id="stars-container"></div>
+
+        <!-- Hành tinh -->
+        <div class="absolute top-[10%] left-[5%] text-6xl opacity-80 animate-float-slow">🌎</div>
+        <div class="absolute top-[60%] right-[10%] text-7xl opacity-60 animate-float-slower">🪐</div>
+        <div class="absolute top-[20%] right-[20%] text-4xl opacity-90 animate-float-fast">🌕</div>
+        <div class="absolute bottom-[10%] left-[15%] text-5xl opacity-70 animate-float-slow"
+            style="animation-delay: 2s;">☄️</div>
+
+        <!-- Sao băng -->
+        <div class="absolute top-0 right-0 w-full h-full">
+            <div class="shooting-star top-[20%] left-[80%]" style="animation-delay: 1s;"></div>
+            <div class="shooting-star top-[40%] left-[60%]" style="animation-delay: 5s;"></div>
+            <div class="shooting-star top-[10%] left-[30%]" style="animation-delay: 9s;"></div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="relative z-10 w-full max-w-3xl transition-all duration-500">
+
+        <!-- START SCREEN -->
+        <div id="screen-start"
+            class="glass-panel rounded-3xl p-10 text-center transform hover:scale-105 transition-transform duration-300">
+            <h1
+                class="text-5xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">
+                Chuyến Du Hành Từ Vựng
+            </h1>
+            <p class="text-xl text-gray-300 mb-8">
+                Học qua Ngữ Cảnh. Chinh phục toàn bộ <span id="total-count" class="font-bold text-white"></span> từ vựng
+                của Đề 06! 🚀
+            </p>
+            <button onclick="startGame()"
+                class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-full text-xl shadow-[0_0_20px_rgba(139,92,246,0.5)] hover:shadow-[0_0_30px_rgba(139,92,246,0.8)] transition-all cursor-pointer">
+                Bắt Đầu Khám Phá
+            </button>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-6 md:p-10 hidden">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-6 border-b border-white/20 pb-4">
+                <span id="progress-text" class="text-cyan-300 font-semibold tracking-wider">
+                    CÂU HỎI 1
+                </span>
+                <span id="score-text"
+                    class="bg-purple-900/50 border border-purple-500/50 px-4 py-1 rounded-full text-purple-200 font-bold">
+                    Điểm: 0
+                </span>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-8">
+                <h2 id="question-text"
+                    class="text-2xl md:text-3xl font-medium leading-relaxed question-text text-white"></h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <!-- Buttons will be injected here by JS -->
+            </div>
+
+            <!-- Explanation & Next Button -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-indigo-950/60 border border-indigo-500/30 rounded-2xl p-5 mb-6">
+                    <p class="text-indigo-200 mb-2">
+                        <span class="font-bold text-white">Gợi ý:</span> <span id="hint-text"></span>
+                    </p>
+                    <p id="rationale-text" class="hidden">
+                        <span class="font-bold text-white">Chi tiết:</span> <span id="rationale-content"></span>
+                    </p>
+                </div>
+
+                <button id="btn-next" onclick="nextQuestion()"
+                    class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-2xl text-xl shadow-lg transition-all flex justify-center items-center gap-2 cursor-pointer">
+                    Tiếp Tục Chuyến Bay 🛸
+                </button>
+            </div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end"
+            class="glass-panel rounded-3xl p-10 text-center transform hover:scale-105 transition-transform duration-300 hidden">
+            <div class="text-7xl mb-6">🏆</div>
+            <h1
+                class="text-4xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">
+                Nhiệm Vụ Hoàn Thành!
+            </h1>
+            <p class="text-2xl text-white mb-2">
+                Điểm số của bạn: <span id="final-score" class="font-bold text-cyan-400"></span>
+            </p>
+            <p id="final-message" class="text-lg text-gray-400 mb-8"></p>
+
+            <button onclick="startGame()"
+                class="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold rounded-full text-xl transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer">
+                🔄 Chơi lại từ đầu
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Logic JavaScript -->
+    <script>
+        // Database Toàn bộ từ vựng của Đề 06
+        const rawVocab = [
+            ["unveiled", "hé lộ, tiết lộ", "verb", "/ʌnˈveɪld/", "The company unveiled its new product line."],
+            ["unprecedented", "chưa từng có, chưa từng thấy", "adjective", "/ʌnˈpresɪdəntɪd/", "The storm caused unprecedented damage."],
+            ["controversial", "gây tranh cãi", "adjective", "/ˌkɒntrəˈvɜːʃl/", "The new policy is highly controversial."],
+            ["precipitated", "gây ra, đẩy nhanh", "verb", "/prɪˈsɪpɪteɪtɪd/", "The incident precipitated a crisis."],
+            ["philosophical", "thuộc về triết học", "adjective", "/ˌfɪləˈsɒfɪkl/", "He has a deep philosophical understanding of life."],
+            ["manipulate", "thao túng, điều khiển", "verb", "/məˈnɪpjuleɪt/", "He tried to manipulate the data to fit his theory."],
+            ["hereditary", "di truyền", "adjective", "/hɪˈredɪteri/", "Blue eyes are a hereditary trait."],
+            ["precision", "độ chính xác", "noun", "/prɪˈsɪʒn/", "The surgery requires extreme precision."],
+            ["interventions", "sự can thiệp", "noun", "/ˌɪntəˈvenʃnz/", "Medical interventions saved his life."],
+            ["inadvertently", "vô tình, không cố ý", "adverb", "/ˌɪnədˈvɜːtəntli/", "I inadvertently deleted the file."],
+            ["alterations", "sự thay đổi, sự chỉnh sửa", "noun", "/ˌɔːltəˈreɪʃnz/", "There were several alterations made to the plan."],
+            ["subsequent", "tiếp theo, sau đó", "adjective", "/ˈsʌbsɪkwənt/", "Subsequent events proved his theory correct."],
+            ["transgenerational", "qua nhiều thế hệ", "adjective", "/trænzˌdʒenəˈreɪʃənl/", "The impact of the war was transgenerational."],
+            ["mutations", "đột biến", "noun", "/mjuːˈteɪʃnz/", "Genetic mutations can lead to diseases."],
+            ["regulatory", "điều tiết, quản lý", "adjective", "/ˈreɡjələtəri/", "Regulatory bodies ensure fair practices."],
+            ["evolve", "tiến hóa, phát triển", "verb", "/ɪˈvɒlv/", "Languages constantly evolve over time."],
+            ["permissible", "được phép", "adjective", "/pəˈmɪsəbl/", "Smoking is not permissible indoors."],
+            ["oversight", "sự giám sát", "noun", "/ˈəʊvərsaɪt/", "The committee provides oversight of the budget."],
+            ["committees", "ủy ban", "noun", "/kəˈmɪtiz/", "The ethics committee reviewed the proposal."],
+            ["adherence", "sự tuân thủ, sự tuân theo", "noun", "/ədˈhɪərəns/", "Strict adherence to rules is required."],
+            ["protocols", "nghi thức, quy tắc, giao thức", "noun", "/ˈprəʊtəkɒlz/", "All experiments must follow strict protocols."],
+            ["imperatives", "mệnh lệnh, sự bắt buộc", "noun", "/ɪmˈperətɪvz/", "Protecting the environment is a moral imperative."],
+            ["paramount", "tối quan trọng, hàng đầu", "adjective", "/ˈpærəmaʊnt/", "Safety is of paramount importance."],
+            ["biotechnological", "thuộc về công nghệ sinh học", "adjective", "/ˌbaɪəʊtekˌnɒləˈdʒɪkl/", "Biotechnological research is rapidly advancing."],
+            ["revelations", "sự khám phá, sự tiết lộ", "noun", "/ˌrevəˈleɪʃnz/", "The book contains shocking revelations."],
+            ["undermine", "làm suy yếu, phá hoại ngầm", "verb", "/ˌʌndəˈmaɪn/", "Lack of trust can undermine a relationship."],
+            ["assumptions", "giả định, giả thiết", "noun", "/əˈsʌmpʃnz/", "We often make assumptions about others."],
+            ["autonomy", "quyền tự chủ", "noun", "/ɔːˈtɒnəmi/", "Employees are given more autonomy in their work."],
+            ["predetermined", "định trước", "adjective", "/ˌpriːdɪˈtɜːmɪnd/", "The outcome of the game was predetermined."],
+            ["convictions", "niềm tin vững chắc, sự kết án", "noun", "/kənˈvɪkʃnz/", "He holds strong political convictions."],
+            ["volition", "ý chí", "noun", "/vəˈlɪʃn/", "He acted of his own volition."],
+            ["libertarian", "tự do luận", "adjective", "/ˌlɪbərˈteəriən/", "Libertarian views emphasize individual liberty."],
+            ["indeterminacy", "tính bất định", "noun", "/ˌɪndɪˈtɜːmɪnəsi/", "Quantum mechanics deals with indeterminacy."],
+            ["resilience", "khả năng phục hồi", "noun", "/rɪˈzɪliəns/", "The community showed great resilience after the disaster."],
+            ["catastrophic", "thảm khốc, tai ương", "adjective", "/ˌkætəˈstrɒfɪk/", "A catastrophic earthquake struck the region."],
+            ["seminal", "có ảnh hưởng lớn, mang tính đột phá", "adjective", "/ˈsemɪnl/", "His seminal work changed the field of physics."],
+            ["intrigued", "tò mò, bị hấp dẫn", "adjective", "/ɪnˈtriːɡd/", "I was intrigued by her story."],
+            ["trauma", "chấn thương tâm lý, chấn thương thể chất", "noun", "/ˈtraʊmə/", "The accident left him with severe emotional trauma."],
+            ["interdisciplinary", "liên ngành", "adjective", "/ˌɪntəˈdɪsɪplɪnəri/", "The project requires an interdisciplinary approach."],
+            ["harness", "khai thác, tận dụng", "verb", "/ˈhɑːnɪs/", "We must harness renewable energy sources."],
+            ["adversity", "nghịch cảnh, khó khăn", "noun", "/ədˈvɜːsəti/", "They showed great strength in the face of adversity."],
+            ["manifests", "biểu lộ, thể hiện", "verb", "/ˈmænɪfest/", "His anxiety manifests as a nervous cough."],
+            ["predisposition", "khuynh hướng bẩm sinh, sự dễ mắc phải", "noun", "/ˌpriːdɪspəˈzɪʃn/", "He has a genetic predisposition to heart disease."],
+            ["acute", "cấp tính, nghiêm trọng", "adjective", "/əˈkjuːt/", "She experienced acute pain."],
+            ["deliberation", "sự cân nhắc, suy nghĩ kỹ lưỡng", "noun", "/dɪˌlɪbəˈreɪʃn/", "After much deliberation, they made a decision."],
+            ["ratifies", "phê chuẩn, xác nhận", "verb", "/ˈrætɪfaɪz/", "The parliament ratifies treaties."],
+            ["cloning", "nhân bản vô tính", "noun", "/ˈkləʊnɪŋ/", "Human cloning raises many ethical questions."],
+            ["contentious", "gây tranh cãi", "adjective", "/kənˈtenʃəs/", "Land ownership is a contentious issue."],
+            ["procreation", "sự sinh sản", "noun", "/ˌprəʊkriˈeɪʃn/", "Procreation is a fundamental biological process."],
+            ["dilemmas", "tình thế khó xử, nan giải", "noun", "/dɪˈleməz/", "He faced a moral dilemma."],
+            ["hampering", "cản trở, gây khó khăn", "verb", "/ˈhæmpərɪŋ/", "Heavy rain is hampering rescue efforts."],
+            ["prohibitions", "lệnh cấm, sự cấm đoán", "noun", "/ˌprəʊɪˈbɪʃnz/", "There are strict prohibitions against illegal logging."],
+            ["apprehension", "sự lo lắng, e ngại", "noun", "/ˌæprɪˈhenʃn/", "She felt apprehension about the upcoming exam."],
+            ["abnormalities", "sự bất thường", "noun", "/ˌæbnɔːˈmælətiz/", "Developmental abnormalities can be severe."],
+            ["inevitably", "không thể tránh khỏi, tất yếu", "adverb", "/ɪnˈevɪtəbli/", "Mistakes will inevitably happen."],
+            ["refinements", "sự tinh chỉnh, cải tiến", "noun", "/rɪˈfaɪnmənts/", "The design underwent several refinements."],
+            ["indispensable", "không thể thiếu, rất cần thiết", "adjective", "/ˌɪndɪˈspensəbl/", "Water is indispensable for life."],
+            ["opacity", "sự mờ đục, không rõ ràng", "noun", "/əʊˈpæsəti/", "The algorithmic opacity of AI is a concern."],
+            ["precarious", "bấp bênh, không chắc chắn", "adjective", "/prɪˈkeəriəs/", "His financial situation is precarious."],
+            ["quandaries", "tình thế khó xử, nan giải (số nhiều)", "noun", "/ˈkwɒndəriz/", "We faced ethical quandaries about the experiment."],
+            ["cultivate", "nuôi cấy, trau dồi, trồng trọt", "verb", "/ˈkʌltɪveɪt/", "They cultivate organisms in the lab."],
+            ["sanctity", "sự thiêng liêng, bất khả xâm phạm", "noun", "/ˈsæŋktɪti/", "The sanctity of human life is paramount."],
+            ["scrutiny", "sự xem xét kỹ lưỡng, giám sát chặt chẽ", "noun", "/ˈskruːtɪni/", "The project is under intense scrutiny."],
+            ["rigorous", "nghiêm ngặt, chặt chẽ", "adjective", "/ˈrɪɡərəs/", "The research underwent a rigorous review."],
+            ["zoonotic", "lây truyền từ động vật sang người", "adjective", "/zuːˈnɒtɪk/", "Zoonotic diseases pose a public health risk."],
+            ["pandemic", "đại dịch", "noun", "/pænˈdemɪk/", "The world experienced a global pandemic."],
+            ["attribution", "sự quy cho, sự gán cho", "noun", "/ˌætrɪˈbjuːʃn/", "The attribution of conscious feelings is complex."],
+            ["reconnaissance", "trinh sát", "noun", "/rɪˈkɒnɪsns/", "The army conducted a reconnaissance mission."],
+            ["inscrutable", "khó hiểu, bí ẩn", "adjective", "/ɪnˈskruːtəbl/", "His inscrutable expression revealed nothing."],
+            ["malpractice", "sai sót chuyên môn, sơ suất", "noun", "/ˌmælˈpræktɪs/", "Medical malpractice claims are serious."],
+            ["vulnerabilities", "điểm yếu, lỗ hổng", "noun", "/ˌvʌlnərəˈbɪlətiz/", "Cybersecurity vulnerabilities need to be fixed."],
+            ["eradication", "sự xóa bỏ, tiệt trừ", "noun", "/ɪˌrædɪˈkeɪʃn/", "The eradication of the disease is a global goal."],
+            ["affirmative", "khẳng định, tích cực", "adjective", "/əˈfɜːmətɪv/", "She gave an affirmative answer."],
+            ["consensus", "sự đồng thuận, nhất trí", "noun", "/kənˈsensəs/", "There is a general consensus on the issue."],
+            ["discrepancy", "sự khác biệt, mâu thuẫn", "noun", "/dɪˈskrepənsi/", "There was a discrepancy between the two reports."]
+        ];
+
+        // Khởi tạo hiển thị tổng số câu
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        // Sinh Quiz Động và Xáo trộn
+        const quizData = rawVocab.map((item, index) => {
+            const word = item[0];
+            const meaning = item[1];
+            const type = item[2];
+            const ipa = item[3];
+            const example = item[4];
+
+            let wrongMeanings = [];
+
+            // Random 3 đáp án nhiễu khác với đáp án đúng
+            while (wrongMeanings.length < 3) {
+                const randomItem = rawVocab[Math.floor(Math.random() * rawVocab.length)];
+                if (randomItem[1] !== meaning && !wrongMeanings.includes(randomItem[1])) {
+                    wrongMeanings.push(randomItem[1]);
+                }
+            }
+
+            const options = [
+                { text: meaning, rationale: "Tuyệt vời, đây là đáp án chính xác!", isCorrect: true },
+                { text: wrongMeanings[0], rationale: "Đáp án sai, đây là nghĩa của một từ khác trong bài.", isCorrect: false },
+                { text: wrongMeanings[1], rationale: "Đáp án sai, đây là nghĩa của một từ khác trong bài.", isCorrect: false },
+                { text: wrongMeanings[2], rationale: "Đáp án sai, đây là nghĩa của một từ khác trong bài.", isCorrect: false }
+            ];
+
+            // Tạo câu đục lỗ
+            const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(safeWord, 'gi');
+            let maskedExample = example.replace(regex, '_____');
+
+            return {
+                questionNumber: index + 1,
+                question: `Nghĩa của từ/cụm từ **${word}** là gì?`,
+                answerOptions: options,
+                hint: `Loại từ: <b>${type}</b> | Phiên âm: <b>${ipa}</b><br/><br/><i>Ví dụ: "${maskedExample}"</i>`,
+                rationale: `Câu đầy đủ: <i>"${example}"</i>`
+            };
+        });
+
+        // Tạo Background Sao Lấp Lánh
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'absolute rounded-full bg-white opacity-0 animate-twinkle';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                const size = `${Math.random() * 3 + 1}px`;
+                star.style.width = size;
+                star.style.height = size;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(star);
+            }
+        }
+
+        // Trạng thái Game
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let hasAnswered = false;
+        let currentShuffledOptions = [];
+
+        // DOM Elements
+        const screenStart = document.getElementById('screen-start');
+        const screenPlaying = document.getElementById('screen-playing');
+        const screenEnd = document.getElementById('screen-end');
+
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        const hintText = document.getElementById('hint-text');
+        const rationaleText = document.getElementById('rationale-text');
+        const rationaleContent = document.getElementById('rationale-content');
+        const btnNext = document.getElementById('btn-next');
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatMarkdownBold(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            hasAnswered = false;
+
+            screenStart.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenPlaying.classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            const currentQ = quizData[currentQuestionIndex];
+
+            // Cập nhật UI
+            progressText.innerText = `CÂU HỎI ${currentQuestionIndex + 1} / ${quizData.length}`;
+            scoreText.innerText = `Điểm: ${score}`;
+            questionText.innerHTML = formatMarkdownBold(currentQ.question);
+
+            // Xáo trộn đáp án
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+
+            // Tạo nút đáp án
+            optionsContainer.innerHTML = '';
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "text-left p-5 rounded-2xl border transition-all duration-300 text-lg bg-white/5 border-white/10 hover:bg-white/10 hover:border-purple-400 cursor-pointer";
+                btn.innerText = option.text;
+                btn.onclick = () => handleAnswer(index, option.isCorrect);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Set Gợi ý (hiển thị loại từ, IPA và ví dụ đục lỗ)
+            hintText.innerHTML = currentQ.hint;
+
+            // Ẩn phần giải thích
+            explanationContainer.classList.remove('max-h-96', 'opacity-100');
+            explanationContainer.classList.add('max-h-0', 'opacity-0');
+            rationaleText.classList.add('hidden');
+
+            // Cập nhật text nút Next
+            if (currentQuestionIndex < quizData.length - 1) {
+                btnNext.innerHTML = 'Tiếp Tục Chuyến Bay �';
+            } else {
+                btnNext.innerHTML = 'Hoàn Thành Nhiệm Vụ 🏆';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            const currentQ = quizData[currentQuestionIndex];
+
+            if (isCorrect) {
+                score++;
+                scoreText.innerText = `Điểm: ${score}`;
+            }
+
+            // Cập nhật style cho các nút đáp án
+            const buttons = optionsContainer.children;
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = buttons[index];
+                btn.disabled = true;
+                btn.className = "text-left p-5 rounded-2xl border transition-all duration-300 text-lg ";
+
+                if (option.isCorrect) {
+                    btn.className += "bg-green-500/20 border-green-400 shadow-[0_0_15px_rgba(74,222,128,0.4)] text-white";
+                } else if (index === selectedIndex && !option.isCorrect) {
+                    btn.className += "bg-red-500/20 border-red-400 text-red-200";
+                } else {
+                    btn.className += "bg-white/5 border-white/5 opacity-50";
+                }
+            });
+
+            // Hiện giải thích chi tiết
+            rationaleContent.innerHTML = currentQ.rationale;
+            rationaleText.className = isCorrect ? "text-green-400 block mt-4" : "text-yellow-400 block mt-4";
+
+            // Expand container fully
+            explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            explanationContainer.classList.add('max-h-[500px]', 'opacity-100');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            screenPlaying.classList.add('hidden');
+            screenEnd.classList.remove('hidden');
+
+            document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
+
+            const finalMessage = document.getElementById('final-message');
+            if (score >= quizData.length * 0.9) {
+                finalMessage.innerText = "Kinh ngạc! Bạn đích thực là tinh hoa của ngôn ngữ và tri thức học thuật!";
+            } else if (score >= quizData.length * 0.5) {
+                finalMessage.innerText = "Vốn từ vựng của bạn rất ấn tượng đấy, tiếp tục rèn luyện để đạt mức độ xuất sắc nhé!";
+            } else {
+                finalMessage.innerText = "Hành trình chinh phục kho từ vựng khổng lồ này luôn cần sự kiên nhẫn. Đừng nản chí nhé!";
+            }
+        }
+
+        // Khởi tạo hiệu ứng ngôi sao
+        createStars();
+
+    </script>
+</body>
+
+</html>
+```�
