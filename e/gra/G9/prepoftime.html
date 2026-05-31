@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PREPOSITIONS OF TIME</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @keyframes pulseBorder {
+
+            0%,
+            100% {
+                border-color: rgba(244, 63, 94, 0.8);
+                box-shadow: 0 0 15px rgba(244, 63, 94, 0.5);
+            }
+
+            50% {
+                border-color: rgba(244, 63, 94, 0.2);
+                box-shadow: 0 0 5px rgba(244, 63, 94, 0.0);
+            }
+        }
+
+        .animate-pulse-border {
+            animation: pulseBorder 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* ANIMATIONS FOR ARCTIC EXPEDITION BACKGROUND */
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(110vh) translateX(20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes auroraGlow {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(1) translate(0, 0);
+                filter: hue-rotate(0deg);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1) translate(20px, 10px);
+                filter: hue-rotate(30deg);
+            }
+        }
+
+        @keyframes slideLeftToRight {
+            0% {
+                transform: translateX(-20vw);
+            }
+
+            100% {
+                transform: translateX(120vw);
+            }
+        }
+
+        .snow {
+            animation: snowfall var(--duration, 10s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .aurora {
+            animation: auroraGlow 15s ease-in-out infinite alternate;
+        }
+
+        .slider-anim {
+            animation: slideLeftToRight 30s linear infinite;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(165, 243, 252, 0.3);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(165, 243, 252, 0.6);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ----- BỘ ICON CHO GIAO DIỆN (ARCTIC THEME) -----
+        const SnowflakeIcon = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m8 19 4-4 4 4" /><path d="m8 5 4 4 4-4" /><path d="m5 8 4 4-4 4" /><path d="m19 8-4 4 4 4" /><path d="M12 2v20" /><path d="M2 12h20" /></svg>;
+        const Compass = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>;
+        const ArrowRight = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
+        const ArrowLeft = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>;
+        const CheckCircle2 = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>;
+        const XCircle = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>;
+        const Clock = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+        const Calendar = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+        const User = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+        const Info = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>;
+
+        // ----- ARCTIC BACKGROUND -----
+        const ArcticBackground = () => {
+            // Sinh ngẫu nhiên các bông tuyết
+            const snowflakes = Array.from({ length: 30 }).map((_, i) => ({
+                id: i,
+                left: `${Math.random() * 100}vw`,
+                size: `${Math.random() * 0.8 + 0.2}rem`,
+                duration: `${Math.random() * 10 + 10}s`,
+                delay: `${Math.random() * -15}s`,
+                opacity: Math.random() * 0.5 + 0.2
+            }));
+
+            return (
+                <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gradient-to-b from-[#0b1021] via-[#1a2c4e] to-[#2c4e7a]">
+
+                    {/* Cực quang (Aurora Borealis) */}
+                    <div className="absolute top-0 left-[-20%] w-[140%] h-[50vh] aurora opacity-40 blur-[80px] pointer-events-none">
+                        <div className="absolute top-10 left-[10%] w-[40%] h-full bg-green-500/30 rounded-full mix-blend-screen"></div>
+                        <div className="absolute top-0 right-[20%] w-[50%] h-full bg-teal-400/30 rounded-full mix-blend-screen"></div>
+                        <div className="absolute top-20 left-[40%] w-[30%] h-full bg-cyan-500/20 rounded-full mix-blend-screen"></div>
+                    </div>
+
+                    {/* Tuyết rơi */}
+                    {snowflakes.map(snow => (
+                        <div
+                            key={snow.id}
+                            className="absolute top-0 rounded-full bg-white snow"
+                            style={{
+                                left: snow.left,
+                                width: snow.size,
+                                height: snow.size,
+                                '--duration': snow.duration,
+                                '--delay': snow.delay,
+                                opacity: snow.opacity
+                            }}
+                        ></div>
+                    ))}
+
+                    {/* Tảng băng trôi dưới đáy (Icebergs) */}
+                    <div className="absolute bottom-0 left-0 w-full opacity-40 text-blue-100">
+                        <svg viewBox="0 0 1440 320" className="w-full h-auto" fill="currentColor">
+                            <path d="M0,256L48,229.3C96,203,192,149,288,149.3C384,149,480,203,576,197.3C672,192,768,128,864,128C960,128,1056,192,1152,213.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                        </svg>
+                    </div>
+                    <div className="absolute bottom-0 left-0 w-full opacity-60 text-cyan-50">
+                        <svg viewBox="0 0 1440 320" className="w-full h-auto" fill="currentColor">
+                            <path d="M0,128L60,144C120,160,240,192,360,197.3C480,203,600,181,720,165.3C840,149,960,139,1080,149.3C1200,160,1320,192,1380,208L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+                        </svg>
+                    </div>
+                </div>
+            );
+        }
+
+        // ----- DỮ LIỆU CÂU HỎI -----
+        const QUESTIONS = [
+            { id: 1, text: "My birthday is ______ 31st May.", options: ["in", "at", "on", "from"], answer: 2, explanation: "on + ngày tháng" },
+            { id: 2, text: "I usually study English ______ the evening.", options: ["on", "in", "at", "between"], answer: 1, explanation: "in the evening" },
+            { id: 3, text: "We often visit our grandparents ______ the weekend.", options: ["at", "on", "in", "from"], answer: 0, explanation: "at the weekend" },
+            { id: 4, text: "The English class is ______ 7:00 p.m. to 9:00 p.m.", options: ["between", "from", "at", "in"], answer: 1, explanation: "from ... to ..." },
+            { id: 5, text: "I was born ______ 2010.", options: ["on", "at", "in", "to"], answer: 2, explanation: "in + năm" },
+            { id: 6, text: "They usually go swimming ______ summer.", options: ["on", "at", "in", "from"], answer: 2, explanation: "in + mùa" },
+            { id: 7, text: "The meeting starts ______ 3:40 P.M.", options: ["at", "in", "on", "between"], answer: 0, explanation: "at + giờ cụ thể" },
+            { id: 8, text: "We have English lessons ______ Monday.", options: ["in", "at", "on", "from"], answer: 2, explanation: "on + thứ" },
+            { id: 9, text: "My family often eats dinner together ______ the same time.", options: ["in", "at", "on", "to"], answer: 1, explanation: "at the same time" },
+            { id: 10, text: "She will travel to Da Lat ______ February.", options: ["on", "at", "from", "in"], answer: 3, explanation: "in + tháng" },
+            { id: 11, text: "I often feel sleepy ______ night.", options: ["on", "in", "at", "from"], answer: 2, explanation: "at night" },
+            { id: 12, text: "The shop opens from 8 a.m. ______ 10 p.m.", options: ["to", "between", "and", "at"], answer: 0, explanation: "from ... to ..." },
+            { id: 13, text: "We usually have a family party ______ Christmas.", options: ["on", "at", "in", "between"], answer: 1, explanation: "at Christmas" },
+            { id: 14, text: "I have a speaking test ______ Friday morning.", options: ["at", "in", "on", "from"], answer: 2, explanation: "on + thứ + buổi" },
+            { id: 15, text: "Students often have a long holiday ______ summer.", options: ["in", "on", "at", "to"], answer: 0, explanation: "in + mùa" },
+            { id: 16, text: "My father was born ______ August.", options: ["at", "in", "on", "between"], answer: 1, explanation: "in + tháng" },
+            { id: 17, text: "I will meet you ______ noon.", options: ["in", "on", "at", "from"], answer: 2, explanation: "at noon" },
+            { id: 18, text: "The football match is ______ Saturday.", options: ["on", "in", "at", "to"], answer: 0, explanation: "on + thứ" },
+            { id: 19, text: "My school year starts ______ September.", options: ["on", "at", "in", "from"], answer: 2, explanation: "in + tháng" },
+            { id: 20, text: "The restaurant is open ______ Monday ______ Friday.", options: ["from / to", "between / to", "in / and", "on / at"], answer: 0, explanation: "from ... to ..." },
+            { id: 21, text: "He was born ______ the 21st century.", options: ["on", "in", "at", "from"], answer: 1, explanation: "in + thế kỷ" },
+            { id: 22, text: "I usually do my homework ______ the afternoon.", options: ["in", "on", "at", "between"], answer: 0, explanation: "in the afternoon" },
+            { id: 23, text: "We often give presents to each other ______ Christmas Day.", options: ["at", "in", "on", "from"], answer: 2, explanation: "on Christmas Day" },
+            { id: 24, text: "The test is ______ 14th August.", options: ["in", "on", "at", "between"], answer: 1, explanation: "on + ngày tháng" },
+            { id: 26, text: "My brother likes playing games ______ night.", options: ["in", "at", "on", "to"], answer: 1, explanation: "at night" },
+            { id: 27, text: "People used fewer smartphones ______ the 20th century.", options: ["on", "at", "in", "from"], answer: 2, explanation: "in + thế kỷ" },
+            { id: 28, text: "The break is ______ 9:30 and 9:45.", options: ["from", "in", "between", "on"], answer: 2, explanation: "between ... and ..." },
+            { id: 29, text: "We will have a party ______ my birthday.", options: ["on", "in", "at", "to"], answer: 0, explanation: "on my birthday" },
+            { id: 30, text: "She usually gets up ______ 6 o’clock.", options: ["in", "on", "at", "from"], answer: 2, explanation: "at + giờ cụ thể" },
+            { id: 31, text: "I like drinking hot tea ______ winter.", options: ["at", "in", "on", "between"], answer: 1, explanation: "in + mùa" },
+            { id: 32, text: "My parents often watch TV ______ the morning.", options: ["at", "on", "in", "from"], answer: 2, explanation: "in the morning" },
+            { id: 33, text: "We sometimes travel ______ Easter.", options: ["on", "in", "at", "to"], answer: 2, explanation: "at Easter" },
+            { id: 34, text: "The meeting is ______ 2 p.m. ______ 4 p.m.", options: ["between / and", "from / and", "in / to", "on / at"], answer: 0, explanation: "between ... and ..." },
+            { id: 35, text: "I have Math ______ Tuesday morning.", options: ["in", "on", "at", "from"], answer: 1, explanation: "on + thứ + buổi" },
+            { id: 36, text: "The children often play outside ______ spring.", options: ["in", "on", "at", "to"], answer: 0, explanation: "in + mùa" },
+            { id: 37, text: "We often go camping ___ spring.", options: ["on", "at", "in", "from"], answer: 2, explanation: "in + mùa" },
+            { id: 38, text: "It is usually cold ___ winter.", options: ["in", "on", "at", "to"], answer: 0, explanation: "in + mùa" },
+            { id: 39, text: "Many students travel ___ summer.", options: ["at", "in", "on", "between"], answer: 1, explanation: "in + mùa" },
+            { id: 40, text: "Leaves often turn yellow ___ autumn.", options: ["on", "at", "from", "in"], answer: 3, explanation: "in + mùa" },
+            { id: 41, text: "Tet sometimes falls ___ January.", options: ["in", "on", "at", "from"], answer: 0, explanation: "in + tháng" },
+            { id: 42, text: "My sister was born ___ February.", options: ["at", "on", "in", "to"], answer: 2, explanation: "in + tháng" },
+            { id: 43, text: "We have a school trip ___ March.", options: ["on", "in", "at", "between"], answer: 1, explanation: "in + tháng" },
+            { id: 44, text: "The weather is warm ___ April.", options: ["in", "on", "at", "from"], answer: 0, explanation: "in + tháng" },
+            { id: 45, text: "My birthday is ___ May.", options: ["on", "at", "in", "to"], answer: 2, explanation: "in + tháng" },
+            { id: 46, text: "The final exam is usually ___ June.", options: ["at", "in", "on", "between"], answer: 1, explanation: "in + tháng" },
+            { id: 47, text: "We often go swimming ___ July.", options: ["in", "on", "at", "from"], answer: 0, explanation: "in + tháng" },
+            { id: 48, text: "My family will travel ___ August.", options: ["on", "at", "in", "to"], answer: 2, explanation: "in + tháng" },
+            { id: 49, text: "The new school year starts ___ September.", options: ["at", "in", "on", "from"], answer: 1, explanation: "in + tháng" },
+            { id: 50, text: "Halloween is ___ October.", options: ["in", "on", "at", "between"], answer: 0, explanation: "in + tháng" },
+            { id: 51, text: "The weather becomes cooler ___ November.", options: ["on", "in", "at", "to"], answer: 1, explanation: "in + tháng" },
+            { id: 52, text: "Christmas is ___ December.", options: ["at", "on", "in", "from"], answer: 2, explanation: "in + tháng" },
+            { id: 53, text: "My brother was born ___ 2020.", options: ["in", "on", "at", "from"], answer: 0, explanation: "in + năm" },
+            { id: 54, text: "They moved to this city ___ 2018.", options: ["on", "at", "in", "to"], answer: 2, explanation: "in + năm" },
+            { id: 55, text: "I usually study English ___ the morning.", options: ["at", "on", "in", "from"], answer: 2, explanation: "in the morning" },
+            { id: 56, text: "My mother often cooks dinner ___ the evening.", options: ["in", "on", "at", "to"], answer: 0, explanation: "in the evening" },
+            { id: 57, text: "We sometimes play football ___ the afternoon.", options: ["on", "in", "at", "between"], answer: 1, explanation: "in the afternoon" },
+            { id: 58, text: "I usually read books ___ the evening.", options: ["at", "in", "on", "from"], answer: 1, explanation: "in the evening" },
+            { id: 59, text: "Smartphones became very popular ___ the 21st century.", options: ["on", "at", "in", "from"], answer: 2, explanation: "in + thế kỷ" },
+            { id: 60, text: "Many important inventions appeared ___ the 20th century.", options: ["in", "on", "at", "to"], answer: 0, explanation: "in + thế kỷ" },
+            { id: 61, text: "We have English ___ Monday.", options: ["in", "on", "at", "from"], answer: 1, explanation: "on + thứ" },
+            { id: 62, text: "My father doesn’t work ___ Sunday.", options: ["at", "in", "on", "to"], answer: 2, explanation: "on + thứ" },
+            { id: 63, text: "She has Math ___ Wednesday.", options: ["on", "in", "at", "between"], answer: 0, explanation: "on + thứ" },
+            { id: 64, text: "They often play basketball ___ Saturday.", options: ["in", "at", "on", "from"], answer: 2, explanation: "on + thứ" },
+            { id: 65, text: "My birthday is ___ 31st May.", options: ["in", "on", "at", "from"], answer: 1, explanation: "on + ngày tháng" },
+            { id: 66, text: "The meeting is ___ 14th August.", options: ["at", "in", "on", "to"], answer: 2, explanation: "on + ngày tháng" },
+            { id: 67, text: "I usually get presents ___ my birthday.", options: ["at", "on", "in", "from"], answer: 1, explanation: "on my birthday" },
+            { id: 68, text: "We will have a small party ___ my birthday.", options: ["in", "at", "on", "to"], answer: 2, explanation: "on my birthday" },
+            { id: 69, text: "We often have dinner together ___ Christmas Day.", options: ["in", "at", "on", "from"], answer: 2, explanation: "on Christmas Day" },
+            { id: 70, text: "Many children receive gifts ___ Christmas Day.", options: ["on", "in", "at", "to"], answer: 0, explanation: "on Christmas Day" },
+            { id: 73, text: "I have an English test ___ Friday morning.", options: ["in", "on", "at", "from"], answer: 1, explanation: "on + thứ + buổi" },
+            { id: 74, text: "We will meet our teacher ___ Monday afternoon.", options: ["at", "in", "on", "to"], answer: 2, explanation: "on + thứ + buổi" },
+            { id: 75, text: "The class starts ___ 3:40 P.M.", options: ["in", "on", "at", "from"], answer: 2, explanation: "at + giờ cụ thể" },
+            { id: 76, text: "I usually get up ___ 6 o’clock.", options: ["at", "in", "on", "to"], answer: 0, explanation: "at + giờ cụ thể" },
+            { id: 77, text: "I often do my homework ___ night.", options: ["in", "on", "at", "from"], answer: 2, explanation: "at night" },
+            { id: 78, text: "We usually have lunch ___ noon.", options: ["at", "in", "on", "to"], answer: 0, explanation: "at noon" },
+            { id: 79, text: "The baby woke up ___ midnight.", options: ["on", "in", "at", "between"], answer: 2, explanation: "at midnight" },
+            { id: 80, text: "The sun is very hot ___ midday.", options: ["in", "at", "on", "from"], answer: 1, explanation: "at midday" },
+            { id: 81, text: "We often play football ___ the weekend.", options: ["on", "in", "at", "from"], answer: 2, explanation: "at the weekend" },
+            { id: 82, text: "My family sometimes eats out ___ the weekend.", options: ["at", "on", "in", "to"], answer: 0, explanation: "at the weekend" },
+            { id: 83, text: "We usually decorate our house ___ Christmas.", options: ["in", "on", "at", "from"], answer: 2, explanation: "at Christmas" },
+            { id: 84, text: "Some families travel ___ Easter.", options: ["at", "in", "on", "to"], answer: 0, explanation: "at Easter" },
+            { id: 85, text: "The two students answered the question ___ the same time.", options: ["in", "on", "at", "from"], answer: 2, explanation: "at the same time" },
+            { id: 86, text: "We arrived at school ___ the same time.", options: ["at", "in", "on", "to"], answer: 0, explanation: "at the same time" },
+            { id: 87, text: "The break is ___ 9:30 ___ 9:45.", options: ["from / to", "between / and", "on / at", "in / to"], answer: 1, explanation: "between ... and ..." },
+            { id: 88, text: "The shop is open ___ Monday ___ Friday.", options: ["between / and", "from / and", "at / to", "in / on"], answer: 0, explanation: "between ... and ..." },
+            { id: 89, text: "The lesson lasts ___ 7 p.m. ___ 9 p.m.", options: ["between / and", "from / to", "on / at", "in / from"], answer: 1, explanation: "from ... to ..." },
+            { id: 90, text: "The library opens ___ 8 a.m. ___ 5 p.m.", options: ["from / to", "between / to", "at / and", "on / in"], answer: 0, explanation: "from ... to ..." }
+        ];
+
+        // ----- ÂM THANH (Web Audio API) -----
+        const playSound = (type) => {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'correct') {
+                    // Tiếng chuông đôi trong trẻo (C5 - G5)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.15);
+
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 0.15);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.17);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+                } else {
+                    // Tiếng trầm báo lỗi
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(250, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                }
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 1.0);
+            } catch (e) {
+                console.error("Trình duyệt không hỗ trợ Web Audio API", e);
+            }
+        };
+
+        // ----- LOGIC ỨNG DỤNG -----
+        function App() {
+            const [gameState, setGameState] = useState('welcome');
+            const [userName, setUserName] = useState('');
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [timeElapsed, setTimeElapsed] = useState(0);
+            const [finishDate, setFinishDate] = useState(null);
+
+            const inputRef = useRef(null);
+
+            useEffect(() => {
+                let timer;
+                if (gameState === 'playing') {
+                    timer = setInterval(() => {
+                        setTimeElapsed((prev) => prev + 1);
+                    }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [gameState]);
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Enter') {
+                        if (gameState === 'welcome' && userName.trim() !== '') {
+                            startQuiz();
+                        } else if (gameState === 'playing') {
+                            const currentAns = answers[currentIdx];
+                            if (currentAns?.resolved) {
+                                handleNext();
+                            }
+                        }
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [gameState, userName, currentIdx, answers]);
+
+            const startQuiz = () => {
+                setGameState('playing');
+                setTimeElapsed(0);
+                setCurrentIdx(0);
+                setAnswers({});
+            };
+
+            const handleNext = () => {
+                if (currentIdx < QUESTIONS.length - 1) {
+                    setCurrentIdx(currentIdx + 1);
+                } else {
+                    finishQuiz();
+                }
+            };
+
+            const handleBack = () => {
+                if (currentIdx > 0) {
+                    setCurrentIdx(currentIdx - 1);
+                }
+            };
+
+            const selectOption = (optIdx) => {
+                const currentQ = QUESTIONS[currentIdx];
+                const currentAns = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+
+                if (currentAns.resolved || currentAns.attempts.includes(optIdx)) return;
+
+                const newAttempts = [...currentAns.attempts, optIdx];
+                let isResolved = false;
+                let isFirstTryCorrect = false;
+
+                if (optIdx === currentQ.answer) {
+                    playSound('correct');
+                    isResolved = true;
+                    if (newAttempts.length === 1) {
+                        isFirstTryCorrect = true;
+                    }
+                } else {
+                    playSound('incorrect');
+                    // Chỉ cho tối đa 2 lần chọn
+                    if (newAttempts.length >= 2) {
+                        isResolved = true;
+                    }
+                }
+
+                setAnswers({
+                    ...answers,
+                    [currentIdx]: {
+                        attempts: newAttempts,
+                        resolved: isResolved,
+                        firstTryCorrect: isFirstTryCorrect
+                    }
+                });
+            };
+
+            const finishQuiz = () => {
+                setFinishDate(new Date());
+                setGameState('summary');
+            };
+
+            const formatTime = (seconds) => {
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                return `${m}:${s}`;
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                QUESTIONS.forEach((q, idx) => {
+                    if (answers[idx]?.firstTryCorrect) correct++;
+                });
+                return correct;
+            };
+
+            const optionLabels = ["A", "B", "C", "D"];
+
+            return (
+                <div className="min-h-screen font-sans text-slate-100 bg-transparent flex flex-col items-center justify-between p-4 sm:p-8 relative overflow-hidden">
+
+                    {/* BACKGROUND ANIMATION BẮC CỰC */}
+                    <ArcticBackground />
+
+                    <div className="w-full max-w-4xl z-10 flex-grow flex flex-col justify-center items-center">
+
+                        {gameState === 'welcome' && (
+                            <div className="bg-white/10 backdrop-blur-lg border border-cyan-300/30 p-10 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition-all">
+                                <div className="flex justify-center mb-6 text-cyan-200 drop-shadow-[0_0_15px_rgba(165,243,252,0.8)]">
+                                    <Compass size={64} className="animate-pulse" style={{ animationDuration: '3s' }} />
+                                </div>
+                                <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-100 to-blue-200 mb-2 drop-shadow-sm">
+                                    Welcome to HTE
+                                </h1>
+                                <p className="text-cyan-100/80 mb-8 font-light">Practice - Prepositions of Time</p>
+
+                                <div className="mb-8">
+                                    <label className="block text-left text-sm font-medium text-cyan-100 mb-2">Please enter your name:</label>
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        autoFocus
+                                        className="w-full px-5 py-4 rounded-xl bg-white/10 border border-cyan-400/30 text-white focus:outline-none focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/50 transition-all text-lg placeholder-cyan-100/40"
+                                        placeholder="Your Name..."
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && userName.trim() !== '' && startQuiz()}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={startQuiz}
+                                    disabled={userName.trim() === ''}
+                                    className={`w-full py-4 rounded-xl font-bold text-lg flex justify-center items-center gap-2 transition-all duration-300 ${userName.trim() !== '' ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.6)] hover:scale-[1.02]' : 'bg-gray-500/30 text-gray-400 cursor-not-allowed'}`}
+                                >
+                                    Start <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        {gameState === 'playing' && (
+                            <div className="w-full">
+                                <div className="flex flex-wrap justify-between items-center bg-white/10 backdrop-blur-md border border-cyan-300/20 p-4 rounded-2xl mb-6 text-cyan-50 shadow-lg">
+                                    <div className="flex items-center gap-2 font-medium">
+                                        <User size={18} className="text-cyan-300" />
+                                        <span className="truncate max-w-[150px] sm:max-w-xs">{userName}</span>
+                                    </div>
+                                    <div className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-100 to-white">
+                                        Question {currentIdx + 1} / {QUESTIONS.length}
+                                    </div>
+                                    <div className="flex items-center gap-2 font-mono text-cyan-100 bg-black/30 px-4 py-1.5 rounded-lg border border-white/10">
+                                        <Clock size={18} className="animate-pulse" /> {formatTime(timeElapsed)}
+                                    </div>
+                                </div>
+
+                                <div className="w-full bg-black/40 h-2 rounded-full mb-8 overflow-hidden border border-white/5">
+                                    <div
+                                        className="h-full bg-gradient-to-r from-cyan-300 to-blue-400 transition-all duration-300 ease-out"
+                                        style={{ width: `${((currentIdx + 1) / QUESTIONS.length) * 100}%` }}
+                                    ></div>
+                                </div>
+
+                                <div className="bg-white/10 backdrop-blur-xl border border-cyan-300/20 rounded-3xl p-6 sm:p-10 shadow-2xl mb-4 relative overflow-hidden">
+                                    {/* Icon băng tuyết trang trí */}
+                                    <SnowflakeIcon size={120} className="absolute -right-10 -top-10 text-white/5 pointer-events-none rotate-45" />
+
+                                    <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8 leading-relaxed relative z-10">
+                                        <span className="text-cyan-300 mr-2">{currentIdx + 1}.</span>
+                                        {QUESTIONS[currentIdx].text}
+                                    </h2>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                                        {QUESTIONS[currentIdx].options.map((opt, idx) => {
+                                            const currentQ = QUESTIONS[currentIdx];
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false };
+                                            const isSelected = currentAnsInfo.attempts.includes(idx);
+                                            const isCorrectAns = idx === currentQ.answer;
+
+                                            let btnClass = "flex items-center p-4 rounded-2xl text-left border-2 transition-all duration-200 group ";
+                                            let iconClass = "w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full mr-4 font-bold text-lg transition-colors ";
+                                            let textClass = "text-lg transition-colors ";
+
+                                            if (currentAnsInfo.resolved && isCorrectAns) {
+                                                btnClass += "bg-emerald-500/30 border-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.4)]";
+                                                iconClass += "bg-emerald-400 text-slate-900";
+                                                textClass += "text-white font-medium";
+                                            } else if (isSelected && !isCorrectAns) {
+                                                btnClass += "bg-rose-500/20 border-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.4)] animate-pulse-border cursor-not-allowed";
+                                                iconClass += "bg-rose-500/90 text-white";
+                                                textClass += "text-rose-200 line-through opacity-80";
+                                            } else {
+                                                btnClass += "bg-black/20 border-white/10 hover:bg-white/10 hover:border-cyan-400/50 cursor-pointer";
+                                                iconClass += "bg-white/10 text-cyan-200 group-hover:bg-cyan-500/40";
+                                                textClass += "text-cyan-50";
+                                            }
+
+                                            return (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => selectOption(idx)}
+                                                    disabled={currentAnsInfo.resolved || isSelected}
+                                                    className={btnClass}
+                                                >
+                                                    <div className={iconClass}>
+                                                        {optionLabels[idx]}
+                                                    </div>
+                                                    <span className={textClass}>{opt}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="mt-6 text-center min-h-[24px]">
+                                        {(() => {
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+                                            if (currentAnsInfo.resolved) {
+                                                return currentAnsInfo.firstTryCorrect
+                                                    ? <span className="text-emerald-300 font-medium animate-pulse">Excellent! Correct answer.</span>
+                                                    : <span className="text-amber-300 font-medium">The correct answer has been revealed.</span>;
+                                            } else if (currentAnsInfo.attempts.length > 0) {
+                                                return <span className="text-rose-300 font-medium">Incorrect. Please try again! (Attempts left: {2 - currentAnsInfo.attempts.length})</span>;
+                                            }
+                                            return null;
+                                        })()}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-4 w-full">
+                                    <button
+                                        onClick={handleBack}
+                                        disabled={currentIdx === 0}
+                                        className={`flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-4 sm:py-3 rounded-xl font-medium transition-all ${currentIdx === 0 ? 'opacity-0 cursor-default hidden sm:flex' : 'bg-black/30 text-white hover:bg-white/20 border border-white/20 hover:border-white/40'}`}
+                                    >
+                                        <ArrowLeft size={20} /> Back
+                                    </button>
+
+                                    <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
+                                        <button
+                                            onClick={handleNext}
+                                            disabled={!(answers[currentIdx]?.resolved)}
+                                            className={`flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg transition-all 
+                        ${answers[currentIdx]?.resolved
+                                                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.6)] hover:scale-105 cursor-pointer border border-cyan-400/50'
+                                                    : 'bg-black/30 text-slate-400 border border-white/10 cursor-not-allowed'}`}
+                                        >
+                                            {currentIdx === QUESTIONS.length - 1 ? 'Finish Quiz' : 'Next'}
+                                            {currentIdx === QUESTIONS.length - 1 ? <CheckCircle2 size={20} /> : <ArrowRight size={20} />}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {gameState === 'summary' && (
+                            <div className="w-full bg-white/10 backdrop-blur-xl border border-cyan-300/20 p-6 sm:p-10 rounded-3xl shadow-2xl relative">
+                                <div className="text-center mb-10">
+                                    <div className="inline-flex justify-center items-center w-20 h-20 bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-full mb-4 shadow-[0_0_30px_rgba(34,211,238,0.5)] border-2 border-white/30">
+                                        <Compass size={40} className="text-white" />
+                                    </div>
+                                    <h1 className="text-4xl font-bold text-white mb-2">Quiz Summary</h1>
+                                    <p className="text-xl text-cyan-200">Great expedition, {userName}!</p>
+                                </div>
+
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
+                                        <Calendar className="text-cyan-300 mb-2" size={24} />
+                                        <div className="text-xs text-cyan-100/70 mb-1">Date Completed</div>
+                                        <div className="text-sm font-medium text-white">{finishDate?.toLocaleDateString('vi-VN')} {finishDate?.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</div>
+                                    </div>
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
+                                        <Clock className="text-blue-300 mb-2" size={24} />
+                                        <div className="text-xs text-cyan-100/70 mb-1">Time Taken</div>
+                                        <div className="text-lg font-bold text-white">{formatTime(timeElapsed)}</div>
+                                    </div>
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
+                                        <CheckCircle2 className="text-emerald-400 mb-2" size={24} />
+                                        <div className="text-xs text-cyan-100/70 mb-1">Correct (1st Try)</div>
+                                        <div className="text-2xl font-bold text-emerald-400">{calculateScore()}</div>
+                                    </div>
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
+                                        <XCircle className="text-rose-400 mb-2" size={24} />
+                                        <div className="text-xs text-cyan-100/70 mb-1">Needed Retries</div>
+                                        <div className="text-2xl font-bold text-rose-400">{QUESTIONS.length - calculateScore()}</div>
+                                    </div>
+                                </div>
+
+                                <div className="mb-10 text-center">
+                                    <div className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-blue-200 mb-4">
+                                        {Math.round((calculateScore() / QUESTIONS.length) * 100)}%
+                                    </div>
+                                    <div className="w-full max-w-md mx-auto bg-black/40 h-4 rounded-full overflow-hidden border border-white/10">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-rose-500 via-yellow-400 to-emerald-400 transition-all duration-1000"
+                                            style={{ width: `${(calculateScore() / QUESTIONS.length) * 100}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 border-t border-white/20 pt-8">
+                                    <h3 className="text-2xl font-semibold text-white mb-6">Detailed Review</h3>
+                                    <div className="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                                        {QUESTIONS.map((q, idx) => {
+                                            const ansInfo = answers[idx] || { attempts: [], firstTryCorrect: false };
+                                            const isCorrect = ansInfo.firstTryCorrect;
+                                            const firstGuessIdx = ansInfo.attempts[0];
+                                            const isUnanswered = ansInfo.attempts.length === 0;
+
+                                            return (
+                                                <div key={idx} className={`p-5 rounded-2xl border ${isCorrect ? 'bg-emerald-900/30 border-emerald-500/40' : 'bg-rose-900/30 border-rose-500/40'} flex flex-col gap-4`}>
+                                                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                                        <div className="flex-shrink-0 mt-1 sm:mt-0">
+                                                            {isCorrect ? <CheckCircle2 className="text-emerald-400" size={28} /> : <XCircle className="text-rose-400" size={28} />}
+                                                        </div>
+                                                        <div className="flex-grow">
+                                                            <p className="text-white font-medium text-lg mb-2"><span className="opacity-60 mr-2">{q.id}.</span> {q.text}</p>
+                                                            <div className="grid sm:grid-cols-2 gap-2 text-sm">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="text-white/60">Your First Try:</span>
+                                                                    <span className={`font-semibold px-2 py-1 rounded ${isCorrect ? 'bg-emerald-500/20 text-emerald-200' : 'bg-rose-500/20 text-rose-200'}`}>
+                                                                        {isUnanswered ? "None" : `${optionLabels[firstGuessIdx]}. ${q.options[firstGuessIdx]}`}
+                                                                    </span>
+                                                                </div>
+                                                                {!isCorrect && (
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="text-white/60">Correct Answer:</span>
+                                                                        <span className="font-semibold bg-emerald-500/20 text-emerald-200 px-2 py-1 rounded">
+                                                                            {optionLabels[q.answer]}. {q.options[q.answer]}
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Hiển thị Giải thích nếu có */}
+                                                    {q.explanation && (
+                                                        <div className={`mt-2 p-3 rounded-xl border flex items-start gap-2 text-sm ${isCorrect ? 'bg-emerald-950/40 border-emerald-500/20 text-emerald-100' : 'bg-rose-950/40 border-rose-500/20 text-rose-100'}`}>
+                                                            <Info size={18} className="flex-shrink-0 mt-0.5 opacity-80" />
+                                                            <p><strong>Giải thích:</strong> {q.explanation}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 flex justify-center">
+                                    <button
+                                        onClick={() => window.location.reload()}
+                                        className="px-8 py-3 rounded-xl font-bold bg-black/30 hover:bg-white/10 text-white border border-cyan-300/30 transition-all flex items-center gap-2"
+                                    >
+                                        <Clock size={18} /> Retake Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <footer className="w-full text-center py-6 mt-auto z-20 relative">
+                        <p className="text-cyan-50 text-sm font-medium tracking-wide bg-[#0b1021]/60 backdrop-blur-md inline-block px-6 py-2.5 rounded-full border border-cyan-500/20 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                            © Copyright by <span className="text-cyan-300 font-bold">Hoang Truong English</span>
+                        </p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
