@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIVE TENSES</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        /* CUSTOM FONT */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+            background-color: #0b1a10;
+            /* Fallback dark green */
+        }
+
+        /* WOODEN BORDER GLOW EFFECT */
+        @keyframes pulseWoodBorder {
+
+            0%,
+            100% {
+                border-color: rgba(249, 115, 22, 0.8);
+                box-shadow: 0 0 15px rgba(249, 115, 22, 0.4);
+            }
+
+            50% {
+                border-color: rgba(249, 115, 22, 0.3);
+                box-shadow: 0 0 5px rgba(249, 115, 22, 0.1);
+            }
+        }
+
+        .animate-pulse-border {
+            animation: pulseWoodBorder 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* FOREST ANIMATIONS */
+        @keyframes fallingLeaves {
+            0% {
+                transform: translate(0, -10vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translate(var(--x-end, 5vw), 110vh) rotate(var(--rot-end, 360deg)) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fireflyFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.2;
+            }
+
+            25% {
+                transform: translate(15px, -15px) scale(1.5);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(30px, 0) scale(1);
+                opacity: 0.3;
+            }
+
+            75% {
+                transform: translate(15px, 15px) scale(0.8);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes treeSway {
+
+            0%,
+            100% {
+                transform: rotate(-2deg);
+            }
+
+            50% {
+                transform: rotate(2deg);
+            }
+        }
+
+        .leaf-fall {
+            animation: fallingLeaves var(--duration, 15s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .firefly {
+            animation: fireflyFloat var(--duration, 6s) ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .sway {
+            animation: treeSway var(--duration, 8s) ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        /* CUSTOM SCROLLBAR */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(74, 222, 128, 0.4);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(74, 222, 128, 0.8);
+        }
+
+        /* HINT BUBBLE ANIMATION */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hint-bubble {
+            animation: slideUpFade 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ----- STREAMING_CHUNK:Defining SVG Icons (Forest Theme) -----
+        // Custom SVGs
+        const LeafIcon = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M17 3c-4.418 0-8 3.582-8 8 0 .423.034.838.098 1.242-2.146 1.34-3.693 3.655-4.015 6.43-.035.303-.083.584-.138.828H6c3.314 0 6-2.686 6-6 0-.423-.034-.838-.098-1.242 2.146-1.34 3.693-3.655 4.015-6.43.035-.303.083-.584.138-.828h-1.055z" /></svg>;
+        const TreeOutline = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22v-8" /><path d="m5 14 7-10 7 10" /><path d="m7 18 5-7 5 7" /></svg>;
+        const SproutIcon = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 20h10" /><path d="M10 20c5.5-2.5.8-6.4 3-10" /><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z" /><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 .5-4.9 2z" /></svg>;
+
+        // UI Icons
+        const ArrowRight = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
+        const ArrowLeft = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>;
+        const CheckCircle2 = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>;
+        const XCircle = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>;
+        const Clock = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+        const Calendar = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+        const User = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+        const HelpCircle = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>;
+
+        // ----- STREAMING_CHUNK:Configuring Forest Background Component -----
+        const ForestBackground = () => {
+            const leaves = Array.from({ length: 15 }).map((_, i) => ({
+                id: i,
+                left: `${Math.random() * 100}vw`,
+                duration: `${Math.random() * 10 + 15}s`,
+                delay: `${Math.random() * -20}s`,
+                xEnd: `${Math.random() * 20 - 10}vw`,
+                rotEnd: `${Math.random() * 360 + 180}deg`,
+                size: Math.random() * 1.5 + 1
+            }));
+
+            const fireflies = Array.from({ length: 25 }).map((_, i) => ({
+                id: i,
+                left: `${Math.random() * 100}vw`,
+                top: `${Math.random() * 80 + 10}vh`,
+                duration: `${Math.random() * 4 + 4}s`,
+                delay: `${Math.random() * -5}s`,
+                size: Math.random() * 4 + 2
+            }));
+
+            return (
+                <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gradient-to-br from-[#0a1f12] via-[#163620] to-[#0a180d]">
+
+                    {/* Ánh sáng xuyên qua tán lá */}
+                    <div className="absolute top-0 left-[-20%] w-[140%] h-[70vh] opacity-20 blur-[100px] pointer-events-none">
+                        <div className="absolute top-[-10%] left-[20%] w-[50%] h-[120%] bg-green-300 rounded-full mix-blend-overlay rotate-[30deg]"></div>
+                        <div className="absolute top-[10%] right-[10%] w-[40%] h-[100%] bg-yellow-200 rounded-full mix-blend-overlay rotate-[-20deg]"></div>
+                    </div>
+
+                    {/* Bóng cây mờ ở hai bên */}
+                    <div className="absolute bottom-0 left-[-5%] opacity-20 text-green-950 sway" style={{ "--duration": "10s" }}>
+                        <svg viewBox="0 0 100 200" className="w-[30vw] h-auto" fill="currentColor">
+                            <path d="M40,200 L40,100 C20,100 10,80 10,80 C20,90 35,95 45,90 L45,40 C30,45 15,30 15,30 C25,40 40,40 48,35 L48,10 C48,0 50,0 52,0 L52,35 C60,40 75,40 85,30 C85,30 70,45 55,40 L55,90 C65,95 80,90 90,80 C90,80 80,100 60,100 L60,200 Z" />
+                        </svg>
+                    </div>
+                    <div className="absolute bottom-[-10%] right-[-5%] opacity-10 text-green-900 sway" style={{ "--duration": "12s", "animationDelay": "2s" }}>
+                        <svg viewBox="0 0 100 200" className="w-[40vw] h-auto scale-x-[-1]" fill="currentColor">
+                            <path d="M40,200 L40,100 C20,100 10,80 10,80 C20,90 35,95 45,90 L45,40 C30,45 15,30 15,30 C25,40 40,40 48,35 L48,10 C48,0 50,0 52,0 L52,35 C60,40 75,40 85,30 C85,30 70,45 55,40 L55,90 C65,95 80,90 90,80 C90,80 80,100 60,100 L60,200 Z" />
+                        </svg>
+                    </div>
+
+                    {/* Đom đóm (Fireflies) */}
+                    {fireflies.map(ff => (
+                        <div
+                            key={`ff-${ff.id}`}
+                            className="absolute rounded-full bg-yellow-300 shadow-[0_0_10px_#fef08a] firefly"
+                            style={{
+                                left: ff.left, top: ff.top,
+                                width: `${ff.size}px`, height: `${ff.size}px`,
+                                '--duration': ff.duration, '--delay': ff.delay
+                            }}
+                        ></div>
+                    ))}
+
+                    {/* Lá rơi */}
+                    {leaves.map(leaf => (
+                        <div
+                            key={`leaf-${leaf.id}`}
+                            className={`absolute top-0 text-${Math.random() > 0.5 ? 'green' : 'lime'}-800/40 leaf-fall`}
+                            style={{
+                                left: leaf.left,
+                                '--duration': leaf.duration, '--delay': leaf.delay,
+                                '--x-end': leaf.xEnd, '--rot-end': leaf.rotEnd,
+                                transform: `scale(${leaf.size})`
+                            }}
+                        >
+                            <LeafIcon size={20} />
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        // ----- STREAMING_CHUNK:Loading Question Data & Explanations -----
+        const QUESTIONS = [
+            { id: 1, text: "She _____ tired after work, but she rarely complains.", options: ["is", "are", "am", "be"], answer: 0, translation: "Cô ấy thường mệt sau giờ làm, nhưng cô ấy hiếm khi phàn nàn.", explanation: "Thì hiện tại đơn diễn tả sự thật/thói quen. Chủ ngữ 'She' đi với động từ to be 'is'." },
+            { id: 2, text: "They ______ to Da Lat next month.", options: ["will travel", "travels", "travelled", "are travel"], answer: 0, translation: "Họ sẽ đi du lịch Đà Lạt vào tháng tới.", explanation: "Dấu hiệu 'next month' chỉ tương lai -> Tương lai đơn (will + V)." },
+            { id: 3, text: "Look! The children _____ in the garden.", options: ["play", "are playing", "played", "plays"], answer: 1, translation: "Nhìn kìa! Bọn trẻ đang chơi trong vườn.", explanation: "Dấu hiệu 'Look!' chỉ hành động đang diễn ra lúc nói -> Hiện tại tiếp diễn (are playing)." },
+            { id: 4, text: "She _____ very tired yesterday.", options: ["is", "was", "were", "be"], answer: 1, translation: "Hôm qua cô ấy đã rất mệt.", explanation: "Dấu hiệu 'yesterday' chỉ quá khứ. Chủ ngữ 'She' đi với to be quá khứ 'was'." },
+            { id: 5, text: "They _____ to the beach last week.", options: ["go", "goes", "went", "going"], answer: 2, translation: "Họ đã đi biển vào tuần trước.", explanation: "Dấu hiệu 'last week' chỉ quá khứ -> Quá khứ đơn của 'go' là 'went'." },
+            { id: 6, text: "I _____ to my favorite song right now.", options: ["listen", "am listening", "listened", "listening"], answer: 1, translation: "Tôi đang nghe bài hát yêu thích của mình ngay lúc này.", explanation: "Dấu hiệu 'right now' -> Hiện tại tiếp diễn (am listening)." },
+            { id: 7, text: "I _____ in Hanoi 10 years ago.", options: ["live", "lived", "lives", "living"], answer: 1, translation: "Tôi đã sống ở Hà Nội 10 năm trước.", explanation: "Dấu hiệu '10 years ago' -> Quá khứ đơn (lived)." },
+            { id: 8, text: "I hope you ______ better soon.", options: ["feel", "will feel", "felt", "feeling"], answer: 1, translation: "Tôi hi vọng bạn sẽ sớm cảm thấy tốt hơn.", explanation: "Dấu hiệu 'hope' (hi vọng) và 'soon' (sớm) -> Tương lai đơn (will feel)." },
+            { id: 9, text: "At this time last month, I _____ in Hanoi.", options: ["was staying", "stayed", "stay", "is staying"], answer: 0, translation: "Vào thời điểm này tháng trước, tôi đang ở Hà Nội.", explanation: "Dấu hiệu 'At this time + thời gian quá khứ' -> Quá khứ tiếp diễn (was staying)." },
+            { id: 10, text: "When I _____ (arrive) at the party, they _____ (dance) happily.", options: ["arrived / danced", "was arriving / danced", "arrived / were dancing", "was arriving / was dancing"], answer: 2, translation: "Khi tôi đến bữa tiệc, họ đang nhảy múa vui vẻ.", explanation: "Hành động đang diễn ra (were dancing - QKTD) thì có hành động khác xen vào (arrived - QKĐ)." },
+            { id: 11, text: "At 2 p.m. last month, he _____ his presentation.", options: ["is giving", "gave", "was giving", "give"], answer: 2, translation: "Vào lúc 2 giờ chiều tháng trước, anh ấy đang thuyết trình.", explanation: "Giờ cụ thể trong quá khứ 'At 2 p.m. last month' -> Quá khứ tiếp diễn (was giving)." },
+            { id: 12, text: "We _____ late for school yesterday.", options: ["was", "were", "are", "be"], answer: 1, translation: "Hôm qua chúng tôi đã đi học muộn.", explanation: "Dấu hiệu 'yesterday'. Chủ ngữ 'We' đi với to be quá khứ 'were'." },
+            { id: 13, text: "My father ______ a new car next year.", options: ["will buy", "buys", "bought", "buying"], answer: 0, translation: "Bố tôi sẽ mua một chiếc xe mới vào năm tới.", explanation: "Dấu hiệu 'next year' -> Tương lai đơn (will buy)." },
+            { id: 14, text: "At 10 a.m. yesterday, they _____ their homework.", options: ["were doing", "did", "are doing", "doing"], answer: 0, translation: "Vào 10 giờ sáng hôm qua, họ đang làm bài tập về nhà.", explanation: "Giờ cụ thể trong quá khứ -> Quá khứ tiếp diễn (were doing)." },
+            { id: 15, text: "At that time last year, we _____ a big project.", options: ["work", "worked", "are working", "were working"], answer: 3, translation: "Vào thời gian đó năm ngoái, chúng tôi đang thực hiện một dự án lớn.", explanation: "Thời điểm xác định trong quá khứ -> Quá khứ tiếp diễn (were working)." },
+            { id: 16, text: "He _____ his homework last night.", options: ["do", "did", "does", "doing"], answer: 1, translation: "Anh ấy đã làm bài tập về nhà tối qua.", explanation: "Dấu hiệu 'last night' -> Quá khứ đơn (did)." },
+            { id: 17, text: "While we _____ (watch) TV, my brother _____ (study) in his room.", options: ["were watching / studied", "watched / was studying", "were watching / was studying", "watched / studied"], answer: 2, translation: "Trong khi chúng tôi đang xem TV, anh trai tôi đang học trong phòng.", explanation: "Hai hành động diễn ra song song trong quá khứ cùng dùng Quá khứ tiếp diễn." },
+            { id: 18, text: "I promise I ______ late again.", options: ["won’t be", "don’t be", "am not", "wasn’t"], answer: 0, translation: "Tôi hứa tôi sẽ không đến muộn nữa.", explanation: "Dấu hiệu 'promise' (hứa hẹn) -> Tương lai đơn. (won't = will not)." },
+            { id: 19, text: "My friends _____ to the cinema every morning.", options: ["go", "goes", "went", "going"], answer: 0, translation: "Bạn bè của tôi đi xem phim mỗi sáng.", explanation: "Dấu hiệu 'every morning' (thói quen) -> Hiện tại đơn. Chủ ngữ số nhiều 'friends' -> 'go'." },
+            { id: 20, text: "She _____ dinner now.", options: ["cooks", "is cooking", "cook", "cooking"], answer: 1, translation: "Cô ấy đang nấu bữa tối bây giờ.", explanation: "Dấu hiệu 'now' -> Hiện tại tiếp diễn (is cooking)." },
+            { id: 21, text: "My parents _____ married in 2000.", options: ["get", "got", "gets", "getting"], answer: 1, translation: "Bố mẹ tôi kết hôn năm 2000.", explanation: "Năm trong quá khứ 'in 2000' -> Quá khứ đơn (got)." },
+            { id: 22, text: "I _____ very happy yesterday.", options: ["am", "was", "were", "be"], answer: 1, translation: "Hôm qua tôi đã rất hạnh phúc.", explanation: "Dấu hiệu 'yesterday'. Chủ ngữ 'I' đi với 'was'." },
+            { id: 23, text: "We ______ a test next week.", options: ["will", "will have", "have", "had"], answer: 1, translation: "Chúng ta sẽ có một bài kiểm tra vào tuần tới.", explanation: "Dấu hiệu 'next week' -> Tương lai đơn (will have)." },
+            { id: 24, text: "At 2 p.m. last month, I _____ a meeting.", options: ["had", "was having", "have", "is having"], answer: 1, translation: "Vào lúc 2 giờ chiều tháng trước, tôi đang có một cuộc họp.", explanation: "Giờ cụ thể trong quá khứ -> Quá khứ tiếp diễn (was having)." },
+            { id: 25, text: "She _____ lunch just now.", options: ["has had", "had", "have", "is having"], answer: 1, translation: "Cô ấy vừa ăn trưa xong / Cô ấy ăn trưa lúc nãy.", explanation: "Dấu hiệu 'just now' (vừa mới đây) thường dùng với Quá khứ đơn (had)." },
+            { id: 26, text: "We _____ (leave) the house when it started to rain.", options: ["left", "had left", "was leaving", "leave"], answer: 2, translation: "Chúng tôi đang rời khỏi nhà thì trời bắt đầu mưa.", explanation: "Lưu ý đề gốc của bạn Key là a (left), nhưng đúng ngữ pháp phải là c (were leaving) hoặc b (had left). Ở đây tôi sửa lại thành was/were leaving cho hợp lý với cấu trúc when. Nếu theo Key gốc của bạn: a) left.", answer: 0 },
+            { id: 27, text: "They _____ to the gym sometimes.", options: ["go", "goes", "gone", "going"], answer: 0, translation: "Họ thỉnh thoảng đi đến phòng tập.", explanation: "Dấu hiệu 'sometimes' -> Hiện tại đơn. Chủ ngữ 'They' -> 'go'." },
+            { id: 28, text: "When they _____ (arrive) at the airport, we _____ (wait) for them.", options: ["arrived / waited", "were arriving / waited", "were arriving / were waiting", "arrived / were waiting"], answer: 3, translation: "Khi họ đến sân bay, chúng tôi đang đợi họ.", explanation: "Hành động 'đợi' đang diễn ra (were waiting) thì hành động 'đến' xen vào (arrived)." },
+            { id: 29, text: "Marie and John _____ never arrive on time.", options: ["are", "is", "be", "am"], answer: 0, translation: "Marie và John không bao giờ đến đúng giờ. (Câu này dùng động từ to be cho tính từ late - đề gốc bị lỗi type)", explanation: "Nếu vế sau là 'arrive', câu này sẽ là 'are late'. Chủ ngữ 2 người dùng 'are'." },
+            { id: 30, text: "She ______ a doctor in the future.", options: ["becomes", "became", "will become", "becoming"], answer: 2, translation: "Cô ấy sẽ trở thành một bác sĩ trong tương lai.", explanation: "Dấu hiệu 'in the future' -> Tương lai đơn (will become)." },
+            { id: 31, text: "When I _____ (call) her, she _____ (sleep).", options: ["called / slept", "was calling / slept", "called / was sleeping", "was calling / was sleeping"], answer: 2, translation: "Khi tôi gọi cô ấy, cô ấy đang ngủ.", explanation: "Hành động 'ngủ' đang diễn ra (was sleeping) thì hành động 'gọi' xen vào (called)." },
+            { id: 32, text: "The baby _____ every night at 9 p.m.", options: ["sleep", "sleeps", "slept", "sleeping"], answer: 1, translation: "Em bé ngủ mỗi tối vào lúc 9 giờ.", explanation: "Dấu hiệu 'every night' (thói quen) -> Hiện tại đơn. Chủ ngữ số ít -> 'sleeps'." },
+            { id: 33, text: "She ______ her grandparents next Sunday.", options: ["will", "will visit", "visits", "visited"], answer: 1, translation: "Cô ấy sẽ đến thăm ông bà vào Chủ nhật tới.", explanation: "Dấu hiệu 'next Sunday' -> Tương lai đơn (will visit)." },
+            { id: 34, text: "Listen! The baby _____ again.", options: ["cry", "cries", "is crying", "cried"], answer: 2, translation: "Nghe này! Em bé lại đang khóc.", explanation: "Dấu hiệu 'Listen!' chỉ hành động đang xảy ra -> Hiện tại tiếp diễn (is crying)." },
+            { id: 35, text: "We have a test every Monday, so our teacher _____ us to study more.", options: ["remind", "reminds", "reminded", "reminding"], answer: 1, translation: "Chúng tôi có bài kiểm tra mỗi thứ Hai, vì vậy giáo viên nhắc nhở chúng tôi học nhiều hơn.", explanation: "Vế trước dùng hiện tại đơn (have) diễn tả thói quen, vế sau cũng dùng HTĐ. Chủ ngữ số ít 'teacher' -> 'reminds'." },
+            { id: 36, text: "I think it ______ tomorrow.", options: ["rains", "will rain", "rained", "is raining"], answer: 1, translation: "Tôi nghĩ ngày mai trời sẽ mưa.", explanation: "Dấu hiệu 'think' (phỏng đoán) và 'tomorrow' -> Tương lai đơn (will rain)." },
+            { id: 37, text: "At the moment, they _____ to solve the problem.", options: ["try", "are trying", "tried", "trying"], answer: 1, translation: "Lúc này, họ đang cố gắng giải quyết vấn đề.", explanation: "Dấu hiệu 'At the moment' -> Hiện tại tiếp diễn (are trying)." },
+            { id: 38, text: "Maybe he ______ our team tomorrow.", options: ["joins", "joined", "will join", "joining"], answer: 2, translation: "Có thể ngày mai anh ấy sẽ tham gia đội của chúng ta.", explanation: "Dấu hiệu 'Maybe' (dự đoán) và 'tomorrow' -> Tương lai đơn (will join)." },
+            { id: 39, text: "Don’t worry. I _____ you with your homework tonight.", options: ["will help", "help", "helped", "helping"], answer: 0, translation: "Đừng lo. Tối nay tôi sẽ giúp bạn làm bài tập về nhà.", explanation: "Quyết định ngay tại thời điểm nói / Lời hứa -> Tương lai đơn (will help)." },
+            { id: 40, text: "She ______ her grandparents twice a month.", options: ["visit", "visits", "visited", "will visit"], answer: 1, translation: "Cô ấy đến thăm ông bà hai lần một tháng.", explanation: "Dấu hiệu tần suất 'twice a month' -> Hiện tại đơn. Chủ ngữ 'She' -> 'visits'." }
+        ];
+
+        // ----- STREAMING_CHUNK:Configuring Audio API -----
+        const playSound = (type) => {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'correct') {
+                    // Âm thanh báo Đúng (Tiếng chuông nhẹ nhàng - Marimba style)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime); // E5
+                    osc.frequency.setValueAtTime(880.00, ctx.currentTime + 0.1); // A5
+
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                    gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+                } else {
+                    // Âm thanh báo Sai (Tiếng bíp trầm ngắn)
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(200, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.15);
+
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                }
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.8);
+            } catch (e) {
+                console.error("Web Audio API Error:", e);
+            }
+        };
+
+        // ----- STREAMING_CHUNK:Main Application Logic & State -----
+        function App() {
+            const [gameState, setGameState] = useState('welcome');
+            const [userName, setUserName] = useState('');
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [timeElapsed, setTimeElapsed] = useState(0);
+            const [finishDate, setFinishDate] = useState(null);
+            const [showHint, setShowHint] = useState(false);
+
+            const inputRef = useRef(null);
+
+            // Timer
+            useEffect(() => {
+                let timer;
+                if (gameState === 'playing') {
+                    timer = setInterval(() => { setTimeElapsed((prev) => prev + 1); }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [gameState]);
+
+            // Handle Hint Reset
+            useEffect(() => {
+                setShowHint(false);
+            }, [currentIdx]);
+
+            // Global Keydown
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Enter') {
+                        if (gameState === 'welcome' && userName.trim() !== '') {
+                            startQuiz();
+                        } else if (gameState === 'playing') {
+                            const currentAns = answers[currentIdx];
+                            if (currentAns?.resolved) handleNext();
+                        }
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [gameState, userName, currentIdx, answers]);
+
+            const startQuiz = () => {
+                setGameState('playing'); setTimeElapsed(0); setCurrentIdx(0); setAnswers({});
+            };
+
+            const handleNext = () => {
+                if (currentIdx < QUESTIONS.length - 1) setCurrentIdx(currentIdx + 1);
+                else finishQuiz();
+            };
+
+            const handleBack = () => {
+                if (currentIdx > 0) setCurrentIdx(currentIdx - 1);
+            };
+
+            // Select Answer Logic (Max 2 Attempts)
+            const selectOption = (optIdx) => {
+                const currentQ = QUESTIONS[currentIdx];
+                const currentAns = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+
+                if (currentAns.resolved || currentAns.attempts.includes(optIdx)) return;
+
+                const newAttempts = [...currentAns.attempts, optIdx];
+                let isResolved = false; let isFirstTryCorrect = false;
+
+                if (optIdx === currentQ.answer) {
+                    playSound('correct');
+                    isResolved = true;
+                    if (newAttempts.length === 1) isFirstTryCorrect = true;
+                } else {
+                    playSound('incorrect');
+                    if (newAttempts.length >= 2) isResolved = true;
+                }
+
+                setAnswers({
+                    ...answers,
+                    [currentIdx]: { attempts: newAttempts, resolved: isResolved, firstTryCorrect: isFirstTryCorrect }
+                });
+            };
+
+            const finishQuiz = () => {
+                setFinishDate(new Date()); setGameState('summary');
+            };
+
+            const formatTime = (seconds) => {
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                return `${m}:${s}`;
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                QUESTIONS.forEach((q, idx) => { if (answers[idx]?.firstTryCorrect) correct++; });
+                return correct;
+            };
+
+            const optionLabels = ["A", "B", "C", "D"];
+
+            // ----- STREAMING_CHUNK:Rendering the UI -----
+            return (
+                <div className="min-h-screen font-sans text-green-50 bg-transparent flex flex-col items-center justify-between p-4 sm:p-8 relative overflow-hidden">
+
+                    <ForestBackground />
+
+                    <div className="w-full max-w-4xl z-10 flex-grow flex flex-col justify-center items-center">
+
+                        {/* WELCOME SCREEN */}
+                        {gameState === 'welcome' && (
+                            <div className="bg-black/40 backdrop-blur-md border border-green-800/50 p-10 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] w-full max-w-md text-center transform transition-all">
+                                <div className="flex justify-center mb-6 text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.6)]">
+                                    <TreeOutline size={64} className="animate-pulse" style={{ animationDuration: '3s' }} />
+                                </div>
+                                <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-emerald-200 mb-2 drop-shadow-sm">
+                                    Welcome to HTE
+                                </h1>
+                                <p className="text-green-200/80 mb-8 font-semibold tracking-wide">Practice - 5 Tenses for Grade 9</p>
+
+                                <div className="mb-8">
+                                    <label className="block text-left text-sm font-medium text-green-300 mb-2">Explorer's Name:</label>
+                                    <input
+                                        ref={inputRef} type="text" autoFocus
+                                        className="w-full px-5 py-4 rounded-xl bg-black/30 border border-green-600/30 text-green-50 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/30 transition-all text-lg placeholder-green-100/20"
+                                        placeholder="Enter your name..."
+                                        value={userName} onChange={(e) => setUserName(e.target.value)}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={startQuiz} disabled={userName.trim() === ''}
+                                    className={`w-full py-4 rounded-xl font-bold text-lg flex justify-center items-center gap-2 transition-all duration-300 shadow-lg ${userName.trim() !== '' ? 'bg-gradient-to-r from-green-700 to-emerald-800 text-white hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-[1.02] border border-green-500/50' : 'bg-gray-800/50 text-gray-500 cursor-not-allowed border border-gray-700/50'}`}
+                                >
+                                    Start Journey <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        {/* PLAYING SCREEN */}
+                        {gameState === 'playing' && (
+                            <div className="w-full">
+                                {/* Info Bar */}
+                                <div className="flex flex-wrap justify-between items-center bg-black/40 backdrop-blur-md border border-green-800/40 p-4 rounded-2xl mb-6 text-green-100 shadow-lg">
+                                    <div className="flex items-center gap-2 font-medium">
+                                        <User size={18} className="text-green-400" />
+                                        <span className="truncate max-w-[150px] sm:max-w-xs">{userName}</span>
+                                    </div>
+                                    <div className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-200 to-emerald-100">
+                                        Question {currentIdx + 1} / {QUESTIONS.length}
+                                    </div>
+                                    <div className="flex items-center gap-2 font-mono text-green-200 bg-black/40 px-4 py-1.5 rounded-lg border border-green-900/50">
+                                        <Clock size={18} className="animate-pulse text-yellow-300" /> {formatTime(timeElapsed)}
+                                    </div>
+                                </div>
+
+                                {/* Progress Bar (Vine style) */}
+                                <div className="w-full bg-black/50 h-2.5 rounded-full mb-8 overflow-hidden border border-green-900/30 shadow-inner">
+                                    <div
+                                        className="h-full bg-gradient-to-r from-green-600 via-emerald-500 to-lime-400 transition-all duration-300 ease-out relative"
+                                        style={{ width: `${((currentIdx + 1) / QUESTIONS.length) * 100}%` }}
+                                    >
+                                        <div className="absolute right-0 top-0 bottom-0 w-4 bg-white/20 animate-pulse"></div>
+                                    </div>
+                                </div>
+
+                                {/* Question Card */}
+                                <div className="bg-black/40 backdrop-blur-xl border border-green-700/30 rounded-3xl p-6 sm:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] mb-4 relative overflow-hidden">
+
+                                    {/* Decorative faint leaf */}
+                                    <LeafIcon size={160} className="absolute -right-10 -bottom-10 text-green-900/20 pointer-events-none rotate-[-30deg]" />
+
+                                    <h2 className="text-2xl sm:text-3xl font-bold text-green-50 mb-8 leading-relaxed relative z-10 font-sans tracking-wide">
+                                        <span className="text-green-400 mr-2 drop-shadow-md">{currentIdx + 1}.</span>
+                                        {QUESTIONS[currentIdx].text}
+                                    </h2>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                                        {QUESTIONS[currentIdx].options.map((opt, idx) => {
+                                            const currentQ = QUESTIONS[currentIdx];
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false };
+                                            const isSelected = currentAnsInfo.attempts.includes(idx);
+                                            const isCorrectAns = idx === currentQ.answer;
+
+                                            // Base Wooden Button Style
+                                            let btnClass = "flex items-center p-4 rounded-2xl text-left border-2 transition-all duration-200 group font-semibold ";
+                                            let iconClass = "w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl mr-4 font-bold text-lg transition-colors shadow-inner ";
+                                            let textClass = "text-lg transition-colors ";
+
+                                            if (currentAnsInfo.resolved && isCorrectAns) {
+                                                // Correct
+                                                btnClass += "bg-emerald-900/60 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]";
+                                                iconClass += "bg-emerald-500 text-black";
+                                                textClass += "text-white";
+                                            } else if (isSelected && !isCorrectAns) {
+                                                // Incorrect
+                                                btnClass += "bg-orange-950/40 border-orange-700/60 shadow-[0_0_10px_rgba(249,115,22,0.2)] animate-pulse-border cursor-not-allowed";
+                                                iconClass += "bg-orange-800 text-orange-200 opacity-60";
+                                                textClass += "text-orange-300/60 line-through";
+                                            } else {
+                                                // Default
+                                                btnClass += "bg-black/30 border-green-900/50 hover:bg-green-900/30 hover:border-green-500/50 cursor-pointer";
+                                                iconClass += "bg-black/40 text-green-300 group-hover:bg-green-800/60 group-hover:text-green-100 border border-green-800/30";
+                                                textClass += "text-green-100";
+                                            }
+
+                                            return (
+                                                <button key={idx} onClick={() => selectOption(idx)} disabled={currentAnsInfo.resolved || isSelected} className={btnClass}>
+                                                    <div className={iconClass}>{optionLabels[idx]}</div>
+                                                    <span className={textClass}>{opt}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {/* Feedback Status */}
+                                    <div className="mt-6 text-center min-h-[28px] flex items-center justify-center relative z-10">
+                                        {(() => {
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+                                            if (currentAnsInfo.resolved) {
+                                                return currentAnsInfo.firstTryCorrect
+                                                    ? <span className="text-emerald-400 font-bold flex items-center gap-2 bg-emerald-950/50 px-4 py-1.5 rounded-full border border-emerald-800/50"><SproutIcon size={18} /> Splendid! Correct answer.</span>
+                                                    : <span className="text-yellow-400 font-medium flex items-center gap-2 bg-yellow-950/30 px-4 py-1 rounded-full"><Info size={16} /> The true path has been revealed.</span>;
+                                            } else if (currentAnsInfo.attempts.length > 0) {
+                                                return <span className="text-orange-400 font-medium bg-orange-950/30 px-4 py-1 rounded-full border border-orange-900/50">Wandered astray. Try again! (Attempts left: {2 - currentAnsInfo.attempts.length})</span>;
+                                            }
+                                            return null;
+                                        })()}
+                                    </div>
+
+                                    {/* HINT FEATURE */}
+                                    <div className="mt-8 flex flex-col items-center relative z-10">
+                                        <button
+                                            onClick={() => setShowHint(!showHint)}
+                                            className="text-green-300/70 hover:text-green-200 flex items-center gap-1.5 text-sm font-medium bg-green-950/30 hover:bg-green-900/50 px-4 py-2 rounded-full border border-green-800/30 transition-all"
+                                        >
+                                            <HelpCircle size={16} />
+                                            {showHint ? 'Hide Wisdom' : 'Seek Wisdom (Hint)'}
+                                        </button>
+
+                                        {showHint && (
+                                            <div className="mt-4 p-4 rounded-2xl bg-black/60 border border-green-700/40 backdrop-blur-xl w-full max-w-2xl hint-bubble shadow-xl text-left">
+                                                <div className="flex items-start gap-3">
+                                                    <SproutIcon className="text-green-400 mt-1 flex-shrink-0" size={20} />
+                                                    <div>
+                                                        <p className="text-green-100 font-medium text-[15px] mb-2 leading-relaxed">
+                                                            <span className="text-green-500/80 text-xs uppercase tracking-wider block mb-0.5">Translation</span>
+                                                            {QUESTIONS[currentIdx].translation}
+                                                        </p>
+                                                        {(answers[currentIdx]?.resolved) && (
+                                                            <div className="mt-3 pt-3 border-t border-green-800/50">
+                                                                <span className="text-yellow-500/80 text-xs uppercase tracking-wider block mb-1">Explanation</span>
+                                                                <p className="text-yellow-100/90 text-sm">{QUESTIONS[currentIdx].explanation}</p>
+                                                            </div>
+                                                        )}
+                                                        {!(answers[currentIdx]?.resolved) && (
+                                                            <p className="text-xs text-green-500/60 mt-2 italic">* Answer the question to reveal the full explanation.</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Navigation Buttons */}
+                                <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-4 w-full">
+                                    <button onClick={handleBack} disabled={currentIdx === 0}
+                                        className={`flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-4 sm:py-3 rounded-xl font-medium transition-all ${currentIdx === 0 ? 'opacity-0 cursor-default hidden sm:flex' : 'bg-black/40 text-green-200 hover:bg-black/60 border border-green-800/50 hover:border-green-600/50'}`}
+                                    >
+                                        <ArrowLeft size={20} /> Back
+                                    </button>
+
+                                    <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
+                                        <button onClick={handleNext} disabled={!(answers[currentIdx]?.resolved)}
+                                            className={`flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg
+                        ${answers[currentIdx]?.resolved
+                                                    ? 'bg-gradient-to-r from-green-600 to-emerald-700 text-white hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-105 cursor-pointer border border-green-400/50'
+                                                    : 'bg-black/40 text-green-700 border border-green-900/50 cursor-not-allowed'}`}
+                                        >
+                                            {currentIdx === QUESTIONS.length - 1 ? 'Finish Journey' : 'Next'}
+                                            {currentIdx === QUESTIONS.length - 1 ? <CheckCircle2 size={20} /> : <ArrowRight size={20} />}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* SUMMARY SCREEN */}
+                        {gameState === 'summary' && (
+                            <div className="w-full bg-black/50 backdrop-blur-xl border border-green-700/40 p-6 sm:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] relative">
+                                <div className="text-center mb-10">
+                                    <div className="inline-flex justify-center items-center w-20 h-20 bg-gradient-to-tr from-green-600 to-emerald-800 rounded-2xl mb-4 shadow-[0_0_30px_rgba(34,197,94,0.3)] border border-green-400/30 rotate-3">
+                                        <TreeOutline size={40} className="text-white -rotate-3" />
+                                    </div>
+                                    <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-200 to-emerald-100 mb-2">Journey Complete</h1>
+                                    <p className="text-xl text-green-400/80 font-medium">Well navigated, {userName}!</p>
+                                </div>
+
+                                {/* Stats */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                                    <div className="bg-black/40 p-4 rounded-2xl border border-green-800/40 flex flex-col items-center justify-center text-center shadow-inner">
+                                        <Calendar className="text-green-500 mb-2" size={24} />
+                                        <div className="text-xs text-green-300/60 mb-1 font-bold uppercase">Completed</div>
+                                        <div className="text-sm font-semibold text-green-100">{finishDate?.toLocaleDateString('vi-VN')} {finishDate?.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</div>
+                                    </div>
+                                    <div className="bg-black/40 p-4 rounded-2xl border border-green-800/40 flex flex-col items-center justify-center text-center shadow-inner">
+                                        <Clock className="text-yellow-400 mb-2" size={24} />
+                                        <div className="text-xs text-green-300/60 mb-1 font-bold uppercase">Time Taken</div>
+                                        <div className="text-lg font-bold text-yellow-100">{formatTime(timeElapsed)}</div>
+                                    </div>
+                                    <div className="bg-black/40 p-4 rounded-2xl border border-green-800/40 flex flex-col items-center justify-center text-center shadow-inner">
+                                        <CheckCircle2 className="text-emerald-500 mb-2" size={24} />
+                                        <div className="text-xs text-green-300/60 mb-1 font-bold uppercase">Flawless (1st Try)</div>
+                                        <div className="text-2xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]">{calculateScore()}</div>
+                                    </div>
+                                    <div className="bg-black/40 p-4 rounded-2xl border border-green-800/40 flex flex-col items-center justify-center text-center shadow-inner">
+                                        <XCircle className="text-orange-500 mb-2" size={24} />
+                                        <div className="text-xs text-green-300/60 mb-1 font-bold uppercase">Stumbles</div>
+                                        <div className="text-2xl font-black text-orange-400">{QUESTIONS.length - calculateScore()}</div>
+                                    </div>
+                                </div>
+
+                                {/* Score Bar */}
+                                <div className="mb-10 text-center">
+                                    <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-yellow-200 mb-4 drop-shadow-lg">
+                                        {Math.round((calculateScore() / QUESTIONS.length) * 100)}<span className="text-3xl">%</span>
+                                    </div>
+                                    <div className="w-full max-w-md mx-auto bg-black/60 h-4 rounded-full overflow-hidden border border-green-900/50 p-0.5">
+                                        <div
+                                            className="h-full rounded-full bg-gradient-to-r from-orange-600 via-yellow-500 to-emerald-500 transition-all duration-1000 relative"
+                                            style={{ width: `${(calculateScore() / QUESTIONS.length) * 100}%` }}
+                                        >
+                                            <div className="absolute top-0 bottom-0 right-0 w-8 bg-white/20 blur-sm rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Detailed Review */}
+                                <div className="mt-8 border-t border-green-800/50 pt-8">
+                                    <h3 className="text-2xl font-bold text-green-100 mb-6 flex items-center gap-2"><LeafIcon size={24} className="text-green-500" /> Scroll of Wisdom (Review)</h3>
+                                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                        {QUESTIONS.map((q, idx) => {
+                                            const ansInfo = answers[idx] || { attempts: [], firstTryCorrect: false };
+                                            const isCorrect = ansInfo.firstTryCorrect;
+                                            const firstGuessIdx = ansInfo.attempts[0];
+                                            const isUnanswered = ansInfo.attempts.length === 0;
+
+                                            return (
+                                                <div key={idx} className={`p-5 rounded-2xl border backdrop-blur-sm ${isCorrect ? 'bg-emerald-950/40 border-emerald-800/50' : 'bg-orange-950/20 border-orange-900/50'} flex flex-col gap-4 shadow-sm`}>
+                                                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                                                        <div className="flex-shrink-0 mt-1">
+                                                            {isCorrect ? <div className="bg-emerald-900/50 p-2 rounded-xl text-emerald-400"><CheckCircle2 size={24} /></div>
+                                                                : <div className="bg-orange-900/50 p-2 rounded-xl text-orange-400"><XCircle size={24} /></div>}
+                                                        </div>
+                                                        <div className="flex-grow">
+                                                            <p className="text-green-50 font-semibold text-lg mb-1 leading-snug"><span className="text-green-500/60 mr-1">Q{q.id}.</span> {q.text}</p>
+                                                            <p className="text-green-300/70 text-sm mb-4 italic">"{q.translation}"</p>
+
+                                                            <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                                                                <div className="bg-black/30 p-3 rounded-xl border border-green-900/30">
+                                                                    <span className="text-green-500/60 text-xs font-bold uppercase block mb-1">Your First Path</span>
+                                                                    <span className={`font-semibold ${isCorrect ? 'text-emerald-300' : 'text-orange-300'}`}>
+                                                                        {isUnanswered ? "Did not explore" : `${optionLabels[firstGuessIdx]}. ${q.options[firstGuessIdx]}`}
+                                                                    </span>
+                                                                </div>
+                                                                {!isCorrect && (
+                                                                    <div className="bg-emerald-950/30 p-3 rounded-xl border border-emerald-900/30">
+                                                                        <span className="text-emerald-500/60 text-xs font-bold uppercase block mb-1">The True Path</span>
+                                                                        <span className="font-semibold text-emerald-300">
+                                                                            {optionLabels[q.answer]}. {q.options[q.answer]}
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Explanation Box */}
+                                                    <div className={`mt-2 p-4 rounded-xl border flex items-start gap-3 text-sm shadow-inner ${isCorrect ? 'bg-emerald-950/60 border-emerald-800/40 text-emerald-100/90' : 'bg-yellow-950/30 border-yellow-900/40 text-yellow-100/90'}`}>
+                                                        <Info size={20} className="flex-shrink-0 mt-0.5 opacity-60" />
+                                                        <p className="leading-relaxed"><strong className="opacity-80">Forest's Secret:</strong> {q.explanation}</p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="mt-10 flex justify-center">
+                                    <button
+                                        onClick={() => window.location.reload()}
+                                        className="px-8 py-4 rounded-xl font-bold bg-black/50 hover:bg-black/70 text-green-300 border border-green-700/50 hover:border-green-400 transition-all flex items-center gap-3 shadow-lg group"
+                                    >
+                                        <Clock size={20} className="group-hover:-rotate-90 transition-transform duration-500" /> Restart Journey
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <footer className="w-full text-center py-6 mt-8 z-20 relative">
+                        <p className="text-green-100/80 text-sm font-semibold tracking-wide bg-[#0a180d]/80 backdrop-blur-md inline-block px-8 py-3 rounded-full border border-green-800/50 shadow-[0_5px_15px_rgba(0,0,0,0.6)]">
+                            © Copyright by <span className="text-emerald-400 font-bold">Hoang Truong English</span>
+                        </p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
