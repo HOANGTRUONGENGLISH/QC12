@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Community - Vocabulary Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        h1,
+        h2,
+        h3,
+        .heading-font {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ECFDF5;
+        }
+
+        /* Emerald-50 */
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.1);
+        }
+
+        .title-shape {
+            display: inline-block;
+            background: #F59E0B;
+            /* Amber-500 */
+            color: white;
+            padding: 0.5rem 1.5rem;
+            transform: rotate(-2deg);
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            border-radius: 0.5rem;
+            box-shadow: 4px 4px 0px #D97706;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="text-emerald-950 min-h-screen flex items-center justify-center p-4">
+
+    <div id="main-content" class="relative w-full max-w-2xl">
+        <!-- START SCREEN -->
+        <div id="screen-start" class="glass-panel rounded-3xl p-8 text-center animate-float">
+            <div class="text-6xl mb-6">🏡</div>
+            <div class="title-shape text-2xl md:text-3xl mb-6">OUR COMMUNITY</div>
+            <h1 class="text-3xl font-bold mb-4">Vocabulary Challenge</h1>
+            <p class="text-emerald-800 mb-8">Ôn tập 26 thuật ngữ cốt lõi - Global Success 9</p>
+            <button id="btn-start"
+                class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-lg shadow-lg transition-transform hover:scale-105">
+                Bắt Đầu 🚀
+            </button>
+            <div class="mt-8 text-xs text-emerald-900/50 font-semibold">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-8 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div class="title-shape text-sm">OUR COMMUNITY</div>
+                <div id="timer" class="font-mono text-lg font-bold text-emerald-700">00:00</div>
+            </div>
+
+            <div class="flex justify-between mb-4 text-sm font-bold text-emerald-600 uppercase tracking-widest">
+                <span id="progress-text">CÂU HỎI 1</span>
+                <span id="score-text">ĐIỂM: 0</span>
+            </div>
+
+            <h2 id="question-text" class="text-2xl font-semibold mb-6 text-emerald-950"></h2>
+
+            <div id="options-container" class="grid gap-3 mb-6"></div>
+
+            <div id="explanation-container" class="transition-all duration-300 max-h-0 opacity-0 overflow-hidden">
+                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-xl mb-4">
+                    <div id="rationale-content" class="text-emerald-900"></div>
+                </div>
+                <button id="btn-next"
+                    class="w-full py-3 bg-amber-500 text-white font-bold rounded-xl shadow-md hover:bg-amber-600">
+                    Câu Tiếp Theo ➔
+                </button>
+            </div>
+            <div class="mt-6 text-center text-xs text-emerald-900/50 font-semibold">© Copyright 2026 by Hoang Truong
+                English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end" class="glass-panel rounded-3xl p-8 text-center hidden">
+            <h2 class="text-3xl font-bold mb-6">Hoàn Thành! 🏆</h2>
+            <div class="bg-white p-6 rounded-2xl border-2 border-emerald-100 mb-6 text-left">
+                <p>🕒 Tổng thời gian: <span id="end-time" class="font-bold"></span></p>
+                <p>✅ Đúng lần đầu: <span id="stat-correct" class="font-bold text-emerald-600"></span></p>
+            </div>
+            <button id="btn-restart"
+                class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700">
+                Làm Lại 🔄
+            </button>
+            <div class="mt-8 text-xs text-emerald-900/50 font-semibold">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+    </div>
+
+    <script>
+        const vocabData = [
+            ["community", "n", "/kəˈmjuːnəti/", "cộng đồng", "We should help people in our community."],
+            ["local", "adj", "/ˈləʊkl/", "thuộc địa phương", "Local people are friendly and helpful."],
+            ["artisan", "n", "/ˌɑːtɪˈzæn/", "nghệ nhân", "The artisan makes beautiful pottery."],
+            ["handicraft", "n", "/ˈhændikrɑːft/", "đồ thủ công", "Tourists often buy local handicrafts."],
+            ["workshop", "n", "/ˈwɜːkʃɒp/", "xưởng / buổi hội thảo", "My uncle works in a pottery workshop."],
+            ["attraction", "n", "/əˈtrækʃn/", "điểm thu hút", "The old market is a popular attraction."],
+            ["facility", "n", "/fəˈsɪləti/", "cơ sở vật chất", "The town needs better sports facilities."],
+            ["service", "n", "/ˈsɜːvɪs/", "dịch vụ", "Public services should be improved."],
+            ["volunteer", "n/v", "/ˌvɒlənˈtɪə(r)/", "tình nguyện viên / tình nguyện", "Many students volunteer at weekends."],
+            ["neighbourhood", "n", "/ˈneɪbəhʊd/", "khu phố", "My neighbourhood is quiet and clean."],
+            ["resident", "n", "/ˈrezɪdənt/", "cư dân", "Residents want a safer living area."],
+            ["crowded", "adj", "/ˈkraʊdɪd/", "đông đúc", "The streets are crowded at rush hour."],
+            ["traffic jam", "n", "/ˈtræfɪk dʒæm/", "kẹt xe", "Traffic jams are common in big cities."],
+            ["public transport", "n", "/ˈpʌblɪk ˈtrænspɔːt/", "phương tiện công cộng", "Public transport helps reduce pollution."],
+            ["urban", "adj", "/ˈɜːbən/", "thuộc đô thị", "Urban life is busy and exciting."],
+            ["rural", "adj", "/ˈrʊərəl/", "thuộc nông thôn", "Rural areas are usually peaceful."],
+            ["convenient", "adj", "/kənˈviːniənt/", "tiện lợi", "Living near school is convenient."],
+            ["stressful", "adj", "/ˈstresfl/", "căng thẳng", "City life can be stressful."],
+            ["lifestyle", "n", "/ˈlaɪfstaɪl/", "lối sống", "Teenagers should have a healthy lifestyle."],
+            ["balanced diet", "n", "/ˈbælənst ˈdaɪət/", "chế độ ăn cân bằng", "A balanced diet keeps us healthy."],
+            ["physical activity", "n", "/ˈfɪzɪkl ækˈtɪvəti/", "hoạt động thể chất", "Physical activity is good for teenagers."],
+            ["mental health", "n", "/ˈmentl helθ/", "sức khỏe tinh thần", "Sleep is important for mental health."],
+            ["pressure", "n", "/ˈpreʃə(r)/", "áp lực", "Students often face exam pressure."],
+            ["habit", "n", "/ˈhæbɪt/", "thói quen", "Reading is a useful habit."],
+            ["avoid", "v", "/əˈvɔɪd/", "tránh", "We should avoid eating too much fast food."],
+            ["improve", "v", "/ɪmˈpruːv/", "cải thiện", "Exercise can improve our health."]
+        ];
+
+        let state = { index: 0, score: 0, time: 0, timerInterval: null };
+        const timerEl = document.getElementById('timer');
+
+        function startTimer() {
+            state.time = 0;
+            state.timerInterval = setInterval(() => {
+                state.time++;
+                const m = Math.floor(state.time / 60).toString().padStart(2, '0');
+                const s = (state.time % 60).toString().padStart(2, '0');
+                timerEl.innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const item = vocabData[state.index];
+            document.getElementById('question-text').innerHTML = `Nghĩa của từ <strong>${item[0]}</strong> là gì?`;
+            document.getElementById('progress-text').innerText = `Câu ${state.index + 1} / ${vocabData.length}`;
+
+            const options = [item[3]];
+            while (options.length < 4) {
+                const rand = vocabData[Math.floor(Math.random() * vocabData.length)][3];
+                if (!options.includes(rand)) options.push(rand);
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-4 bg-white border-2 border-emerald-100 rounded-xl hover:border-emerald-500 transition-all";
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(btn, opt === item[3]);
+                container.appendChild(btn);
+            });
+            document.getElementById('explanation-container').classList.add('max-h-0', 'opacity-0');
+        }
+
+        function checkAnswer(btn, isCorrect) {
+            const item = vocabData[state.index];
+            if (isCorrect) {
+                state.score++;
+                document.getElementById('score-text').innerText = `ĐIỂM: ${state.score}`;
+                btn.classList.add('bg-emerald-500', 'text-white');
+                speak(item[0]);
+                showExplanation(item);
+            } else {
+                btn.classList.add('bg-red-100', 'border-red-500');
+            }
+        }
+
+        function showExplanation(item) {
+            document.getElementById('rationale-content').innerHTML = `
+                <div class="font-bold text-lg">${item[0]} (${item[1]}) ${item[2]}</div>
+                <div class="italic text-sm text-emerald-700">${item[3]}</div>
+                <div class="mt-2 text-emerald-800">✨ ${item[4]}</div>
+            `;
+            document.getElementById('explanation-container').classList.remove('max-h-0', 'opacity-0');
+        }
+
+        function speak(text) {
+            const synth = window.speechSynthesis;
+            const utter = new SpeechSynthesisUtterance(text);
+            const voices = synth.getVoices();
+            // UK English Preference
+            utter.voice = voices.find(v => v.lang === 'en-GB') || voices[0];
+            synth.speak(utter);
+        }
+
+        document.getElementById('btn-start').onclick = () => {
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-playing').classList.remove('hidden');
+            startTimer();
+            loadQuestion();
+        };
+
+        document.getElementById('btn-next').onclick = () => {
+            state.index++;
+            if (state.index < vocabData.length) loadQuestion();
+            else endGame();
+        };
+
+        function endGame() {
+            clearInterval(state.timerInterval);
+            document.getElementById('screen-playing').classList.add('hidden');
+            document.getElementById('screen-end').classList.remove('hidden');
+            document.getElementById('end-time').innerText = timerEl.innerText;
+            document.getElementById('stat-correct').innerText = state.score;
+        }
+
+        document.getElementById('btn-restart').onclick = () => location.reload();
+    </script>
+</body>
+
+</html>
