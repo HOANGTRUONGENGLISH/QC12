@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GERUND AND TO INFINITIVE</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @keyframes pulseBorder {
+
+            0%,
+            100% {
+                border-color: rgba(251, 191, 36, 0.8);
+                box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+            }
+
+            50% {
+                border-color: rgba(251, 191, 36, 0.2);
+                box-shadow: 0 0 5px rgba(251, 191, 36, 0.0);
+            }
+        }
+
+        .animate-pulse-border {
+            animation: pulseBorder 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* ANIMATIONS FOR FIREFLIES */
+        @keyframes floatFirefly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(var(--tx), var(--ty)) scale(1.2);
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(calc(var(--tx) * -1), calc(var(--ty) * -1)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .firefly {
+            animation: floatFirefly var(--duration) ease-in-out infinite alternate, flicker var(--flicker-dur) infinite;
+            animation-delay: var(--delay);
+            box-shadow: 0 0 10px 2px #f59e0b, 0 0 20px 5px #fbbf24;
+        }
+
+        .brushed-metal {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            position: relative;
+        }
+
+        .brushed-metal::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg,
+                    rgba(255, 255, 255, 0.02) 0px,
+                    rgba(255, 255, 255, 0.02) 2px,
+                    transparent 2px,
+                    transparent 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(251, 191, 36, 0.4);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(251, 191, 36, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="brushed-metal text-slate-200">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ----- BỘ ICON -----
+        const Sparkles = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" /><path d="M5 3v4M3 5h4" /></svg>;
+        const ArrowRight = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
+        const ArrowLeft = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>;
+        const CheckCircle2 = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>;
+        const XCircle = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>;
+        const Clock = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+        const Calendar = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+        const User = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+        const Lightbulb = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></svg>;
+        const Info = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>;
+
+        // ----- BACKGROUND ĐOM ĐÓM VÀNG ẤM -----
+        const FireflyBackground = () => {
+            const fireflies = Array.from({ length: 40 }).map((_, i) => ({
+                id: i,
+                top: `${Math.random() * 100}vh`,
+                left: `${Math.random() * 100}vw`,
+                size: `${Math.random() * 4 + 2}px`,
+                duration: `${Math.random() * 15 + 10}s`,
+                delay: `${Math.random() * -20}s`,
+                flicker: `${Math.random() * 2 + 1}s`,
+                tx: `${(Math.random() - 0.5) * 200}px`,
+                ty: `${(Math.random() - 0.5) * 200}px`
+            }));
+
+            return (
+                <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+                    {fireflies.map(ff => (
+                        <div
+                            key={ff.id}
+                            className="absolute rounded-full bg-amber-200 firefly"
+                            style={{
+                                top: ff.top, left: ff.left, width: ff.size, height: ff.size,
+                                '--duration': ff.duration, '--delay': ff.delay, '--flicker-dur': ff.flicker,
+                                '--tx': ff.tx, '--ty': ff.ty
+                            }}
+                        ></div>
+                    ))}
+                    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-slate-900 to-transparent opacity-80"></div>
+                </div>
+            );
+        }
+
+        // ----- DỮ LIỆU CÂU HỎI (102 CÂU GERUNDS & INFINITIVES) -----
+        const QUESTIONS = [
+            { id: 1, text: "She can’t help ______ when she watches funny videos.", options: ["to laugh", "laughing", "laugh", "laughed"], answer: 1, translation: "Cô ấy không thể nhịn cười khi xem các video hài hước.", explanation: "can't help + V-ing: không thể nhịn được" },
+            { id: 2, text: "I can’t stand ______ in a noisy room.", options: ["studying", "to study", "study", "studied"], answer: 0, translation: "Tôi không thể chịu đựng được việc học trong một căn phòng ồn ào.", explanation: "can't stand + V-ing: không thể chịu đựng được" },
+            { id: 3, text: "My sister enjoys ______ English songs after school.", options: ["sing", "to sing", "singing", "sang"], answer: 2, translation: "Em gái tôi thích hát các bài hát tiếng Anh sau giờ học.", explanation: "enjoy + V-ing: thích thú làm gì" },
+            { id: 4, text: "They love ______ football on Sunday mornings.", options: ["playing", "to playing", "play", "played"], answer: 0, translation: "Họ yêu thích việc chơi bóng đá vào các buổi sáng Chủ nhật.", explanation: "love + V-ing (hoặc to V): yêu thích làm gì" },
+            { id: 5, text: "We decided to delay ______ the test until next week.", options: ["take", "to take", "taking", "took"], answer: 2, translation: "Chúng tôi quyết định trì hoãn việc làm bài kiểm tra cho đến tuần sau.", explanation: "delay + V-ing: trì hoãn việc gì" },
+            { id: 6, text: "He put off ______ his homework because he was tired.", options: ["doing", "to do", "do", "did"], answer: 0, translation: "Anh ấy đã hoãn việc làm bài tập về nhà vì anh ấy mệt.", explanation: "put off + V-ing: trì hoãn" },
+            { id: 7, text: "I hate ______ up early on cold mornings.", options: ["get", "getting", "to getting", "got"], answer: 1, translation: "Tôi ghét việc phải dậy sớm vào những buổi sáng lạnh giá.", explanation: "hate + V-ing (hoặc to V): ghét làm gì" },
+            { id: 8, text: "She dislikes ______ spicy food.", options: ["eating", "eat", "to eating", "ate"], answer: 0, translation: "Cô ấy không thích ăn đồ cay.", explanation: "dislike + V-ing: không thích làm gì" },
+            { id: 9, text: "He admitted ______ the window by accident.", options: ["break", "to break", "breaking", "broke"], answer: 2, translation: "Cậu bé thừa nhận đã vô tình làm vỡ cửa sổ.", explanation: "admit + V-ing: thừa nhận đã làm gì" },
+            { id: 10, text: "The boy admitted ______ during the exam.", options: ["cheating", "to cheat", "cheat", "cheated"], answer: 0, translation: "Cậu bé thừa nhận đã gian lận trong kỳ thi.", explanation: "admit + V-ing: thừa nhận đã làm gì" },
+            { id: 11, text: "The school admitted him ______ the special English course.", options: ["join", "joining", "to join", "joined"], answer: 2, translation: "Trường học đã nhận cậu ấy vào tham gia khóa học tiếng Anh đặc biệt.", explanation: "admit sb TO V / into sth: nhận ai vào làm gì" },
+            { id: 12, text: "They admitted the students ______ the competition.", options: ["to take part in", "taking part in", "take part in", "took part in"], answer: 0, translation: "Họ đã nhận các học sinh vào tham gia cuộc thi.", explanation: "admit sb to V: nhận ai vào (tham gia)" },
+            { id: 13, text: "You should avoid ______ too much fast food.", options: ["eat", "to eat", "eating", "ate"], answer: 2, translation: "Bạn nên tránh ăn quá nhiều thức ăn nhanh.", explanation: "avoid + V-ing: tránh làm việc gì" },
+            { id: 14, text: "He avoided ______ about his mistake.", options: ["talking", "to talk", "talk", "talked"], answer: 0, translation: "Anh ấy tránh nói về sai lầm của mình.", explanation: "avoid + V-ing: tránh làm việc gì" },
+            { id: 15, text: "She denied ______ my phone yesterday.", options: ["take", "taking", "to take", "took"], answer: 1, translation: "Cô ấy phủ nhận việc đã lấy điện thoại của tôi hôm qua.", explanation: "deny + V-ing: phủ nhận đã làm gì" },
+            { id: 16, text: "The student denied ______ noise in class.", options: ["making", "to make", "make", "made"], answer: 0, translation: "Học sinh phủ nhận việc làm ồn trong lớp.", explanation: "deny + V-ing: phủ nhận đã làm gì" },
+            { id: 17, text: "Do you mind ______ the window?", options: ["open", "to open", "opening", "opened"], answer: 2, translation: "Bạn có phiền mở cửa sổ không?", explanation: "mind + V-ing: phiền làm gì" },
+            { id: 18, text: "Would you mind ______ me with this exercise?", options: ["helping", "to help", "help", "helped"], answer: 0, translation: "Bạn có phiền giúp tôi bài tập này không?", explanation: "Would you mind + V-ing: Bạn có phiền..." },
+            { id: 19, text: "I miss ______ with my old classmates.", options: ["study", "to study", "studying", "studied"], answer: 2, translation: "Tôi nhớ việc học cùng các bạn cùng lớp cũ.", explanation: "miss + V-ing: nhớ đã làm gì" },
+            { id: 20, text: "Hurry up! We may miss ______ the first bus.", options: ["catch", "catching", "to catch", "caught"], answer: 1, translation: "Nhanh lên! Chúng ta có thể bỏ lỡ việc bắt chuyến xe buýt đầu tiên.", explanation: "miss + V-ing: bỏ lỡ việc gì" },
+            { id: 21, text: "My teacher suggested ______ more grammar exercises.", options: ["do", "to do", "doing", "did"], answer: 2, translation: "Giáo viên của tôi gợi ý làm thêm bài tập ngữ pháp.", explanation: "suggest + V-ing: đề nghị, gợi ý làm gì" },
+            { id: 22, text: "They suggested ______ a picnic next weekend.", options: ["having", "to have", "have", "had"], answer: 0, translation: "Họ đề nghị tổ chức một buổi dã ngoại vào cuối tuần tới.", explanation: "suggest + V-ing: đề nghị làm gì" },
+            { id: 23, text: "She is busy ______ for the final exam.", options: ["prepare", "preparing", "to prepare", "prepared"], answer: 1, translation: "Cô ấy đang bận rộn chuẩn bị cho kỳ thi cuối kỳ.", explanation: "be busy + V-ing: bận rộn làm gì" },
+            { id: 24, text: "My father was busy ______ the car yesterday.", options: ["fixing", "to fix", "fix", "fixed"], answer: 0, translation: "Bố tôi đã bận sửa xe hôm qua.", explanation: "be busy + V-ing: bận rộn làm gì" },
+            { id: 25, text: "I feel like ______ a cold drink.", options: ["have", "to have", "having", "had"], answer: 2, translation: "Tôi cảm thấy muốn uống một thứ gì đó lạnh.", explanation: "feel like + V-ing: cảm thấy muốn làm gì" },
+            { id: 26, text: "They felt like ______ at home because it was raining.", options: ["staying", "to stay", "stay", "stayed"], answer: 0, translation: "Họ cảm thấy muốn ở nhà vì trời đang mưa.", explanation: "feel like + V-ing: cảm thấy muốn làm gì" },
+            { id: 27, text: "Keep ______ until you understand the lesson.", options: ["practice", "to practice", "practicing", "practiced"], answer: 2, translation: "Hãy tiếp tục luyện tập cho đến khi bạn hiểu bài học.", explanation: "keep + V-ing: tiếp tục làm gì" },
+            { id: 28, text: "The baby kept ______ during the night.", options: ["crying", "to cry", "cry", "cried"], answer: 0, translation: "Đứa bé liên tục khóc trong đêm.", explanation: "keep + V-ing: liên tục làm gì" },
+            { id: 29, text: "You should practice ______ English every day.", options: ["speak", "speaking", "to speak", "spoke"], answer: 1, translation: "Bạn nên luyện tập nói tiếng Anh mỗi ngày.", explanation: "practice + V-ing: luyện tập làm gì" },
+            { id: 30, text: "He practices ______ the guitar after dinner.", options: ["playing", "to play", "play", "played"], answer: 0, translation: "Anh ấy luyện tập chơi guitar sau bữa tối.", explanation: "practice + V-ing: luyện tập làm gì" },
+            { id: 31, text: "I look forward to ______ from you soon.", options: ["hear", "to hear", "hearing", "heard"], answer: 2, translation: "Tôi mong đợi được nghe tin từ bạn sớm.", explanation: "look forward to + V-ing: mong đợi làm gì" },
+            { id: 32, text: "We are looking forward to ______ our grandparents.", options: ["visiting", "to visit", "visit", "visited"], answer: 0, translation: "Chúng tôi đang mong đợi việc thăm ông bà.", explanation: "look forward to + V-ing: mong đợi làm gì" },
+            { id: 33, text: "Can you imagine ______ alone on an island?", options: ["live", "living", "to live", "lived"], answer: 1, translation: "Bạn có thể tưởng tượng việc sống một mình trên đảo không?", explanation: "imagine + V-ing: tưởng tượng làm gì" },
+            { id: 34, text: "She imagined ______ a famous singer one day.", options: ["becoming", "to become", "become", "became"], answer: 0, translation: "Cô ấy đã tưởng tượng việc trở thành một ca sĩ nổi tiếng vào một ngày nào đó.", explanation: "imagine + V-ing: tưởng tượng làm gì" },
+            { id: 35, text: "This job involves ______ with many customers.", options: ["work", "to work", "working", "worked"], answer: 2, translation: "Công việc này liên quan đến việc làm việc với nhiều khách hàng.", explanation: "involve + V-ing: liên quan đến việc gì" },
+            { id: 36, text: "Learning a language involves ______ new words regularly.", options: ["remembering", "to remember", "remember", "remembered"], answer: 0, translation: "Học một ngôn ngữ liên quan đến việc ghi nhớ từ mới thường xuyên.", explanation: "involve + V-ing: liên quan đến việc gì" },
+            { id: 37, text: "He has difficulty ______ this English passage.", options: ["understand", "to understand", "understanding", "understood"], answer: 2, translation: "Anh ấy gặp khó khăn trong việc hiểu đoạn văn tiếng Anh này.", explanation: "have difficulty (in) + V-ing: gặp khó khăn trong việc gì" },
+            { id: 38, text: "Many students have difficulty ______ essays in English.", options: ["writing", "to write", "write", "wrote"], answer: 0, translation: "Nhiều học sinh gặp khó khăn trong việc viết bài luận bằng tiếng Anh.", explanation: "have difficulty (in) + V-ing: gặp khó khăn trong việc gì" },
+            { id: 39, text: "I am used to ______ up early.", options: ["get", "getting", "to get", "got"], answer: 1, translation: "Tôi đã quen với việc dậy sớm.", explanation: "be used to + V-ing: quen với việc gì ở hiện tại" },
+            { id: 40, text: "She got used to ______ in a big city.", options: ["living", "to live", "live", "lived"], answer: 0, translation: "Cô ấy đã quen với việc sống ở một thành phố lớn.", explanation: "get used to + V-ing: quen dần với việc gì" },
+            { id: 41, text: "He spends two hours ______ English every night.", options: ["learn", "to learn", "learning", "learned"], answer: 2, translation: "Anh ấy dành hai giờ để học tiếng Anh mỗi tối.", explanation: "spend + thời gian + V-ing: dành thời gian làm gì" },
+            { id: 42, text: "My mother spent a lot of money ______ books.", options: ["buying", "to buy", "buy", "bought"], answer: 0, translation: "Mẹ tôi đã tiêu rất nhiều tiền vào việc mua sách.", explanation: "spend + tiền + V-ing: tiêu tiền làm gì" },
+            { id: 43, text: "Have you finished ______ your homework?", options: ["do", "doing", "to do", "did"], answer: 1, translation: "Bạn đã làm xong bài tập về nhà chưa?", explanation: "finish + V-ing: hoàn thành việc gì" },
+            { id: 44, text: "She finished ______ the report before lunch.", options: ["writing", "to write", "write", "wrote"], answer: 0, translation: "Cô ấy đã hoàn thành việc viết báo cáo trước bữa trưa.", explanation: "finish + V-ing: hoàn thành việc gì" },
+            { id: 45, text: "The teacher allows ______ dictionaries in class.", options: ["use", "to use", "using", "used"], answer: 2, translation: "Giáo viên cho phép sử dụng từ điển trong lớp.", explanation: "allow + V-ing: cho phép việc gì (không có tân ngữ)" },
+            { id: 46, text: "Doctors recommend ______ enough water every day.", options: ["drinking", "to drink", "drink", "drank"], answer: 0, translation: "Các bác sĩ khuyên nên uống đủ nước mỗi ngày.", explanation: "recommend + V-ing: khuyên làm việc gì (không có tân ngữ)" },
+            { id: 47, text: "My parents allow me ______ out with my friends.", options: ["go", "going", "to go", "went"], answer: 2, translation: "Bố mẹ tôi cho phép tôi đi chơi với bạn bè.", explanation: "allow sb to V: cho phép ai làm gì (có tân ngữ me)" },
+            { id: 48, text: "The teacher advised us ______ harder for the exam.", options: ["studying", "to study", "study", "studied"], answer: 1, translation: "Giáo viên khuyên chúng tôi học chăm chỉ hơn cho kỳ thi.", explanation: "advise sb to V: khuyên ai làm gì" },
+            { id: 49, text: "The funny story made everyone ______ loudly.", options: ["to laugh", "laughing", "laugh", "laughed"], answer: 2, translation: "Câu chuyện cười đã làm mọi người bật cười lớn.", explanation: "make sb + V (nguyên thể): làm ai đó như thế nào/bắt ai làm gì" },
+            { id: 50, text: "The noise made the baby ______.", options: ["cry", "to cry", "crying", "cried"], answer: 0, translation: "Tiếng ồn làm đứa bé khóc.", explanation: "make sb + V (nguyên thể): làm ai đó như thế nào" },
+            { id: 51, text: "I prefer reading books ______ watching TV.", options: ["than", "to", "with", "from"], answer: 1, translation: "Tôi thích đọc sách hơn là xem tivi.", explanation: "prefer V-ing to V-ing: thích làm gì hơn làm gì" },
+            { id: 52, text: "She prefers ______ at home to ______ out.", options: ["stay / go", "to stay / going", "staying / going", "stayed / went"], answer: 2, translation: "Cô ấy thích ở nhà hơn là đi chơi.", explanation: "prefer V-ing to V-ing: thích làm gì hơn làm gì" },
+            { id: 53, text: "I want ______ a doctor in the future.", options: ["become", "becoming", "to become", "became"], answer: 2, translation: "Tôi muốn trở thành một bác sĩ trong tương lai.", explanation: "want + to V: muốn làm gì" },
+            { id: 54, text: "They want ______ a new house next year.", options: ["buying", "to buy", "buy", "bought"], answer: 1, translation: "Họ muốn mua một ngôi nhà mới vào năm tới.", explanation: "want + to V: muốn làm gì" },
+            { id: 55, text: "We decided ______ by bus.", options: ["go", "going", "to go", "went"], answer: 2, translation: "Chúng tôi quyết định đi bằng xe buýt.", explanation: "decide + to V: quyết định làm gì" },
+            { id: 56, text: "She decided ______ harder after failing the test.", options: ["to study", "studying", "study", "studied"], answer: 0, translation: "Cô ấy quyết định học hành chăm chỉ hơn sau khi trượt bài kiểm tra.", explanation: "decide + to V: quyết định làm gì" },
+            { id: 57, text: "He agreed ______ me with the project.", options: ["helping", "help", "to help", "helped"], answer: 2, translation: "Anh ấy đồng ý giúp tôi với dự án.", explanation: "agree + to V: đồng ý làm gì" },
+            { id: 58, text: "They agreed ______ the meeting at 8 a.m.", options: ["to start", "starting", "start", "started"], answer: 0, translation: "Họ đồng ý bắt đầu cuộc họp lúc 8 giờ sáng.", explanation: "agree + to V: đồng ý làm gì" },
+            { id: 59, text: "I expect ______ good marks in English.", options: ["get", "getting", "to get", "got"], answer: 2, translation: "Tôi mong đợi đạt điểm tốt môn tiếng Anh.", explanation: "expect + to V: mong đợi làm gì" },
+            { id: 60, text: "She expected ______ the first prize.", options: ["to win", "winning", "win", "won"], answer: 0, translation: "Cô ấy mong đợi giành giải nhất.", explanation: "expect + to V: mong đợi làm gì" },
+            { id: 61, text: "He failed ______ the answer correctly.", options: ["give", "to give", "giving", "gave"], answer: 1, translation: "Anh ấy đã thất bại trong việc đưa ra câu trả lời chính xác.", explanation: "fail + to V: thất bại trong việc gì" },
+            { id: 62, text: "They failed ______ the last train.", options: ["catching", "catch", "to catch", "caught"], answer: 2, translation: "Họ đã không bắt kịp chuyến tàu cuối cùng.", explanation: "fail + to V: thất bại trong việc gì" },
+            { id: 63, text: "I hope ______ you again soon.", options: ["see", "seeing", "to see", "saw"], answer: 2, translation: "Tôi hy vọng sớm gặp lại bạn.", explanation: "hope + to V: hy vọng làm gì" },
+            { id: 64, text: "She hopes ______ a scholarship next year.", options: ["to get", "getting", "get", "got"], answer: 0, translation: "Cô ấy hy vọng nhận được học bổng vào năm tới.", explanation: "hope + to V: hy vọng làm gì" },
+            { id: 65, text: "He promised ______ me after school.", options: ["call", "calling", "to call", "called"], answer: 2, translation: "Anh ấy hứa sẽ gọi cho tôi sau giờ học.", explanation: "promise + to V: hứa làm gì" },
+            { id: 66, text: "They promised ______ late again.", options: ["not being", "not to be", "not be", "not been"], answer: 1, translation: "Họ hứa sẽ không đến trễ nữa.", explanation: "promise + not to V: hứa KHÔNG làm gì" },
+            { id: 67, text: "We managed ______ the work on time.", options: ["finish", "finishing", "to finish", "finished"], answer: 2, translation: "Chúng tôi đã xoay sở hoàn thành công việc đúng hạn.", explanation: "manage + to V: xoay sở, cố gắng làm được việc gì" },
+            { id: 68, text: "She managed ______ the difficult question.", options: ["to answer", "answering", "answer", "answered"], answer: 0, translation: "Cô ấy đã xoay sở trả lời được câu hỏi khó.", explanation: "manage + to V: xoay sở, cố gắng làm được việc gì" },
+            { id: 69, text: "They prepared ______ for the speaking test.", options: ["practice", "practicing", "to practice", "practiced"], answer: 2, translation: "Họ đã chuẩn bị luyện tập cho bài kiểm tra nói.", explanation: "prepare + to V: chuẩn bị làm gì" },
+            { id: 70, text: "He is preparing ______ abroad next year.", options: ["to study", "studying", "study", "studied"], answer: 0, translation: "Anh ấy đang chuẩn bị đi du học vào năm tới.", explanation: "prepare + to V: chuẩn bị làm gì" },
+            { id: 71, text: "I would like ______ some orange juice.", options: ["have", "having", "to have", "had"], answer: 2, translation: "Tôi muốn dùng một ít nước cam.", explanation: "would like + to V: muốn làm gì" },
+            { id: 72, text: "She would like ______ part in the contest.", options: ["to take", "taking", "take", "took"], answer: 0, translation: "Cô ấy muốn tham gia vào cuộc thi.", explanation: "would like + to V: muốn làm gì" },
+            { id: 73, text: "He pretended ______ sick to stay at home.", options: ["be", "being", "to be", "was"], answer: 2, translation: "Anh ấy giả vờ ốm để được ở nhà.", explanation: "pretend + to V: giả vờ làm gì/bị gì" },
+            { id: 74, text: "The boy pretended ______ asleep.", options: ["to be", "being", "be", "been"], answer: 0, translation: "Cậu bé giả vờ ngủ.", explanation: "pretend + to V: giả vờ làm gì/như thế nào" },
+            { id: 75, text: "We plan ______ Da Lat this summer.", options: ["visit", "visiting", "to visit", "visited"], answer: 2, translation: "Chúng tôi lên kế hoạch thăm Đà Lạt vào mùa hè này.", explanation: "plan + to V: dự định, lên kế hoạch làm gì" },
+            { id: 76, text: "She plans ______ English at university.", options: ["to study", "studying", "study", "studied"], answer: 0, translation: "Cô ấy dự định học tiếng Anh ở trường đại học.", explanation: "plan + to V: dự định, lên kế hoạch làm gì" },
+            { id: 77, text: "My mother asked me ______ the dishes.", options: ["wash", "washing", "to wash", "washed"], answer: 2, translation: "Mẹ tôi yêu cầu tôi rửa bát.", explanation: "ask sb to V: yêu cầu ai làm gì" },
+            { id: 78, text: "The teacher asked us ______ silent.", options: ["to keep", "keeping", "keep", "kept"], answer: 0, translation: "Giáo viên yêu cầu chúng tôi giữ im lặng.", explanation: "ask sb to V: yêu cầu ai làm gì" },
+            { id: 79, text: "They can’t afford ______ a new car.", options: ["buying", "buy", "to buy", "bought"], answer: 2, translation: "Họ không đủ khả năng tài chính để mua một chiếc xe mới.", explanation: "afford + to V: đủ khả năng chi trả làm gì" },
+            { id: 80, text: "She couldn’t afford ______ in that expensive hotel.", options: ["to stay", "staying", "stay", "stayed"], answer: 0, translation: "Cô ấy không đủ khả năng để ở trong khách sạn đắt tiền đó.", explanation: "afford + to V: đủ khả năng chi trả làm gì" },
+            { id: 81, text: "He chose ______ at home instead of going out.", options: ["stay", "staying", "to stay", "stayed"], answer: 2, translation: "Anh ấy chọn ở nhà thay vì ra ngoài.", explanation: "choose + to V: lựa chọn làm gì" },
+            { id: 82, text: "They chose ______ English as their main subject.", options: ["to learn", "learning", "learn", "learned"], answer: 0, translation: "Họ chọn học tiếng Anh làm môn chính.", explanation: "choose + to V: lựa chọn làm gì" },
+            { id: 83, text: "I intend ______ a new computer.", options: ["buy", "buying", "to buy", "bought"], answer: 2, translation: "Tôi dự định mua một máy tính mới.", explanation: "intend + to V: dự định làm gì" },
+            { id: 84, text: "She intends ______ a teacher.", options: ["to become", "becoming", "become", "became"], answer: 0, translation: "Cô ấy dự định trở thành giáo viên.", explanation: "intend + to V: dự định làm gì" },
+            { id: 85, text: "He refused ______ my question.", options: ["answer", "answering", "to answer", "answered"], answer: 2, translation: "Anh ấy từ chối trả lời câu hỏi của tôi.", explanation: "refuse + to V: từ chối làm gì" },
+            { id: 86, text: "The little boy refused ______ his medicine.", options: ["to take", "taking", "take", "took"], answer: 0, translation: "Cậu bé từ chối uống thuốc.", explanation: "refuse + to V: từ chối làm gì" },
+            { id: 87, text: "They attempted ______ the mountain.", options: ["climb", "climbing", "to climb", "climbed"], answer: 2, translation: "Họ đã cố gắng leo lên ngọn núi.", explanation: "attempt + to V: cố gắng, nỗ lực làm gì" },
+            { id: 88, text: "She attempted ______ the problem by herself.", options: ["to solve", "solving", "solve", "solved"], answer: 0, translation: "Cô ấy đã cố gắng tự giải quyết vấn đề.", explanation: "attempt + to V: cố gắng, nỗ lực làm gì" },
+            { id: 89, text: "He offered ______ me home.", options: ["drive", "driving", "to drive", "drove"], answer: 2, translation: "Anh ấy đề nghị lái xe đưa tôi về nhà.", explanation: "offer + to V: đề nghị làm gì cho ai" },
+            { id: 90, text: "She offered ______ the poor children.", options: ["to help", "helping", "help", "helped"], answer: 0, translation: "Cô ấy đề nghị giúp đỡ những đứa trẻ nghèo.", explanation: "offer + to V: đề nghị làm gì" },
+            { id: 91, text: "They vowed ______ the environment.", options: ["protect", "protecting", "to protect", "protected"], answer: 2, translation: "Họ thề sẽ bảo vệ môi trường.", explanation: "vow + to V: thề, hứa hẹn làm gì" },
+            { id: 92, text: "He vowed ______ the truth.", options: ["to tell", "telling", "tell", "told"], answer: 0, translation: "Anh ấy thề sẽ nói sự thật.", explanation: "vow + to V: thề làm gì" },
+            { id: 93, text: "My brother is learning ______ the piano.", options: ["play", "playing", "to play", "played"], answer: 2, translation: "Anh trai tôi đang học chơi piano.", explanation: "learn + to V: học cách làm gì" },
+            { id: 94, text: "Children should learn ______ others.", options: ["to respect", "respecting", "respect", "respected"], answer: 0, translation: "Trẻ em nên học cách tôn trọng người khác.", explanation: "learn + to V: học cách làm gì" },
+            { id: 95, text: "It takes me thirty minutes ______ to school.", options: ["go", "going", "to go", "went"], answer: 2, translation: "Tôi mất 30 phút để đi đến trường.", explanation: "It takes sb + time + to V: mất của ai bao lâu để làm gì" },
+            { id: 96, text: "It took her two hours ______ the essay.", options: ["to write", "writing", "write", "wrote"], answer: 0, translation: "Cô ấy đã mất 2 giờ để viết bài luận.", explanation: "It takes/took + time + to V: tốn thời gian để làm gì" },
+            { id: 97, text: "My parents let me ______ computer games on weekends.", options: ["to play", "playing", "play", "played"], answer: 2, translation: "Bố mẹ tôi để tôi chơi game máy tính vào cuối tuần.", explanation: "let sb + V (nguyên thể): để/cho phép ai làm gì" },
+            { id: 98, text: "The teacher let the students ______ home early.", options: ["go", "to go", "going", "went"], answer: 0, translation: "Giáo viên đã cho học sinh về nhà sớm.", explanation: "let sb + V (nguyên thể): để ai làm gì" },
+            { id: 99, text: "I can’t bear ______ in a long queue.", options: ["wait", "to wait", "waiting", "waited"], answer: 2, translation: "Tôi không thể chịu nổi việc chờ đợi trong một hàng dài.", explanation: "can't bear + V-ing: không thể chịu đựng nổi việc gì" },
+            { id: 100, text: "She fancies ______ a new dress for the party.", options: ["buying", "to buy", "buy", "bought"], answer: 0, translation: "Cô ấy thích mua một chiếc váy mới cho bữa tiệc.", explanation: "fancy + V-ing: thích làm gì" },
+            { id: 101, text: "They postponed ______ the match because of heavy rain.", options: ["to play", "play", "playing", "played"], answer: 2, translation: "Họ đã hoãn việc chơi trận đấu vì mưa lớn.", explanation: "postpone + V-ing: hoãn việc gì" },
+            { id: 102, text: "He recommends ______ a dictionary when learning vocabulary.", options: ["using", "to use", "use", "used"], answer: 0, translation: "Anh ấy khuyên nên sử dụng từ điển khi học từ vựng.", explanation: "recommend + V-ing: khuyên làm việc gì (khi không có tân ngữ)" }
+        ];
+
+        // ----- ÂM THANH (Web Audio API) -----
+        const playSound = (type) => {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'correct') {
+                    // Tiếng chuông đôi trong trẻo (C5 - G5)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.15);
+
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 0.15);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.17);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+                } else {
+                    // Tiếng trầm báo lỗi
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(250, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                }
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 1.0);
+            } catch (e) {
+                console.error("Trình duyệt không hỗ trợ Web Audio API", e);
+            }
+        };
+
+        // ----- LOGIC ỨNG DỤNG -----
+        function App() {
+            const [gameState, setGameState] = useState('welcome');
+            const [userName, setUserName] = useState('');
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [timeElapsed, setTimeElapsed] = useState(0);
+            const [finishDate, setFinishDate] = useState(null);
+            const [showHint, setShowHint] = useState(false);
+
+            const inputRef = useRef(null);
+
+            useEffect(() => {
+                let timer;
+                if (gameState === 'playing') {
+                    timer = setInterval(() => { setTimeElapsed((prev) => prev + 1); }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [gameState]);
+
+            useEffect(() => {
+                setShowHint(false);
+            }, [currentIdx]);
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Enter') {
+                        if (gameState === 'welcome' && userName.trim() !== '') {
+                            startQuiz();
+                        } else if (gameState === 'playing') {
+                            const currentAns = answers[currentIdx];
+                            if (currentAns?.resolved) {
+                                handleNext();
+                            }
+                        }
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [gameState, userName, currentIdx, answers]);
+
+            const startQuiz = () => {
+                setGameState('playing');
+                setTimeElapsed(0);
+                setCurrentIdx(0);
+                setAnswers({});
+            };
+
+            const handleNext = () => {
+                if (currentIdx < QUESTIONS.length - 1) {
+                    setCurrentIdx(currentIdx + 1);
+                } else {
+                    finishQuiz();
+                }
+            };
+
+            const handleBack = () => {
+                if (currentIdx > 0) {
+                    setCurrentIdx(currentIdx - 1);
+                }
+            };
+
+            const selectOption = (optIdx) => {
+                const currentQ = QUESTIONS[currentIdx];
+                const currentAns = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+
+                if (currentAns.resolved || currentAns.attempts.includes(optIdx)) return;
+
+                const newAttempts = [...currentAns.attempts, optIdx];
+                let isResolved = false;
+                let isFirstTryCorrect = false;
+
+                if (optIdx === currentQ.answer) {
+                    playSound('correct');
+                    isResolved = true;
+                    if (newAttempts.length === 1) isFirstTryCorrect = true;
+                } else {
+                    playSound('incorrect');
+                    if (newAttempts.length >= 2) isResolved = true; // Tối đa 2 lần chọn
+                }
+
+                setAnswers({
+                    ...answers,
+                    [currentIdx]: {
+                        attempts: newAttempts,
+                        resolved: isResolved,
+                        firstTryCorrect: isFirstTryCorrect
+                    }
+                });
+            };
+
+            const finishQuiz = () => {
+                setFinishDate(new Date());
+                setGameState('summary');
+            };
+
+            const formatTime = (seconds) => {
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                return `${m}:${s}`;
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                QUESTIONS.forEach((q, idx) => {
+                    if (answers[idx]?.firstTryCorrect) correct++;
+                });
+                return correct;
+            };
+
+            const optionLabels = ["A", "B", "C", "D"];
+
+            return (
+                <div className="min-h-screen font-sans flex flex-col items-center justify-between p-4 sm:p-8 relative overflow-hidden z-10">
+
+                    {/* BACKGROUND ANIMATION */}
+                    <FireflyBackground />
+
+                    <div className="w-full max-w-4xl z-10 flex-grow flex flex-col justify-center items-center">
+
+                        {/* WELCOME SCREEN */}
+                        {gameState === 'welcome' && (
+                            <div className="bg-slate-800/40 backdrop-blur-xl border border-slate-600/50 p-10 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition-all relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-50 pointer-events-none"></div>
+                                <div className="flex justify-center mb-6 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">
+                                    <Sparkles size={64} className="animate-pulse" style={{ animationDuration: '3s' }} />
+                                </div>
+                                <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-100 to-slate-400 mb-2 tracking-tight">
+                                    Welcome to HTE
+                                </h1>
+                                <p className="text-amber-200/80 mb-8 font-medium tracking-wide uppercase text-sm">Practice - Gerunds & Infinitives</p>
+
+                                <div className="mb-8 relative z-10">
+                                    <label className="block text-left text-sm font-semibold text-slate-300 mb-2">Please enter your name:</label>
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        autoFocus
+                                        className="w-full px-5 py-4 rounded-xl bg-slate-900/50 border border-slate-600 text-slate-100 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 transition-all text-lg placeholder-slate-500 shadow-inner"
+                                        placeholder="Your Name..."
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={startQuiz}
+                                    disabled={userName.trim() === ''}
+                                    className={`w-full py-4 rounded-xl font-bold text-lg flex justify-center items-center gap-2 transition-all duration-300 relative z-10 shadow-lg ${userName.trim() !== '' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:scale-[1.02]' : 'bg-slate-700/50 text-slate-500 cursor-not-allowed'}`}
+                                >
+                                    Start <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        {/* PLAYING SCREEN */}
+                        {gameState === 'playing' && (
+                            <div className="w-full">
+                                {/* Title Badge */}
+                                <div className="text-center mb-8 relative z-10">
+                                    <h2 className="inline-flex items-center justify-center gap-3 text-lg sm:text-2xl md:text-3xl font-black uppercase tracking-widest bg-slate-800/60 backdrop-blur-xl px-8 py-3 sm:px-12 sm:py-4 rounded-full border border-slate-600/50 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                                        <Sparkles size={28} className="text-amber-400 drop-shadow-md" />
+                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-200 to-slate-400 drop-shadow-sm">
+                                            GERUNDS & INFINITIVES
+                                        </span>
+                                    </h2>
+                                </div>
+
+                                <div className="flex flex-wrap justify-between items-center bg-slate-800/40 backdrop-blur-md border border-slate-600/50 p-4 rounded-2xl mb-6 text-slate-200 shadow-lg font-medium">
+                                    <div className="flex items-center gap-2">
+                                        <User size={18} className="text-amber-400" />
+                                        <span className="truncate max-w-[150px] sm:max-w-xs">{userName}</span>
+                                    </div>
+                                    <div className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
+                                        Question {currentIdx + 1} / {QUESTIONS.length}
+                                    </div>
+                                    <div className="flex items-center gap-2 font-mono text-slate-300 bg-slate-900/60 px-4 py-1.5 rounded-lg border border-slate-700 shadow-inner">
+                                        <Clock size={18} className="animate-pulse text-amber-500" /> {formatTime(timeElapsed)}
+                                    </div>
+                                </div>
+
+                                <div className="w-full bg-slate-900/60 h-2.5 rounded-full mb-8 overflow-hidden border border-slate-700/50 shadow-inner">
+                                    <div
+                                        className="h-full bg-gradient-to-r from-amber-300 to-orange-500 transition-all duration-300 ease-out relative"
+                                        style={{ width: `${((currentIdx + 1) / QUESTIONS.length) * 100}%` }}
+                                    >
+                                        <div className="absolute top-0 bottom-0 right-0 w-6 bg-white/30 animate-pulse rounded-full"></div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-600/50 rounded-3xl p-6 sm:p-10 shadow-2xl mb-4 relative">
+                                    <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+                                        <div className="absolute top-[-50%] right-[-10%] w-64 h-64 bg-amber-500/10 blur-[80px] rounded-full"></div>
+                                    </div>
+
+                                    <h2 className="text-2xl sm:text-3xl font-semibold text-slate-100 mb-8 leading-relaxed relative z-10">
+                                        <span className="text-amber-400 mr-2">{currentIdx + 1}.</span>
+                                        {QUESTIONS[currentIdx].text}
+                                    </h2>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                                        {QUESTIONS[currentIdx].options.map((opt, idx) => {
+                                            const currentQ = QUESTIONS[currentIdx];
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false };
+                                            const isSelected = currentAnsInfo.attempts.includes(idx);
+                                            const isCorrectAns = idx === currentQ.answer;
+
+                                            let btnClass = "flex items-center p-4 rounded-2xl text-left border-2 transition-all duration-200 group font-medium ";
+                                            let iconClass = "w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl mr-4 text-lg transition-colors shadow-inner font-bold ";
+                                            let textClass = "text-lg transition-colors ";
+
+                                            if (currentAnsInfo.resolved && isCorrectAns) {
+                                                btnClass += "bg-emerald-900/40 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+                                                iconClass += "bg-emerald-500 text-slate-900";
+                                                textClass += "text-emerald-300";
+                                            } else if (isSelected && !isCorrectAns) {
+                                                btnClass += "bg-rose-900/40 border-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.3)] animate-pulse-border cursor-not-allowed";
+                                                iconClass += "bg-rose-600 text-white";
+                                                textClass += "text-rose-300 line-through opacity-70";
+                                            } else {
+                                                btnClass += "bg-slate-900/40 border-slate-600 hover:bg-slate-700/60 hover:border-amber-500/50 cursor-pointer shadow-sm";
+                                                iconClass += "bg-slate-700 text-slate-300 group-hover:bg-amber-500/20 group-hover:text-amber-300 border border-slate-600";
+                                                textClass += "text-slate-200";
+                                            }
+
+                                            return (
+                                                <button key={idx} onClick={() => selectOption(idx)} disabled={currentAnsInfo.resolved || isSelected} className={btnClass}>
+                                                    <div className={iconClass}>{optionLabels[idx]}</div>
+                                                    <span className={textClass}>{opt}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="mt-5 text-center min-h-[24px] z-10 relative">
+                                        {(() => {
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+                                            if (currentAnsInfo.resolved) {
+                                                return currentAnsInfo.firstTryCorrect
+                                                    ? <span className="text-emerald-400 font-medium bg-emerald-900/30 border border-emerald-800/50 px-4 py-1.5 rounded-full inline-block shadow-sm">Excellent! Correct answer.</span>
+                                                    : <span className="text-amber-400 font-medium bg-amber-900/30 border border-amber-800/50 px-4 py-1.5 rounded-full inline-block shadow-sm">The correct answer has been revealed.</span>;
+                                            } else if (currentAnsInfo.attempts.length > 0) {
+                                                return <span className="text-rose-400 font-medium bg-rose-900/30 border border-rose-800/50 px-4 py-1.5 rounded-full inline-block shadow-sm">Incorrect. Try again! (Attempts left: {2 - currentAnsInfo.attempts.length})</span>;
+                                            }
+                                            return null;
+                                        })()}
+                                    </div>
+
+                                    {/* BUBBLE HINT GỌN GÀNG TẾ NHỊ */}
+                                    <div className="mt-6 flex flex-col items-center relative z-50">
+                                        <button
+                                            onClick={() => setShowHint(!showHint)}
+                                            className={`px-4 py-2 rounded-full text-sm font-semibold shadow-sm border transition-all flex items-center gap-2 ${showHint ? 'bg-amber-500/10 border-amber-500/30 text-amber-300' : 'bg-slate-800/80 border-slate-600 text-slate-300 hover:bg-slate-700/80'}`}
+                                        >
+                                            <Lightbulb size={16} className={showHint ? "text-amber-400" : "text-slate-400"} />
+                                            {showHint ? 'Hide Hint' : 'Show Hint'}
+                                        </button>
+
+                                        {showHint && (
+                                            <div className="absolute top-full mt-3 w-max max-w-[90vw] sm:max-w-md p-4 bg-slate-800/95 backdrop-blur-xl border border-slate-600 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.7)] text-slate-200 text-left z-50">
+                                                {/* Mũi tên (Bubble tail) */}
+                                                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-slate-800/95 border-t border-l border-slate-600 rotate-45 rounded-tl-sm"></div>
+
+                                                <div className="relative z-10">
+                                                    <div className="flex items-center gap-1.5 mb-1">
+                                                        <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Translation</span>
+                                                    </div>
+                                                    <p className="font-medium text-[14px] leading-relaxed text-slate-100 mb-3">{QUESTIONS[currentIdx].translation}</p>
+
+                                                    {answers[currentIdx]?.resolved ? (
+                                                        <div className="pt-3 border-t border-slate-700">
+                                                            <div className="flex items-center gap-1.5 mb-1">
+                                                                <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Grammar Rule</span>
+                                                            </div>
+                                                            <p className="text-[13px] text-slate-300 leading-relaxed"><strong className="font-semibold text-emerald-300">Rule:</strong> {QUESTIONS[currentIdx].explanation}</p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="mt-1 pt-2 border-t border-slate-700">
+                                                            <p className="text-slate-400 italic text-[11px] font-medium text-center">* Please select an answer to reveal the grammar rule.</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-4 w-full">
+                                    <button
+                                        onClick={handleBack} disabled={currentIdx === 0}
+                                        className={`flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-4 sm:py-3 rounded-xl font-semibold transition-all shadow-sm ${currentIdx === 0 ? 'opacity-0 cursor-default hidden sm:flex' : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700 border border-slate-600'}`}
+                                    >
+                                        <ArrowLeft size={20} /> Back
+                                    </button>
+
+                                    <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
+                                        <button
+                                            onClick={handleNext} disabled={!(answers[currentIdx]?.resolved)}
+                                            className={`flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg
+                        ${answers[currentIdx]?.resolved
+                                                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:scale-105 cursor-pointer'
+                                                    : 'bg-slate-800/40 text-slate-500 border border-slate-700 cursor-not-allowed'}`}
+                                        >
+                                            {currentIdx === QUESTIONS.length - 1 ? 'Finish Quiz' : 'Next'}
+                                            {currentIdx === QUESTIONS.length - 1 ? <CheckCircle2 size={20} /> : <ArrowRight size={20} />}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* SUMMARY SCREEN */}
+                        {gameState === 'summary' && (
+                            <div className="w-full bg-slate-800/60 backdrop-blur-xl border border-slate-600/50 p-6 sm:p-10 rounded-3xl shadow-2xl relative">
+                                <div className="text-center mb-10">
+                                    <div className="inline-flex justify-center items-center w-20 h-20 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full mb-4 shadow-[0_0_30px_rgba(245,158,11,0.4)] border-4 border-slate-800">
+                                        <Sparkles size={36} className="text-slate-900" />
+                                    </div>
+                                    <h1 className="text-4xl font-black text-slate-100 mb-2 tracking-tight">Quiz Summary</h1>
+                                    <p className="text-xl text-amber-300 font-medium">Outstanding work, {userName}!</p>
+                                </div>
+
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                                    <div className="bg-slate-900/50 p-4 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <Calendar className="text-amber-400 mb-2" size={24} />
+                                        <div className="text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Date</div>
+                                        <div className="text-sm font-bold text-slate-200">{finishDate?.toLocaleDateString('vi-VN')} {finishDate?.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</div>
+                                    </div>
+                                    <div className="bg-slate-900/50 p-4 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <Clock className="text-sky-400 mb-2" size={24} />
+                                        <div className="text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Time Taken</div>
+                                        <div className="text-lg font-black text-slate-200">{formatTime(timeElapsed)}</div>
+                                    </div>
+                                    <div className="bg-slate-900/50 p-4 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <CheckCircle2 className="text-emerald-400 mb-2" size={24} />
+                                        <div className="text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">1st Try Correct</div>
+                                        <div className="text-2xl font-black text-emerald-400">{calculateScore()}</div>
+                                    </div>
+                                    <div className="bg-slate-900/50 p-4 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <XCircle className="text-rose-400 mb-2" size={24} />
+                                        <div className="text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Mistakes</div>
+                                        <div className="text-2xl font-black text-rose-400">{QUESTIONS.length - calculateScore()}</div>
+                                    </div>
+                                </div>
+
+                                <div className="mb-10 text-center">
+                                    <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400 mb-4 drop-shadow-sm">
+                                        {Math.round((calculateScore() / QUESTIONS.length) * 100)}%
+                                    </div>
+                                    <div className="w-full max-w-md mx-auto bg-slate-900/80 h-4 rounded-full overflow-hidden shadow-inner border border-slate-700">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-500 transition-all duration-1000"
+                                            style={{ width: `${(calculateScore() / QUESTIONS.length) * 100}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 border-t border-slate-600/50 pt-8">
+                                    <h3 className="text-2xl font-bold text-slate-100 mb-6 flex items-center gap-2"><Info size={24} className="text-amber-400" /> Detailed Review</h3>
+                                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                        {QUESTIONS.map((q, idx) => {
+                                            const ansInfo = answers[idx] || { attempts: [], firstTryCorrect: false };
+                                            const isCorrect = ansInfo.firstTryCorrect;
+                                            const firstGuessIdx = ansInfo.attempts[0];
+                                            const isUnanswered = ansInfo.attempts.length === 0;
+
+                                            return (
+                                                <div key={idx} className={`p-5 rounded-2xl border shadow-sm ${isCorrect ? 'bg-emerald-900/20 border-emerald-500/30' : 'bg-rose-900/20 border-rose-500/30'} flex flex-col gap-4`}>
+                                                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                                                        <div className="flex-shrink-0 mt-1">
+                                                            {isCorrect ? <div className="bg-emerald-500/20 p-2 rounded-xl text-emerald-400"><CheckCircle2 size={24} /></div>
+                                                                : <div className="bg-rose-500/20 p-2 rounded-xl text-rose-400"><XCircle size={24} /></div>}
+                                                        </div>
+                                                        <div className="flex-grow">
+                                                            <p className="text-slate-200 font-bold text-[17px] mb-1 leading-snug"><span className="text-slate-400 mr-1">{q.id}.</span> {q.text}</p>
+                                                            <p className="text-amber-200/70 text-[14px] mb-4 italic font-medium">"{q.translation}"</p>
+
+                                                            <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                                                                <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 shadow-inner">
+                                                                    <span className="text-slate-400 text-xs font-bold uppercase block mb-1">Your First Try:</span>
+                                                                    <span className={`font-bold text-[15px] ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                                                        {isUnanswered ? "None" : `${optionLabels[firstGuessIdx]}. ${q.options[firstGuessIdx]}`}
+                                                                    </span>
+                                                                </div>
+                                                                {!isCorrect && (
+                                                                    <div className="bg-emerald-900/30 p-3 rounded-xl border border-emerald-500/30 shadow-inner">
+                                                                        <span className="text-emerald-400/80 text-xs font-bold uppercase block mb-1">Correct Answer:</span>
+                                                                        <span className="font-bold text-[15px] text-emerald-300">
+                                                                            {optionLabels[q.answer]}. {q.options[q.answer]}
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className={`mt-1 p-4 rounded-xl border flex items-start gap-3 text-[14px] font-medium shadow-sm ${isCorrect ? 'bg-emerald-900/40 border-emerald-500/20 text-emerald-200' : 'bg-rose-900/40 border-rose-500/20 text-rose-200'}`}>
+                                                        <Info size={20} className="flex-shrink-0 mt-0.5 opacity-60" />
+                                                        <p className="leading-relaxed"><strong className="font-bold opacity-80 uppercase text-xs mr-2">Rule:</strong> {q.explanation}</p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="mt-10 flex justify-center">
+                                    <button
+                                        onClick={() => window.location.reload()}
+                                        className="px-8 py-4 rounded-xl font-bold bg-slate-700 hover:bg-slate-600 text-white shadow-lg transition-all flex items-center gap-3 group border border-slate-500"
+                                    >
+                                        <Clock size={20} className="group-hover:-rotate-90 transition-transform duration-500" /> Retake Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <footer className="w-full text-center py-6 mt-auto z-20 relative">
+                        <p className="text-slate-300 text-sm font-semibold tracking-wide bg-slate-900/70 backdrop-blur-md inline-block px-6 py-2.5 rounded-full border border-slate-700 shadow-lg">
+                            © Copyright by <span className="text-amber-400 font-bold">Hoang Truong English</span>
+                        </p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
