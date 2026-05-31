@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PREPOSITIONS OF PLACE</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @keyframes pulseBorder {
+
+            0%,
+            100% {
+                border-color: rgba(244, 63, 94, 0.8);
+                box-shadow: 0 0 15px rgba(244, 63, 94, 0.5);
+            }
+
+            50% {
+                border-color: rgba(244, 63, 94, 0.2);
+                box-shadow: 0 0 5px rgba(244, 63, 94, 0.0);
+            }
+        }
+
+        .animate-pulse-border {
+            animation: pulseBorder 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* ANIMATIONS FOR VALLEY BACKGROUND */
+        @keyframes cloudMove {
+            0% {
+                transform: translateX(-10vw);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateX(110vw);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sunPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(253, 224, 71, 0.6));
+            }
+
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 40px rgba(253, 224, 71, 1));
+            }
+        }
+
+        @keyframes birdFly {
+            0% {
+                transform: translate(-10vw, 10vh) scale(0.5);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(110vw, -20vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cloud {
+            animation: cloudMove var(--duration, 40s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .sun {
+            animation: sunPulse 6s ease-in-out infinite;
+        }
+
+        .bird {
+            animation: birdFly var(--duration, 20s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(34, 197, 94, 0.4);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(34, 197, 94, 0.8);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', ui-sans-serif, system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ----- BỘ ICON CHO GIAO DIỆN (VALLEY THEME) -----
+        const Mountain = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z" /></svg>;
+        const Leaf = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" /><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" /></svg>;
+        const ArrowRight = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
+        const ArrowLeft = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>;
+        const CheckCircle2 = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>;
+        const XCircle = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>;
+        const Clock = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+        const Calendar = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+        const User = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+        const Info = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>;
+        const Lightbulb = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></svg>;
+
+        // ----- VALLEY BACKGROUND -----
+        const ValleyBackground = () => {
+            const clouds = Array.from({ length: 5 }).map((_, i) => ({
+                id: i,
+                top: `${Math.random() * 30}%`,
+                size: `${Math.random() * 100 + 100}px`,
+                duration: `${Math.random() * 30 + 30}s`,
+                delay: `${Math.random() * -40}s`,
+                opacity: Math.random() * 0.4 + 0.4
+            }));
+
+            return (
+                <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gradient-to-b from-[#38bdf8] via-[#a7f3d0] to-[#22c55e]">
+
+                    {/* Mặt trời */}
+                    <div className="absolute top-[10%] right-[15%] w-32 h-32 rounded-full bg-yellow-300 sun opacity-90"></div>
+
+                    {/* Mây */}
+                    {clouds.map(cloud => (
+                        <div
+                            key={`cloud-${cloud.id}`}
+                            className="absolute rounded-full bg-white cloud blur-sm"
+                            style={{
+                                top: cloud.top, width: cloud.size, height: parseInt(cloud.size) * 0.6 + 'px',
+                                '--duration': cloud.duration, '--delay': cloud.delay, opacity: cloud.opacity
+                            }}
+                        >
+                            <div className="absolute top-[-30%] left-[20%] w-[60%] h-[100%] bg-white rounded-full"></div>
+                            <div className="absolute top-[-10%] right-[20%] w-[40%] h-[80%] bg-white rounded-full"></div>
+                        </div>
+                    ))}
+
+                    {/* Chim bay */}
+                    <svg className="absolute top-[20%] left-0 w-8 h-8 text-slate-700 bird" style={{ "--duration": "25s", "--delay": "0s" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12l10-5 10 5-10 2-10-2z" /></svg>
+                    <svg className="absolute top-[25%] left-0 w-6 h-6 text-slate-700 bird" style={{ "--duration": "20s", "--delay": "5s" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12l10-5 10 5-10 2-10-2z" /></svg>
+
+                    {/* Dãy núi phía xa */}
+                    <div className="absolute bottom-0 left-0 w-full opacity-60 text-emerald-800">
+                        <svg viewBox="0 0 1440 320" className="w-full h-auto" fill="currentColor">
+                            <path d="M0,320 L150,150 L350,280 L600,100 L900,250 L1200,80 L1440,220 L1440,320 Z"></path>
+                        </svg>
+                    </div>
+                    {/* Đồi cỏ phía gần */}
+                    <div className="absolute bottom-0 left-0 w-full opacity-90 text-green-500">
+                        <svg viewBox="0 0 1440 320" className="w-full h-auto" fill="currentColor">
+                            <path d="M0,320 L0,220 Q250,150 500,250 T1000,220 T1440,280 L1440,320 Z"></path>
+                        </svg>
+                    </div>
+                    <div className="absolute bottom-0 left-0 w-full opacity-100 text-green-600">
+                        <svg viewBox="0 0 1440 320" className="w-full h-auto" fill="currentColor">
+                            <path d="M0,320 L0,280 Q350,200 700,280 T1440,240 L1440,320 Z"></path>
+                        </svg>
+                    </div>
+                </div>
+            );
+        }
+
+        // ----- DỮ LIỆU CÂU HỎI (68 Câu Giới Từ Nơi Chốn) -----
+        const QUESTIONS = [
+            { id: 1, text: "My father usually works ______ home on Fridays.", options: ["in", "on", "at", "to"], answer: 2, translation: "Bố tôi thường làm việc ở nhà vào các ngày thứ Sáu.", explanation: "Cụm từ cố định: at home (ở nhà)." },
+            { id: 2, text: "The answer is ______ page 25.", options: ["on", "in", "at", "from"], answer: 0, translation: "Câu trả lời nằm ở trang 25.", explanation: "Dùng 'on' trước 'page + số thứ tự' (ở trang số mấy)." },
+            { id: 3, text: "The hotel is ______ the station, so we can walk there easily.", options: ["on", "near", "in", "between"], answer: 1, translation: "Khách sạn ở gần nhà ga, nên chúng ta có thể đi bộ đến đó dễ dàng.", explanation: "near = gần (không cần giới từ đi kèm). Dựa vào nghĩa câu 'đi bộ dễ dàng'." },
+            { id: 4, text: "We arrived ______ the airport early this morning.", options: ["in", "on", "at", "to"], answer: 2, translation: "Chúng tôi đã đến sân bay sớm vào sáng nay.", explanation: "arrive at + địa điểm nhỏ (sân bay, nhà ga, bến xe...)." },
+            { id: 5, text: "There are many stars ______ the sky tonight.", options: ["at", "on", "in", "from"], answer: 2, translation: "Có rất nhiều ngôi sao trên bầu trời đêm nay.", explanation: "Cụm từ cố định: in the sky (trên bầu trời, không gian 3 chiều)." },
+            { id: 6, text: "The boy is standing ______ the door.", options: ["behind", "on", "at", "above"], answer: 0, translation: "Cậu bé đang đứng phía sau cánh cửa.", explanation: "behind = đằng sau. (Có thể dùng 'at the door' - ở ngay cửa, nhưng trong các lựa chọn thì behind hợp lý nhất nếu đang trốn/đứng sau)." },
+            { id: 7, text: "She lives ______ Vietnam.", options: ["at", "on", "in", "from"], answer: 2, translation: "Cô ấy sống ở Việt Nam.", explanation: "in + quốc gia / thành phố." },
+            { id: 8, text: "Please write your name ______ the top of the page.", options: ["at", "in", "on", "to"], answer: 0, translation: "Vui lòng viết tên của bạn ở phía trên cùng của trang giấy.", explanation: "Cụm từ: at the top of (ở phần đỉnh, đầu trang)." },
+            { id: 9, text: "The children are playing ______ the room.", options: ["on", "at", "in", "from"], answer: 2, translation: "Bọn trẻ đang chơi trong phòng.", explanation: "in + không gian khép kín (trong phòng)." },
+            { id: 10, text: "We arrived ______ Monday morning.", options: ["in", "on", "at", "to"], answer: 1, translation: "Chúng tôi đã đến vào sáng thứ Hai.", explanation: "on + thứ + buổi (Monday morning)." },
+            { id: 11, text: "The library is ______ the second floor.", options: ["at", "in", "on", "from"], answer: 2, translation: "Thư viện nằm ở tầng hai.", explanation: "on the ... floor (trên tầng số mấy)." },
+            { id: 12, text: "The teacher is standing ______ the board.", options: ["in front of", "opposite", "near to", "at"], answer: 0, translation: "Giáo viên đang đứng phía trước tấm bảng.", explanation: "in front of = ở phía trước." },
+            { id: 13, text: "She usually arrives at school ______ time.", options: ["in", "on", "at", "by"], answer: 1, translation: "Cô ấy thường đến trường đúng giờ.", explanation: "on time = đúng giờ (không trễ)." },
+            { id: 14, text: "There is a small shop ______ the corner of the street.", options: ["in", "on", "at", "from"], answer: 2, translation: "Có một cửa hàng nhỏ ở góc đường.", explanation: "at the corner of the street = tại góc phố/góc đường." },
+            { id: 15, text: "My bag is ______ the table.", options: ["at", "in", "on", "to"], answer: 2, translation: "Cặp của tôi ở trên bàn.", explanation: "on + bề mặt (trên mặt bàn)." },
+            { id: 16, text: "We live ______ HCMC.", options: ["on", "at", "in", "from"], answer: 2, translation: "Chúng tôi sống ở TP.HCM.", explanation: "in + thành phố lớn." },
+            { id: 17, text: "I saw a beautiful bird ______ the picture.", options: ["at", "on", "in", "to"], answer: 2, translation: "Tôi thấy một con chim đẹp trong bức tranh.", explanation: "in a picture / in a photo = trong bức tranh/bức ảnh." },
+            { id: 18, text: "The supermarket is ______ the bank. They are on two sides of the street.", options: ["across from", "in", "on", "at"], answer: 0, translation: "Siêu thị nằm đối diện ngân hàng. Chúng ở hai bên mặt đường.", explanation: "across from = opposite = đối diện." },
+            { id: 19, text: "My classroom is ______ the first floor.", options: ["in", "at", "on", "from"], answer: 2, translation: "Phòng học của tôi ở tầng một.", explanation: "on the ... floor = trên tầng (nhà)." },
+            { id: 20, text: "The train arrived ______ the station at 8 p.m.", options: ["at", "on", "in", "to"], answer: 0, translation: "Tàu đã đến nhà ga lúc 8 giờ tối.", explanation: "arrive at + nhà ga/địa điểm nhỏ." },
+            { id: 21, text: "He sat ______ me during the test.", options: ["near", "in", "on", "at"], answer: 0, translation: "Cậu ấy ngồi gần tôi trong suốt bài kiểm tra.", explanation: "near = ở gần." },
+            { id: 22, text: "The picture is hanging ______ the wall.", options: ["in", "at", "on", "from"], answer: 2, translation: "Bức tranh đang treo trên tường.", explanation: "on the wall = trên bức tường (chỉ bề mặt)." },
+            { id: 23, text: "I put my phone ______ the bottom of my schoolbag.", options: ["on", "in", "at", "to"], answer: 2, translation: "Tôi cất điện thoại ở dưới đáy cặp sách.", explanation: "at the bottom of = ở phần đáy, phần cuối." },
+            { id: 24, text: "We arrived ______ Da Nang last night.", options: ["at", "on", "in", "to"], answer: 2, translation: "Chúng tôi đã đến Đà Nẵng tối qua.", explanation: "arrive in + thành phố." },
+            { id: 25, text: "Lan is sitting ______ Hoa.", options: ["next to", "in", "on", "at"], answer: 0, translation: "Lan đang ngồi cạnh Hoa.", explanation: "next to = ngay bên cạnh." },
+            { id: 26, text: "I will call you ______ the end of the day.", options: ["in", "at", "on", "from"], answer: 1, translation: "Tôi sẽ gọi cho bạn vào cuối ngày.", explanation: "at the end of + thời gian = vào cuối (ngày/tháng/năm)." },
+            { id: 27, text: "He is one of the best football players ______ the world.", options: ["at", "on", "in", "from"], answer: 2, translation: "Anh ấy là một trong những cầu thủ bóng đá xuất sắc nhất thế giới.", explanation: "in the world = trên thế giới." },
+            { id: 28, text: "There is a mistake ______ the page.", options: ["at", "on", "in", "to"], answer: 1, translation: "Có một lỗi sai trên trang giấy.", explanation: "on the page = trên trang giấy (bề mặt)." },
+            { id: 29, text: "My mother is cooking ______ the kitchen.", options: ["at", "on", "in", "from"], answer: 2, translation: "Mẹ tôi đang nấu ăn trong bếp.", explanation: "in the kitchen = trong phòng bếp." },
+            { id: 30, text: "The bank is ______ the post office. You can see it on the other side of the road.", options: ["in", "on", "opposite", "at"], answer: 2, translation: "Ngân hàng đối diện bưu điện. Bạn có thể thấy nó ở phía bên kia đường.", explanation: "opposite = đối diện." },
+            { id: 31, text: "The clock is ______ the wall.", options: ["in", "on", "at", "from"], answer: 1, translation: "Đồng hồ treo trên tường.", explanation: "on the wall = trên tường." },
+            { id: 32, text: "They arrived ______ Vietnam two days ago.", options: ["in", "at", "on", "to"], answer: 0, translation: "Họ đã đến Việt Nam hai ngày trước.", explanation: "arrive in + quốc gia." },
+            { id: 33, text: "The cat is sleeping ______ the corner of the room.", options: ["at", "on", "in", "from"], answer: 2, translation: "Con mèo đang ngủ trong góc phòng.", explanation: "in the corner of a room = trong góc phòng (không gian bên trong)." },
+            { id: 34, text: "We finally found the answer ______ the end.", options: ["on", "at", "in", "from"], answer: 2, translation: "Cuối cùng thì chúng tôi cũng tìm ra đáp án.", explanation: "in the end = cuối cùng thì (kết quả sau một quá trình)." },
+            { id: 35, text: "The cinema is ______ the left.", options: ["in", "at", "on", "from"], answer: 2, translation: "Rạp chiếu phim nằm ở bên trái.", explanation: "on the left / on the right = ở bên trái / bên phải." },
+            { id: 36, text: "She is standing ______ her classmates in the photo.", options: ["at the middle of", "in the middle of", "on the middle of", "from the middle of"], answer: 1, translation: "Cô ấy đang đứng ở giữa những người bạn cùng lớp trong bức ảnh.", explanation: "in the middle of = ở chính giữa." },
+            { id: 37, text: "Please meet me ______ the bus stop.", options: ["at", "in", "on", "from"], answer: 0, translation: "Vui lòng gặp tôi tại trạm xe buýt.", explanation: "at the bus stop = tại trạm xe buýt (địa điểm cụ thể)." },
+            { id: 38, text: "He arrived just ______ time to catch the bus.", options: ["on", "in", "at", "by"], answer: 1, translation: "Anh ấy đến vừa kịp lúc để bắt xe buýt.", explanation: "in time = kịp lúc, vừa kịp." },
+            { id: 39, text: "There is a vase ______ the table.", options: ["on", "in", "at", "from"], answer: 0, translation: "Có một lọ hoa trên bàn.", explanation: "on + bề mặt (mặt bàn)." },
+            { id: 40, text: "The school is ______ the park.", options: ["near", "on", "in", "at"], answer: 0, translation: "Trường học ở gần công viên.", explanation: "near = ở gần." },
+            { id: 41, text: "My sister is studying ______ school now.", options: ["at", "on", "in", "from"], answer: 0, translation: "Em gái tôi bây giờ đang học ở trường.", explanation: "at school = đang ở trường (để học tập)." },
+            { id: 42, text: "The shop is ______ the right of the restaurant.", options: ["in", "at", "on", "from"], answer: 2, translation: "Cửa hàng nằm bên phải nhà hàng.", explanation: "on the right of = ở bên phải của..." },
+            { id: 43, text: "There is a garden ______ the house.", options: ["behind", "in", "on", "at"], answer: 0, translation: "Có một khu vườn phía sau ngôi nhà.", explanation: "behind = phía sau." },
+            { id: 44, text: "Don’t worry. We will get there ______ time for the meeting.", options: ["on", "in", "at", "from"], answer: 1, translation: "Đừng lo. Chúng ta sẽ đến đó kịp lúc cho cuộc họp.", explanation: "in time for sth = kịp lúc cho việc gì." },
+            { id: 45, text: "I usually do my homework ______ home.", options: ["on", "in", "at", "from"], answer: 2, translation: "Tôi thường làm bài tập ở nhà.", explanation: "at home = ở nhà." },
+            { id: 46, text: "The book is ______ the shelf.", options: ["in", "on", "at", "to"], answer: 1, translation: "Quyển sách ở trên giá sách.", explanation: "on the shelf = trên mặt giá sách." },
+            { id: 47, text: "The school is ______ front of the museum.", options: ["at", "on", "in", "from"], answer: 2, translation: "Trường học nằm phía trước bảo tàng.", explanation: "in front of = ở phía trước." },
+            { id: 48, text: "My grandparents live ______ a small village in Vietnam.", options: ["on", "at", "in", "from"], answer: 2, translation: "Ông bà tôi sống ở một ngôi làng nhỏ tại Việt Nam.", explanation: "in a village/town/city = sống trong làng/thị trấn/thành phố." },
+            { id: 49, text: "The children are ______ the classroom.", options: ["in", "on", "at", "from"], answer: 0, translation: "Bọn trẻ đang ở trong phòng học.", explanation: "in the classroom = trong phòng học." },
+            { id: 50, text: "The meeting started exactly ______ time.", options: ["in", "on", "at", "by"], answer: 1, translation: "Cuộc họp bắt đầu chính xác đúng giờ.", explanation: "on time = đúng giờ (theo kế hoạch)." },
+            { id: 51, text: "I found my keys ______ the bottom of the drawer.", options: ["at", "on", "in", "from"], answer: 0, translation: "Tôi đã tìm thấy chìa khóa ở dưới đáy ngăn kéo.", explanation: "at the bottom of = ở phần đáy." },
+            { id: 52, text: "The restaurant is ______ the supermarket. They face each other.", options: ["opposite", "in", "on", "at"], answer: 0, translation: "Nhà hàng nằm đối diện siêu thị. Chúng hướng mặt vào nhau.", explanation: "opposite = đối diện." },
+            { id: 53, text: "I put the chair ______ the middle of the room.", options: ["in", "on", "at", "from"], answer: 0, translation: "Tôi đặt chiếc ghế ở giữa phòng.", explanation: "in the middle of = ở chính giữa." },
+            { id: 54, text: "They arrived ______ 15th May.", options: ["in", "on", "at", "to"], answer: 1, translation: "Họ đã đến vào ngày 15 tháng 5.", explanation: "on + ngày tháng." },
+            { id: 55, text: "The teacher wrote the new words ______ the board.", options: ["on", "in", "at", "from"], answer: 0, translation: "Giáo viên viết từ mới lên bảng.", explanation: "on the board = trên mặt bảng." },
+            { id: 56, text: "We waited for him ______ school.", options: ["in", "on", "at", "from"], answer: 2, translation: "Chúng tôi đã đợi anh ấy ở trường.", explanation: "at school = tại trường học (địa điểm)." },
+            { id: 57, text: "The cat is hiding ______ the sofa.", options: ["behind", "on", "at", "near to"], answer: 0, translation: "Con mèo đang trốn sau ghế sofa.", explanation: "behind = phía sau (ẩn nấp)." },
+            { id: 58, text: "There is a river ______ front of my house.", options: ["on", "in", "at", "from"], answer: 1, translation: "Có một con sông ở phía trước nhà tôi.", explanation: "in front of = ở phía trước." },
+            { id: 59, text: "My house is ______ HCMC.", options: ["in", "on", "at", "from"], answer: 0, translation: "Nhà tôi ở TP.HCM.", explanation: "in + thành phố lớn." },
+            { id: 60, text: "The museum is ______ from the café.", options: ["opposite", "across", "near", "next"], answer: 1, translation: "Bảo tàng nằm ở bên kia đường so với quán cà phê.", explanation: "across from = đối diện / băng qua đường." },
+            { id: 61, text: "The students are standing ______ the picture.", options: ["in", "on", "at", "from"], answer: 0, translation: "Các học sinh đang đứng trong bức ảnh.", explanation: "in a picture = trong ảnh." },
+            { id: 62, text: "The office is ______ the top of the building.", options: ["in", "on", "at", "from"], answer: 2, translation: "Văn phòng nằm ở tầng cao nhất của tòa nhà.", explanation: "at the top of = ở trên đỉnh/cao nhất." },
+            { id: 63, text: "Lan sits ______ Mai in class.", options: ["next to", "on", "in", "at"], answer: 0, translation: "Lan ngồi cạnh Mai trong lớp.", explanation: "next to = bên cạnh." },
+            { id: 64, text: "We arrived ______ the hospital at 9 a.m.", options: ["in", "on", "at", "to"], answer: 2, translation: "Chúng tôi đã đến bệnh viện lúc 9 giờ sáng.", explanation: "arrive at + bệnh viện/địa điểm cụ thể." },
+            { id: 65, text: "The hotel is ______ the left side of the street.", options: ["in", "on", "at", "from"], answer: 1, translation: "Khách sạn nằm ở phía bên trái của con đường.", explanation: "on the left side = ở phía bên trái." },
+            { id: 66, text: "The school year will end ______ the end of May.", options: ["in", "on", "at", "from"], answer: 2, translation: "Năm học sẽ kết thúc vào cuối tháng 5.", explanation: "at the end of = vào khoảng cuối của..." },
+            { id: 67, text: "The boy stood ______ the corner of the classroom.", options: ["in", "on", "at", "from"], answer: 0, translation: "Cậu bé đứng ở góc phòng học.", explanation: "in the corner of a room = trong góc phòng." },
+            { id: 68, text: "______ the end, everyone agreed with the plan.", options: ["At", "On", "In", "From"], answer: 2, translation: "Cuối cùng thì mọi người đều đồng ý với kế hoạch.", explanation: "In the end = cuối cùng (sau khi suy nghĩ/thảo luận)." }
+        ];
+
+        // ----- ÂM THANH (Web Audio API) -----
+        const playSound = (type) => {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.15);
+
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 0.15);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.17);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+                } else {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(250, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                }
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 1.0);
+            } catch (e) {
+                console.error("Audio API error", e);
+            }
+        };
+
+        // ----- LOGIC ỨNG DỤNG -----
+        function App() {
+            const [gameState, setGameState] = useState('welcome');
+            const [userName, setUserName] = useState('');
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [timeElapsed, setTimeElapsed] = useState(0);
+            const [finishDate, setFinishDate] = useState(null);
+            const [showHint, setShowHint] = useState(false);
+
+            const inputRef = useRef(null);
+
+            // Timer
+            useEffect(() => {
+                let timer;
+                if (gameState === 'playing') {
+                    timer = setInterval(() => { setTimeElapsed((prev) => prev + 1); }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [gameState]);
+
+            // Ẩn hint khi qua câu mới
+            useEffect(() => {
+                setShowHint(false);
+            }, [currentIdx]);
+
+            // Bắt sự kiện phím Enter
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Enter') {
+                        if (gameState === 'welcome' && userName.trim() !== '') {
+                            startQuiz();
+                        } else if (gameState === 'playing') {
+                            const currentAns = answers[currentIdx];
+                            if (currentAns?.resolved) {
+                                handleNext();
+                            }
+                        }
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [gameState, userName, currentIdx, answers]);
+
+            const startQuiz = () => {
+                setGameState('playing');
+                setTimeElapsed(0);
+                setCurrentIdx(0);
+                setAnswers({});
+            };
+
+            const handleNext = () => {
+                if (currentIdx < QUESTIONS.length - 1) {
+                    setCurrentIdx(currentIdx + 1);
+                } else {
+                    finishQuiz();
+                }
+            };
+
+            const handleBack = () => {
+                if (currentIdx > 0) {
+                    setCurrentIdx(currentIdx - 1);
+                }
+            };
+
+            const selectOption = (optIdx) => {
+                const currentQ = QUESTIONS[currentIdx];
+                const currentAns = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+
+                if (currentAns.resolved || currentAns.attempts.includes(optIdx)) return;
+
+                const newAttempts = [...currentAns.attempts, optIdx];
+                let isResolved = false;
+                let isFirstTryCorrect = false;
+
+                if (optIdx === currentQ.answer) {
+                    playSound('correct');
+                    isResolved = true;
+                    if (newAttempts.length === 1) isFirstTryCorrect = true;
+                } else {
+                    playSound('incorrect');
+                    if (newAttempts.length >= 2) isResolved = true; // Tối đa 2 lần thử
+                }
+
+                setAnswers({
+                    ...answers,
+                    [currentIdx]: {
+                        attempts: newAttempts,
+                        resolved: isResolved,
+                        firstTryCorrect: isFirstTryCorrect
+                    }
+                });
+            };
+
+            const finishQuiz = () => {
+                setFinishDate(new Date());
+                setGameState('summary');
+            };
+
+            const formatTime = (seconds) => {
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                return `${m}:${s}`;
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                QUESTIONS.forEach((q, idx) => {
+                    if (answers[idx]?.firstTryCorrect) correct++;
+                });
+                return correct;
+            };
+
+            const optionLabels = ["A", "B", "C", "D"];
+
+            return (
+                <div className="min-h-screen font-sans text-emerald-950 bg-transparent flex flex-col items-center justify-between p-4 sm:p-8 relative overflow-hidden">
+
+                    {/* VALLEY BACKGROUND ANIMATION */}
+                    <ValleyBackground />
+
+                    <div className="w-full max-w-4xl z-10 flex-grow flex flex-col justify-center items-center">
+
+                        {/* MÀN HÌNH WELCOME */}
+                        {gameState === 'welcome' && (
+                            <div className="bg-white/40 backdrop-blur-md border border-white/60 p-10 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition-all relative overflow-hidden">
+                                <div className="flex justify-center mb-6 text-emerald-600">
+                                    <Mountain size={64} className="animate-pulse" style={{ animationDuration: '3s' }} />
+                                </div>
+                                <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-green-600 mb-2 drop-shadow-sm">
+                                    Welcome to HTE
+                                </h1>
+                                <p className="text-emerald-800/80 mb-8 font-semibold">Prepositions of Place (IN/ON/AT)</p>
+
+                                <div className="mb-8">
+                                    <label className="block text-left text-sm font-bold text-emerald-800 mb-2">Please enter your name:</label>
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        autoFocus
+                                        className="w-full px-5 py-4 rounded-xl bg-white/70 border border-emerald-300/50 text-emerald-900 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-400/50 transition-all text-lg placeholder-emerald-900/30 font-medium shadow-inner"
+                                        placeholder="Your Name..."
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={startQuiz}
+                                    disabled={userName.trim() === ''}
+                                    className={`w-full py-4 rounded-xl font-bold text-lg flex justify-center items-center gap-2 transition-all duration-300 shadow-lg ${userName.trim() !== '' ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-[1.02]' : 'bg-gray-400/50 text-gray-100 cursor-not-allowed'}`}
+                                >
+                                    Start <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        {/* MÀN HÌNH LÀM BÀI */}
+                        {gameState === 'playing' && (
+                            <div className="w-full">
+                                {/* Tiêu đề Quiz */}
+                                <div className="text-center mb-4">
+                                    <h2 className="inline-flex items-center gap-2 text-sm sm:text-lg font-black text-emerald-900 uppercase tracking-widest bg-white/60 backdrop-blur-md px-6 py-2 rounded-full border border-white/70 shadow-sm">
+                                        <Mountain size={20} className="text-emerald-600" />
+                                        PREPOSITIONS OF PLACE
+                                    </h2>
+                                </div>
+
+                                <div className="flex flex-wrap justify-between items-center bg-white/50 backdrop-blur-md border border-white/60 p-4 rounded-2xl mb-6 text-emerald-900 shadow-lg font-semibold">
+                                    <div className="flex items-center gap-2">
+                                        <User size={18} className="text-emerald-600" />
+                                        <span className="truncate max-w-[150px] sm:max-w-xs">{userName}</span>
+                                    </div>
+                                    <div className="text-lg font-bold text-emerald-700">
+                                        Question {currentIdx + 1} / {QUESTIONS.length}
+                                    </div>
+                                    <div className="flex items-center gap-2 font-mono text-emerald-800 bg-white/60 px-4 py-1.5 rounded-lg border border-emerald-200 shadow-inner">
+                                        <Clock size={18} className="animate-pulse text-emerald-600" /> {formatTime(timeElapsed)}
+                                    </div>
+                                </div>
+
+                                <div className="w-full bg-emerald-900/20 h-2.5 rounded-full mb-8 overflow-hidden shadow-inner">
+                                    <div
+                                        className="h-full bg-gradient-to-r from-green-400 to-emerald-600 transition-all duration-300 ease-out relative"
+                                        style={{ width: `${((currentIdx + 1) / QUESTIONS.length) * 100}%` }}
+                                    >
+                                        <div className="absolute top-0 bottom-0 right-0 w-6 bg-white/30 animate-pulse rounded-full"></div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white/60 backdrop-blur-xl border border-white/70 rounded-3xl p-6 sm:p-10 shadow-xl mb-4 relative">
+                                    <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+                                        <Leaf size={140} className="absolute -right-8 -bottom-8 text-emerald-600/10 rotate-[-20deg]" />
+                                    </div>
+
+                                    <h2 className="text-2xl sm:text-3xl font-bold text-emerald-900 mb-8 leading-relaxed relative z-10">
+                                        <span className="text-emerald-500 mr-2">{currentIdx + 1}.</span>
+                                        {QUESTIONS[currentIdx].text}
+                                    </h2>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                                        {QUESTIONS[currentIdx].options.map((opt, idx) => {
+                                            const currentQ = QUESTIONS[currentIdx];
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false };
+                                            const isSelected = currentAnsInfo.attempts.includes(idx);
+                                            const isCorrectAns = idx === currentQ.answer;
+
+                                            let btnClass = "flex items-center p-4 rounded-2xl text-left border-2 transition-all duration-200 group font-bold ";
+                                            let iconClass = "w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl mr-4 text-lg transition-colors shadow-inner ";
+                                            let textClass = "text-lg transition-colors ";
+
+                                            if (currentAnsInfo.resolved && isCorrectAns) {
+                                                btnClass += "bg-emerald-500/20 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+                                                iconClass += "bg-emerald-500 text-white";
+                                                textClass += "text-emerald-900";
+                                            } else if (isSelected && !isCorrectAns) {
+                                                btnClass += "bg-rose-100/80 border-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.3)] animate-pulse-border cursor-not-allowed";
+                                                iconClass += "bg-rose-500 text-white";
+                                                textClass += "text-rose-500 line-through opacity-70";
+                                            } else {
+                                                btnClass += "bg-white/60 border-emerald-200 hover:bg-emerald-50/90 hover:border-emerald-400 cursor-pointer shadow-sm";
+                                                iconClass += "bg-emerald-100 text-emerald-700 group-hover:bg-emerald-200 border border-emerald-200";
+                                                textClass += "text-emerald-800";
+                                            }
+
+                                            return (
+                                                <button key={idx} onClick={() => selectOption(idx)} disabled={currentAnsInfo.resolved || isSelected} className={btnClass}>
+                                                    <div className={iconClass}>{optionLabels[idx]}</div>
+                                                    <span className={textClass}>{opt}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="mt-5 text-center min-h-[24px] z-10 relative">
+                                        {(() => {
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+                                            if (currentAnsInfo.resolved) {
+                                                return currentAnsInfo.firstTryCorrect
+                                                    ? <span className="text-emerald-600 font-bold bg-emerald-100/50 px-4 py-1.5 rounded-full inline-block">Excellent! Correct answer.</span>
+                                                    : <span className="text-amber-600 font-bold bg-amber-100/50 px-4 py-1.5 rounded-full inline-block">The correct answer has been revealed.</span>;
+                                            } else if (currentAnsInfo.attempts.length > 0) {
+                                                return <span className="text-rose-600 font-bold bg-rose-100/50 px-4 py-1.5 rounded-full inline-block">Incorrect. Try again! (Attempts left: {2 - currentAnsInfo.attempts.length})</span>;
+                                            }
+                                            return null;
+                                        })()}
+                                    </div>
+
+                                    {/* NÚT HINT BONG BÓNG (TẾ NHỊ, GỌN GÀNG) */}
+                                    <div className="mt-6 flex flex-col items-center relative z-50">
+                                        <button
+                                            onClick={() => setShowHint(!showHint)}
+                                            className={`px-4 py-2 rounded-full text-sm font-bold shadow-sm border transition-all flex items-center gap-2 ${showHint ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-white/70 border-emerald-200 text-emerald-700 hover:bg-emerald-50'}`}
+                                        >
+                                            <Lightbulb size={16} className={showHint ? "text-amber-500" : "text-emerald-600"} />
+                                            {showHint ? 'Hide Hint' : 'Show Hint'}
+                                        </button>
+
+                                        {showHint && (
+                                            <div className="absolute top-full mt-3 w-max max-w-[90vw] sm:max-w-md p-4 bg-white/95 backdrop-blur-xl border border-emerald-200/80 rounded-2xl shadow-[0_10px_40px_-10px_rgba(4,120,87,0.3)] text-emerald-900 animate-fade-in-up text-left z-50">
+                                                {/* Mũi tên trỏ lên (Bubble tail) */}
+                                                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-white/95 border-t border-l border-emerald-200/80 rotate-45 rounded-tl-sm"></div>
+
+                                                <div className="relative z-10">
+                                                    <div className="flex items-center gap-1.5 mb-1">
+                                                        <span className="text-[10px] uppercase font-black text-emerald-500 tracking-wider">Translation</span>
+                                                    </div>
+                                                    <p className="font-semibold text-[14px] leading-relaxed text-emerald-950 mb-3">{QUESTIONS[currentIdx].translation}</p>
+
+                                                    {answers[currentIdx]?.resolved ? (
+                                                        <div className="pt-3 border-t border-emerald-100/60">
+                                                            <div className="flex items-center gap-1.5 mb-1">
+                                                                <span className="text-[10px] uppercase font-black text-amber-500 tracking-wider">Explanation</span>
+                                                            </div>
+                                                            <p className="text-[13px] text-emerald-800 leading-relaxed"><strong className="font-bold text-emerald-700">Rule:</strong> {QUESTIONS[currentIdx].explanation}</p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="mt-1 pt-2 border-t border-emerald-100/60">
+                                                            <p className="text-emerald-600/70 italic text-[11px] font-semibold text-center">* Vui lòng chọn đáp án để xem giải thích chi tiết.</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-4 w-full">
+                                    <button
+                                        onClick={handleBack} disabled={currentIdx === 0}
+                                        className={`flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-4 sm:py-3 rounded-xl font-bold transition-all shadow-sm ${currentIdx === 0 ? 'opacity-0 cursor-default hidden sm:flex' : 'bg-white/60 text-emerald-800 hover:bg-white/90 border border-emerald-200'}`}
+                                    >
+                                        <ArrowLeft size={20} /> Back
+                                    </button>
+
+                                    <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
+                                        <button
+                                            onClick={handleNext} disabled={!(answers[currentIdx]?.resolved)}
+                                            className={`flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl font-black text-lg transition-all shadow-lg
+                        ${answers[currentIdx]?.resolved
+                                                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-105 cursor-pointer'
+                                                    : 'bg-white/40 text-emerald-800/40 border border-emerald-200/50 cursor-not-allowed'}`}
+                                        >
+                                            {currentIdx === QUESTIONS.length - 1 ? 'Finish Quiz' : 'Next'}
+                                            {currentIdx === QUESTIONS.length - 1 ? <CheckCircle2 size={20} /> : <ArrowRight size={20} />}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* MÀN HÌNH TỔNG KẾT */}
+                        {gameState === 'summary' && (
+                            <div className="w-full bg-white/70 backdrop-blur-xl border border-white/60 p-6 sm:p-10 rounded-3xl shadow-2xl relative">
+                                <div className="text-center mb-10">
+                                    <div className="inline-flex justify-center items-center w-20 h-20 bg-gradient-to-tr from-green-400 to-emerald-600 rounded-full mb-4 shadow-[0_0_30px_rgba(16,185,129,0.4)] border-4 border-white">
+                                        <Mountain size={36} className="text-white" />
+                                    </div>
+                                    <h1 className="text-4xl font-black text-emerald-900 mb-2">Quiz Summary</h1>
+                                    <p className="text-xl text-emerald-700 font-semibold">Great exploration, {userName}!</p>
+                                </div>
+
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                                    <div className="bg-white/60 p-4 rounded-2xl border border-emerald-100 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <Calendar className="text-emerald-500 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-600/70 mb-1 font-bold uppercase">Date</div>
+                                        <div className="text-sm font-bold text-emerald-900">{finishDate?.toLocaleDateString('vi-VN')} {finishDate?.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</div>
+                                    </div>
+                                    <div className="bg-white/60 p-4 rounded-2xl border border-emerald-100 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <Clock className="text-amber-500 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-600/70 mb-1 font-bold uppercase">Time Taken</div>
+                                        <div className="text-lg font-black text-emerald-900">{formatTime(timeElapsed)}</div>
+                                    </div>
+                                    <div className="bg-white/60 p-4 rounded-2xl border border-emerald-100 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <CheckCircle2 className="text-green-500 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-600/70 mb-1 font-bold uppercase">1st Try Correct</div>
+                                        <div className="text-2xl font-black text-green-600">{calculateScore()}</div>
+                                    </div>
+                                    <div className="bg-white/60 p-4 rounded-2xl border border-emerald-100 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <XCircle className="text-rose-500 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-600/70 mb-1 font-bold uppercase">Mistakes</div>
+                                        <div className="text-2xl font-black text-rose-600">{QUESTIONS.length - calculateScore()}</div>
+                                    </div>
+                                </div>
+
+                                <div className="mb-10 text-center">
+                                    <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-500 mb-4 drop-shadow-sm">
+                                        {Math.round((calculateScore() / QUESTIONS.length) * 100)}%
+                                    </div>
+                                    <div className="w-full max-w-md mx-auto bg-emerald-900/10 h-4 rounded-full overflow-hidden shadow-inner border border-white/50">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-rose-400 via-yellow-400 to-green-500 transition-all duration-1000"
+                                            style={{ width: `${(calculateScore() / QUESTIONS.length) * 100}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 border-t border-emerald-200/60 pt-8">
+                                    <h3 className="text-2xl font-black text-emerald-900 mb-6 flex items-center gap-2"><Leaf size={24} className="text-green-500" /> Detailed Review</h3>
+                                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                        {QUESTIONS.map((q, idx) => {
+                                            const ansInfo = answers[idx] || { attempts: [], firstTryCorrect: false };
+                                            const isCorrect = ansInfo.firstTryCorrect;
+                                            const firstGuessIdx = ansInfo.attempts[0];
+                                            const isUnanswered = ansInfo.attempts.length === 0;
+
+                                            return (
+                                                <div key={idx} className={`p-5 rounded-2xl border shadow-sm ${isCorrect ? 'bg-green-50/80 border-green-200' : 'bg-rose-50/80 border-rose-200'} flex flex-col gap-4`}>
+                                                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                                                        <div className="flex-shrink-0 mt-1">
+                                                            {isCorrect ? <div className="bg-green-200/50 p-2 rounded-xl text-green-600"><CheckCircle2 size={24} /></div>
+                                                                : <div className="bg-rose-200/50 p-2 rounded-xl text-rose-600"><XCircle size={24} /></div>}
+                                                        </div>
+                                                        <div className="flex-grow">
+                                                            <p className="text-emerald-950 font-bold text-[17px] mb-1 leading-snug"><span className="text-emerald-500/80 mr-1">{q.id}.</span> {q.text}</p>
+                                                            <p className="text-emerald-700/80 text-[14px] mb-4 italic font-medium">"{q.translation}"</p>
+
+                                                            <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                                                                <div className="bg-white/60 p-3 rounded-xl border border-black/5 shadow-inner">
+                                                                    <span className="text-emerald-600/60 text-xs font-black uppercase block mb-1">Your First Try:</span>
+                                                                    <span className={`font-black text-[15px] ${isCorrect ? 'text-green-600' : 'text-rose-600'}`}>
+                                                                        {isUnanswered ? "None" : `${optionLabels[firstGuessIdx]}. ${q.options[firstGuessIdx]}`}
+                                                                    </span>
+                                                                </div>
+                                                                {!isCorrect && (
+                                                                    <div className="bg-green-100/50 p-3 rounded-xl border border-green-200/50 shadow-inner">
+                                                                        <span className="text-green-700/60 text-xs font-black uppercase block mb-1">Correct Answer:</span>
+                                                                        <span className="font-black text-[15px] text-green-700">
+                                                                            {optionLabels[q.answer]}. {q.options[q.answer]}
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Khối Giải thích (Nổi bật hơn ở màn Summary) */}
+                                                    <div className={`mt-1 p-4 rounded-xl border flex items-start gap-3 text-[14px] font-medium shadow-sm ${isCorrect ? 'bg-green-100/40 border-green-200/60 text-green-800' : 'bg-rose-100/40 border-rose-200/60 text-rose-800'}`}>
+                                                        <Info size={20} className="flex-shrink-0 mt-0.5 opacity-60" />
+                                                        <p className="leading-relaxed"><strong className="font-black opacity-80 uppercase text-xs mr-2">Rule:</strong> {q.explanation}</p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="mt-10 flex justify-center">
+                                    <button
+                                        onClick={() => window.location.reload()}
+                                        className="px-8 py-4 rounded-xl font-black bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg transition-all flex items-center gap-3 group"
+                                    >
+                                        <Clock size={20} className="group-hover:-rotate-90 transition-transform duration-500" /> Retake Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <footer className="w-full text-center py-6 mt-auto z-20 relative">
+                        <p className="text-emerald-50 text-sm font-semibold tracking-wide bg-[#064e3b]/70 backdrop-blur-md inline-block px-6 py-2.5 rounded-full border border-emerald-400/30 shadow-lg">
+                            © Copyright by <span className="text-green-300 font-black">Hoang Truong English</span>
+                        </p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
