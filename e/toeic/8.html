@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC - RETAIL & SHOPPING</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --store-bg: #fdfbf7;
+            /* Warm white */
+            --store-accent: #f43f5e;
+            /* Rose 500 (Sale tag color) */
+            --store-accent-hover: #e11d48;
+            /* Rose 600 */
+            --store-primary: #8b5cf6;
+            /* Violet 500 */
+            --store-dark: #1e293b;
+            /* Slate 800 */
+            --store-text: #334155;
+            /* Slate 700 */
+            --receipt-paper: #ffffff;
+            --receipt-border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--store-bg);
+            background-image: radial-gradient(rgba(139, 92, 246, 0.08) 2px, transparent 2px);
+            background-size: 30px 30px;
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--store-text);
+        }
+
+        .brand-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* --- Receipt Style Board (Main Container) --- */
+        .receipt-board {
+            background: var(--receipt-paper);
+            border: 1px solid var(--receipt-border);
+            border-radius: 4px;
+            box-shadow:
+                0 10px 25px -5px rgba(0, 0, 0, 0.1),
+                0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            position: relative;
+            /* Zig-zag bottom edge simulating torn receipt */
+            background-image: radial-gradient(circle at 10px 0, transparent 10px, var(--receipt-paper) 11px);
+            background-size: 20px 20px;
+            background-repeat: repeat-x;
+            background-position: 0 100%;
+            padding-bottom: 30px !important;
+        }
+
+        .receipt-board::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: repeating-linear-gradient(45deg,
+                    var(--store-primary) 0, var(--store-primary) 10px,
+                    transparent 10px, transparent 20px,
+                    var(--store-accent) 20px, var(--store-accent) 30px,
+                    transparent 30px, transparent 40px);
+            border-radius: 4px 4px 0 0;
+            opacity: 0.8;
+        }
+
+        /* Barcode decoration */
+        .barcode-header {
+            height: 40px;
+            width: 100%;
+            background-image: repeating-linear-gradient(to right,
+                    var(--store-dark) 0, var(--store-dark) 2px,
+                    transparent 2px, transparent 6px,
+                    var(--store-dark) 6px, var(--store-dark) 10px,
+                    transparent 10px, transparent 12px,
+                    var(--store-dark) 12px, var(--store-dark) 14px,
+                    transparent 14px, transparent 20px);
+            opacity: 0.15;
+            margin: 10px 0;
+        }
+
+        /* --- Flip Card Structure --- */
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            height: 75vh;
+            min-height: 580px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 720px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 780px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Bouncy flip */
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Input fields (Price tag style) --- */
+        .tag-input {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            color: var(--store-dark);
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .tag-input:focus {
+            background: #fff;
+            border-color: var(--store-primary);
+            color: var(--store-primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Floating Sale Tags */
+        .sale-tag {
+            position: absolute;
+            background: var(--store-accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transform: rotate(-15deg);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .sale-tag::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -6px;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--store-bg);
+            border-radius: 50%;
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* --- Buttons --- */
+        .checkout-btn {
+            background: var(--store-accent);
+            color: #fff;
+            box-shadow: 0 4px 14px 0 rgba(244, 63, 94, 0.39);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .checkout-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .checkout-btn:hover::after {
+            left: 150%;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4);
+            background: var(--store-accent-hover);
+        }
+
+        .checkout-btn:active {
+            transform: translateY(1px);
+        }
+
+        .outline-btn {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            color: var(--store-text);
+            transition: all 0.2s;
+        }
+
+        .outline-btn:hover {
+            border-color: var(--store-primary);
+            color: var(--store-primary);
+            background: #f8fafc;
+        }
+
+        .outline-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Dashed lines for receipt feel */
+        .dashed-divider {
+            border-top: 2px dashed #cbd5e1;
+            width: 100%;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <!-- Background Elements -->
+    <div id="sale-tags-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- Toast Notification -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-white border-2 border-violet-500 text-slate-800 px-6 py-3 rounded-full shadow-[0_10px_30px_rgba(139,92,246,0.2)] font-bold text-lg z-50 flex items-center gap-3 brand-font transition-all duration-500 uppercase tracking-wider">
+        <span class="text-violet-500 text-xl">🛒</span>
+        <span id="toast-message">STORE ANNOUNCEMENT</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen"
+            class="receipt-board p-4 sm:p-8 text-center flex-col h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: flex;">
+            <div class="barcode-header hidden sm:block"></div>
+
+            <div class="mb-2">
+                <span
+                    class="px-4 py-1 bg-rose-100 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase brand-font border border-rose-200">GRAND
+                    OPENING</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-800 mb-2 brand-font tracking-tight uppercase mt-2">
+                RETAIL & SHOPPING</h1>
+            <p class="text-slate-500 font-medium text-sm sm:text-lg mb-4 sm:mb-6">Essential vocabulary for store
+                operations and customer service.</p>
+
+            <div class="dashed-divider"></div>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border border-slate-200 rounded-lg bg-slate-50/50 w-full shrink relative">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                    <thead class="sticky top-0 bg-white z-20 shadow-sm border-b border-slate-200">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider text-slate-800 uppercase text-xs brand-font">
+                                Item / Product</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider text-center text-slate-500 uppercase text-xs brand-font">
+                                Category</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider text-violet-600 uppercase text-xs brand-font">
+                                Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcome-table-body" class="divide-y divide-slate-200/60 text-slate-600 font-medium">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="startStudy()"
+                class="checkout-btn w-full sm:w-2/3 mx-auto py-3.5 font-black text-lg sm:text-xl rounded-xl flex items-center justify-center gap-3 uppercase tracking-widest mb-2 shrink-0 brand-font">
+                START SHOPPING 🛍️
+            </button>
+
+            <div class="mt-auto pt-4 w-full flex justify-center items-center shrink-0">
+                <p class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 brand-font font-bold">
+                    Receipt #HTE-2026 • Cashier: Hoang Truong English</p>
+            </div>
+        </div>
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-4 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="outline-btn flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 rounded-xl z-20 relative transition-all shadow-sm font-bold shrink-0 brand-font uppercase text-xs sm:text-sm"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[250px] mb-2 sm:mb-3 bg-white px-4 py-1.5 sm:px-6 sm:py-2 rounded-full border border-slate-200 shadow-sm brand-font text-sm sm:text-xl font-bold">
+                        <div class="flex items-center gap-2 text-slate-500">
+                            <span class="text-sm sm:text-lg">⏱</span>
+                            <span id="timer-display" class="tracking-wider">00:00</span>
+                        </div>
+                        <div class="border-l-2 border-slate-200 h-5 mx-2"></div>
+                        <div class="flex items-center text-violet-600">
+                            <span id="progress-text" class="tracking-widest">1/20</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar (Shopping Cart Track) -->
+                    <div class="w-full max-w-md bg-slate-200 rounded-full h-2 sm:h-3 relative overflow-visible">
+                        <div id="progress-bar"
+                            class="bg-violet-500 h-full rounded-full transition-all duration-500 ease-out"
+                            style="width: 0%"></div>
+                        <div id="cart-icon"
+                            class="absolute top-1/2 -translate-y-1/2 text-lg sm:text-xl transition-all duration-500 ease-out transform -translate-x-1/2 z-10 filter drop-shadow-sm"
+                            style="left: 0%">🛒</div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="outline-btn flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl shadow-sm shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD -->
+                    <div class="flip-card-front receipt-board custom-scrollbar p-4 sm:p-8">
+                        <div class="barcode-header opacity-10 h-[20px] mb-4 mt-2"></div>
+
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+
+                            <div class="mb-5 sm:mb-8 flex flex-col items-center">
+                                <p
+                                    class="text-xs sm:text-sm text-slate-400 brand-font font-bold tracking-[0.2em] uppercase mb-2">
+                                    PRODUCT INQUIRY</p>
+                                <h2 class="text-3xl sm:text-4xl font-black text-slate-800 mb-3 uppercase brand-font tracking-tight"
+                                    id="word-mean"></h2>
+                                <span
+                                    class="inline-block px-4 py-1 bg-violet-100 border border-violet-200 text-violet-700 rounded-full font-bold text-xs sm:text-sm uppercase tracking-widest"
+                                    id="word-type"></span>
+                            </div>
+
+                            <div
+                                class="w-full max-w-2xl bg-slate-50 rounded-xl p-4 sm:p-6 mb-6 border border-slate-200 relative overflow-hidden group">
+                                <div
+                                    class="absolute top-0 left-0 w-1 h-full bg-slate-300 group-hover:bg-violet-400 transition-colors">
+                                </div>
+                                <p class="text-lg sm:text-xl text-slate-700 mb-3 leading-relaxed font-medium"
+                                    id="word-ex"></p>
+                                <div class="dashed-divider my-2"></div>
+                                <p class="text-sm sm:text-base text-slate-500 italic" id="word-exVi"></p>
+                            </div>
+
+                            <div class="w-full flex flex-col items-center gap-5 sm:gap-8 mb-2">
+                                <div id="letter-inputs-container"
+                                    class="flex flex-wrap justify-center gap-x-1.5 gap-y-3 w-full"></div>
+
+                                <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap mt-2">
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="w-11 h-11 sm:w-12 sm:h-12 border-2 border-violet-200 text-violet-600 hover:bg-violet-50 rounded-xl flex items-center justify-center transition-all bg-white shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                    <button id="hint-btn" onclick="giveHint()"
+                                        class="px-5 sm:px-6 h-11 sm:h-12 border-2 border-slate-200 text-slate-500 hover:bg-slate-50 hover:border-slate-300 font-bold rounded-xl disabled:opacity-30 text-sm sm:text-base bg-white transition-all brand-font uppercase tracking-wider">Hint</button>
+                                    <button onclick="checkAnswer()"
+                                        class="checkout-btn px-8 sm:px-10 h-11 sm:h-12 font-black rounded-xl text-sm sm:text-base flex items-center gap-2 tracking-widest uppercase brand-font">
+                                        Scan Barcode
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-4 w-full flex justify-center items-center shrink-0">
+                            <p
+                                class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 brand-font font-bold">
+                                Receipt #HTE-2026</p>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD -->
+                    <div class="flip-card-back receipt-board custom-scrollbar p-4 sm:p-8 relative">
+
+                        <div id="result-header"
+                            class="text-center pb-3 mb-2 sm:mb-4 brand-font font-black tracking-widest uppercase mt-2">
+                        </div>
+
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full">
+
+                            <h2 class="text-4xl sm:text-6xl font-black text-slate-800 brand-font mb-4 tracking-tight uppercase"
+                                id="back-word"></h2>
+
+                            <div
+                                class="flex items-center gap-3 mb-6 bg-slate-50 border border-slate-200 px-6 py-2.5 rounded-full shadow-sm">
+                                <p class="text-lg sm:text-2xl text-violet-600 font-mono tracking-wide font-semibold"
+                                    id="back-phonetic"></p>
+                                <button onclick="speakCurrentWord(event)"
+                                    class="text-slate-400 hover:text-violet-600 hover:bg-violet-100 transition-colors p-2 rounded-full cursor-pointer relative z-50"
+                                    title="Listen">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                        fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p class="text-2xl sm:text-3xl text-rose-500 font-bold mb-6 uppercase tracking-wide brand-font"
+                                id="back-mean"></p>
+
+                            <div
+                                class="border-t-2 border-b-2 border-dashed border-slate-200 bg-white py-5 w-full max-w-2xl text-center">
+                                <p class="text-base sm:text-lg text-slate-600 leading-relaxed font-medium" id="back-ex">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 sm:mt-10 flex justify-center gap-4 sm:gap-6 w-full shrink-0">
+                            <button onclick="prevCard()"
+                                class="outline-btn flex-1 max-w-[160px] py-3 sm:py-3.5 font-bold rounded-xl text-sm sm:text-base uppercase tracking-wide brand-font">Back</button>
+                            <button onclick="nextCard()" id="next-btn"
+                                class="checkout-btn flex-1 max-w-[220px] py-3 sm:py-3.5 font-black rounded-xl flex items-center justify-center gap-2 text-sm sm:text-base tracking-widest uppercase brand-font">
+                                Next Item
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="mt-auto pt-4 w-full flex justify-center items-center shrink-0">
+                            <p
+                                class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 brand-font font-bold">
+                                Thank you for shopping with us!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen"
+            class="receipt-board p-4 sm:p-8 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: none;">
+
+            <div class="barcode-header w-1/2 mx-auto mb-2 opacity-20"></div>
+
+            <h2
+                class="text-3xl sm:text-5xl font-black text-slate-800 brand-font mb-1 shrink-0 uppercase tracking-tight">
+                TRANSACTION COMPLETE</h2>
+
+            <p id="completion-datetime" class="text-xs sm:text-sm text-slate-500 mb-6 shrink-0 font-mono"></p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 shrink-0 brand-font">
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-violet-500"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Accuracy</p>
+                    <p class="text-3xl sm:text-4xl font-black mt-2 text-violet-600" id="score-percent">-</p>
+                </div>
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Time Spent</p>
+                    <p class="text-xl sm:text-3xl text-blue-600 font-bold mt-2" id="elapsed-time">-</p>
+                </div>
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Items Found</p>
+                    <p class="text-xl sm:text-3xl text-emerald-600 font-bold mt-2" id="correct-count">-</p>
+                </div>
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-rose-500"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Staff Help</p>
+                    <p class="text-xl sm:text-3xl text-rose-500 font-bold mt-2" id="hint-count">-</p>
+                </div>
+            </div>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar border border-slate-200 rounded-lg bg-white w-full mb-6 shrink shadow-inner relative">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                    <thead class="sticky top-0 bg-slate-50 z-20 shadow-sm border-b border-slate-200">
+                        <tr>
+                            <th
+                                class="p-3 sm:p-4 font-bold w-1/4 text-slate-500 uppercase text-xs tracking-wider brand-font">
+                                Status</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold w-1/3 text-slate-800 uppercase text-xs tracking-wider brand-font">
+                                Product Item</th>
+                            <th class="p-3 sm:p-4 font-bold text-slate-500 uppercase text-xs tracking-wider brand-font">
+                                Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final-review-table-body" class="divide-y divide-slate-100 text-slate-600 font-medium">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="resetQuizToSummary()"
+                class="checkout-btn w-full sm:w-1/2 mx-auto py-3.5 font-black text-lg sm:text-xl rounded-xl uppercase tracking-widest mb-2 shrink-0 brand-font">
+                NEW TRANSACTION 🔄
+            </button>
+
+            <div class="mt-auto pt-4 w-full flex justify-center items-center shrink-0">
+                <p class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 brand-font font-bold">
+                    Please Keep Your Receipt</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for TOEIC: Retail & Shopping
+        const flashcards = [
+            { topic: "RETAIL & SHOPPING", word: "store", phonetic: "/stɔːr/", type: "noun", mean: "cửa hàng", ex: "The _______ opens at 9 a.m.", exVi: "Cửa hàng mở cửa lúc 9 giờ sáng." },
+            { topic: "RETAIL & SHOPPING", word: "shop", phonetic: "/ʃɑːp/", type: "noun/verb", mean: "cửa hàng; mua sắm", ex: "She _______s online every week.", exVi: "Cô ấy mua sắm trực tuyến mỗi tuần." },
+            { topic: "RETAIL & SHOPPING", word: "retailer", phonetic: "/ˈriːteɪlər/", type: "noun", mean: "nhà bán lẻ", ex: "The _______ offers free delivery.", exVi: "Nhà bán lẻ cung cấp giao hàng miễn phí." },
+            { topic: "RETAIL & SHOPPING", word: "customer service", phonetic: "/ˈkʌstəmər ˈsɜːrvɪs/", type: "noun", mean: "dịch vụ khách hàng", ex: "_______ is available 24/7.", exVi: "Dịch vụ khách hàng có sẵn 24/7." },
+            { topic: "RETAIL & SHOPPING", word: "cashier", phonetic: "/kæˈʃɪr/", type: "noun", mean: "thu ngân", ex: "The _______ gave me a receipt.", exVi: "Thu ngân đã đưa cho tôi một biên lai." },
+            { topic: "RETAIL & SHOPPING", word: "receipt", phonetic: "/rɪˈsiːt/", type: "noun", mean: "biên lai", ex: "Please keep your _______.", exVi: "Vui lòng giữ lại biên lai của bạn." },
+            { topic: "RETAIL & SHOPPING", word: "refund", phonetic: "/ˈriːfʌnd/", type: "noun/verb", mean: "hoàn tiền", ex: "The customer asked for a _______.", exVi: "Khách hàng đã yêu cầu hoàn tiền." },
+            { topic: "RETAIL & SHOPPING", word: "exchange", phonetic: "/ɪksˈtʃeɪndʒ/", type: "noun/verb", mean: "đổi hàng", ex: "Can I _______ this shirt?", exVi: "Tôi có thể đổi chiếc áo này không?" },
+            { topic: "RETAIL & SHOPPING", word: "return", phonetic: "/rɪˈtɜːrn/", type: "verb/noun", mean: "trả hàng", ex: "You can _______ the item within 30 days.", exVi: "Bạn có thể trả lại món hàng trong vòng 30 ngày." },
+            { topic: "RETAIL & SHOPPING", word: "discount", phonetic: "/ˈdɪskaʊnt/", type: "noun", mean: "giảm giá", ex: "The store offers a student _______.", exVi: "Cửa hàng cung cấp giảm giá cho sinh viên." },
+            { topic: "RETAIL & SHOPPING", word: "sale", phonetic: "/seɪl/", type: "noun", mean: "đợt giảm giá", ex: "There is a big _______ this weekend.", exVi: "Có một đợt giảm giá lớn vào cuối tuần này." },
+            { topic: "RETAIL & SHOPPING", word: "coupon", phonetic: "/ˈkuːpɑːn/", type: "noun", mean: "phiếu giảm giá", ex: "I used a _______ at checkout.", exVi: "Tôi đã sử dụng một phiếu giảm giá khi thanh toán." },
+            { topic: "RETAIL & SHOPPING", word: "product", phonetic: "/ˈprɑːdʌkt/", type: "noun", mean: "sản phẩm", ex: "This _______ is out of stock.", exVi: "Sản phẩm này đã hết hàng." },
+            { topic: "RETAIL & SHOPPING", word: "item", phonetic: "/ˈaɪtəm/", type: "noun", mean: "món hàng", ex: "Each _______ has a price tag.", exVi: "Mỗi món hàng đều có nhãn giá." },
+            { topic: "RETAIL & SHOPPING", word: "price tag", phonetic: "/praɪs tæɡ/", type: "noun", mean: "nhãn giá", ex: "I couldn’t find the _______.", exVi: "Tôi không thể tìm thấy nhãn giá." },
+            { topic: "RETAIL & SHOPPING", word: "out of stock", phonetic: "/aʊt əv stɑːk/", type: "adj", mean: "hết hàng", ex: "The black shoes are _______.", exVi: "Đôi giày màu đen đã hết hàng." },
+            { topic: "RETAIL & SHOPPING", word: "in stock", phonetic: "/ɪn stɑːk/", type: "adj", mean: "còn hàng", ex: "The item is still _______.", exVi: "Món hàng vẫn còn trong kho." },
+            { topic: "RETAIL & SHOPPING", word: "purchase", phonetic: "/ˈpɜːrtʃəs/", type: "noun/verb", mean: "mua hàng", ex: "Customers can _______ tickets online.", exVi: "Khách hàng có thể mua vé trực tuyến." },
+            { topic: "RETAIL & SHOPPING", word: "warranty", phonetic: "/ˈwɔːrənti/", type: "noun", mean: "bảo hành", ex: "The laptop comes with a two-year _______.", exVi: "Máy tính xách tay đi kèm với bảo hành hai năm." },
+            { topic: "RETAIL & SHOPPING", word: "delivery", phonetic: "/dɪˈlɪvəri/", type: "noun", mean: "giao hàng", ex: "_______ is free for orders over $50.", exVi: "Giao hàng miễn phí cho đơn hàng trên $50." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Lofi background music
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+
+        function createSaleTags() {
+            const container = document.getElementById('sale-tags-container');
+            const texts = ['-20%', 'SALE', 'NEW', '50% OFF', 'CLEARANCE', 'HOT'];
+            for (let i = 0; i < 8; i++) {
+                const node = document.createElement('div');
+                node.className = 'sale-tag brand-font';
+                node.textContent = texts[Math.floor(Math.random() * texts.length)];
+                node.style.left = `${Math.random() * 90 + 5}vw`;
+                node.style.top = `${Math.random() * 90 + 5}vh`;
+                node.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+
+                // Slowly float them
+                node.animate([
+                    { transform: `translate(0,0) rotate(${Math.random() * 60 - 30}deg)` },
+                    { transform: `translate(0, -50px) rotate(${Math.random() * 60 - 30}deg)` },
+                    { transform: `translate(0,0) rotate(${Math.random() * 60 - 30}deg)` }
+                ], { duration: Math.random() * 4000 + 4000, iterations: Infinity, easing: 'ease-in-out' });
+
+                container.appendChild(node);
+            }
+        }
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            // Cash register / Store scanner sounds
+            if (type === 'start') {
+                // Happy chime
+                playTone('sine', 523.25, 659.25, 0.1, 0.3); // C5 to E5
+                playTone('sine', 659.25, 783.99, 0.1, 0.4, 0.3); // E5 to G5
+            } else if (type === 'success') {
+                // Barcode scanner beep
+                playTone('square', 1800, 1800, 0.05, 0.1, 0);
+            } else if (type === 'error') {
+                // Error buzz
+                playTone('sawtooth', 200, 150, 0.08, 0.3, 0);
+                playTone('sawtooth', 150, 100, 0.08, 0.3, 0.1);
+            } else if (type === 'flip') {
+                // Paper slide/flip sound
+                playTone('triangle', 600, 200, 0.03, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-violet-50 transition-colors group">
+                    <td class="p-3 sm:p-4 font-bold text-slate-800 group-hover:text-violet-600 transition-colors">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center"><span class="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-500 rounded-md text-xs font-semibold uppercase">${item.type}</span></td>
+                    <td class="p-3 sm:p-4 text-slate-600 group-hover:text-violet-700 transition-colors">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 10 ? 'w-24' : 'w-40');
+            // Using a dash line for missing word to fit receipt theme
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-dashed border-violet-500 inline-block ${underlineWidth} mx-1.5 align-text-bottom"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1 sm:gap-1.5';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-2xl font-bold text-slate-400 self-center px-1';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'tag-input editable-input w-[28px] h-[38px] sm:w-[42px] sm:h-[52px] text-xl sm:text-3xl font-bold uppercase rounded';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('text-rose-500', 'border-rose-500', 'bg-rose-50');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-3 sm:w-5'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('cart-icon').style.left = `${progressPercent}%`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toUpperCase();
+            const inputs = document.querySelectorAll('.tag-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'tag-input w-[28px] h-[38px] sm:w-[42px] sm:h-[52px] text-xl sm:text-3xl font-bold text-violet-500 border-violet-400 bg-violet-50 pointer-events-none rounded shadow-sm';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.tag-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+                const header = document.getElementById('result-header');
+                header.textContent = "ITEM SCANNED";
+                header.className = "text-center pb-2 mb-2 sm:mb-4 text-lg sm:text-xl text-emerald-500 font-bold border-b border-dashed border-emerald-200 uppercase tracking-widest brand-font";
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                // Highlighted word in example
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="bg-violet-100 text-violet-700 px-1 rounded font-bold">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 500);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-rose-500', 'border-rose-500', 'bg-rose-50');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const dateOptions = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+            const dateString = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('completion-datetime').textContent = `DATE: ${dateString} | TIME: ${timeString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-4xl sm:text-6xl font-black mt-2 ${scorePercentage >= 80 ? 'text-violet-600' : (scorePercentage >= 50 ? 'text-orange-500' : 'text-rose-500')}`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-rose-500 text-xs sm:text-sm font-bold bg-rose-50 px-3 py-1 rounded-md border border-rose-200">ASSISTED</span>'
+                    : '<span class="text-emerald-600 text-xs sm:text-sm font-bold bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">CLEARED</span>';
+                const rowClass = usedHint ? 'bg-rose-50/50' : 'hover:bg-slate-50';
+                const wordColor = usedHint ? 'text-rose-400' : 'text-slate-800';
+
+                return `
+                    <tr class="transition-colors ${rowClass} group border-b border-slate-100">
+                        <td class="p-4">${statusIcon}</td>
+                        <td class="p-4 font-bold ${wordColor} text-lg brand-font tracking-wide">${item.word}</td>
+                        <td class="p-4 text-slate-500 text-sm sm:text-base">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+            createSaleTags();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
