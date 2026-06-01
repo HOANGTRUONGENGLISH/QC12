@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS VOCAB 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #2c2a26;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .chalk-text {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- CSS cho Nền Lớp Học --- */
+        .classroom-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wall {
+            flex: 2;
+            background-color: #f0ead6;
+            background-image: radial-gradient(#d3cbb8 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: relative;
+            border-bottom: 10px solid #5c3a21;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .wainscoting {
+            flex: 1;
+            background: linear-gradient(to right, #8b5a2b, #a0522d, #8b5a2b);
+            background-size: 100px 100%;
+            box-shadow: inset 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .wainscoting::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(0, 0, 0, 0.2) 48px, rgba(0, 0, 0, 0.2) 50px);
+        }
+
+        /* Đồng hồ lớp học */
+        .clock {
+            position: absolute;
+            top: 40px;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #fff9e6;
+            border: 8px solid #8b5a2b;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clock-center {
+            width: 8px;
+            height: 8px;
+            background: #b91c1c;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hand-hour {
+            position: absolute;
+            width: 5px;
+            height: 22px;
+            background: #4a2f18;
+            bottom: 50%;
+            transform-origin: bottom;
+            transform: rotate(45deg);
+            border-radius: 3px;
+        }
+
+        .hand-min {
+            position: absolute;
+            width: 3px;
+            height: 32px;
+            background: #4a2f18;
+            bottom: 50%;
+            transform-origin: bottom;
+            transform: rotate(320deg);
+            border-radius: 2px;
+        }
+
+        /* Poster */
+        .poster {
+            position: absolute;
+            top: 60px;
+            left: 8%;
+            width: 100px;
+            height: 140px;
+            background: #fef08a;
+            border: 2px solid #eab308;
+            transform: rotate(-3deg);
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%) rotate(5deg);
+            width: 30px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Bụi Phấn Animation --- */
+        .chalk-dust-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(1px);
+            pointer-events: none;
+            animation: floatDust linear infinite;
+        }
+
+        @keyframes floatDust {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            80% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* --- Bảng Đen (Blackboard) --- */
+        .blackboard {
+            background-color: #2b4535;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 30%),
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
+            border: 14px solid #6b4423;
+            border-radius: 12px;
+            box-shadow:
+                inset 0 0 40px rgba(0, 0, 0, 0.9),
+                0 20px 50px rgba(0, 0, 0, 0.6),
+                inset 0 0 0 2px #4a2f18;
+            color: #f8f9fa;
+            position: relative;
+        }
+
+        .blackboard::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: -14px;
+            right: -14px;
+            height: 18px;
+            background: #4a2f18;
+            border-radius: 0 0 12px 12px;
+            border-top: 2px solid #2a1a0c;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        /* --- Cấu trúc Flip Card --- */
+        .flip-card {
+            perspective: 1500px;
+            width: 100%;
+            height: 75vh;
+            min-height: 550px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 700px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 750px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Ô nhập liệu (Phấn) --- */
+        .chalk-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            transition: all 0.2s;
+        }
+
+        .chalk-input:focus {
+            border-color: #fde047;
+            background: rgba(253, 224, 71, 0.1);
+            outline: none;
+            box-shadow: 0 0 8px rgba(253, 224, 71, 0.3);
+            text-shadow: 0 0 5px rgba(253, 224, 71, 0.5);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .wood-btn {
+            background: linear-gradient(to bottom, #8b5a2b, #6b4423);
+            border: 2px solid #4a2f18;
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.2), 0 4px 6px rgba(0, 0, 0, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            transition: all 0.1s;
+        }
+
+        .wood-btn:active {
+            transform: translateY(2px);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        .chalk-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+        }
+
+        .chalk-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+
+        .chalk-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <div class="classroom-bg">
+        <div class="wall">
+            <div class="clock">
+                <div class="hand-hour"></div>
+                <div class="hand-min"></div>
+                <div class="clock-center"></div>
+            </div>
+            <div class="poster">
+                Save<br>The Earth! 🌿
+            </div>
+        </div>
+        <div class="wainscoting"></div>
+        <div id="chalk-dust-container" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[#2b4535] border-2 border-[#6b4423] text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-xl z-50 flex items-center gap-3 chalk-text">
+        <span>🔔</span>
+        <span id="toast-message">Lesson: IELTS VOCAB DAY 1</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen" class="blackboard p-3 sm:p-8 text-center flex-col h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: flex;">
+            <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 chalk-text tracking-widest drop-shadow-md">IELTS
+                VOCAB DAY 1</h1>
+            <p
+                class="text-yellow-200 chalk-text text-lg sm:text-2xl mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-2 border-dashed border-white/30">
+                Master your vocabulary for a better IELTS score</p>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border border-white/20 rounded-lg bg-black/20 shadow-inner w-full shrink relative">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-lg border-collapse chalk-text">
+                    <thead class="sticky top-0 bg-[#1e3226] text-yellow-300 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider border-b-2 border-white/50">Word</th>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider text-center border-b-2 border-white/50">Type
+                            </th>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider border-b-2 border-white/50">Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcome-table-body" class="divide-y divide-white/20 text-white">
+                        <!-- Chèn bằng JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="startStudy()"
+                class="wood-btn w-full sm:w-2/3 mx-auto py-3 text-white font-black text-xl sm:text-2xl rounded-xl flex items-center justify-center gap-3 uppercase tracking-widest font-sans mb-4 sm:mb-6 shrink-0">
+                START LEARNING 📖
+            </button>
+
+            <div class="mt-auto py-2 w-full flex justify-center items-center shrink-0">
+                <div
+                    class="px-6 py-2 bg-black/30 border border-white/30 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                    <p
+                        class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                        &copy; Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-6 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="border-2 border-orange-400 text-orange-300 hover:bg-orange-400/20 bg-black/40 flex items-center justify-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl z-20 relative transition-all shadow-lg hover:scale-105 font-bold shrink-0"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline font-sans text-sm">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center gap-2 sm:gap-6 mb-2 sm:mb-3 bg-black/40 px-2 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl border border-white/20 shadow-lg chalk-text text-sm sm:text-xl font-bold max-w-full">
+                        <div class="flex items-center gap-1 sm:gap-2 text-cyan-300 shrink-0">
+                            <span class="text-lg sm:text-2xl drop-shadow-md">⏱️</span>
+                            <span id="timer-display" class="tracking-wider drop-shadow-md">00:00</span>
+                        </div>
+                        <div
+                            class="border-l-2 border-dashed border-white/50 pl-2 sm:pl-6 text-white truncate flex items-center justify-center">
+                            <span id="progress-text"
+                                class="text-amber-400 font-black tracking-wider drop-shadow-md text-base sm:text-2xl">1
+                                / X</span>
+                        </div>
+                    </div>
+                    <!-- Thanh tiến trình vẽ bằng phấn -->
+                    <div
+                        class="w-full bg-black/50 rounded-full h-2 sm:h-4 overflow-hidden border border-white/30 sm:border-2 shadow-inner">
+                        <div id="progress-bar"
+                            class="bg-gradient-to-r from-green-400 to-emerald-300 h-full transition-all duration-300 shadow-[0_0_12px_#4ade80]"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="chalk-btn flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 text-white rounded-lg sm:rounded-xl bg-black/40 shadow-lg shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Flashcard Component -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+                    <!-- Mặt trước bảng -->
+                    <div class="flip-card-front blackboard custom-scrollbar p-3 sm:p-8">
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+                            <div class="mb-4 sm:mb-6 mt-2">
+                                <h2 class="text-3xl sm:text-5xl font-bold text-white chalk-text mb-2 drop-shadow-md"
+                                    id="word-mean"></h2>
+                                <span
+                                    class="inline-block px-3 py-1 border-2 border-blue-300 text-blue-200 rounded-lg font-bold text-lg sm:text-xl uppercase chalk-text transform -rotate-2"
+                                    id="word-type"></span>
+                            </div>
+
+                            <div class="w-full max-w-2xl bg-black/10 rounded-xl p-3 sm:p-5 mb-4 border border-white/10">
+                                <p class="text-lg sm:text-2xl text-white chalk-text mb-2 leading-relaxed" id="word-ex">
+                                </p>
+                                <p class="text-base sm:text-lg text-pink-400 chalk-text mt-2" id="word-exVi"></p>
+                            </div>
+
+                            <div class="w-full flex flex-col items-center gap-4 sm:gap-6 mb-2">
+                                <div id="letter-inputs-container"
+                                    class="flex flex-wrap justify-center gap-x-1 gap-y-2 w-full"></div>
+
+                                <div
+                                    class="flex items-center justify-center gap-2 sm:gap-3 w-full flex-wrap font-sans mt-2">
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="w-10 h-10 sm:w-12 sm:h-12 border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300/20 rounded-full flex items-center justify-center transition-colors shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                    <button id="hint-btn" onclick="giveHint()"
+                                        class="px-4 sm:px-6 h-10 sm:h-12 border-2 border-blue-300 text-blue-200 hover:bg-blue-300/20 font-bold rounded-xl disabled:opacity-50 text-sm sm:text-base">Hint</button>
+                                    <button onclick="checkAnswer()"
+                                        class="wood-btn px-6 sm:px-8 h-10 sm:h-12 text-white font-bold rounded-xl text-sm sm:text-lg flex items-center gap-2">
+                                        Check
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto py-2 w-full flex justify-center items-center relative z-10 shrink-0">
+                            <div
+                                class="px-6 py-2 bg-black/30 border border-white/30 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                                <p
+                                    class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                                    &copy; Copyright by Hoang Truong English</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mặt sau bảng -->
+                    <div class="flip-card-back blackboard custom-scrollbar p-3 sm:p-8 relative">
+                        <div
+                            class="absolute top-4 left-4 w-16 border-t-2 border-white/20 transform -rotate-12 hidden sm:block">
+                        </div>
+                        <div
+                            class="absolute top-6 left-2 w-12 border-t-2 border-white/20 transform rotate-6 hidden sm:block">
+                        </div>
+
+                        <div id="result-header" class="text-center pb-2 mb-2 sm:mb-4 chalk-text"></div>
+
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full">
+                            <h2 class="text-4xl sm:text-6xl font-bold text-white chalk-text mb-3" id="back-word"></h2>
+
+                            <div
+                                class="flex items-center gap-3 mb-4 bg-black/20 border border-white/20 px-4 py-2 rounded-xl">
+                                <p class="text-xl sm:text-3xl text-yellow-300 chalk-text" id="back-phonetic"></p>
+                                <button onclick="speakCurrentWord(event)"
+                                    class="text-white hover:text-yellow-300 hover:bg-white/10 transition-colors p-2 rounded-full cursor-pointer relative z-50"
+                                    title="Nghe phát âm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8"
+                                        fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p class="text-2xl sm:text-4xl text-green-300 font-bold mb-4 chalk-text" id="back-mean"></p>
+
+                            <div
+                                class="border-2 border-dashed border-white/30 rounded-2xl p-3 sm:p-5 w-full max-w-2xl text-center">
+                                <p class="text-base sm:text-xl text-white chalk-text leading-relaxed" id="back-ex"></p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 sm:mt-6 flex justify-center gap-3 sm:gap-4 w-full font-sans shrink-0">
+                            <button onclick="prevCard()"
+                                class="border-2 border-orange-400 text-orange-300 hover:bg-orange-400/20 bg-black/20 flex-1 max-w-[150px] py-2 sm:py-3 font-bold rounded-xl text-sm sm:text-lg transition-all shadow-md hover:scale-105">Back</button>
+                            <button onclick="nextCard()" id="next-btn"
+                                class="wood-btn flex-1 max-w-[200px] py-2 sm:py-3 text-white font-bold rounded-xl flex items-center justify-center gap-2 text-sm sm:text-lg">
+                                Next
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="mt-auto py-2 w-full flex justify-center items-center relative z-10 shrink-0">
+                            <div
+                                class="px-6 py-2 bg-black/30 border border-white/30 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                                <p
+                                    class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                                    &copy; Copyright by Hoang Truong English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT (STICKY HEADER) =================== -->
+        <div id="final-screen"
+            class="blackboard p-3 sm:p-8 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: none;">
+            <h2 class="text-3xl sm:text-5xl font-black text-yellow-300 chalk-text mb-2 shrink-0 drop-shadow-md">LESSON
+                SUMMARY</h2>
+
+            <!-- Ngày Giờ Hoàn Thành -->
+            <p id="completion-datetime"
+                class="text-sm sm:text-base text-gray-300 mb-4 shrink-0 font-sans italic tracking-wide"></p>
+
+            <!-- Summary Stats Board -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4 shrink-0 chalk-text">
+                <div class="bg-black/20 border border-white/20 rounded-xl p-2 sm:p-3 shadow-inner">
+                    <p class="text-xs sm:text-sm text-gray-300 uppercase tracking-widest">Score</p>
+                    <p class="text-2xl sm:text-4xl text-yellow-300 font-black mt-1" id="score-percent">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-2 sm:p-3 shadow-inner">
+                    <p class="text-xs sm:text-sm text-gray-300 uppercase tracking-widest">Time</p>
+                    <p class="text-xl sm:text-3xl text-cyan-300 font-bold mt-1" id="elapsed-time">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-2 sm:p-3 shadow-inner">
+                    <p class="text-xs sm:text-sm text-gray-300 uppercase tracking-widest">Perfect</p>
+                    <p class="text-xl sm:text-3xl text-green-400 font-bold mt-1" id="correct-count">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-2 sm:p-3 shadow-inner">
+                    <p class="text-xs sm:text-sm text-gray-300 uppercase tracking-widest">Hints</p>
+                    <p class="text-xl sm:text-3xl text-red-400 font-bold mt-1" id="hint-count">-</p>
+                </div>
+            </div>
+
+            <!-- Detailed Review Table (Frozen Header) -->
+            <div
+                class="flex-grow overflow-auto custom-scrollbar border border-white/30 rounded-xl bg-black/30 w-full mb-4 shrink shadow-inner relative">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-lg border-collapse chalk-text">
+                    <thead class="sticky top-0 bg-[#1e3226] text-yellow-300 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold w-1/4 border-b-2 border-white/50">Status</th>
+                            <th class="p-3 sm:p-4 font-bold w-1/3 border-b-2 border-white/50">Word</th>
+                            <th class="p-3 sm:p-4 font-bold border-b-2 border-white/50">Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final-review-table-body" class="divide-y divide-white/20 text-white">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="resetQuizToSummary()"
+                class="wood-btn w-full sm:w-1/2 mx-auto py-3 text-white font-bold text-xl sm:text-2xl rounded-xl uppercase tracking-wider font-sans mb-2 shrink-0">
+                Study Again 🔄
+            </button>
+
+            <div class="mt-auto py-2 w-full flex justify-center items-center shrink-0">
+                <div
+                    class="px-6 py-2 bg-black/30 border border-white/30 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                    <p
+                        class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                        &copy; Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        const flashcards = [
+            { topic: "IELTS VOCAB DAY 1", word: "interrupt", phonetic: "/ˌɪntəˈrʌpt/", type: "verb", mean: "làm gián đoạn, ngắt lời", ex: "Please do not _______ the speaker because everyone needs to hear the full explanation clearly.", exVi: "Xin vui lòng không ngắt lời người nói vì mọi người cần nghe rõ toàn bộ lời giải thích." },
+            { topic: "IELTS VOCAB DAY 1", word: "alternative", phonetic: "/ɔːlˈtɜːrnətɪv/", type: "noun", mean: "sự lựa chọn thay thế", ex: "Online learning can be a useful _______ when students cannot come to class because of bad weather.", exVi: "Học trực tuyến có thể là một sự lựa chọn thay thế hữu ích khi học sinh không thể đến lớp vì thời tiết xấu." },
+            { topic: "IELTS VOCAB DAY 1", word: "break my immersion in", phonetic: "/breɪk maɪ ɪˈmɜːrʒən ɪn/", type: "phrase", mean: "làm mất sự nhập tâm của tôi vào", ex: "Loud noises can _______ a movie when I am trying to enjoy the story.", exVi: "Tiếng ồn lớn có thể làm mất sự nhập tâm của tôi vào một bộ phim khi tôi đang cố gắng thưởng thức câu chuyện." },
+            { topic: "IELTS VOCAB DAY 1", word: "irritated", phonetic: "/ˈɪrɪteɪtɪd/", type: "adjective", mean: "khó chịu, bực mình", ex: "I feel _______ when people talk loudly while I am trying to focus on my work.", exVi: "Tôi cảm thấy khó chịu khi mọi người nói chuyện lớn tiếng trong khi tôi đang cố gắng tập trung vào công việc của mình." },
+            { topic: "IELTS VOCAB DAY 1", word: "annoyed", phonetic: "/əˈnɔɪd/", type: "adjective", mean: "khó chịu, bực bội", ex: "She is _______ because her classmates keep making noise during the important lesson.", exVi: "Cô ấy bực bội vì các bạn cùng lớp cứ làm ồn trong suốt buổi học quan trọng." },
+            { topic: "IELTS VOCAB DAY 1", word: "expand", phonetic: "/ɪkˈspænd/", type: "verb", mean: "mở rộng, phát triển", ex: "The company wants to _______ its business to other cities to reach more customers.", exVi: "Công ty muốn mở rộng hoạt động kinh doanh sang các thành phố khác để tiếp cận nhiều khách hàng hơn." },
+            { topic: "IELTS VOCAB DAY 1", word: "enlarge", phonetic: "/ɪnˈlɑːrdʒ/", type: "verb", mean: "phóng to, mở rộng", ex: "You can _______ the picture on the screen so that everyone in the classroom can see it clearly.", exVi: "Bạn có thể phóng to bức tranh trên màn hình để mọi người trong lớp học có thể nhìn thấy rõ ràng." },
+            { topic: "IELTS VOCAB DAY 1", word: "habitat", phonetic: "/ˈhæbɪtæt/", type: "noun", mean: "môi trường sống", ex: "Forests are an important _______ for many wild animals, birds, and insects.", exVi: "Rừng là môi trường sống quan trọng của nhiều loài động vật hoang dã, chim và côn trùng." },
+            { topic: "IELTS VOCAB DAY 1", word: "species of", phonetic: "/ˈspiːʃiːz əv/", type: "phrase", mean: "loài thuộc nhóm nào đó", ex: "The panda is a rare _______ bear that mainly lives in the mountains of China.", exVi: "Gấu trúc là một loài gấu quý hiếm chủ yếu sống ở vùng núi Trung Quốc." },
+            { topic: "IELTS VOCAB DAY 1", word: "endangered animals", phonetic: "/ɪnˈdeɪndʒərd ˈænɪməlz/", type: "noun phrase", mean: "động vật có nguy cơ tuyệt chủng", ex: "Many _______ need protection because their habitats are becoming smaller every year.", exVi: "Nhiều loài động vật có nguy cơ tuyệt chủng cần được bảo vệ vì môi trường sống của chúng đang ngày càng nhỏ đi mỗi năm." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+
+        function createChalkDust() {
+            const container = document.getElementById('chalk-dust-container');
+            for (let i = 0; i < 30; i++) {
+                const dust = document.createElement('div');
+                dust.className = 'chalk-dust-particle';
+                const size = Math.random() * 6 + 2;
+                dust.style.width = `${size}px`;
+                dust.style.height = `${size}px`;
+                dust.style.left = `${Math.random() * 100}vw`;
+                dust.style.top = `${Math.random() * 100}vh`;
+                dust.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                dust.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(dust);
+            }
+        }
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                playTone('sine', 523.25, 1046.50, 0.1, 0.8);
+            } else if (type === 'success') {
+                playTone('sine', 523.25, 523.25, 0.08, 0.4, 0);
+                playTone('sine', 659.25, 659.25, 0.08, 0.5, 0.15);
+            } else if (type === 'error') {
+                playTone('sine', 300, 250, 0.1, 0.4, 0);
+            } else if (type === 'flip') {
+                playTone('sine', 300, 150, 0.03, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-white/10 transition-colors">
+                    <td class="p-3 sm:p-4 font-bold text-white border-b border-white/10">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center border-b border-white/10"><span class="px-3 py-1 border border-white/50 text-white rounded-lg text-sm">${item.type}</span></td>
+                    <td class="p-3 sm:p-4 text-yellow-100 border-b border-white/10">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.length;
+            let underlineWidth = wordLength < 6 ? 'w-20' : (wordLength < 10 ? 'w-32' : 'w-48');
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-4 border-dashed border-yellow-300 inline-block ${underlineWidth} mx-2"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-3xl font-bold text-white self-center px-1 chalk-text';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'chalk-input editable-input w-[22px] h-[32px] sm:w-[36px] sm:h-[46px] text-base sm:text-2xl font-bold rounded';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('text-red-400', 'border-red-400', 'bg-red-400/20');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-4'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.chalk-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'chalk-input w-[22px] h-[32px] sm:w-[36px] sm:h-[46px] text-base sm:text-2xl font-bold text-blue-300 border-blue-300 bg-blue-300/20 pointer-events-none rounded';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.chalk-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+                const header = document.getElementById('result-header');
+                header.textContent = "🎉 CORRECT!";
+                header.className = "text-center pb-2 mb-2 sm:mb-4 text-xl sm:text-2xl text-green-400 font-bold border-b-2 border-dashed border-green-400 chalk-text uppercase tracking-widest";
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean} (${card.type})`;
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="text-yellow-300 underline decoration-4 underline-offset-4">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 500);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-red-400', 'border-red-400', 'bg-red-400/20');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 400);
+        }
+
+        // ================= HIỂN THỊ TRANG SUMMARY TỔNG KẾT =================
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            // Chuyển đổi màn hình bằng display style
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            // Xử lý và ghi ngày giờ hiện hành (Năm 2026 tự động khớp với thời gian hệ thống)
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateOptions = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+            const dateString = now.toLocaleDateString('vi-VN', dateOptions);
+            document.getElementById('completion-datetime').textContent = `Hoàn thành lúc: ${timeString} - ${dateString}`;
+
+            // Ghi dữ liệu vào Dashboard
+            document.getElementById('score-percent').textContent = `${scorePercentage}%`;
+            document.getElementById('score-percent').className = `text-2xl sm:text-4xl font-black mt-1 ${scorePercentage >= 80 ? 'text-green-400' : (scorePercentage >= 50 ? 'text-yellow-300' : 'text-red-400')}`;
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            // Điền bảng List Từ vựng chi tiết
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '💡 <span class="text-red-300 text-xs sm:text-sm ml-1 font-sans">Hinted</span>'
+                    : '✅ <span class="text-green-300 text-xs sm:text-sm ml-1 font-sans">Perfect</span>';
+                const rowClass = usedHint ? 'bg-red-900/30' : 'hover:bg-white/10';
+                const wordColor = usedHint ? 'text-yellow-200' : 'text-white';
+
+                return `
+                    <tr class="transition-colors border-b border-dashed border-white/10 ${rowClass}">
+                        <td class="p-3 sm:p-4">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 font-bold ${wordColor}">${item.word}</td>
+                        <td class="p-3 sm:p-4 text-gray-200 text-xs sm:text-base">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+            createChalkDust();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
