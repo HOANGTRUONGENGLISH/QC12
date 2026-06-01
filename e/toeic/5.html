@@ -8,12 +8,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #09090b; /* Zinc 950 */
+            background-color: #09090b;
+            /* Zinc 950 */
             margin: 0;
             overflow-x: hidden;
             color: #f8fafc;
@@ -26,7 +29,10 @@
         /* --- CSS cho Nền Marketing Agency --- */
         .agency-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -10;
             background: radial-gradient(circle at top right, #1f1235, #09090b 70%);
             display: flex;
@@ -39,7 +45,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(236, 72, 153, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -49,19 +55,25 @@
         /* Glow hiệu ứng Neon */
         .neon-glow-1 {
             position: absolute;
-            top: -20%; left: -10%;
-            width: 50vw; height: 50vw;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%); /* Pink */
+            top: -20%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+            /* Pink */
             border-radius: 50%;
             filter: blur(80px);
             z-index: 2;
         }
-        
+
         .neon-glow-2 {
             position: absolute;
-            bottom: -20%; right: -10%;
-            width: 60vw; height: 60vw;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%); /* Cyan */
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+            /* Cyan */
             border-radius: 50%;
             filter: blur(80px);
             z-index: 2;
@@ -70,7 +82,8 @@
         /* Biển hiệu ON AIR / TRENDING */
         .trending-sign {
             position: absolute;
-            top: 40px; left: 4%;
+            top: 40px;
+            left: 4%;
             padding: 8px 16px;
             border: 2px solid #ec4899;
             border-radius: 20px;
@@ -89,13 +102,23 @@
         }
 
         .dot {
-            width: 8px; height: 8px; background-color: #ec4899; border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            background-color: #ec4899;
+            border-radius: 50%;
             box-shadow: 0 0 8px #ec4899;
         }
 
         @keyframes pulse-pink {
-            0% { box-shadow: 0 0 5px rgba(236, 72, 153, 0.3); border-color: rgba(236, 72, 153, 0.5); }
-            100% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.8); border-color: #ec4899; }
+            0% {
+                box-shadow: 0 0 5px rgba(236, 72, 153, 0.3);
+                border-color: rgba(236, 72, 153, 0.5);
+            }
+
+            100% {
+                box-shadow: 0 0 20px rgba(236, 72, 153, 0.8);
+                border-color: #ec4899;
+            }
         }
 
         /* --- Floating Emojis Animation --- */
@@ -109,22 +132,36 @@
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(110vh) rotate(0deg) scale(0.5); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+            0% {
+                transform: translateY(110vh) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.3;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
         }
 
         /* --- Bảng Neon (Main Board) --- */
         .neon-board {
-            background: rgba(24, 24, 27, 0.7); /* Zinc 900 */
+            background: rgba(24, 24, 27, 0.7);
+            /* Zinc 900 */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-top: 1px solid rgba(236, 72, 153, 0.3);
             border-bottom: 1px solid rgba(6, 182, 212, 0.3);
             border-radius: 24px;
-            box-shadow: 
+            box-shadow:
                 0 25px 50px -12px rgba(0, 0, 0, 0.7),
                 0 0 30px rgba(236, 72, 153, 0.1),
                 0 0 30px rgba(6, 182, 212, 0.1);
@@ -138,21 +175,37 @@
             min-height: 550px;
             max-height: 850px;
         }
-        @media (min-width: 640px) { .flip-card { height: 700px; max-height: 900px; } }
-        @media (min-width: 1024px) { .flip-card { height: 750px; } }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 700px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 750px;
+            }
+        }
 
         .flip-card-inner {
             position: relative;
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
         }
 
-        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
 
-        .flip-card-front, .flip-card-back {
+        .flip-card-front,
+        .flip-card-back {
             position: absolute;
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             display: flex;
@@ -161,9 +214,17 @@
             overflow-x: hidden;
         }
 
-        .flip-card-back { transform: rotateY(180deg); }
-        .flip-card.flipped .flip-card-front { pointer-events: none; }
-        .flip-card:not(.flipped) .flip-card-back { pointer-events: none; }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
 
         /* --- Ô nhập liệu (Neon) --- */
         .neon-input {
@@ -174,29 +235,59 @@
             text-align: center;
             font-family: 'Outfit', sans-serif;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
         }
+
         .neon-input:focus {
-            border-color: #ec4899; /* Pink */
+            border-color: #ec4899;
+            /* Pink */
             background: rgba(236, 72, 153, 0.1);
             outline: none;
-            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5), inset 0 2px 4px rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.5);
             transform: translateY(-2px);
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
         }
-        .shake { animation: shake 0.4s ease-in-out; }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
 
         /* Scrollbar */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(236, 72, 153, 0.3); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ec4899; }
-        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(236, 72, 153, 0.3);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #ec4899;
+        }
+
         .gradient-btn {
             background: linear-gradient(135deg, #ec4899, #8b5cf6, #06b6d4);
             background-size: 200% 200%;
@@ -207,33 +298,72 @@
             overflow: hidden;
             animation: gradientShift 5s ease infinite;
         }
-        @keyframes gradientShift { 
-            0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;}
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
-        
+
         .gradient-btn::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: skewX(-20deg); transition: 0.5s;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
         }
-        .gradient-btn:hover::after { left: 150%; }
+
+        .gradient-btn:hover::after {
+            left: 150%;
+        }
+
         .gradient-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 25px rgba(236, 72, 153, 0.5);
         }
-        .gradient-btn:active { transform: translateY(1px); }
+
+        .gradient-btn:active {
+            transform: translateY(1px);
+        }
 
         .outline-btn {
             background: rgba(39, 39, 42, 0.6);
             border: 1px solid rgba(161, 161, 170, 0.3);
             transition: all 0.2s;
         }
-        .outline-btn:hover { background: rgba(63, 63, 70, 0.8); border-color: #a1a1aa; }
-        .outline-btn:active { transform: scale(0.95); }
 
-        .text-glow { text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        .text-neon-pink { text-shadow: 0 0 10px rgba(236, 72, 153, 0.7); }
-        .text-neon-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.7); }
+        .outline-btn:hover {
+            background: rgba(63, 63, 70, 0.8);
+            border-color: #a1a1aa;
+        }
+
+        .outline-btn:active {
+            transform: scale(0.95);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .text-neon-pink {
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.7);
+        }
+
+        .text-neon-cyan {
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.7);
+        }
     </style>
 </head>
 
@@ -249,7 +379,8 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="topic-toast" class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-zinc-900/90 backdrop-blur-md border border-zinc-700 text-white px-6 py-3 rounded-2xl shadow-[0_10px_40px_rgba(236,72,153,0.3)] font-bold text-lg z-50 flex items-center gap-3 display-font transition-all duration-500">
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-zinc-900/90 backdrop-blur-md border border-zinc-700 text-white px-6 py-3 rounded-2xl shadow-[0_10px_40px_rgba(236,72,153,0.3)] font-bold text-lg z-50 flex items-center gap-3 display-font transition-all duration-500">
         <span class="text-pink-500 text-xl">🚀</span>
         <span id="toast-message">Marketing & Advertising</span>
     </div>
@@ -257,20 +388,33 @@
     <div class="max-w-4xl w-full mx-auto relative z-30">
 
         <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
-        <div id="welcome-screen" class="neon-board p-3 sm:p-8 text-center flex-col h-[80vh] min-h-[550px] max-h-[850px]" style="display: flex;">
+        <div id="welcome-screen" class="neon-board p-3 sm:p-8 text-center flex-col h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: flex;">
             <div class="mb-3 inline-block">
-                <span class="px-4 py-1.5 bg-zinc-800/80 text-pink-400 border border-pink-500/40 rounded-full text-xs font-bold tracking-[0.2em] uppercase shadow-[0_0_10px_rgba(236,72,153,0.2)]">Module 5.0</span>
+                <span
+                    class="px-4 py-1.5 bg-zinc-800/80 text-pink-400 border border-pink-500/40 rounded-full text-xs font-bold tracking-[0.2em] uppercase shadow-[0_0_10px_rgba(236,72,153,0.2)]">Module
+                    5.0</span>
             </div>
-            <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 display-font tracking-tight text-glow">MARKETING & ADVERTISING</h1>
-            <p class="text-zinc-400 font-light text-sm sm:text-lg mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-zinc-700/50">Boost your vocabulary to build successful campaigns.</p>
-            
-            <div class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border border-zinc-700/50 rounded-2xl bg-black/40 shadow-inner w-full shrink relative">
+            <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 display-font tracking-tight text-glow">MARKETING
+                & ADVERTISING</h1>
+            <p
+                class="text-zinc-400 font-light text-sm sm:text-lg mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-zinc-700/50">
+                Boost your vocabulary to build successful campaigns.</p>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border border-zinc-700/50 rounded-2xl bg-black/40 shadow-inner w-full shrink relative">
                 <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
                     <thead class="sticky top-0 bg-zinc-900/95 backdrop-blur z-20 shadow-md">
                         <tr>
-                            <th class="p-3 sm:p-4 font-bold tracking-wider border-b border-zinc-700 text-pink-400 uppercase text-xs">Word</th>
-                            <th class="p-3 sm:p-4 font-bold tracking-wider text-center border-b border-zinc-700 text-purple-400 uppercase text-xs">Type</th>
-                            <th class="p-3 sm:p-4 font-bold tracking-wider border-b border-zinc-700 text-cyan-400 uppercase text-xs">Meaning</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider border-b border-zinc-700 text-pink-400 uppercase text-xs">
+                                Word</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider text-center border-b border-zinc-700 text-purple-400 uppercase text-xs">
+                                Type</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider border-b border-zinc-700 text-cyan-400 uppercase text-xs">
+                                Meaning</th>
                         </tr>
                     </thead>
                     <tbody id="welcome-table-body" class="divide-y divide-zinc-800/50 text-zinc-200">
@@ -279,13 +423,15 @@
                 </table>
             </div>
 
-            <button onclick="startStudy()" class="gradient-btn w-full sm:w-2/3 mx-auto py-3.5 text-white font-black text-lg sm:text-xl rounded-2xl flex items-center justify-center gap-3 uppercase tracking-widest mb-4 sm:mb-6 shrink-0 display-font">
+            <button onclick="startStudy()"
+                class="gradient-btn w-full sm:w-2/3 mx-auto py-3.5 text-white font-black text-lg sm:text-xl rounded-2xl flex items-center justify-center gap-3 uppercase tracking-widest mb-4 sm:mb-6 shrink-0 display-font">
                 LAUNCH CAMPAIGN 🎯
             </button>
-            
+
             <div class="mt-auto py-2 w-full flex justify-center items-center shrink-0">
                 <div class="px-6 py-2 bg-zinc-900/50 border border-zinc-800 rounded-full">
-                    <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright &copy; 2026 Hoang Truong English</p>
+                    <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright &copy; 2026
+                        Hoang Truong English</p>
                 </div>
             </div>
         </div>
@@ -294,28 +440,42 @@
         <div id="main-content" class="w-full" style="display: none;">
             <!-- Header Tools -->
             <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-6 w-full">
-                <button id="top-prev-btn" onclick="prevCard()" class="outline-btn text-zinc-300 flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 rounded-xl z-20 relative transition-all shadow-lg font-bold shrink-0" style="display: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="outline-btn text-zinc-300 flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 rounded-xl z-20 relative transition-all shadow-lg font-bold shrink-0"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
                     <span class="hidden sm:inline text-sm">Prev</span>
                 </button>
 
                 <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
-                    <div class="flex items-center gap-3 sm:gap-6 mb-2 sm:mb-3 bg-zinc-900/80 px-3 py-1.5 sm:px-6 sm:py-2 rounded-xl border border-zinc-700/50 shadow-lg display-font text-sm sm:text-xl font-bold max-w-full backdrop-blur-md">
+                    <div
+                        class="flex items-center gap-3 sm:gap-6 mb-2 sm:mb-3 bg-zinc-900/80 px-3 py-1.5 sm:px-6 sm:py-2 rounded-xl border border-zinc-700/50 shadow-lg display-font text-sm sm:text-xl font-bold max-w-full backdrop-blur-md">
                         <div class="flex items-center gap-2 text-cyan-400 shrink-0">
                             <span class="text-lg sm:text-2xl text-neon-cyan">⏱</span>
                             <span id="timer-display" class="tracking-wider">00:00</span>
                         </div>
-                        <div class="border-l border-zinc-700 pl-3 sm:pl-6 text-white truncate flex items-center justify-center">
-                            <span id="progress-text" class="text-pink-400 font-bold tracking-widest text-base sm:text-xl text-neon-pink">1 / X</span>
+                        <div
+                            class="border-l border-zinc-700 pl-3 sm:pl-6 text-white truncate flex items-center justify-center">
+                            <span id="progress-text"
+                                class="text-pink-400 font-bold tracking-widest text-base sm:text-xl text-neon-pink">1 /
+                                X</span>
                         </div>
                     </div>
                     <!-- Thanh tiến trình Neon -->
-                    <div class="w-full bg-zinc-950 rounded-full h-2 sm:h-3 overflow-hidden border border-zinc-800 shadow-inner">
-                        <div id="progress-bar" class="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 h-full transition-all duration-300 shadow-[0_0_10px_rgba(236,72,153,0.8)]" style="width: 0%"></div>
+                    <div
+                        class="w-full bg-zinc-950 rounded-full h-2 sm:h-3 overflow-hidden border border-zinc-800 shadow-inner">
+                        <div id="progress-bar"
+                            class="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 h-full transition-all duration-300 shadow-[0_0_10px_rgba(236,72,153,0.8)]"
+                            style="width: 0%"></div>
                     </div>
                 </div>
 
-                <button onclick="toggleMusic()" class="outline-btn flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 text-zinc-300 rounded-xl shadow-lg shrink-0">
+                <button onclick="toggleMusic()"
+                    class="outline-btn flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 text-zinc-300 rounded-xl shadow-lg shrink-0">
                     <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
                 </button>
             </div>
@@ -324,75 +484,119 @@
             <div class="flip-card" id="flashcard">
                 <div class="flip-card-inner">
                     <div class="flip-card-front neon-board custom-scrollbar p-4 sm:p-8">
-                        <div class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
-                            
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+
                             <div class="mb-5 sm:mb-8 flex flex-col items-center">
-                                <h2 class="text-3xl sm:text-4xl font-black text-white display-font mb-3 text-glow" id="word-mean"></h2>
-                                <span class="inline-block px-4 py-1 bg-purple-500/20 border border-purple-400/50 text-purple-300 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-widest" id="word-type"></span>
+                                <h2 class="text-3xl sm:text-4xl font-black text-white display-font mb-3 text-glow"
+                                    id="word-mean"></h2>
+                                <span
+                                    class="inline-block px-4 py-1 bg-purple-500/20 border border-purple-400/50 text-purple-300 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-widest"
+                                    id="word-type"></span>
                             </div>
-                            
-                            <div class="w-full max-w-2xl bg-black/40 rounded-2xl p-4 sm:p-6 mb-6 border border-zinc-800 shadow-inner relative overflow-hidden group">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-cyan-500 group-hover:bg-pink-500 transition-colors"></div>
-                                <p class="text-lg sm:text-xl text-zinc-200 mb-3 leading-relaxed font-light" id="word-ex"></p>
+
+                            <div
+                                class="w-full max-w-2xl bg-black/40 rounded-2xl p-4 sm:p-6 mb-6 border border-zinc-800 shadow-inner relative overflow-hidden group">
+                                <div
+                                    class="absolute top-0 left-0 w-1 h-full bg-cyan-500 group-hover:bg-pink-500 transition-colors">
+                                </div>
+                                <p class="text-lg sm:text-xl text-zinc-200 mb-3 leading-relaxed font-light"
+                                    id="word-ex"></p>
                                 <p class="text-sm sm:text-base text-zinc-500 italic" id="word-exVi"></p>
                             </div>
-                            
+
                             <div class="w-full flex flex-col items-center gap-5 sm:gap-8 mb-2">
-                                <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-1.5 gap-y-3 w-full"></div>
-                                
+                                <div id="letter-inputs-container"
+                                    class="flex flex-wrap justify-center gap-x-1.5 gap-y-3 w-full"></div>
+
                                 <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap mt-2">
-                                    <button onclick="speakCurrentWord(event)" class="w-11 h-11 sm:w-12 sm:h-12 border border-cyan-500 text-cyan-400 hover:bg-cyan-500/20 rounded-xl flex items-center justify-center transition-all shadow-[0_0_10px_rgba(6,182,212,0.2)] bg-zinc-900/50">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" /></svg>
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="w-11 h-11 sm:w-12 sm:h-12 border border-cyan-500 text-cyan-400 hover:bg-cyan-500/20 rounded-xl flex items-center justify-center transition-all shadow-[0_0_10px_rgba(6,182,212,0.2)] bg-zinc-900/50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
                                     </button>
-                                    <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-11 sm:h-12 border border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:border-zinc-400 font-bold rounded-xl disabled:opacity-30 text-sm sm:text-base bg-zinc-900/50 transition-all">Hint</button>
-                                    <button onclick="checkAnswer()" class="gradient-btn px-8 sm:px-10 h-11 sm:h-12 text-white font-black rounded-xl text-sm sm:text-base flex items-center gap-2 tracking-widest uppercase">
+                                    <button id="hint-btn" onclick="giveHint()"
+                                        class="px-5 sm:px-6 h-11 sm:h-12 border border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:border-zinc-400 font-bold rounded-xl disabled:opacity-30 text-sm sm:text-base bg-zinc-900/50 transition-all">Hint</button>
+                                    <button onclick="checkAnswer()"
+                                        class="gradient-btn px-8 sm:px-10 h-11 sm:h-12 text-white font-black rounded-xl text-sm sm:text-base flex items-center gap-2 tracking-widest uppercase">
                                         Submit
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="mt-auto py-2 w-full flex justify-center items-center relative z-10 shrink-0">
                             <div class="px-6 py-2 bg-zinc-900/50 border border-zinc-800 rounded-full">
-                                <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright &copy; 2026 Hoang Truong English</p>
+                                <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright
+                                    &copy; 2026 Hoang Truong English</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="flip-card-back neon-board custom-scrollbar p-4 sm:p-8 relative">
-                        <div id="result-header" class="text-center pb-3 mb-3 sm:mb-5 display-font font-black tracking-widest"></div>
-                        
-                        <div class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full">
-                            
-                            <h2 class="text-5xl sm:text-7xl font-black text-white display-font mb-4 tracking-tight text-glow" id="back-word"></h2>
-                            
-                            <div class="flex items-center gap-3 mb-6 bg-black/50 border border-zinc-700/50 px-6 py-2.5 rounded-full shadow-inner">
-                                <p class="text-lg sm:text-2xl text-cyan-400 font-mono tracking-wide" id="back-phonetic"></p>
-                                <button onclick="speakCurrentWord(event)" class="text-zinc-400 hover:text-pink-400 hover:bg-pink-400/10 transition-colors p-2 rounded-full cursor-pointer relative z-50" title="Listen">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7" fill="currentColor" viewBox="0 0 20 20"><path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" /></svg>
+                        <div id="result-header"
+                            class="text-center pb-3 mb-3 sm:mb-5 display-font font-black tracking-widest"></div>
+
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full">
+
+                            <h2 class="text-5xl sm:text-7xl font-black text-white display-font mb-4 tracking-tight text-glow"
+                                id="back-word"></h2>
+
+                            <div
+                                class="flex items-center gap-3 mb-6 bg-black/50 border border-zinc-700/50 px-6 py-2.5 rounded-full shadow-inner">
+                                <p class="text-lg sm:text-2xl text-cyan-400 font-mono tracking-wide" id="back-phonetic">
+                                </p>
+                                <button onclick="speakCurrentWord(event)"
+                                    class="text-zinc-400 hover:text-pink-400 hover:bg-pink-400/10 transition-colors p-2 rounded-full cursor-pointer relative z-50"
+                                    title="Listen">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                        fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                    </svg>
                                 </button>
                             </div>
-                            
-                            <p class="text-2xl sm:text-3xl text-pink-400 font-bold mb-8 display-font text-neon-pink" id="back-mean"></p>
-                            
-                            <div class="border border-zinc-700 bg-zinc-900/60 rounded-2xl p-5 sm:p-6 w-full max-w-2xl text-center shadow-inner relative overflow-hidden">
-                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-cyan-500"></div>
-                                <p class="text-base sm:text-lg text-zinc-200 leading-relaxed font-light" id="back-ex"></p>
+
+                            <p class="text-2xl sm:text-3xl text-pink-400 font-bold mb-8 display-font text-neon-pink"
+                                id="back-mean"></p>
+
+                            <div
+                                class="border border-zinc-700 bg-zinc-900/60 rounded-2xl p-5 sm:p-6 w-full max-w-2xl text-center shadow-inner relative overflow-hidden">
+                                <div
+                                    class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-cyan-500">
+                                </div>
+                                <p class="text-base sm:text-lg text-zinc-200 leading-relaxed font-light" id="back-ex">
+                                </p>
                             </div>
                         </div>
 
                         <div class="mt-8 sm:mt-10 flex justify-center gap-4 sm:gap-6 w-full shrink-0">
-                            <button onclick="prevCard()" class="outline-btn flex-1 max-w-[160px] py-3 sm:py-3.5 font-bold rounded-xl text-sm sm:text-base text-zinc-300 uppercase tracking-wide">Back</button>
-                            <button onclick="nextCard()" id="next-btn" class="gradient-btn flex-1 max-w-[220px] py-3 sm:py-3.5 text-white font-black rounded-xl flex items-center justify-center gap-2 text-sm sm:text-base tracking-widest uppercase">
+                            <button onclick="prevCard()"
+                                class="outline-btn flex-1 max-w-[160px] py-3 sm:py-3.5 font-bold rounded-xl text-sm sm:text-base text-zinc-300 uppercase tracking-wide">Back</button>
+                            <button onclick="nextCard()" id="next-btn"
+                                class="gradient-btn flex-1 max-w-[220px] py-3 sm:py-3.5 text-white font-black rounded-xl flex items-center justify-center gap-2 text-sm sm:text-base tracking-widest uppercase">
                                 Next Word
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
                             </button>
                         </div>
 
                         <div class="mt-auto py-2 w-full flex justify-center items-center relative z-10 shrink-0">
                             <div class="px-6 py-2 bg-zinc-900/50 border border-zinc-800 rounded-full">
-                                <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright &copy; 2026 Hoang Truong English</p>
+                                <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright
+                                    &copy; 2026 Hoang Truong English</p>
                             </div>
                         </div>
                     </div>
@@ -401,44 +605,61 @@
         </div>
 
         <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
-        <div id="final-screen" class="neon-board p-3 sm:p-8 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[550px] max-h-[850px]" style="display: none;">
+        <div id="final-screen"
+            class="neon-board p-3 sm:p-8 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: none;">
             <div class="mb-2 inline-block">
-                <span class="px-4 py-1.5 bg-green-500/20 text-green-400 border border-green-500/40 rounded-full text-xs font-bold tracking-[0.2em] uppercase shadow-[0_0_10px_rgba(74,222,128,0.2)]">Campaign Completed</span>
+                <span
+                    class="px-4 py-1.5 bg-green-500/20 text-green-400 border border-green-500/40 rounded-full text-xs font-bold tracking-[0.2em] uppercase shadow-[0_0_10px_rgba(74,222,128,0.2)]">Campaign
+                    Completed</span>
             </div>
-            <h2 class="text-3xl sm:text-5xl font-black text-white display-font mb-1 shrink-0 text-glow">PERFORMANCE ROI</h2>
-            
+            <h2 class="text-3xl sm:text-5xl font-black text-white display-font mb-1 shrink-0 text-glow">PERFORMANCE ROI
+            </h2>
+
             <p id="completion-datetime" class="text-xs sm:text-sm text-zinc-500 mb-6 shrink-0 font-mono"></p>
-            
+
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 shrink-0 display-font">
-                <div class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
+                <div
+                    class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-pink-500"></div>
                     <p class="text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-bold">Accuracy</p>
                     <p class="text-3xl sm:text-4xl font-black mt-2 text-neon-pink" id="score-percent">-</p>
                 </div>
-                <div class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
+                <div
+                    class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-cyan-400"></div>
                     <p class="text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-bold">Time Spent</p>
                     <p class="text-xl sm:text-3xl text-cyan-400 font-bold mt-2 font-mono" id="elapsed-time">-</p>
                 </div>
-                <div class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
+                <div
+                    class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-green-400"></div>
-                    <p class="text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-bold">Perfect Matches</p>
+                    <p class="text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-bold">Perfect Matches
+                    </p>
                     <p class="text-xl sm:text-3xl text-green-400 font-bold mt-2 font-mono" id="correct-count">-</p>
                 </div>
-                <div class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
+                <div
+                    class="bg-black/40 border border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-inner relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-purple-400"></div>
                     <p class="text-[10px] sm:text-xs text-zinc-400 uppercase tracking-widest font-bold">Hints Used</p>
                     <p class="text-xl sm:text-3xl text-purple-400 font-bold mt-2 font-mono" id="hint-count">-</p>
                 </div>
             </div>
-            
-            <div class="flex-grow overflow-auto custom-scrollbar border border-zinc-700/50 rounded-2xl bg-black/40 w-full mb-6 shrink shadow-inner relative">
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar border border-zinc-700/50 rounded-2xl bg-black/40 w-full mb-6 shrink shadow-inner relative">
                 <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
                     <thead class="sticky top-0 bg-zinc-900/95 backdrop-blur z-20 shadow-md">
                         <tr>
-                            <th class="p-4 font-bold w-1/4 border-b border-zinc-700 text-zinc-400 uppercase text-xs tracking-wider">Status</th>
-                            <th class="p-4 font-bold w-1/3 border-b border-zinc-700 text-zinc-400 uppercase text-xs tracking-wider">Word</th>
-                            <th class="p-4 font-bold border-b border-zinc-700 text-zinc-400 uppercase text-xs tracking-wider">Meaning</th>
+                            <th
+                                class="p-4 font-bold w-1/4 border-b border-zinc-700 text-zinc-400 uppercase text-xs tracking-wider">
+                                Status</th>
+                            <th
+                                class="p-4 font-bold w-1/3 border-b border-zinc-700 text-zinc-400 uppercase text-xs tracking-wider">
+                                Word</th>
+                            <th
+                                class="p-4 font-bold border-b border-zinc-700 text-zinc-400 uppercase text-xs tracking-wider">
+                                Meaning</th>
                         </tr>
                     </thead>
                     <tbody id="final-review-table-body" class="divide-y divide-zinc-800/50 text-zinc-200">
@@ -446,14 +667,16 @@
                     </tbody>
                 </table>
             </div>
-            
-            <button onclick="resetQuizToSummary()" class="gradient-btn w-full sm:w-1/2 mx-auto py-3.5 text-white font-black text-lg sm:text-xl rounded-2xl uppercase tracking-widest mb-2 shrink-0 display-font">
+
+            <button onclick="resetQuizToSummary()"
+                class="gradient-btn w-full sm:w-1/2 mx-auto py-3.5 text-white font-black text-lg sm:text-xl rounded-2xl uppercase tracking-widest mb-2 shrink-0 display-font">
                 RESTART CAMPAIGN 🔄
             </button>
 
             <div class="mt-auto py-2 w-full flex justify-center items-center shrink-0">
                 <div class="px-6 py-2 bg-zinc-900/50 border border-zinc-800 rounded-full">
-                    <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright &copy; 2026 Hoang Truong English</p>
+                    <p class="text-[10px] sm:text-xs text-zinc-500 tracking-widest uppercase m-0">Copyright &copy; 2026
+                        Hoang Truong English</p>
                 </div>
             </div>
         </div>
@@ -491,7 +714,7 @@
         let timerId = null;
         let isMusicPlaying = false;
         let currentFallbackAudio = null;
-        let isTransitioning = false; 
+        let isTransitioning = false;
 
         // Âm thanh lofi nhẹ nhàng
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -502,7 +725,7 @@
         function createFloatingIcons() {
             const container = document.getElementById('floating-icons-container');
             const icons = ['📈', '🎯', '💡', '📢', '🔥', '✨', '💬', '🛍️'];
-            for(let i=0; i<15; i++) {
+            for (let i = 0; i < 15; i++) {
                 const node = document.createElement('div');
                 node.className = 'floating-icon';
                 node.textContent = icons[Math.floor(Math.random() * icons.length)];
@@ -515,24 +738,24 @@
 
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            
+
             const now = audioCtx.currentTime;
             const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-                
+
                 osc.type = oscType;
                 osc.frequency.setValueAtTime(freq1, now + delay);
                 if (freq1 !== freq2) {
                     osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
                 }
-                
+
                 gain.gain.setValueAtTime(0, now + delay);
                 gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
-                
+
                 osc.start(now + delay);
                 osc.stop(now + delay + dur);
             };
@@ -542,8 +765,8 @@
                 playTone('square', 330, 660, 0.05, 0.4);
                 playTone('square', 660, 1320, 0.05, 0.4, 0.15);
             } else if (type === 'success') {
-                playTone('sine', 523.25, 523.25, 0.08, 0.2, 0);       
-                playTone('sine', 1046.50, 1046.50, 0.08, 0.4, 0.1);    
+                playTone('sine', 523.25, 523.25, 0.08, 0.2, 0);
+                playTone('sine', 1046.50, 1046.50, 0.08, 0.4, 0.1);
             } else if (type === 'error') {
                 playTone('sawtooth', 150, 100, 0.05, 0.3, 0);
                 playTone('sawtooth', 100, 50, 0.05, 0.3, 0.1);
@@ -583,25 +806,25 @@
             startTime = Date.now();
             timerId = setInterval(() => {
                 const diff = Math.floor((Date.now() - startTime) / 1000);
-                const m = Math.floor(diff/60).toString().padStart(2, '0');
-                const s = (diff%60).toString().padStart(2, '0');
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
                 document.getElementById('timer-display').textContent = `${m}:${s}`;
             }, 1000);
         }
 
         function speakCurrentWord(e) {
             if (e) e.stopPropagation();
-            
+
             window.speechSynthesis.cancel();
-            if (currentFallbackAudio) { 
-                currentFallbackAudio.pause(); 
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
                 currentFallbackAudio.currentTime = 0;
             }
-            
+
             const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
-            
+
             currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
-            
+
             currentFallbackAudio.play().catch(() => {
                 const utter = new SpeechSynthesisUtterance(word);
                 utter.lang = 'en-US';
@@ -614,23 +837,23 @@
             const card = flashcards[currentIndex];
             hintUsedThisCard = false;
             document.getElementById('hint-btn').disabled = false;
-            
+
             document.getElementById('word-mean').textContent = card.mean;
             document.getElementById('word-type').textContent = card.type;
-            
+
             let wordLength = card.word.replace(/\s/g, '').length;
             let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 10 ? 'w-24' : 'w-40');
             document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-pink-500 inline-block ${underlineWidth} mx-1.5 align-text-bottom"></span>`);
             document.getElementById('word-exVi').textContent = card.exVi;
-            
+
             const container = document.getElementById('letter-inputs-container');
             container.innerHTML = '';
-            
+
             const words = card.word.split(' ');
             words.forEach((w, wordIndex) => {
                 const group = document.createElement('div');
                 group.className = 'flex gap-1.5 sm:gap-2';
-                
+
                 w.split('').forEach((char, i) => {
                     if (char === '-') {
                         const dash = document.createElement('span');
@@ -641,57 +864,57 @@
                         const input = document.createElement('input');
                         input.type = 'text'; input.maxLength = 1;
                         input.className = 'neon-input editable-input w-[30px] h-[40px] sm:w-[45px] sm:h-[55px] text-xl sm:text-3xl font-bold uppercase rounded-lg';
-                        
-                        input.addEventListener('input', function() {
+
+                        input.addEventListener('input', function () {
                             this.value = this.value.toUpperCase();
                             this.classList.remove('text-red-400', 'border-red-500', 'bg-red-500/20');
-                            
+
                             const inputs = Array.from(document.querySelectorAll('.editable-input'));
                             const idx = inputs.indexOf(this);
-                            if(this.value && idx < inputs.length - 1) {
+                            if (this.value && idx < inputs.length - 1) {
                                 let next = idx + 1;
-                                while(next < inputs.length && inputs[next].readOnly) next++;
-                                if(next < inputs.length) inputs[next].focus();
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
                             }
                         });
 
-                        input.addEventListener('keydown', function(e) {
+                        input.addEventListener('keydown', function (e) {
                             const inputs = Array.from(document.querySelectorAll('.editable-input'));
                             const idx = inputs.indexOf(this);
-                            if(e.key === 'Backspace' && !this.value && idx > 0) {
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
                                 let prev = idx - 1;
-                                while(prev >= 0 && inputs[prev].readOnly) prev--;
-                                if(prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
                             }
                         });
                         group.appendChild(input);
                     }
                 });
-                
+
                 container.appendChild(group);
-                if(wordIndex < words.length - 1) {
+                if (wordIndex < words.length - 1) {
                     const space = document.createElement('div'); space.className = 'w-4 sm:w-6'; container.appendChild(space);
                 }
             });
 
             setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
             document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${flashcards.length}`;
-            document.getElementById('progress-bar').style.width = `${((currentIndex + 1)/flashcards.length)*100}%`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
             document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
         }
 
         function giveHint() {
-            if(hintUsedThisCard) return;
+            if (hintUsedThisCard) return;
             const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toUpperCase();
             const inputs = document.querySelectorAll('.neon-input');
             let pool = [];
-            for(let i=0; i<inputs.length; i++) if(!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
-            
-            if(pool.length === 0) return;
-            
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
             const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
-            
-            for(let i=0; i<Math.min(count, pool.length); i++) {
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
                 const rand = Math.floor(Math.random() * pool.length);
                 const idx = pool.splice(rand, 1)[0];
                 inputs[idx].value = target[idx];
@@ -704,40 +927,40 @@
         }
 
         function checkAnswer() {
-            if(isTransitioning) return; 
-            
+            if (isTransitioning) return;
+
             const card = flashcards[currentIndex];
             const target = card.word.replace(/[\s-]/g, '').toLowerCase();
             const inputs = document.querySelectorAll('.neon-input');
             const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
-            
-            if(user === target) {
+
+            if (user === target) {
                 playSound('success');
                 isTransitioning = true;
                 const header = document.getElementById('result-header');
                 header.textContent = "SUCCESS!";
                 header.className = "text-center pb-2 mb-2 sm:mb-4 text-xl sm:text-2xl text-green-400 font-black border-b border-green-500/50 uppercase tracking-widest text-glow";
-                
+
                 document.getElementById('back-word').textContent = card.word;
                 document.getElementById('back-phonetic').textContent = card.phonetic;
                 document.getElementById('back-mean').textContent = `${card.mean}`;
-                
+
                 // Thay thế phần gạch dưới bằng chữ có highlight màu gradient
                 document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400 font-bold">\u00A0${card.word}\u00A0</span>`);
-                
+
                 document.getElementById('flashcard').classList.add('flipped');
                 setTimeout(() => {
                     document.getElementById('next-btn').focus();
-                    isTransitioning = false; 
+                    isTransitioning = false;
                 }, 500);
             } else {
                 playSound('error');
                 const container = document.getElementById('letter-inputs-container');
                 container.classList.add('shake');
                 setTimeout(() => container.classList.remove('shake'), 400);
-                
+
                 inputs.forEach((input, idx) => {
-                    if(!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
                         input.classList.add('text-red-400', 'border-red-500', 'bg-red-500/20');
                     }
                 });
@@ -745,24 +968,24 @@
         }
 
         function nextCard() {
-            if(isTransitioning) return;
+            if (isTransitioning) return;
             isTransitioning = true;
             playSound('flip');
             document.getElementById('flashcard').classList.remove('flipped');
             setTimeout(() => {
-                if(currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
                 else showFinal();
                 isTransitioning = false;
             }, 400);
         }
 
         function prevCard() {
-            if(isTransitioning) return;
+            if (isTransitioning) return;
             isTransitioning = true;
             playSound('flip');
             document.getElementById('flashcard').classList.remove('flipped');
-            setTimeout(() => { 
-                if(currentIndex > 0) { currentIndex--; renderCard(); } 
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
                 isTransitioning = false;
             }, 400);
         }
@@ -770,8 +993,8 @@
         function showFinal() {
             clearInterval(timerId);
             const totalSec = Math.floor((Date.now() - startTime) / 1000);
-            const m = Math.floor(totalSec/60); const s = totalSec%60;
-            
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
             const totalWords = flashcards.length;
             const correctWords = totalWords - hintedWords.size;
             const scorePercentage = Math.round((correctWords / totalWords) * 100);
@@ -779,33 +1002,33 @@
             // Chuyển đổi màn hình
             document.getElementById('main-content').style.display = 'none';
             document.getElementById('final-screen').style.display = 'flex';
-            
+
             // Xử lý và ghi ngày giờ
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             const dateOptions = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
             const dateString = now.toLocaleDateString('en-US', dateOptions);
             document.getElementById('completion-datetime').textContent = `SYSTEM LOG: ${dateString} | ${timeString}`;
-            
+
             // Ghi dữ liệu vào Dashboard
             const scoreEl = document.getElementById('score-percent');
             scoreEl.textContent = `${scorePercentage}%`;
             scoreEl.className = `text-4xl sm:text-6xl font-black mt-2 ${scorePercentage >= 80 ? 'text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.8)]' : (scorePercentage >= 50 ? 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.8)]' : 'text-pink-500 drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]')}`;
-            
+
             document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
             document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
             document.getElementById('hint-count').textContent = hintedWords.size;
-            
+
             // Điền bảng List Từ vựng chi tiết
             const tbody = document.getElementById('final-review-table-body');
             tbody.innerHTML = flashcards.map(item => {
                 const usedHint = hintedWords.has(item.word);
-                const statusIcon = usedHint 
-                    ? '<span class="text-purple-400 text-xs sm:text-sm font-bold bg-purple-500/20 px-3 py-1 rounded-md border border-purple-500/30">HINTED</span>' 
+                const statusIcon = usedHint
+                    ? '<span class="text-purple-400 text-xs sm:text-sm font-bold bg-purple-500/20 px-3 py-1 rounded-md border border-purple-500/30">HINTED</span>'
                     : '<span class="text-cyan-400 text-xs sm:text-sm font-bold bg-cyan-500/20 px-3 py-1 rounded-md border border-cyan-500/30">PERFECT</span>';
                 const rowClass = usedHint ? 'bg-purple-900/10' : 'hover:bg-zinc-800/50';
                 const wordColor = usedHint ? 'text-purple-300' : 'text-white';
-                
+
                 return `
                     <tr class="transition-colors ${rowClass} group">
                         <td class="p-4">${statusIcon}</td>
@@ -817,12 +1040,12 @@
         }
 
         function resetQuizToSummary() {
-            currentIndex = 0; 
+            currentIndex = 0;
             hintedWords.clear();
-            
+
             document.getElementById('final-screen').style.display = 'none';
             document.getElementById('welcome-screen').style.display = 'flex';
-            
+
             populateWelcomeTable();
             window.scrollTo(0, 0);
         }
@@ -833,21 +1056,22 @@
         });
 
         document.addEventListener('keydown', e => {
-            if(document.getElementById('main-content').style.display === 'none') return;
-            if(e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
-            if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
-            
-            if(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
-                e.preventDefault(); 
-                if(isTransitioning) return; 
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
 
                 if (document.getElementById('flashcard').classList.contains('flipped')) {
-                    nextCard(); 
+                    nextCard();
                 } else {
-                    checkAnswer(); 
+                    checkAnswer();
                 }
             }
         });
     </script>
 </body>
+
 </html>
