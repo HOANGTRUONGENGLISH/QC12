@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC - SHIPPING & LOGISTICS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Inter cho văn bản thường, Space Mono cho thông số kỹ thuật, Libre Barcode cho mã vạch -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Libre+Barcode+39+Text&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --logistics-bg: #eaddcf;
+            /* Cardboard color */
+            --logistics-dark: #1a2235;
+            /* Navy blue */
+            --logistics-orange: #ff6a00;
+            /* Safety Orange */
+            --logistics-orange-hover: #e65f00;
+            --logistics-yellow: #ffcc00;
+            /* Caution Yellow */
+            --logistics-paper: #ffffff;
+            /* Label White */
+            --logistics-border: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--logistics-bg);
+            color: var(--logistics-dark);
+            margin: 0;
+            overflow-x: hidden;
+            /* Họa tiết thùng carton nền */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d0c0ab' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .mono-font {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .barcode-font {
+            font-family: 'Libre Barcode 39 Text', cursive;
+        }
+
+        /* Sọc cảnh báo (Caution Stripes) */
+        .caution-stripes {
+            background: repeating-linear-gradient(-45deg,
+                    var(--logistics-yellow),
+                    var(--logistics-yellow) 20px,
+                    #222 20px,
+                    #222 40px);
+            height: 12px;
+            width: 100%;
+        }
+
+        /* --- Khung Nhãn Giao Hàng (Shipping Label) --- */
+        .shipping-label {
+            background: var(--logistics-paper);
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.1),
+                0 4px 6px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shipping-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.03), transparent);
+            pointer-events: none;
+        }
+
+        /* --- Khung 3D Flip Card --- */
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            height: 75vh;
+            min-height: 580px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 720px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 780px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-radius: 8px;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Ô nhập liệu (Các ô gõ chữ) --- */
+        .box-input {
+            background: #f8fafc;
+            border: 2px solid var(--logistics-border);
+            border-bottom: 4px solid var(--logistics-dark);
+            border-radius: 4px;
+            color: var(--logistics-dark);
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .box-input:focus {
+            background: #ffffff;
+            border-color: var(--logistics-orange);
+            border-bottom-color: var(--logistics-orange);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @keyframes glitch-shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake {
+            animation: glitch-shake 0.3s ease-in-out;
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+            border: 2px solid #f1f5f9;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Buttons */
+        .express-btn {
+            background: var(--logistics-orange);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 6px rgba(255, 106, 0, 0.3);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .express-btn:hover {
+            background: var(--logistics-orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 106, 0, 0.4);
+        }
+
+        .express-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(255, 106, 0, 0.3);
+        }
+
+        .outline-btn {
+            background: white;
+            border: 2px solid var(--logistics-border);
+            color: var(--logistics-dark);
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .outline-btn:hover {
+            border-color: var(--logistics-dark);
+            background: #f8fafc;
+        }
+
+        /* Dấu mộc đỏ (Approved/Delivered) */
+        .stamp {
+            color: #dc2626;
+            border: 4px solid #dc2626;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transform: rotate(-10deg);
+            opacity: 0.8;
+            pointer-events: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <!-- Thông báo góc trên -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[var(--logistics-dark)] border border-slate-700 text-white px-6 py-3 rounded-lg shadow-2xl font-bold text-lg z-50 flex items-center gap-3 mono-font transition-all duration-500 uppercase">
+        <span class="text-[var(--logistics-orange)]">📦 STATUS:</span>
+        <span id="toast-message">SCANNING MANIFEST</span>
+        <span class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen" class="shipping-label flex-col h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: flex;">
+            <div class="caution-stripes shrink-0"></div>
+
+            <div class="p-6 sm:p-10 flex flex-col h-full">
+                <!-- Tiêu đề / Barcode -->
+                <div class="mb-4 text-center border-b-2 border-dashed border-slate-300 pb-4 shrink-0">
+                    <p class="barcode-font text-5xl sm:text-7xl text-slate-800 mb-1 leading-none">*SHIPPING-LOGISTICS*
+                    </p>
+                    <h1 class="text-2xl sm:text-4xl font-black text-[var(--logistics-dark)] uppercase tracking-tight">
+                        SHIPPING & LOGISTICS</h1>
+                    <p class="text-slate-500 font-medium text-sm sm:text-base mt-2 mono-font">MANIFEST NO: <span
+                            class="font-bold text-[var(--logistics-orange)]">TOEIC-DAY-12</span></p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border border-slate-200 bg-slate-50 w-full shrink relative rounded-md">
+                    <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 bg-slate-200 z-20 shadow-sm border-b border-slate-300">
+                            <tr>
+                                <th
+                                    class="p-3 sm:p-4 font-bold text-[var(--logistics-dark)] uppercase text-xs mono-font tracking-wider">
+                                    Item (Word)</th>
+                                <th
+                                    class="p-3 sm:p-4 font-bold text-center text-slate-500 uppercase text-xs mono-font tracking-wider">
+                                    Class</th>
+                                <th
+                                    class="p-3 sm:p-4 font-bold text-[var(--logistics-dark)] uppercase text-xs mono-font tracking-wider">
+                                    Description (Meaning)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body"
+                            class="divide-y divide-slate-200 text-[var(--logistics-dark)] font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="startStudy()"
+                    class="express-btn w-full sm:w-2/3 mx-auto py-3.5 font-bold text-lg sm:text-xl flex items-center justify-center gap-3 mono-font mb-2 shrink-0">
+                    START SCANNING 📦
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 border-t border-slate-200 pt-3">
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-bold tracking-widest uppercase m-0 mono-font">
+                        Copyright by Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+
+            <!-- Header Tools (Tracking UI) -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-4 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="outline-btn flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 z-20 relative font-bold shrink-0 mono-font uppercase text-xs sm:text-sm"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[320px] mb-2 sm:mb-3 bg-white px-4 py-1.5 sm:px-6 sm:py-2 rounded-lg border border-[var(--logistics-border)] shadow-sm mono-font text-sm sm:text-base font-bold">
+                        <div class="flex items-center gap-2 text-slate-500">
+                            <span class="text-xs uppercase opacity-70">ETA:</span>
+                            <span id="timer-display" class="tracking-wider text-[var(--logistics-dark)]">00:00</span>
+                        </div>
+                        <div class="border-l border-slate-300 h-4 mx-2"></div>
+                        <div class="flex items-center text-[var(--logistics-dark)]">
+                            <span class="text-xs uppercase opacity-70 mr-2">TRK:</span>
+                            <span id="progress-text" class="tracking-widest text-[var(--logistics-orange)]">1/20</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar (Đường di chuyển xe tải) -->
+                    <div
+                        class="w-full max-w-md bg-slate-200 rounded-full h-1.5 sm:h-2.5 relative border border-slate-300 mt-2">
+                        <div id="progress-bar"
+                            class="bg-[var(--logistics-orange)] h-full rounded-full transition-all duration-500 ease-out"
+                            style="width: 0%"></div>
+                        <div id="cart-icon"
+                            class="absolute top-1/2 -translate-y-1/2 text-xl sm:text-2xl transition-all duration-500 ease-out transform -translate-x-1/2 z-10 filter drop-shadow-md"
+                            style="left: 0%">🚚</div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="bg-white border border-[var(--logistics-border)] hover:bg-slate-50 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg shrink-0 transition-colors shadow-sm">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD (Shipping Label Front) -->
+                    <div class="flip-card-front shipping-label custom-scrollbar">
+                        <div class="caution-stripes shrink-0"></div>
+                        <div class="p-6 sm:p-10 flex flex-col h-full">
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+                                <p class="barcode-font text-5xl sm:text-7xl text-slate-800 mb-2 opacity-50 select-none">
+                                    *SCAN-ITEM*</p>
+
+                                <div class="mb-5 sm:mb-8 flex flex-col items-center">
+                                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--logistics-dark)] mb-3 uppercase tracking-tight"
+                                        id="word-mean"></h2>
+                                    <span
+                                        class="inline-block px-4 py-1 bg-slate-100 border border-slate-300 text-slate-600 rounded font-bold text-xs sm:text-sm uppercase tracking-widest mono-font"
+                                        id="word-type"></span>
+                                </div>
+
+                                <div
+                                    class="w-full max-w-2xl bg-amber-50/50 p-4 sm:p-6 mb-8 border-l-4 border-[var(--logistics-orange)] relative text-left rounded-r-md">
+                                    <p class="text-lg sm:text-xl md:text-2xl text-[var(--logistics-dark)] mb-3 leading-relaxed font-medium"
+                                        id="word-ex"></p>
+                                    <p class="text-sm sm:text-base text-slate-500 font-medium italic" id="word-exVi">
+                                    </p>
+                                </div>
+
+                                <div class="w-full flex flex-col items-center gap-5 sm:gap-8 mb-2">
+                                    <!-- Vùng nhập liệu từ vựng -->
+                                    <div id="letter-inputs-container"
+                                        class="flex flex-wrap justify-center gap-x-1.5 gap-y-3 w-full px-2"></div>
+
+                                    <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap mt-2">
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="w-11 h-11 sm:w-12 sm:h-12 border-2 border-[var(--logistics-dark)] text-[var(--logistics-dark)] hover:bg-slate-100 rounded-md flex items-center justify-center transition-all bg-white shadow-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                            </svg>
+                                        </button>
+                                        <button id="hint-btn" onclick="giveHint()"
+                                            class="px-5 sm:px-6 h-11 sm:h-12 border-2 border-slate-300 text-slate-500 hover:bg-slate-100 hover:text-slate-800 hover:border-slate-400 font-bold rounded-md disabled:opacity-30 text-sm sm:text-base bg-white transition-all uppercase tracking-wider mono-font">Hint</button>
+                                        <button onclick="checkAnswer()"
+                                            class="express-btn px-8 sm:px-10 h-11 sm:h-12 font-bold rounded-md text-sm sm:text-base flex items-center gap-2 tracking-widest uppercase mono-font">
+                                            SCAN
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="mt-auto border-t border-slate-200 pt-3 w-full flex justify-center items-center shrink-0">
+                                <p
+                                    class="text-[10px] sm:text-xs text-slate-500 font-bold tracking-widest uppercase m-0 mono-font">
+                                    Copyright by Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD (Shipping Label Back - Details) -->
+                    <div class="flip-card-back shipping-label custom-scrollbar relative">
+                        <div class="caution-stripes shrink-0"></div>
+                        <div class="p-6 sm:p-10 flex flex-col h-full">
+
+                            <div id="result-header"
+                                class="text-center pb-3 mb-2 sm:mb-4 mono-font font-bold tracking-widest uppercase mt-2 border-b border-slate-200">
+                            </div>
+
+                            <!-- Dấu mộc Delivered -->
+                            <div class="absolute top-20 right-10 z-0">
+                                <div class="stamp">DELIVERED</div>
+                            </div>
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full">
+                                <p class="barcode-font text-6xl sm:text-8xl text-slate-800 mb-2 select-none"
+                                    id="back-barcode">*WORD*</p>
+                                <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-[var(--logistics-dark)] mb-4 tracking-tight uppercase"
+                                    id="back-word"></h2>
+
+                                <div
+                                    class="flex items-center gap-3 mb-6 bg-slate-100 border border-slate-300 px-6 py-2.5 rounded-md shadow-inner">
+                                    <p class="text-lg sm:text-2xl text-slate-600 mono-font tracking-wide"
+                                        id="back-phonetic"></p>
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="text-[var(--logistics-dark)] hover:text-[var(--logistics-orange)] transition-colors p-2 rounded-full cursor-pointer relative z-50"
+                                        title="Listen">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <p class="text-2xl sm:text-3xl text-[var(--logistics-orange)] font-bold mb-6 uppercase tracking-wide"
+                                    id="back-mean"></p>
+
+                                <div
+                                    class="py-4 w-full max-w-2xl text-center bg-white rounded-md border-2 border-dashed border-slate-300 p-4 relative">
+                                    <div
+                                        class="absolute -top-3 left-4 bg-white px-2 text-xs font-bold text-slate-400 mono-font">
+                                        NOTES</div>
+                                    <p class="text-base sm:text-xl text-[var(--logistics-dark)] leading-relaxed font-medium"
+                                        id="back-ex"></p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 sm:mt-10 flex justify-center gap-4 sm:gap-6 w-full shrink-0">
+                                <button onclick="prevCard()"
+                                    class="outline-btn flex-1 max-w-[160px] py-3 sm:py-3.5 font-bold rounded-md text-sm sm:text-base uppercase tracking-widest mono-font">BACK</button>
+                                <button onclick="nextCard()" id="next-btn"
+                                    class="express-btn flex-1 max-w-[220px] py-3 sm:py-3.5 font-bold rounded-md flex items-center justify-center gap-2 text-sm sm:text-base tracking-widest uppercase mono-font">
+                                    NEXT PARCEL
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div
+                                class="mt-auto border-t border-slate-200 pt-3 w-full flex justify-center items-center shrink-0">
+                                <p
+                                    class="text-[10px] sm:text-xs text-slate-500 font-bold tracking-widest uppercase m-0 mono-font">
+                                    Copyright by Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen" class="shipping-label flex-col relative z-20 h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: none;">
+            <div class="caution-stripes shrink-0"></div>
+
+            <div class="p-6 sm:p-10 flex flex-col h-full text-center">
+                <p class="barcode-font text-5xl sm:text-7xl text-slate-800 mb-1 opacity-70 select-none">
+                    *DELIVERY-REPORT*</p>
+                <h2
+                    class="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--logistics-dark)] mono-font mb-1 shrink-0 uppercase tracking-tight">
+                    DELIVERY REPORT</h2>
+
+                <p id="completion-datetime"
+                    class="text-xs sm:text-sm text-slate-500 mb-6 shrink-0 mono-font uppercase font-bold"></p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 shrink-0 mono-font">
+                    <div class="bg-slate-50 border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Accuracy
+                        </p>
+                        <p class="text-3xl sm:text-4xl font-black mt-2 text-[var(--logistics-orange)]"
+                            id="score-percent">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Transit
+                            Time</p>
+                        <p class="text-xl sm:text-3xl text-[var(--logistics-dark)] font-bold mt-2" id="elapsed-time">-
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Items
+                            Delivered</p>
+                        <p class="text-xl sm:text-3xl text-green-600 font-bold mt-2" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Assistance
+                        </p>
+                        <p class="text-xl sm:text-3xl text-red-500 font-bold mt-2" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-slate-200 bg-white w-full mb-6 shrink relative rounded-md">
+                    <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 bg-slate-100 z-20 shadow-sm border-b border-slate-300 mono-font">
+                            <tr>
+                                <th class="p-3 sm:p-4 font-bold w-1/4 text-slate-600 uppercase text-xs tracking-widest">
+                                    Status</th>
+                                <th
+                                    class="p-3 sm:p-4 font-bold w-1/3 text-[var(--logistics-dark)] uppercase text-xs tracking-widest">
+                                    Item / Word</th>
+                                <th class="p-3 sm:p-4 font-bold text-slate-600 uppercase text-xs tracking-widest">
+                                    Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body"
+                            class="divide-y divide-slate-100 text-slate-700 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="resetQuizToSummary()"
+                    class="express-btn w-full sm:w-1/2 mx-auto py-3.5 font-bold text-lg sm:text-xl rounded-md uppercase tracking-widest mono-font mb-2 shrink-0">
+                    NEW SHIPMENT 🔄
+                </button>
+
+                <div class="mt-auto border-t border-slate-200 pt-3 w-full flex justify-center items-center shrink-0">
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-bold tracking-widest uppercase m-0 mono-font">
+                        Copyright by Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for TOEIC: Shipping & Logistics
+        const flashcards = [
+            { word: "shipment", phonetic: "/ˈʃɪpmənt/", type: "noun", mean: "lô hàng", ex: "The _______ arrived yesterday.", exVi: "Lô hàng này đã đến vào hôm qua." },
+            { word: "delivery", phonetic: "/dɪˈlɪvəri/", type: "noun", mean: "giao hàng", ex: "_______ takes three business days.", exVi: "Việc giao hàng mất ba ngày làm việc." },
+            { word: "package", phonetic: "/ˈpækɪdʒ/", type: "noun", mean: "gói hàng", ex: "The _______ was left at the front desk.", exVi: "Gói hàng đã được để lại ở quầy tiếp tân." },
+            { word: "parcel", phonetic: "/ˈpɑːrsl/", type: "noun", mean: "bưu kiện", ex: "The _______ was sent by express mail.", exVi: "Bưu kiện đã được gửi qua đường bưu điện chuyển phát nhanh." },
+            { word: "courier", phonetic: "/ˈkʊriər/", type: "noun", mean: "người / công ty chuyển phát", ex: "The _______ delivered the documents.", exVi: "Người chuyển phát đã giao các tài liệu." },
+            { word: "warehouse", phonetic: "/ˈwerhaʊs/", type: "noun", mean: "nhà kho", ex: "The goods are stored in the _______.", exVi: "Hàng hóa được lưu trữ trong nhà kho." },
+            { word: "inventory", phonetic: "/ˈɪnvəntɔːri/", type: "noun", mean: "hàng tồn kho", ex: "_______ is checked every month.", exVi: "Hàng tồn kho được kiểm tra mỗi tháng." },
+            { word: "stock", phonetic: "/stɑːk/", type: "noun", mean: "hàng trong kho", ex: "We have enough _______ for next week.", exVi: "Chúng tôi có đủ hàng trong kho cho tuần tới." },
+            { word: "order", phonetic: "/ˈɔːrdər/", type: "noun", mean: "đơn hàng", ex: "Your _______ has been shipped.", exVi: "Đơn hàng của bạn đã được giao." },
+            { word: "supplier", phonetic: "/səˈplaɪər/", type: "noun", mean: "nhà cung cấp", ex: "The _______ sent the materials.", exVi: "Nhà cung cấp đã gửi các vật liệu." },
+            { word: "manufacturer", phonetic: "/ˌmænjuˈfæktʃərər/", type: "noun", mean: "nhà sản xuất", ex: "The _______ offers a warranty.", exVi: "Nhà sản xuất cung cấp bảo hành." },
+            { word: "track", phonetic: "/træk/", type: "verb", mean: "theo dõi", ex: "You can _______ your order online.", exVi: "Bạn có thể theo dõi đơn hàng của mình trực tuyến." },
+            { word: "shipping fee", phonetic: "/ˈʃɪpɪŋ fiː/", type: "noun", mean: "phí vận chuyển", ex: "The _______ is $5.", exVi: "Phí vận chuyển là 5 đô la." },
+            { word: "customs", phonetic: "/ˈkʌstəmz/", type: "noun", mean: "hải quan", ex: "The goods were held at _______.", exVi: "Hàng hóa đã bị giữ lại tại hải quan." },
+            { word: "import", phonetic: "/ˈɪmpɔːrt/", type: "verb/noun", mean: "nhập khẩu", ex: "The company plans to _______ furniture.", exVi: "Công ty dự định nhập khẩu đồ nội thất." },
+            { word: "export", phonetic: "/ˈekspɔːrt/", type: "verb/noun", mean: "xuất khẩu", ex: "Vietnam continues to _______ coffee and seafood.", exVi: "Việt Nam tiếp tục xuất khẩu cà phê và hải sản." },
+            { word: "fragile", phonetic: "/ˈfrædʒl/", type: "adj", mean: "dễ vỡ", ex: "The box is marked \"_______.\"", exVi: "Chiếc hộp được dán nhãn \"dễ vỡ\"." },
+            { word: "damaged", phonetic: "/ˈdæmɪdʒd/", type: "adj", mean: "bị hư hỏng", ex: "The item arrived _______.", exVi: "Món hàng đã đến nơi trong tình trạng bị hư hỏng." },
+            { word: "delay", phonetic: "/dɪˈleɪ/", type: "noun/verb", mean: "sự chậm trễ; trì hoãn", ex: "There was a _______ in delivery.", exVi: "Đã có một sự chậm trễ trong việc giao hàng." },
+            { word: "confirm receipt", phonetic: "/kənˈfɜːrm rɪˈsiːt/", type: "phrase", mean: "xác nhận đã nhận", ex: "Please _______ of the package.", exVi: "Vui lòng xác nhận đã nhận gói hàng." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Background music (Lo-fi/Industrial beat)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.2;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                // Truck horn / Start sound
+                playTone('sawtooth', 150, 150, 0.1, 0.4);
+                playTone('square', 200, 200, 0.1, 0.4, 0.1);
+            } else if (type === 'success') {
+                // Barcode scanner beep (High, sharp double beep)
+                playTone('sine', 2000, 2000, 0.1, 0.1, 0);
+                playTone('sine', 2000, 2000, 0.1, 0.15, 0.15);
+            } else if (type === 'error') {
+                // Error buzz
+                playTone('sawtooth', 100, 80, 0.1, 0.3, 0);
+            } else if (type === 'flip') {
+                // Whoosh sound
+                playTone('sine', 400, 100, 0.05, 0.2, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-orange-50 transition-colors border-b border-slate-200 last:border-0 group">
+                    <td class="p-3 sm:p-4 font-bold text-[var(--logistics-dark)] group-hover:text-[var(--logistics-orange)] transition-colors">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center"><span class="px-2.5 py-1 bg-white border border-slate-300 text-slate-500 rounded text-xs font-bold uppercase mono-font">${item.type}</span></td>
+                    <td class="p-3 sm:p-4 text-slate-600">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 10 ? 'w-24' : 'w-40');
+
+            // Industrial underline
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-4 border-[var(--logistics-orange)] inline-block ${underlineWidth} mx-1.5 align-text-bottom opacity-90"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1 sm:gap-1.5';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-2xl font-bold text-slate-400 self-center px-1';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+
+                        input.className = 'box-input editable-input w-[24px] h-[36px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold uppercase';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('text-red-500', 'border-red-500', 'bg-red-50', 'border-bottom-red-500');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-3 sm:w-5'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('cart-icon').style.left = `${progressPercent}%`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toUpperCase();
+            const inputs = document.querySelectorAll('.box-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'box-input w-[24px] h-[36px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold text-[var(--logistics-orange)] border-[var(--logistics-orange)] border-b-[var(--logistics-orange)] bg-orange-50 pointer-events-none opacity-90';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.box-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+                const header = document.getElementById('result-header');
+                header.textContent = "> ITEM SCANNED";
+                header.className = "text-center pb-2 mb-2 sm:mb-4 text-sm sm:text-base text-green-600 font-bold border-b-2 border-dashed border-slate-300 uppercase tracking-widest mono-font";
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-barcode').textContent = `*${card.word.toUpperCase().replace(/\s/g, '')}*`;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="bg-orange-100 text-[var(--logistics-orange)] px-2 rounded font-bold border-b-2 border-[var(--logistics-orange)]">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 500);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 300);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-red-500', 'border-red-500', 'bg-red-50');
+                        input.style.borderBottomColor = '#ef4444';
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const dateString = now.toLocaleDateString('en-GB', dateOptions);
+            document.getElementById('completion-datetime').textContent = `[ MANIFEST COMPLETED ]: ${dateString} | TIME:${timeString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-4xl sm:text-5xl font-black mt-2 ${scorePercentage >= 80 ? 'text-green-600' : (scorePercentage >= 50 ? 'text-[var(--logistics-orange)]' : 'text-red-600')}`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-orange-500 text-xs sm:text-sm font-bold bg-orange-100 px-2 py-1 rounded border border-orange-200">ASSISTED</span>'
+                    : '<span class="text-green-600 text-xs sm:text-sm font-bold bg-green-100 px-2 py-1 rounded border border-green-200">DELIVERED</span>';
+                const rowClass = usedHint ? 'bg-orange-50/50' : 'hover:bg-slate-50';
+
+                return `
+                    <tr class="transition-colors ${rowClass} border-b border-slate-100">
+                        <td class="p-3 sm:p-4 mono-font">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 font-bold text-[var(--logistics-dark)] text-base sm:text-lg">${item.word}</td>
+                        <td class="p-3 sm:p-4 text-slate-600 text-sm sm:text-base">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
