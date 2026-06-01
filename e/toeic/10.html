@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC - HOUSING & REAL ESTATE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --estate-bg: #0F172A;
+            /* Slate 900 */
+            --estate-grid: rgba(56, 189, 248, 0.15);
+            /* Sky 400 with opacity */
+            --estate-primary: #0284C7;
+            /* Sky 600 */
+            --estate-accent: #F97316;
+            /* Orange 500 */
+            --estate-card: #F8FAFC;
+            /* Slate 50 */
+            --estate-text: #1E293B;
+            /* Slate 800 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--estate-bg);
+            /* Blueprint Grid Pattern */
+            background-image:
+                linear-gradient(var(--estate-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--estate-grid) 1px, transparent 1px);
+            background-size: 30px 30px;
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--estate-text);
+        }
+
+        .heading-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* --- Blueprint Panel (Main Container) --- */
+        .blueprint-panel {
+            background: var(--estate-card);
+            border: 2px solid var(--estate-primary);
+            border-radius: 4px;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 4px var(--estate-card),
+                inset 0 0 0 6px rgba(2, 132, 199, 0.3);
+            position: relative;
+        }
+
+        /* Corner Architecture Accents */
+        .blueprint-panel::before,
+        .blueprint-panel::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--estate-primary);
+            pointer-events: none;
+        }
+
+        .blueprint-panel::before {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .blueprint-panel::after {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            height: 75vh;
+            min-height: 580px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 720px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 780px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-radius: 4px;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        .plan-input {
+            background: #fff;
+            border: 2px solid #CBD5E1;
+            border-radius: 4px;
+            color: var(--estate-text);
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .plan-input:focus {
+            background: #F0F9FF;
+            border-color: var(--estate-primary);
+            outline: none;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--estate-primary);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #0369A1;
+        }
+
+        /* Buttons */
+        .build-btn {
+            background: var(--estate-primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .build-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .build-btn:hover::after {
+            left: 150%;
+        }
+
+        .build-btn:hover {
+            background: #0369A1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.6);
+        }
+
+        .build-btn:active {
+            transform: translateY(1px);
+        }
+
+        .outline-btn {
+            background: transparent;
+            border: 2px solid var(--estate-primary);
+            color: var(--estate-primary);
+            transition: all 0.2s;
+        }
+
+        .outline-btn:hover {
+            background: rgba(2, 132, 199, 0.1);
+        }
+
+        .outline-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <!-- Toast Notification -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[#0F172A] border border-[#0284C7] text-white px-6 py-3 rounded shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-bold text-lg z-50 flex items-center gap-3 heading-font transition-all duration-500 uppercase tracking-widest">
+        <span class="text-[#38BDF8] text-2xl">🏢</span>
+        <span id="toast-message">HOUSING & REAL ESTATE</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen"
+            class="blueprint-panel p-6 sm:p-10 text-center flex-col h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: flex;">
+
+            <div class="mb-2">
+                <span
+                    class="px-4 py-1 bg-[#F0F9FF] border border-[#0284C7] text-[#0284C7] text-xs font-bold tracking-[0.2em] uppercase rounded-sm">Property
+                    Vocabulary</span>
+            </div>
+
+            <h1
+                class="text-3xl sm:text-5xl font-black text-[var(--estate-text)] mb-3 heading-font tracking-tight uppercase mt-2">
+                HOUSING & REAL ESTATE</h1>
+
+            <p class="text-slate-500 font-medium text-sm sm:text-lg mb-4 sm:mb-6">Essential vocabulary for property,
+                renting, and architecture.</p>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border-2 border-slate-200 bg-white w-full shrink relative rounded-sm">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                    <thead class="sticky top-0 bg-slate-50 z-20 shadow-sm border-b-2 border-slate-300">
+                        <tr>
+                            <th
+                                class="p-3 sm:p-4 font-bold text-slate-700 uppercase text-xs heading-font tracking-wider">
+                                Word</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold text-center text-slate-500 uppercase text-xs heading-font tracking-wider">
+                                Type</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold text-[var(--estate-primary)] uppercase text-xs heading-font tracking-wider">
+                                Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcome-table-body" class="divide-y divide-slate-200 text-slate-600 font-medium">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="startStudy()"
+                class="build-btn w-full sm:w-2/3 mx-auto py-3.5 font-bold text-lg sm:text-xl rounded-sm flex items-center justify-center gap-3 uppercase tracking-widest mb-3 shrink-0 heading-font">
+                INSPECT PROPERTY 🔍
+            </button>
+
+            <div class="mt-auto pt-2 w-full flex justify-center items-center shrink-0">
+                <p class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 heading-font font-bold">
+                    Copyright &copy; Hoàng Trường English</p>
+            </div>
+        </div>
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-4 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="bg-slate-800 text-slate-300 border border-slate-600 hover:bg-slate-700 hover:text-white flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 rounded-sm z-20 relative transition-all shadow-sm font-bold shrink-0 heading-font uppercase text-xs sm:text-sm"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[250px] mb-2 sm:mb-3 bg-slate-800 px-4 py-1.5 sm:px-6 sm:py-2 rounded border border-[#0284C7] shadow-lg heading-font text-sm sm:text-xl font-bold">
+                        <div class="flex items-center gap-2 text-white">
+                            <span class="text-sm sm:text-lg">⏱️</span>
+                            <span id="timer-display" class="tracking-wider">00:00</span>
+                        </div>
+                        <div class="border-l-2 border-[#0284C7] h-5 mx-2 opacity-50"></div>
+                        <div class="flex items-center text-[#38BDF8]">
+                            <span id="progress-text" class="tracking-widest">1/20</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar (Moving Truck) -->
+                    <div
+                        class="w-full max-w-md bg-slate-800 rounded-sm h-2 sm:h-3 relative overflow-visible border border-slate-700">
+                        <div id="progress-bar"
+                            class="bg-[#38BDF8] h-full rounded-sm transition-all duration-500 ease-out shadow-[0_0_10px_rgba(56,189,248,0.8)]"
+                            style="width: 0%"></div>
+                        <div id="cart-icon"
+                            class="absolute top-1/2 -translate-y-1/2 text-xl sm:text-2xl transition-all duration-500 ease-out transform -translate-x-1/2 z-10 filter drop-shadow-md"
+                            style="left: 0%">🚚</div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="bg-slate-800 border border-slate-600 hover:bg-slate-700 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-sm shadow-sm shrink-0 transition-colors">
+                    <span id="music-icon" class="text-lg sm:text-xl text-white">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD -->
+                    <div class="flip-card-front blueprint-panel custom-scrollbar p-6 sm:p-10">
+
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+
+                            <div class="mb-5 sm:mb-8 flex flex-col items-center">
+                                <p
+                                    class="text-xs sm:text-sm text-slate-500 heading-font font-bold tracking-[0.2em] uppercase mb-2">
+                                    Identify Property</p>
+                                <h2 class="text-3xl sm:text-5xl font-black text-[var(--estate-text)] mb-3 uppercase heading-font tracking-tight"
+                                    id="word-mean"></h2>
+                                <span
+                                    class="inline-block px-4 py-1 bg-slate-100 border border-slate-300 text-slate-600 rounded-sm font-bold text-xs sm:text-sm uppercase tracking-widest"
+                                    id="word-type"></span>
+                            </div>
+
+                            <div
+                                class="w-full max-w-2xl bg-[#F8FAFC] p-4 sm:p-6 mb-8 border-l-4 border-[var(--estate-primary)] shadow-sm relative text-left">
+                                <p class="text-lg sm:text-2xl text-[var(--estate-text)] mb-3 leading-relaxed font-medium"
+                                    id="word-ex"></p>
+                                <p class="text-sm sm:text-base text-[var(--estate-accent)] font-medium" id="word-exVi">
+                                </p>
+                            </div>
+
+                            <div class="w-full flex flex-col items-center gap-5 sm:gap-8 mb-2">
+                                <div id="letter-inputs-container"
+                                    class="flex flex-wrap justify-center gap-x-1.5 gap-y-3 w-full"></div>
+
+                                <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap mt-2">
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="w-11 h-11 sm:w-12 sm:h-12 border-2 border-[var(--estate-primary)] text-[var(--estate-primary)] hover:bg-[#F0F9FF] rounded-sm flex items-center justify-center transition-all bg-white shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                    <button id="hint-btn" onclick="giveHint()"
+                                        class="px-5 sm:px-6 h-11 sm:h-12 border-2 border-slate-300 text-slate-500 hover:bg-slate-100 hover:border-slate-400 font-bold rounded-sm disabled:opacity-30 text-sm sm:text-base bg-white transition-all uppercase tracking-wider">Hint</button>
+                                    <button onclick="checkAnswer()"
+                                        class="build-btn px-8 sm:px-10 h-11 sm:h-12 font-bold rounded-sm text-sm sm:text-base flex items-center gap-2 tracking-widest uppercase heading-font">
+                                        Verify Plan
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-4 w-full flex justify-center items-center shrink-0">
+                            <p
+                                class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 heading-font font-bold">
+                                Copyright &copy; Hoàng Trường English</p>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD -->
+                    <div class="flip-card-back blueprint-panel custom-scrollbar p-6 sm:p-10 relative">
+
+                        <div id="result-header"
+                            class="text-center pb-3 mb-2 sm:mb-4 heading-font font-black tracking-widest uppercase mt-2">
+                        </div>
+
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full">
+
+                            <h2 class="text-4xl sm:text-6xl font-black text-[var(--estate-primary)] heading-font mb-4 tracking-tight uppercase"
+                                id="back-word"></h2>
+
+                            <div
+                                class="flex items-center gap-3 mb-6 bg-slate-100 border border-slate-200 px-6 py-2.5 rounded-full shadow-inner">
+                                <p class="text-lg sm:text-2xl text-slate-600 font-mono tracking-wide font-semibold"
+                                    id="back-phonetic"></p>
+                                <button onclick="speakCurrentWord(event)"
+                                    class="text-[var(--estate-primary)] hover:text-[#0369A1] hover:bg-slate-200 transition-colors p-2 rounded-full cursor-pointer relative z-50"
+                                    title="Listen">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                        fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p class="text-2xl sm:text-3xl text-[var(--estate-text)] font-bold mb-6 uppercase tracking-wide heading-font"
+                                id="back-mean"></p>
+
+                            <div class="py-5 w-full max-w-2xl text-center border-t border-slate-200">
+                                <p class="text-base sm:text-xl text-slate-600 leading-relaxed font-medium" id="back-ex">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 sm:mt-10 flex justify-center gap-4 sm:gap-6 w-full shrink-0">
+                            <button onclick="prevCard()"
+                                class="outline-btn flex-1 max-w-[160px] py-3 sm:py-3.5 font-bold rounded-sm text-sm sm:text-base uppercase tracking-wide">Back</button>
+                            <button onclick="nextCard()" id="next-btn"
+                                class="build-btn flex-1 max-w-[220px] py-3 sm:py-3.5 font-bold rounded-sm flex items-center justify-center gap-2 text-sm sm:text-base tracking-widest uppercase heading-font">
+                                Next Plan
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="mt-auto pt-4 w-full flex justify-center items-center shrink-0">
+                            <p
+                                class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 heading-font font-bold">
+                                Copyright &copy; Hoàng Trường English</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen"
+            class="blueprint-panel p-6 sm:p-10 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: none;">
+
+            <p
+                class="text-xs sm:text-sm text-[var(--estate-primary)] heading-font font-bold tracking-[0.2em] uppercase mb-1">
+                Project Status</p>
+            <h2
+                class="text-3xl sm:text-5xl font-black text-[var(--estate-text)] heading-font mb-1 shrink-0 uppercase tracking-tight">
+                CONSTRUCTION COMPLETE</h2>
+
+            <p id="completion-datetime" class="text-xs sm:text-sm text-slate-500 mb-6 shrink-0 font-mono"></p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 shrink-0 heading-font">
+                <div class="bg-white border-2 border-slate-200 rounded-sm p-4 sm:p-5 shadow-sm">
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Accuracy</p>
+                    <p class="text-3xl sm:text-4xl font-black mt-2 text-[var(--estate-primary)]" id="score-percent">-
+                    </p>
+                </div>
+                <div class="bg-white border-2 border-slate-200 rounded-sm p-4 sm:p-5 shadow-sm">
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Time Logged</p>
+                    <p class="text-xl sm:text-3xl text-slate-700 font-bold mt-2" id="elapsed-time">-</p>
+                </div>
+                <div class="bg-white border-2 border-slate-200 rounded-sm p-4 sm:p-5 shadow-sm">
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Built Items</p>
+                    <p class="text-xl sm:text-3xl text-emerald-600 font-bold mt-2" id="correct-count">-</p>
+                </div>
+                <div class="bg-white border-2 border-slate-200 rounded-sm p-4 sm:p-5 shadow-sm">
+                    <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Assistance</p>
+                    <p class="text-xl sm:text-3xl text-[var(--estate-accent)] font-bold mt-2" id="hint-count">-</p>
+                </div>
+            </div>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar border-2 border-slate-200 bg-slate-50 w-full mb-6 shrink shadow-inner relative rounded-sm">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                    <thead class="sticky top-0 bg-white z-20 shadow-sm border-b-2 border-slate-300">
+                        <tr>
+                            <th
+                                class="p-3 sm:p-4 font-bold w-1/4 text-slate-500 uppercase text-xs tracking-widest heading-font">
+                                Status</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold w-1/3 text-[var(--estate-text)] uppercase text-xs tracking-widest heading-font">
+                                Word</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold text-slate-500 uppercase text-xs tracking-widest heading-font">
+                                Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final-review-table-body" class="divide-y divide-slate-200 text-slate-700 font-medium">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="resetQuizToSummary()"
+                class="build-btn w-full sm:w-1/2 mx-auto py-3.5 font-bold text-lg sm:text-xl rounded-sm uppercase tracking-widest mb-3 shrink-0 heading-font">
+                NEW PROJECT 🔄
+            </button>
+
+            <div class="mt-auto pt-2 w-full flex justify-center items-center shrink-0">
+                <p class="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase m-0 heading-font font-bold">
+                    Copyright &copy; Hoàng Trường English</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for TOEIC: Housing & Real Estate
+        const flashcards = [
+            { topic: "HOUSING & REAL ESTATE", word: "apartment", phonetic: "/əˈpɑːrtmənt/", type: "noun", mean: "căn hộ", ex: "She rents an _______ downtown.", exVi: "Cô ấy thuê một căn hộ ở trung tâm thành phố." },
+            { topic: "HOUSING & REAL ESTATE", word: "house", phonetic: "/haʊs/", type: "noun", mean: "nhà", ex: "They bought a new _______.", exVi: "Họ đã mua một ngôi nhà mới." },
+            { topic: "HOUSING & REAL ESTATE", word: "building", phonetic: "/ˈbɪldɪŋ/", type: "noun", mean: "tòa nhà", ex: "The office is in a tall _______.", exVi: "Văn phòng nằm trong một tòa nhà cao tầng." },
+            { topic: "HOUSING & REAL ESTATE", word: "property", phonetic: "/ˈprɑːpərti/", type: "noun", mean: "bất động sản / tài sản", ex: "The _______ is for sale.", exVi: "Bất động sản này đang được rao bán." },
+            { topic: "HOUSING & REAL ESTATE", word: "landlord", phonetic: "/ˈlændlɔːrd/", type: "noun", mean: "chủ nhà", ex: "The _______ repaired the sink.", exVi: "Chủ nhà đã sửa cái bồn rửa." },
+            { topic: "HOUSING & REAL ESTATE", word: "tenant", phonetic: "/ˈtenənt/", type: "noun", mean: "người thuê nhà", ex: "The _______ signed the lease.", exVi: "Người thuê nhà đã ký hợp đồng thuê." },
+            { topic: "HOUSING & REAL ESTATE", word: "lease", phonetic: "/liːs/", type: "noun/verb", mean: "hợp đồng thuê; thuê", ex: "The _______ is for one year.", exVi: "Hợp đồng thuê có thời hạn một năm." },
+            { topic: "HOUSING & REAL ESTATE", word: "rent", phonetic: "/rent/", type: "noun/verb", mean: "tiền thuê; thuê", ex: "_______ is due on the first day of each month.", exVi: "Tiền thuê nhà phải trả vào ngày đầu tiên của mỗi tháng." },
+            { topic: "HOUSING & REAL ESTATE", word: "deposit", phonetic: "/dɪˈpɑːzɪt/", type: "noun", mean: "tiền đặt cọc", ex: "A _______ is required.", exVi: "Yêu cầu phải có tiền đặt cọc." },
+            { topic: "HOUSING & REAL ESTATE", word: "location", phonetic: "/loʊˈkeɪʃn/", type: "noun", mean: "vị trí", ex: "The _______ is very convenient.", exVi: "Vị trí này rất thuận tiện." },
+            { topic: "HOUSING & REAL ESTATE", word: "neighborhood", phonetic: "/ˈneɪbərhʊd/", type: "noun", mean: "khu dân cư", ex: "The _______ is quiet.", exVi: "Khu dân cư này rất yên tĩnh." },
+            { topic: "HOUSING & REAL ESTATE", word: "facility", phonetic: "/fəˈsɪləti/", type: "noun", mean: "cơ sở vật chất", ex: "The sports _______ is very modern.", exVi: "Cơ sở vật chất thể thao rất hiện đại." },
+            { topic: "HOUSING & REAL ESTATE", word: "maintenance", phonetic: "/ˈmeɪntənəns/", type: "noun", mean: "bảo trì", ex: "_______ will be done tomorrow.", exVi: "Việc bảo trì sẽ được thực hiện vào ngày mai." },
+            { topic: "HOUSING & REAL ESTATE", word: "repair", phonetic: "/rɪˈper/", type: "noun/verb", mean: "sửa chữa", ex: "The _______ took two hours.", exVi: "Việc sửa chữa mất hai giờ." },
+            { topic: "HOUSING & REAL ESTATE", word: "renovate", phonetic: "/ˈrenəveɪt/", type: "verb", mean: "cải tạo", ex: "They plan to _______ the old house.", exVi: "Họ dự định cải tạo ngôi nhà cũ." },
+            { topic: "HOUSING & REAL ESTATE", word: "spacious", phonetic: "/ˈspeɪʃəs/", type: "adj", mean: "rộng rãi", ex: "The apartment is _______ and bright.", exVi: "Căn hộ này rộng rãi và sáng sủa." },
+            { topic: "HOUSING & REAL ESTATE", word: "furnished", phonetic: "/ˈfɜːrnɪʃt/", type: "adj", mean: "có nội thất", ex: "The room is fully _______.", exVi: "Căn phòng đã được trang bị đầy đủ nội thất." },
+            { topic: "HOUSING & REAL ESTATE", word: "available", phonetic: "/əˈveɪləbl/", type: "adj", mean: "có sẵn", ex: "The apartment is _______ next month.", exVi: "Căn hộ sẽ có sẵn vào tháng tới." },
+            { topic: "HOUSING & REAL ESTATE", word: "convenient", phonetic: "/kənˈviːniənt/", type: "adj", mean: "thuận tiện", ex: "The location is _______ for commuters.", exVi: "Vị trí này thuận tiện cho người đi làm." },
+            { topic: "HOUSING & REAL ESTATE", word: "move in", phonetic: "/muːv ɪn/", type: "verb", mean: "chuyển vào", ex: "We will _______ next week.", exVi: "Chúng tôi sẽ chuyển vào vào tuần tới." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Background music
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                // System boot sound
+                playTone('sine', 600, 800, 0.1, 0.2);
+                playTone('sine', 800, 1200, 0.1, 0.4, 0.1);
+            } else if (type === 'success') {
+                // Blueprint verified
+                playTone('triangle', 800, 800, 0.1, 0.1, 0);
+                playTone('sine', 1600, 1600, 0.1, 0.3, 0.1);
+            } else if (type === 'error') {
+                // Buzz error
+                playTone('square', 150, 100, 0.05, 0.3, 0);
+            } else if (type === 'flip') {
+                // Paper flip
+                playTone('sawtooth', 300, 100, 0.02, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0 group">
+                    <td class="p-3 sm:p-4 font-bold text-[var(--estate-text)] group-hover:text-[var(--estate-primary)] transition-colors">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center"><span class="px-2.5 py-1 bg-white border border-slate-200 text-slate-500 rounded text-xs font-semibold uppercase">${item.type}</span></td>
+                    <td class="p-3 sm:p-4 text-slate-600">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 10 ? 'w-24' : 'w-40');
+            // Blueprint dashed line
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-dashed border-[var(--estate-primary)] inline-block ${underlineWidth} mx-1.5 align-text-bottom"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1 sm:gap-1.5';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-2xl font-bold text-slate-400 self-center px-1';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        // Responsive inputs for potentially long words like "neighborhood" (12 chars)
+                        input.className = 'plan-input editable-input w-[24px] h-[34px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold uppercase';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('text-red-500', 'border-red-400', 'bg-red-50');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-3 sm:w-5'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('cart-icon').style.left = `${progressPercent}%`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toUpperCase();
+            const inputs = document.querySelectorAll('.plan-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'plan-input w-[24px] h-[34px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold text-[var(--estate-primary)] border-[var(--estate-primary)] bg-[#F0F9FF] pointer-events-none rounded shadow-sm';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.plan-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+                const header = document.getElementById('result-header');
+                header.textContent = "VERIFIED";
+                header.className = "text-center pb-2 mb-2 sm:mb-4 text-lg sm:text-xl text-[var(--estate-primary)] font-bold border-b-2 border-slate-200 uppercase tracking-widest heading-font";
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="bg-[#F0F9FF] text-[var(--estate-primary)] px-2 rounded font-bold border-b-2 border-[var(--estate-primary)]">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 500);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-red-500', 'border-red-400', 'bg-red-50');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const dateOptions = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+            const dateString = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('completion-datetime').textContent = `LOG: ${dateString} | TIME: ${timeString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-4xl sm:text-6xl font-black mt-2 ${scorePercentage >= 80 ? 'text-[var(--estate-primary)]' : (scorePercentage >= 50 ? 'text-[var(--estate-accent)]' : 'text-red-500')}`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-[var(--estate-accent)] text-xs sm:text-sm font-bold bg-orange-50 px-2 py-1 rounded border border-orange-200">ASSISTED</span>'
+                    : '<span class="text-emerald-600 text-xs sm:text-sm font-bold bg-emerald-50 px-2 py-1 rounded border border-emerald-200">PERFECT</span>';
+                const rowClass = usedHint ? 'bg-orange-50/30' : 'hover:bg-slate-100';
+                const wordColor = usedHint ? 'text-[var(--estate-accent)]' : 'text-[var(--estate-text)]';
+
+                return `
+                    <tr class="transition-colors ${rowClass} border-b border-slate-200">
+                        <td class="p-4">${statusIcon}</td>
+                        <td class="p-4 font-bold ${wordColor} text-lg heading-font tracking-wide">${item.word}</td>
+                        <td class="p-4 text-slate-500 text-sm sm:text-base">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
