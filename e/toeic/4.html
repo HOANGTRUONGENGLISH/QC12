@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC - HR & RECRUITMENT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            margin: 0;
+            overflow-x: hidden;
+            color: #f8fafc;
+        }
+
+        .digital-font {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* --- CSS cho Nền Văn Phòng Kỹ Thuật Số --- */
+        .corporate-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: radial-gradient(circle at top right, #1e293b, #020617);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Grid chìm phía sau */
+        .corporate-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 1;
+        }
+
+        /* Glow hiệu ứng */
+        .glow-orb-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 2;
+        }
+
+        .glow-orb-2 {
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 2;
+        }
+
+        /* Biển hiệu Neon Hiring */
+        .hiring-sign {
+            position: absolute;
+            top: 50px;
+            left: 5%;
+            padding: 10px 20px;
+            border: 2px solid rgba(56, 189, 248, 0.4);
+            border-radius: 8px;
+            color: #38bdf8;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2), inset 0 0 10px rgba(56, 189, 248, 0.1);
+            transform: perspective(500px) rotateY(15deg);
+            z-index: 3;
+            animation: pulse-neon 3s infinite alternate;
+        }
+
+        @keyframes pulse-neon {
+            0% {
+                box-shadow: 0 0 10px rgba(56, 189, 248, 0.2), inset 0 0 5px rgba(56, 189, 248, 0.1);
+                text-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
+            }
+
+            100% {
+                box-shadow: 0 0 25px rgba(56, 189, 248, 0.5), inset 0 0 15px rgba(56, 189, 248, 0.3);
+                text-shadow: 0 0 15px rgba(56, 189, 248, 0.8);
+            }
+        }
+
+        /* --- Hạt Dữ Liệu Animation --- */
+        .data-particle {
+            position: absolute;
+            background: #38bdf8;
+            border-radius: 50%;
+            filter: blur(1px);
+            pointer-events: none;
+            opacity: 0;
+            animation: floatData linear infinite;
+        }
+
+        @keyframes floatData {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* --- Bảng Glassmorphism (Main Board) --- */
+        .glass-board {
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        /* --- Cấu trúc Flip Card --- */
+        .flip-card {
+            perspective: 1500px;
+            width: 100%;
+            height: 75vh;
+            min-height: 550px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 700px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 750px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Ô nhập liệu (Digital) --- */
+        .digital-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            color: #e2e8f0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .digital-input:focus {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            outline: none;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(56, 189, 248, 0.6);
+        }
+
+        /* Buttons */
+        .corp-btn {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .corp-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .corp-btn:hover::after {
+            left: 150%;
+        }
+
+        .corp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+        }
+
+        .corp-btn:active {
+            transform: translateY(1px);
+        }
+
+        .outline-btn {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            transition: all 0.2s;
+        }
+
+        .outline-btn:hover {
+            background: rgba(51, 65, 85, 0.8);
+            border-color: #cbd5e1;
+        }
+
+        .outline-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <div class="corporate-bg">
+        <div class="glow-orb-1"></div>
+        <div class="glow-orb-2"></div>
+        <div class="hiring-sign hidden sm:block">
+            <span class="mr-2">⚡</span> WE ARE HIRING
+        </div>
+        <div id="data-particle-container" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-slate-800/90 backdrop-blur-md border border-slate-600 text-white px-6 py-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-bold text-lg z-50 flex items-center gap-3 digital-font">
+        <span class="text-sky-400">🏢</span>
+        <span id="toast-message">HR & Recruitment Training</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen"
+            class="glass-board p-3 sm:p-8 text-center flex-col h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: flex;">
+            <div class="mb-2 inline-block">
+                <span
+                    class="px-3 py-1 bg-sky-500/20 text-sky-400 border border-sky-500/30 rounded-full text-xs font-bold tracking-wider uppercase">Module
+                    1.4</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 digital-font tracking-tight drop-shadow-md">HR &
+                RECRUITMENT</h1>
+            <p
+                class="text-slate-300 digital-font text-base sm:text-xl mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-600/50">
+                Master essential vocabulary for the modern workplace.</p>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border border-slate-600/50 rounded-xl bg-slate-900/50 shadow-inner w-full shrink relative">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse digital-font">
+                    <thead class="sticky top-0 bg-slate-800 text-sky-400 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider border-b border-slate-600">Word</th>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider text-center border-b border-slate-600">Type
+                            </th>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider border-b border-slate-600">Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcome-table-body" class="divide-y divide-slate-700/50 text-slate-200">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="startStudy()"
+                class="corp-btn w-full sm:w-2/3 mx-auto py-3 text-white font-bold text-lg sm:text-xl rounded-xl flex items-center justify-center gap-3 uppercase tracking-wider mb-4 sm:mb-6 shrink-0">
+                START TRAINING 🚀
+            </button>
+
+            <div class="mt-auto py-2 w-full flex justify-center items-center shrink-0">
+                <div class="px-6 py-2 bg-slate-800/50 border border-slate-600/50 rounded-full backdrop-blur-md">
+                    <p class="text-[10px] sm:text-xs text-slate-400 digital-font tracking-widest uppercase m-0">&copy;
+                        Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-6 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="outline-btn text-slate-300 flex items-center justify-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl z-20 relative transition-all shadow-lg font-bold shrink-0"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline text-sm">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center gap-2 sm:gap-6 mb-2 sm:mb-3 bg-slate-800/80 px-2 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl border border-slate-600/50 shadow-lg digital-font text-sm sm:text-xl font-bold max-w-full backdrop-blur-sm">
+                        <div class="flex items-center gap-1 sm:gap-2 text-sky-400 shrink-0 code-font">
+                            <span class="text-lg sm:text-2xl drop-shadow-md">⏱</span>
+                            <span id="timer-display" class="tracking-wider">00:00</span>
+                        </div>
+                        <div
+                            class="border-l border-slate-600 pl-2 sm:pl-6 text-white truncate flex items-center justify-center">
+                            <span id="progress-text"
+                                class="text-indigo-300 font-bold tracking-wider text-base sm:text-xl code-font">1 /
+                                X</span>
+                        </div>
+                    </div>
+                    <!-- Thanh tiến trình kỹ thuật số -->
+                    <div
+                        class="w-full bg-slate-900 rounded-full h-2 sm:h-3 overflow-hidden border border-slate-700 shadow-inner">
+                        <div id="progress-bar"
+                            class="bg-gradient-to-r from-sky-500 to-indigo-500 h-full transition-all duration-300 shadow-[0_0_10px_#38bdf8]"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="outline-btn flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 text-slate-300 rounded-lg sm:rounded-xl shadow-lg shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+                    <!-- Mặt trước bảng -->
+                    <div class="flip-card-front glass-board custom-scrollbar p-3 sm:p-8">
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+                            <div class="mb-4 sm:mb-6 mt-2 flex flex-col items-center">
+                                <h2 class="text-3xl sm:text-4xl font-bold text-white digital-font mb-3 drop-shadow-md"
+                                    id="word-mean"></h2>
+                                <span
+                                    class="inline-block px-3 py-1 bg-indigo-500/20 border border-indigo-400/50 text-indigo-300 rounded-lg font-semibold text-sm sm:text-base uppercase tracking-wider"
+                                    id="word-type"></span>
+                            </div>
+
+                            <div
+                                class="w-full max-w-2xl bg-slate-900/50 rounded-xl p-4 sm:p-6 mb-6 border border-slate-700/50 shadow-inner relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-sky-500"></div>
+                                <p class="text-lg sm:text-xl text-slate-200 digital-font mb-3 leading-relaxed font-light"
+                                    id="word-ex"></p>
+                                <p class="text-sm sm:text-base text-slate-400 digital-font italic" id="word-exVi"></p>
+                            </div>
+
+                            <div class="w-full flex flex-col items-center gap-4 sm:gap-6 mb-2">
+                                <div id="letter-inputs-container"
+                                    class="flex flex-wrap justify-center gap-x-1 gap-y-2 w-full"></div>
+
+                                <div
+                                    class="flex items-center justify-center gap-2 sm:gap-3 w-full flex-wrap font-sans mt-4">
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="w-10 h-10 sm:w-12 sm:h-12 border border-sky-400 text-sky-400 hover:bg-sky-400/20 rounded-full flex items-center justify-center transition-colors shadow-sm bg-slate-800/50">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                    <button id="hint-btn" onclick="giveHint()"
+                                        class="px-4 sm:px-6 h-10 sm:h-12 border border-slate-500 text-slate-300 hover:bg-slate-700 font-medium rounded-xl disabled:opacity-30 text-sm sm:text-base bg-slate-800/50 transition-colors">Hint</button>
+                                    <button onclick="checkAnswer()"
+                                        class="corp-btn px-6 sm:px-8 h-10 sm:h-12 text-white font-bold rounded-xl text-sm sm:text-base flex items-center gap-2 tracking-wide">
+                                        SUBMIT
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto py-2 w-full flex justify-center items-center relative z-10 shrink-0">
+                            <div
+                                class="px-6 py-2 bg-slate-800/50 border border-slate-600/50 rounded-full backdrop-blur-md">
+                                <p
+                                    class="text-[10px] sm:text-xs text-slate-400 digital-font tracking-widest uppercase m-0">
+                                    &copy; Copyright by Hoang Truong English</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mặt sau bảng -->
+                    <div class="flip-card-back glass-board custom-scrollbar p-3 sm:p-8 relative">
+                        <div id="result-header" class="text-center pb-2 mb-2 sm:mb-4 digital-font"></div>
+
+                        <div
+                            class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full">
+                            <h2 class="text-4xl sm:text-6xl font-black text-white digital-font mb-4 tracking-tight"
+                                id="back-word"></h2>
+
+                            <div
+                                class="flex items-center gap-3 mb-6 bg-slate-900/60 border border-slate-700 px-5 py-2 rounded-full shadow-inner">
+                                <p class="text-lg sm:text-2xl text-sky-400 code-font" id="back-phonetic"></p>
+                                <button onclick="speakCurrentWord(event)"
+                                    class="text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-colors p-2 rounded-full cursor-pointer relative z-50"
+                                    title="Nghe phát âm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-7 sm:w-7"
+                                        fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p class="text-2xl sm:text-3xl text-indigo-300 font-bold mb-6 digital-font" id="back-mean">
+                            </p>
+
+                            <div
+                                class="border border-slate-600 bg-slate-800/40 rounded-2xl p-4 sm:p-6 w-full max-w-2xl text-center shadow-inner">
+                                <p class="text-base sm:text-lg text-slate-200 digital-font leading-relaxed font-light"
+                                    id="back-ex"></p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 sm:mt-8 flex justify-center gap-3 sm:gap-4 w-full font-sans shrink-0">
+                            <button onclick="prevCard()"
+                                class="outline-btn flex-1 max-w-[150px] py-2 sm:py-3 font-semibold rounded-xl text-sm sm:text-base text-slate-300 shadow-md">BACK</button>
+                            <button onclick="nextCard()" id="next-btn"
+                                class="corp-btn flex-1 max-w-[200px] py-2 sm:py-3 text-white font-bold rounded-xl flex items-center justify-center gap-2 text-sm sm:text-base tracking-wide">
+                                NEXT WORD
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="mt-auto py-2 w-full flex justify-center items-center relative z-10 shrink-0">
+                            <div
+                                class="px-6 py-2 bg-slate-800/50 border border-slate-600/50 rounded-full backdrop-blur-md">
+                                <p
+                                    class="text-[10px] sm:text-xs text-slate-400 digital-font tracking-widest uppercase m-0">
+                                    &copy; Copyright by Hoang Truong English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen"
+            class="glass-board p-3 sm:p-8 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: none;">
+            <div class="mb-2 inline-block">
+                <span
+                    class="px-3 py-1 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full text-xs font-bold tracking-wider uppercase">Training
+                    Complete</span>
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-black text-white digital-font mb-1 shrink-0 drop-shadow-md">PERFORMANCE
+                REPORT</h2>
+
+            <!-- Ngày Giờ Hoàn Thành -->
+            <p id="completion-datetime" class="text-xs sm:text-sm text-slate-400 mb-5 shrink-0 code-font"></p>
+
+            <!-- Summary Stats Board -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-5 shrink-0 digital-font">
+                <div
+                    class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-3 sm:p-4 shadow-inner relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-sky-400"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-semibold">Accuracy
+                    </p>
+                    <p class="text-2xl sm:text-4xl font-black mt-1" id="score-percent">-</p>
+                </div>
+                <div
+                    class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-3 sm:p-4 shadow-inner relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-indigo-400"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-semibold">Time</p>
+                    <p class="text-xl sm:text-3xl text-indigo-300 font-bold mt-1 code-font" id="elapsed-time">-</p>
+                </div>
+                <div
+                    class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-3 sm:p-4 shadow-inner relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-emerald-400"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-semibold">Perfect</p>
+                    <p class="text-xl sm:text-3xl text-emerald-400 font-bold mt-1 code-font" id="correct-count">-</p>
+                </div>
+                <div
+                    class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-3 sm:p-4 shadow-inner relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-rose-400"></div>
+                    <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-semibold">Hints Used
+                    </p>
+                    <p class="text-xl sm:text-3xl text-rose-400 font-bold mt-1 code-font" id="hint-count">-</p>
+                </div>
+            </div>
+
+            <!-- Detailed Review Table -->
+            <div
+                class="flex-grow overflow-auto custom-scrollbar border border-slate-600/50 rounded-xl bg-slate-900/50 w-full mb-5 shrink shadow-inner relative">
+                <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse digital-font">
+                    <thead class="sticky top-0 bg-slate-800 text-sky-400 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold w-1/4 border-b border-slate-600">Status</th>
+                            <th class="p-3 sm:p-4 font-bold w-1/3 border-b border-slate-600">Word</th>
+                            <th class="p-3 sm:p-4 font-bold border-b border-slate-600">Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final-review-table-body" class="divide-y divide-slate-700/50 text-slate-200">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="resetQuizToSummary()"
+                class="corp-btn w-full sm:w-1/2 mx-auto py-3 text-white font-bold text-lg sm:text-xl rounded-xl uppercase tracking-wider mb-2 shrink-0">
+                RESTART TRAINING 🔄
+            </button>
+
+            <div class="mt-auto py-2 w-full flex justify-center items-center shrink-0">
+                <div class="px-6 py-2 bg-slate-800/50 border border-slate-600/50 rounded-full backdrop-blur-md">
+                    <p class="text-[10px] sm:text-xs text-slate-400 digital-font tracking-widest uppercase m-0">&copy;
+                        Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu từ vựng TOEIC mới: Recruitment & HR
+        const flashcards = [
+            { topic: "HR & RECRUITMENT", word: "recruit", phonetic: "/rɪˈkruːt/", type: "verb", mean: "tuyển dụng", ex: "The company plans to _______ more staff.", exVi: "Công ty dự định tuyển thêm nhân viên." },
+            { topic: "HR & RECRUITMENT", word: "recruitment", phonetic: "/rɪˈkruːtmənt/", type: "noun", mean: "sự tuyển dụng", ex: "_______ will begin next month.", exVi: "Quá trình tuyển dụng sẽ bắt đầu vào tháng tới." },
+            { topic: "HR & RECRUITMENT", word: "applicant", phonetic: "/ˈæplɪkənt/", type: "noun", mean: "ứng viên", ex: "Each _______ must submit a resume.", exVi: "Mỗi ứng viên phải nộp một sơ yếu lý lịch." },
+            { topic: "HR & RECRUITMENT", word: "candidate", phonetic: "/ˈkændɪdət/", type: "noun", mean: "ứng viên", ex: "She is a strong _______ for the job.", exVi: "Cô ấy là một ứng viên tiềm năng cho công việc." },
+            { topic: "HR & RECRUITMENT", word: "resume", phonetic: "/ˈrezəmeɪ/", type: "noun", mean: "hồ sơ xin việc (CV)", ex: "Please attach your _______.", exVi: "Vui lòng đính kèm sơ yếu lý lịch của bạn." },
+            { topic: "HR & RECRUITMENT", word: "interview", phonetic: "/ˈɪntərvjuː/", type: "noun/verb", mean: "phỏng vấn", ex: "He has an _______ on Monday.", exVi: "Anh ấy có một buổi phỏng vấn vào thứ Hai." },
+            { topic: "HR & RECRUITMENT", word: "qualification", phonetic: "/ˌkwɑːlɪfɪˈkeɪʃn/", type: "noun", mean: "bằng cấp / năng lực", ex: "The job requires teaching _______s.", exVi: "Công việc yêu cầu các bằng cấp giảng dạy." },
+            { topic: "HR & RECRUITMENT", word: "experience", phonetic: "/ɪkˈspɪriəns/", type: "noun", mean: "kinh nghiệm", ex: "She has five years of _______.", exVi: "Cô ấy có 5 năm kinh nghiệm." },
+            { topic: "HR & RECRUITMENT", word: "skill", phonetic: "/skɪl/", type: "noun", mean: "kỹ năng", ex: "Communication _______s are important.", exVi: "Kỹ năng giao tiếp rất quan trọng." },
+            { topic: "HR & RECRUITMENT", word: "training", phonetic: "/ˈtreɪnɪŋ/", type: "noun", mean: "đào tạo", ex: "New employees receive _______.", exVi: "Nhân viên mới nhận được sự đào tạo." },
+            { topic: "HR & RECRUITMENT", word: "orientation", phonetic: "/ˌɔːriənˈteɪʃn/", type: "noun", mean: "buổi định hướng", ex: "_______ is required for all new staff.", exVi: "Buổi định hướng là bắt buộc đối với tất cả nhân viên mới." },
+            { topic: "HR & RECRUITMENT", word: "position", phonetic: "/pəˈzɪʃn/", type: "noun", mean: "vị trí công việc", ex: "She applied for a marketing _______.", exVi: "Cô ấy đã nộp đơn cho vị trí tiếp thị." },
+            { topic: "HR & RECRUITMENT", word: "vacancy", phonetic: "/ˈveɪkənsi/", type: "noun", mean: "vị trí trống", ex: "There is a _______ in the sales team.", exVi: "Có một vị trí trống trong đội ngũ bán hàng." },
+            { topic: "HR & RECRUITMENT", word: "promotion", phonetic: "/prəˈmoʊʃn/", type: "noun", mean: "sự thăng chức", ex: "He received a _______ last year.", exVi: "Anh ấy đã được thăng chức vào năm ngoái." },
+            { topic: "HR & RECRUITMENT", word: "salary", phonetic: "/ˈsæləri/", type: "noun", mean: "lương", ex: "The _______ is competitive.", exVi: "Mức lương rất cạnh tranh." },
+            { topic: "HR & RECRUITMENT", word: "wage", phonetic: "/weɪdʒ/", type: "noun", mean: "tiền công", ex: "Workers are paid hourly _______s.", exVi: "Công nhân được trả tiền công theo giờ." },
+            { topic: "HR & RECRUITMENT", word: "benefit", phonetic: "/ˈbenɪfɪt/", type: "noun", mean: "phúc lợi", ex: "The job offers excellent _______s.", exVi: "Công việc cung cấp các phúc lợi tuyệt vời." },
+            { topic: "HR & RECRUITMENT", word: "sick leave", phonetic: "/ˈsɪk liːv/", type: "noun", mean: "nghỉ bệnh", ex: "He took _______ yesterday.", exVi: "Anh ấy đã nghỉ ốm ngày hôm qua." },
+            { topic: "HR & RECRUITMENT", word: "annual leave", phonetic: "/ˈænjuəl liːv/", type: "noun", mean: "nghỉ phép năm", ex: "Employees receive 12 days of _______.", exVi: "Nhân viên nhận được 12 ngày nghỉ phép năm." },
+            { topic: "HR & RECRUITMENT", word: "resign", phonetic: "/rɪˈzaɪn/", type: "verb", mean: "từ chức / nghỉ việc", ex: "She _______ed from her position.", exVi: "Cô ấy đã từ chức khỏi vị trí của mình." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+
+        // Hiệu ứng hạt Digital thay cho bụi phấn
+        function createDigitalNodes() {
+            const container = document.getElementById('data-particle-container');
+            for (let i = 0; i < 20; i++) {
+                const node = document.createElement('div');
+                node.className = 'data-particle';
+                const size = Math.random() * 4 + 2;
+                node.style.width = `${size}px`;
+                node.style.height = `${size}px`;
+                node.style.left = `${Math.random() * 100}vw`;
+                node.style.animationDuration = `${Math.random() * 8 + 4}s`;
+                node.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(node);
+            }
+        }
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            // Synth sounds for digital theme
+            if (type === 'start') {
+                playTone('square', 440, 880, 0.05, 0.3);
+                playTone('square', 880, 1760, 0.05, 0.4, 0.1);
+            } else if (type === 'success') {
+                playTone('sine', 523.25, 523.25, 0.08, 0.2, 0);
+                playTone('sine', 1046.50, 1046.50, 0.08, 0.4, 0.1);
+            } else if (type === 'error') {
+                playTone('sawtooth', 200, 150, 0.05, 0.3, 0);
+                playTone('sawtooth', 150, 100, 0.05, 0.3, 0.1);
+            } else if (type === 'flip') {
+                playTone('sine', 800, 400, 0.02, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-slate-700/30 transition-colors">
+                    <td class="p-3 sm:p-4 font-bold text-white">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center"><span class="px-2 py-1 bg-slate-800 border border-slate-600 text-slate-300 rounded text-xs">${item.type}</span></td>
+                    <td class="p-3 sm:p-4 text-indigo-200">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.length;
+            let underlineWidth = wordLength < 6 ? 'w-20' : (wordLength < 10 ? 'w-32' : 'w-48');
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-dashed border-sky-400 inline-block ${underlineWidth} mx-2"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1 sm:gap-1.5';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-2xl font-bold text-slate-400 self-center px-1';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'digital-input editable-input w-[26px] h-[36px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold rounded-md';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('text-rose-400', 'border-rose-400', 'bg-rose-400/10');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-3 sm:w-5'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.digital-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'digital-input w-[26px] h-[36px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold text-sky-300 border-sky-400 bg-sky-500/20 pointer-events-none rounded-md';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.digital-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+                const header = document.getElementById('result-header');
+                header.textContent = "SUCCESS!";
+                header.className = "text-center pb-2 mb-2 sm:mb-4 text-lg sm:text-xl text-emerald-400 font-bold border-b border-emerald-500/50 uppercase tracking-widest";
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean} (${card.type})`;
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="text-sky-400 underline decoration-2 underline-offset-4 font-semibold">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 500);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-rose-400', 'border-rose-400', 'bg-rose-400/10');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 400);
+        }
+
+        // ================= HIỂN THỊ TRANG SUMMARY TỔNG KẾT =================
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            // Chuyển đổi màn hình
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            // Xử lý và ghi ngày giờ hiện hành
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateOptions = { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' };
+            const dateString = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('completion-datetime').textContent = `System Record: ${dateString} ${timeString}`;
+
+            // Ghi dữ liệu vào Dashboard
+            document.getElementById('score-percent').textContent = `${scorePercentage}%`;
+            document.getElementById('score-percent').className = `text-3xl sm:text-5xl font-black mt-1 ${scorePercentage >= 80 ? 'text-emerald-400' : (scorePercentage >= 50 ? 'text-amber-400' : 'text-rose-400')}`;
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            // Điền bảng List Từ vựng chi tiết
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-rose-400 text-xs sm:text-sm font-bold bg-rose-400/10 px-2 py-1 rounded border border-rose-400/30">ASSISTED</span>'
+                    : '<span class="text-emerald-400 text-xs sm:text-sm font-bold bg-emerald-400/10 px-2 py-1 rounded border border-emerald-400/30">PERFECT</span>';
+                const rowClass = usedHint ? 'bg-rose-900/10' : 'hover:bg-slate-700/30';
+                const wordColor = usedHint ? 'text-amber-300' : 'text-white';
+
+                return `
+                    <tr class="transition-colors ${rowClass}">
+                        <td class="p-3 sm:p-4">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 font-bold ${wordColor}">${item.word}</td>
+                        <td class="p-3 sm:p-4 text-slate-300 text-sm sm:text-base">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+            createDigitalNodes();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
