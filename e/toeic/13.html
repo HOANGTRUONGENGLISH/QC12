@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC - MANUFACTURING & FACTORY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Inter for reading, Space Mono for terminal/digital look -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --ind-dark: #1e2227;
+            /* Dark Iron */
+            --ind-gray: #3a414a;
+            /* Steel Gray */
+            --ind-yellow: #f1c40f;
+            /* Safety Yellow */
+            --ind-yellow-hover: #d4ac0d;
+            --ind-red: #e74c3c;
+            /* Danger Red */
+            --ind-green: #2ecc71;
+            /* Status Green */
+            --ind-cyan: #00ffcc;
+            /* LED Cyan */
+            --ind-panel: #d5d9df;
+            /* Light Metal Panel */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #2b323a;
+            /* Perforated Metal / Grid Texture Background */
+            background-image:
+                repeating-linear-gradient(45deg, #242a30 25%, transparent 25%, transparent 75%, #242a30 75%, #242a30),
+                repeating-linear-gradient(45deg, #242a30 25%, #2b323a 25%, #2b323a 75%, #242a30 75%, #242a30);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+            color: var(--ind-dark);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .mono-font {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Sọc cảnh báo (Hazard Stripes) */
+        .hazard-stripes {
+            background: repeating-linear-gradient(-45deg,
+                    var(--ind-yellow),
+                    var(--ind-yellow) 20px,
+                    #111 20px,
+                    #111 40px);
+            height: 14px;
+            width: 100%;
+            border-bottom: 2px solid #000;
+        }
+
+        /* --- Khung Bảng Điều Khiển (Metal Panel) --- */
+        .metal-panel {
+            background: linear-gradient(135deg, #e6e9f0 0%, #aeb4c0 100%);
+            border: 4px solid #7d8794;
+            border-radius: 12px;
+            box-shadow:
+                inset 0 2px 5px rgba(255, 255, 255, 0.7),
+                0 15px 35px rgba(0, 0, 0, 0.5),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ốc vít (Screws) ở 4 góc */
+        .metal-panel::before,
+        .metal-panel::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #ddd 30%, #888 80%);
+            border: 1px solid #555;
+            border-radius: 50%;
+            box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8), 1px 1px 3px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .metal-panel::before {
+            top: 12px;
+            left: 12px;
+        }
+
+        .metal-panel::after {
+            bottom: 12px;
+            right: 12px;
+        }
+
+        .metal-screw-tr,
+        .metal-screw-bl {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #ddd 30%, #888 80%);
+            border: 1px solid #555;
+            border-radius: 50%;
+            box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8), 1px 1px 3px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .metal-screw-tr {
+            top: 12px;
+            right: 12px;
+        }
+
+        .metal-screw-bl {
+            bottom: 12px;
+            left: 12px;
+        }
+
+        /* Khoét rãnh con vít */
+        .screw-slot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 2px;
+            background: #444;
+            transform: translate(-50%, -50%) rotate(45deg);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- Khung 3D Flip Card --- */
+        .flip-card {
+            perspective: 2500px;
+            width: 100%;
+            height: 75vh;
+            min-height: 580px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 720px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 780px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-radius: 12px;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Ô nhập liệu (Màn hình LED công nghiệp) --- */
+        .led-input {
+            background: #111518;
+            border: 2px solid #4a5568;
+            border-bottom: 4px solid #2d3748;
+            border-radius: 6px;
+            color: var(--ind-cyan);
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+        }
+
+        .led-input:focus {
+            background: #0a0d10;
+            border-color: var(--ind-yellow);
+            border-bottom-color: var(--ind-yellow);
+            outline: none;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.8), 0 0 8px rgba(241, 196, 15, 0.4);
+            color: var(--ind-yellow);
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.8);
+            transform: translateY(-1px);
+        }
+
+        @keyframes mech-shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px) rotate(-1deg);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px) rotate(1deg);
+            }
+        }
+
+        .shake {
+            animation: mech-shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #cbd5e1;
+            border-left: 2px solid #94a3b8;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border: 2px solid #cbd5e1;
+            border-radius: 2px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Buttons - Nút cơ khí */
+        .mech-btn {
+            background: linear-gradient(to bottom, #f1c40f, #d4ac0d);
+            color: #111;
+            border: 2px solid #8e7409;
+            border-bottom: 5px solid #735e07;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+            transition: all 0.1s;
+            position: relative;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .mech-btn:hover {
+            background: linear-gradient(to bottom, #f3cd32, #e5ba13);
+            transform: translateY(1px);
+            border-bottom: 4px solid #735e07;
+        }
+
+        .mech-btn:active {
+            transform: translateY(4px);
+            border-bottom: 1px solid #735e07;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .mech-outline-btn {
+            background: linear-gradient(to bottom, #4a5568, #2d3748);
+            border: 2px solid #1a202c;
+            border-bottom: 4px solid #111518;
+            color: #e2e8f0;
+            transition: all 0.1s;
+            border-radius: 4px;
+        }
+
+        .mech-outline-btn:hover {
+            background: linear-gradient(to bottom, #718096, #4a5568);
+            transform: translateY(1px);
+            border-bottom: 3px solid #111518;
+        }
+
+        .mech-outline-btn:active {
+            transform: translateY(3px);
+            border-bottom: 1px solid #111518;
+        }
+
+        /* Con dấu PASS / REJECTED */
+        .quality-stamp {
+            border: 5px solid;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            transform: rotate(-15deg);
+            opacity: 0.8;
+            pointer-events: none;
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .stamp-pass {
+            color: var(--ind-green);
+            border-color: var(--ind-green);
+            text-shadow: 0 0 5px var(--ind-green);
+            box-shadow: inset 0 0 10px var(--ind-green), 0 0 10px var(--ind-green);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <!-- Thông báo hệ thống (System Toast) -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[#111] border-2 border-yellow-500 text-yellow-400 px-6 py-3 rounded-md shadow-[0_0_20px_rgba(241,196,15,0.4)] font-bold text-lg z-50 flex items-center gap-3 mono-font transition-all duration-500 uppercase">
+        <span>⚠️</span>
+        <span id="toast-message">SYSTEM ONLINE</span>
+        <span class="w-3 h-3 rounded-sm bg-yellow-500 animate-pulse shadow-[0_0_8px_#f1c40f]"></span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (CONTROL CENTER) =================== -->
+        <div id="welcome-screen" class="metal-panel flex-col h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: flex;">
+            <div class="metal-screw-tr">
+                <div class="screw-slot"></div>
+            </div>
+            <div class="metal-screw-bl">
+                <div class="screw-slot"></div>
+            </div>
+            <div class="hazard-stripes shrink-0"></div>
+
+            <div class="p-6 sm:p-8 flex flex-col h-full bg-slate-200/50">
+                <div class="mb-4 text-center border-b-4 border-slate-400 pb-4 shrink-0">
+                    <p class="mono-font text-xs sm:text-sm text-slate-500 font-bold mb-1 tracking-widest">[
+                        MANUFACTURE_DATABASE_V1.0 ]</p>
+                    <h1 class="text-3xl sm:text-5xl font-black text-slate-800 uppercase tracking-tight"
+                        style="text-shadow: 1px 1px 0 #fff;">MANUFACTURING</h1>
+                    <p
+                        class="text-slate-600 font-bold text-sm sm:text-lg mt-2 mono-font bg-yellow-300 inline-block px-3 py-1 border border-yellow-500">
+                        FACTORY OPERATION VOCABULARY</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border-4 border-slate-500 bg-slate-100 w-full shrink relative rounded-sm shadow-inner">
+                    <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 bg-slate-700 z-20 border-b-4 border-slate-800">
+                            <tr>
+                                <th class="p-3 sm:p-4 font-bold text-white uppercase text-xs mono-font tracking-wider">
+                                    Part (Word)</th>
+                                <th
+                                    class="p-3 sm:p-4 font-bold text-center text-slate-300 uppercase text-xs mono-font tracking-wider">
+                                    Type</th>
+                                <th class="p-3 sm:p-4 font-bold text-white uppercase text-xs mono-font tracking-wider">
+                                    Specs (Meaning)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="divide-y divide-slate-300 text-slate-800 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="startStudy()"
+                    class="mech-btn w-full sm:w-2/3 mx-auto py-4 font-black text-lg sm:text-xl flex items-center justify-center gap-3 mono-font mb-2 shrink-0">
+                    START PRODUCTION ⚙️
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-2">
+                    <p
+                        class="text-[10px] sm:text-xs text-slate-600 font-bold tracking-widest uppercase m-0 mono-font bg-slate-300 px-3 py-1 rounded-sm border border-slate-400">
+                        Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+
+            <!-- Header Tools (Dashboard) -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-4 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="mech-outline-btn flex items-center justify-center gap-1 sm:gap-2 px-3 py-2.5 z-20 relative font-bold shrink-0 mono-font uppercase text-xs sm:text-sm"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[340px] mb-2 bg-[#111] px-4 py-1.5 sm:px-6 sm:py-2 rounded border-2 border-slate-600 shadow-[inset_0_2px_5px_rgba(0,0,0,0.8)] mono-font text-sm sm:text-base font-bold text-white">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs uppercase text-slate-400">TIME:</span>
+                            <span id="timer-display" class="tracking-wider text-cyan-400"
+                                style="text-shadow: 0 0 5px rgba(0,255,204,0.5);">00:00</span>
+                        </div>
+                        <div class="border-l border-slate-600 h-4 mx-2"></div>
+                        <div class="flex items-center">
+                            <span class="text-xs uppercase text-slate-400 mr-2">UNIT:</span>
+                            <span id="progress-text" class="tracking-widest text-yellow-400"
+                                style="text-shadow: 0 0 5px rgba(241,196,15,0.5);">1/20</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar (Băng chuyền - Conveyor Belt) -->
+                    <div
+                        class="w-full max-w-md bg-slate-800 h-2.5 sm:h-3.5 relative border-2 border-slate-900 mt-1 shadow-sm rounded-sm">
+                        <!-- Con lăn băng chuyền -->
+                        <div class="absolute inset-0 opacity-30"
+                            style="background-image: repeating-linear-gradient(90deg, transparent, transparent 10px, #fff 10px, #fff 12px);">
+                        </div>
+                        <div id="progress-bar"
+                            class="bg-yellow-500 h-full transition-all duration-500 ease-out relative z-10"
+                            style="width: 0%; box-shadow: 0 0 8px #f1c40f;"></div>
+                        <!-- Cánh tay Robot -->
+                        <div id="cart-icon"
+                            class="absolute top-1/2 -translate-y-1/2 text-xl sm:text-2xl transition-all duration-500 ease-out transform -translate-x-1/2 z-20 filter drop-shadow-lg"
+                            style="left: 0%">🦾</div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="mech-outline-btn flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD (Assembly Line) -->
+                    <div class="flip-card-front metal-panel custom-scrollbar">
+                        <div class="metal-screw-tr">
+                            <div class="screw-slot"></div>
+                        </div>
+                        <div class="metal-screw-bl">
+                            <div class="screw-slot"></div>
+                        </div>
+                        <div class="hazard-stripes shrink-0"></div>
+
+                        <div class="p-5 sm:p-8 flex flex-col h-full bg-slate-200/60">
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+
+                                <div
+                                    class="mb-5 sm:mb-8 flex flex-col items-center bg-white border-4 border-slate-300 p-4 sm:p-6 w-full max-w-2xl rounded-sm shadow-sm relative">
+                                    <div
+                                        class="absolute -top-3 left-4 bg-yellow-400 px-2 border-2 border-slate-800 text-xs font-bold text-slate-900 mono-font">
+                                        TARGET SPECIFICATION</div>
+                                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-3 uppercase tracking-tight"
+                                        id="word-mean"></h2>
+                                    <span
+                                        class="inline-block px-4 py-1 bg-slate-800 text-white font-bold text-xs sm:text-sm uppercase tracking-widest mono-font rounded-sm"
+                                        id="word-type"></span>
+                                </div>
+
+                                <div
+                                    class="w-full max-w-2xl bg-slate-800 p-4 sm:p-6 mb-8 border-l-8 border-yellow-500 relative text-left rounded-sm shadow-md">
+                                    <p class="text-lg sm:text-xl md:text-2xl text-white mb-3 leading-relaxed font-medium mono-font"
+                                        id="word-ex"></p>
+                                    <p class="text-sm sm:text-base text-cyan-300 font-medium italic" id="word-exVi"></p>
+                                </div>
+
+                                <div class="w-full flex flex-col items-center gap-5 sm:gap-8 mb-2">
+                                    <!-- Vùng nhập liệu từ vựng LED -->
+                                    <div id="letter-inputs-container"
+                                        class="flex flex-wrap justify-center gap-x-1.5 gap-y-3 w-full px-2"></div>
+
+                                    <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap mt-2">
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="w-11 h-11 sm:w-12 sm:h-12 mech-outline-btn rounded flex items-center justify-center transition-all shadow-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                            </svg>
+                                        </button>
+                                        <button id="hint-btn" onclick="giveHint()"
+                                            class="px-5 sm:px-6 h-11 sm:h-12 mech-outline-btn font-bold rounded disabled:opacity-30 disabled:cursor-not-allowed text-sm sm:text-base transition-all uppercase tracking-wider mono-font">ASSIST</button>
+                                        <button onclick="checkAnswer()"
+                                            class="mech-btn px-8 sm:px-10 h-11 sm:h-12 font-black rounded text-sm sm:text-base flex items-center gap-2 tracking-widest mono-font">
+                                            ASSEMBLE
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="mt-auto w-full flex justify-center items-center shrink-0 pt-2 border-t-2 border-slate-300">
+                                <p
+                                    class="text-[10px] sm:text-xs text-slate-600 font-bold tracking-widest uppercase m-0 mono-font bg-slate-300 px-3 py-1 rounded-sm border border-slate-400">
+                                    Copyright &copy; Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD (Quality Control Pass) -->
+                    <div class="flip-card-back metal-panel custom-scrollbar relative">
+                        <div class="metal-screw-tr">
+                            <div class="screw-slot"></div>
+                        </div>
+                        <div class="metal-screw-bl">
+                            <div class="screw-slot"></div>
+                        </div>
+                        <div class="hazard-stripes shrink-0"></div>
+
+                        <div class="p-6 sm:p-10 flex flex-col h-full bg-slate-200/60">
+                            <div id="result-header"
+                                class="text-center pb-3 mb-2 sm:mb-4 mono-font font-bold tracking-widest uppercase mt-2 border-b-2 border-slate-400">
+                            </div>
+
+                            <!-- QC Stamp -->
+                            <div class="absolute top-24 right-6 sm:right-12 z-0">
+                                <div class="quality-stamp stamp-pass">QC PASSED</div>
+                            </div>
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full mt-4">
+                                <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-slate-800 mb-6 tracking-tight uppercase"
+                                    id="back-word" style="text-shadow: 2px 2px 0 #fff;"></h2>
+
+                                <div
+                                    class="flex items-center gap-3 mb-6 bg-slate-800 border-4 border-slate-600 px-6 py-2.5 rounded-sm shadow-inner">
+                                    <p class="text-lg sm:text-2xl text-cyan-400 mono-font tracking-wide"
+                                        id="back-phonetic"></p>
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="text-white hover:text-yellow-400 transition-colors p-2 rounded-full cursor-pointer relative z-50"
+                                        title="Listen">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <p class="text-2xl sm:text-3xl text-slate-700 font-black mb-6 uppercase tracking-wide bg-yellow-300 px-4 py-2 border-2 border-slate-800"
+                                    id="back-mean"></p>
+
+                                <div
+                                    class="py-4 w-full max-w-2xl text-center bg-white rounded-sm border-4 border-slate-300 p-4 relative shadow-md">
+                                    <div
+                                        class="absolute -top-3 left-4 bg-slate-800 px-2 text-xs font-bold text-white mono-font rounded-sm">
+                                        MANUAL REF.</div>
+                                    <p class="text-base sm:text-xl text-slate-800 leading-relaxed font-medium mono-font mt-2"
+                                        id="back-ex"></p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 sm:mt-10 flex justify-center gap-4 sm:gap-6 w-full shrink-0">
+                                <button onclick="prevCard()"
+                                    class="mech-outline-btn flex-1 max-w-[160px] py-3 sm:py-3.5 font-bold rounded text-sm sm:text-base uppercase tracking-widest mono-font">PREVIOUS</button>
+                                <button onclick="nextCard()" id="next-btn"
+                                    class="mech-btn flex-1 max-w-[220px] py-3 sm:py-3.5 font-black rounded flex items-center justify-center gap-2 text-sm sm:text-base tracking-widest uppercase mono-font">
+                                    NEXT UNIT
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-4">
+                                <p
+                                    class="text-[10px] sm:text-xs text-slate-600 font-bold tracking-widest uppercase m-0 mono-font bg-slate-300 px-3 py-1 rounded-sm border border-slate-400">
+                                    Copyright &copy; Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen" class="metal-panel flex-col relative z-20 h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: none;">
+            <div class="metal-screw-tr">
+                <div class="screw-slot"></div>
+            </div>
+            <div class="metal-screw-bl">
+                <div class="screw-slot"></div>
+            </div>
+            <div class="hazard-stripes shrink-0"></div>
+
+            <div class="p-6 sm:p-8 flex flex-col h-full text-center bg-slate-200/60">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mono-font mb-2 shrink-0 uppercase tracking-tight"
+                    style="text-shadow: 1px 1px 0 #fff;">PRODUCTION REPORT</h2>
+
+                <p id="completion-datetime"
+                    class="text-xs sm:text-sm text-slate-600 mb-6 shrink-0 mono-font uppercase font-bold bg-white inline-block mx-auto px-3 py-1 border border-slate-300">
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 shrink-0 mono-font">
+                    <div class="bg-slate-800 border-b-4 border-slate-900 rounded-sm p-4 sm:p-5 shadow-lg text-white">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Yield Rate
+                        </p>
+                        <p class="text-3xl sm:text-4xl font-black mt-2 text-cyan-400" id="score-percent"
+                            style="text-shadow: 0 0 5px rgba(0,255,204,0.5);">-</p>
+                    </div>
+                    <div class="bg-slate-800 border-b-4 border-slate-900 rounded-sm p-4 sm:p-5 shadow-lg text-white">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Op Time</p>
+                        <p class="text-xl sm:text-3xl font-bold mt-2 text-yellow-400" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-slate-800 border-b-4 border-slate-900 rounded-sm p-4 sm:p-5 shadow-lg text-white">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Units
+                            Passed</p>
+                        <p class="text-xl sm:text-3xl text-green-400 font-bold mt-2" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-slate-800 border-b-4 border-slate-900 rounded-sm p-4 sm:p-5 shadow-lg text-white">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Manual
+                            Overrides</p>
+                        <p class="text-xl sm:text-3xl text-red-400 font-bold mt-2" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border-4 border-slate-500 bg-white w-full mb-6 shrink relative rounded-sm shadow-inner">
+                    <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 bg-slate-700 z-20 border-b-4 border-slate-800 mono-font">
+                            <tr>
+                                <th class="p-3 sm:p-4 font-bold w-1/4 text-slate-300 uppercase text-xs tracking-widest">
+                                    QC Status</th>
+                                <th class="p-3 sm:p-4 font-bold w-1/3 text-white uppercase text-xs tracking-widest">Part
+                                    ID (Word)</th>
+                                <th class="p-3 sm:p-4 font-bold text-slate-300 uppercase text-xs tracking-widest">
+                                    Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body"
+                            class="divide-y divide-slate-200 text-slate-700 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="resetQuizToSummary()"
+                    class="mech-btn w-full sm:w-1/2 mx-auto py-4 font-black text-lg sm:text-xl rounded uppercase tracking-widest mono-font mb-2 shrink-0">
+                    RESTART LINE 🔄
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-2">
+                    <p
+                        class="text-[10px] sm:text-xs text-slate-600 font-bold tracking-widest uppercase m-0 mono-font bg-slate-300 px-3 py-1 rounded-sm border border-slate-400">
+                        Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for TOEIC: Manufacturing & Factory
+        const flashcards = [
+            { word: "factory", phonetic: "/ˈfæktəri/", type: "noun", mean: "nhà máy", ex: "The _______ produces car parts.", exVi: "Nhà máy sản xuất phụ tùng ô tô." },
+            { word: "plant", phonetic: "/plænt/", type: "noun", mean: "nhà máy", ex: "The _______ operates 24 hours a day.", exVi: "Nhà máy hoạt động 24 giờ một ngày." },
+            { word: "production", phonetic: "/prəˈdʌkʃən/", type: "noun", mean: "sản xuất", ex: "_______ will increase next month.", exVi: "Việc sản xuất sẽ tăng vào tháng tới." },
+            { word: "manufacture", phonetic: "/ˌmænjuˈfæktʃər/", type: "verb", mean: "sản xuất", ex: "The company plans to _______ electronics.", exVi: "Công ty dự định sản xuất đồ điện tử." },
+            { word: "manufacturer", phonetic: "/ˌmænjuˈfæktʃərər/", type: "noun", mean: "nhà sản xuất", ex: "The _______ provides spare parts.", exVi: "Nhà sản xuất cung cấp phụ tùng thay thế." },
+            { word: "product line", phonetic: "/ˈprɑːdʌkt laɪn/", type: "noun", mean: "dòng sản phẩm", ex: "We introduced a new _______.", exVi: "Chúng tôi đã giới thiệu một dòng sản phẩm mới." },
+            { word: "quality control", phonetic: "/ˈkwɑːləti kənˈtroʊl/", type: "noun", mean: "kiểm soát chất lượng", ex: "_______ is very strict here.", exVi: "Việc kiểm soát chất lượng ở đây rất nghiêm ngặt." },
+            { word: "inspection", phonetic: "/ɪnˈspekʃən/", type: "noun", mean: "sự kiểm tra", ex: "The products passed _______.", exVi: "Các sản phẩm đã vượt qua sự kiểm tra." },
+            { word: "equipment", phonetic: "/ɪˈkwɪpmənt/", type: "noun", mean: "thiết bị", ex: "The _______ is very expensive.", exVi: "Thiết bị này rất đắt tiền." },
+            { word: "machine", phonetic: "/məˈʃiːn/", type: "noun", mean: "máy móc", ex: "The _______ stopped working.", exVi: "Máy móc đã ngừng hoạt động." },
+            { word: "operate", phonetic: "/ˈɑːpəreɪt/", type: "verb", mean: "vận hành", ex: "Workers _______ heavy machinery.", exVi: "Công nhân vận hành máy móc hạng nặng." },
+            { word: "material", phonetic: "/məˈtɪriəl/", type: "noun", mean: "nguyên liệu", ex: "We need more _______ for production.", exVi: "Chúng tôi cần thêm nguyên liệu cho sản xuất." },
+            { word: "raw material", phonetic: "/rɔː məˈtɪriəl/", type: "noun", mean: "nguyên liệu thô", ex: "We need a steady supply of _______.", exVi: "Chúng tôi cần nguồn cung cấp nguyên liệu thô ổn định." },
+            { word: "assemble", phonetic: "/əˈsembəl/", type: "verb", mean: "lắp ráp", ex: "The workers _______ parts.", exVi: "Công nhân lắp ráp các bộ phận." },
+            { word: "assembly line", phonetic: "/əˈsembli laɪn/", type: "noun", mean: "dây chuyền lắp ráp", ex: "The _______ is very efficient.", exVi: "Dây chuyền lắp ráp rất hiệu quả." },
+            { word: "efficiency", phonetic: "/ɪˈfɪʃənsi/", type: "noun", mean: "hiệu quả", ex: "New machines improved _______.", exVi: "Các máy móc mới đã cải thiện hiệu quả." },
+            { word: "defect", phonetic: "/ˈdiːfekt/", type: "noun", mean: "lỗi sản phẩm", ex: "The _______ was found during inspection.", exVi: "Lỗi sản phẩm đã được phát hiện trong quá trình kiểm tra." },
+            { word: "safety standard", phonetic: "/ˈseɪfti ˈstændərd/", type: "noun", mean: "tiêu chuẩn an toàn", ex: "Every machine must meet this _______.", exVi: "Mỗi máy móc phải đáp ứng tiêu chuẩn an toàn này." },
+            { word: "output", phonetic: "/ˈaʊtpʊt/", type: "noun", mean: "sản lượng", ex: "_______ rose by 10% this year.", exVi: "Sản lượng đã tăng 10% trong năm nay." },
+            { word: "maintenance", phonetic: "/ˈmeɪntənəns/", type: "noun", mean: "bảo trì", ex: "Regular _______ prevents breakdowns.", exVi: "Việc bảo trì thường xuyên giúp ngăn ngừa hỏng hóc." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Background music (Industrial / Tech beat)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.2;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                // System boot / Machine startup (Deep rumble rising)
+                playTone('sawtooth', 80, 200, 0.15, 0.6);
+                playTone('square', 100, 300, 0.1, 0.6, 0.1);
+            } else if (type === 'success') {
+                // Scanner beep / Assembly success (Sharp double ping)
+                playTone('sine', 1800, 1800, 0.08, 0.1, 0);
+                playTone('sine', 2400, 2400, 0.08, 0.15, 0.12);
+            } else if (type === 'error') {
+                // Error buzzer (Harsh low tone)
+                playTone('sawtooth', 120, 100, 0.15, 0.3, 0);
+                playTone('square', 110, 90, 0.1, 0.3, 0);
+            } else if (type === 'flip') {
+                // Mechanical whoosh / Hydraulic move
+                playTone('triangle', 300, 100, 0.08, 0.2, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-slate-200 transition-colors border-b border-slate-300 last:border-0 group">
+                    <td class="p-3 sm:p-4 font-bold text-slate-800 group-hover:text-yellow-600 transition-colors">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center"><span class="px-2.5 py-1 bg-slate-700 text-white rounded-sm text-[10px] sm:text-xs font-bold uppercase mono-font tracking-wider shadow-inner">${item.type}</span></td>
+                    <td class="p-3 sm:p-4 text-slate-600">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 10 ? 'w-24' : 'w-40');
+
+            // Industrial underline placeholder
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-4 border-yellow-500 inline-block ${underlineWidth} mx-1.5 align-text-bottom opacity-90 shadow-[0_4px_0_-2px_#111]"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1 sm:gap-1.5';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-2xl font-bold text-slate-800 self-center px-1';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+
+                        input.className = 'led-input editable-input w-[24px] h-[36px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold uppercase';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('text-red-500', 'border-red-600', 'bg-red-950', 'border-bottom-red-800');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-3 sm:w-5'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('cart-icon').style.left = `${progressPercent}%`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toUpperCase();
+            const inputs = document.querySelectorAll('.led-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'led-input w-[24px] h-[36px] sm:w-[40px] sm:h-[50px] text-lg sm:text-2xl font-bold text-yellow-400 border-yellow-500 border-b-yellow-700 bg-slate-900 pointer-events-none opacity-90';
+                inputs[idx].style.textShadow = '0 0 8px rgba(241,196,15,0.8)';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.led-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+                const header = document.getElementById('result-header');
+                header.textContent = "> ITEM ASSEMBLED";
+                header.className = "text-center pb-2 mb-2 sm:mb-4 text-sm sm:text-base text-green-600 font-bold border-b-2 border-dashed border-green-500 uppercase tracking-widest mono-font";
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="bg-yellow-300 text-slate-900 px-2 rounded-sm font-bold border-b-2 border-yellow-600">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 500);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 300);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-red-500', 'border-red-600', 'bg-red-950');
+                        input.style.borderBottomColor = '#7f1d1d';
+                        input.style.textShadow = 'none';
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const dateString = now.toLocaleDateString('en-GB', dateOptions);
+            document.getElementById('completion-datetime').textContent = `[ BATCH COMPLETED ]: ${dateString} - ${timeString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-4xl sm:text-5xl font-black mt-2 ${scorePercentage >= 80 ? 'text-green-400' : (scorePercentage >= 50 ? 'text-yellow-400' : 'text-red-500')}`;
+            if (scorePercentage < 50) scoreEl.style.textShadow = "0 0 5px rgba(239,68,68,0.5)";
+            else if (scorePercentage >= 80) scoreEl.style.textShadow = "0 0 5px rgba(74,222,128,0.5)";
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-yellow-600 text-[10px] sm:text-xs font-bold bg-yellow-200 px-2 py-1 rounded-sm border border-yellow-400 shadow-sm">ASSISTED</span>'
+                    : '<span class="text-green-700 text-[10px] sm:text-xs font-bold bg-green-200 px-2 py-1 rounded-sm border border-green-400 shadow-sm">PASSED</span>';
+                const rowClass = usedHint ? 'bg-yellow-50/50' : 'hover:bg-slate-50';
+
+                return `
+                    <tr class="transition-colors ${rowClass} border-b border-slate-200">
+                        <td class="p-3 sm:p-4 mono-font">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 font-bold text-slate-800 text-base sm:text-lg">${item.word}</td>
+                        <td class="p-3 sm:p-4 text-slate-600 text-sm sm:text-base">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
