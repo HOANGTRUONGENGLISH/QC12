@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC - DESCRIPTIVE ADJECTIVES</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            /* Slate 900 */
+            --bg-card: #ffffff;
+            --accent-primary: #0ea5e9;
+            /* Sky 500 */
+            --accent-secondary: #10b981;
+            /* Emerald 500 */
+            --text-dark: #1e293b;
+            --text-light: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.08), transparent 25%);
+            color: var(--text-dark);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- Panel Container (Software Feel) --- */
+        .assessment-panel {
+            background-color: #f8fafc;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e2e8f0;
+        }
+
+        .panel-header {
+            background: linear-gradient(to right, #1e293b, #0f172a);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            border-bottom: 4px solid var(--accent-primary);
+        }
+
+        .badge-verified {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border: 1px solid #34d399;
+        }
+
+        .badge-pending {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+            border: 1px solid #fbbf24;
+        }
+
+        /* --- Flip Card Mechanics --- */
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            height: 70vh;
+            min-height: 520px;
+            max-height: 800px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 650px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 700px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .flip-card-back {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Data Input Fields --- */
+        .metric-input {
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            color: #0f172a;
+            text-align: center;
+            font-family: 'Space Grotesk', monospace;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            font-weight: 700;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .metric-input:focus {
+            border-color: var(--accent-primary);
+            background: #ffffff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.02);
+            transform: translateY(-2px);
+        }
+
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake-error {
+            animation: shakeError 0.4s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        /* --- Custom Scrollbar --- */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* --- Modern Buttons --- */
+        .btn-action {
+            background: linear-gradient(135deg, var(--accent-primary), #0284c7);
+            color: white;
+            transition: all 0.2s;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3), 0 2px 4px -1px rgba(14, 165, 233, 0.2);
+            letter-spacing: 0.025em;
+        }
+
+        .btn-action:hover {
+            box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.4), 0 4px 6px -2px rgba(14, 165, 233, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-action:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            color: #64748b;
+            transition: all 0.2s;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            border-color: #cbd5e1;
+            color: #334155;
+            background: #f8fafc;
+        }
+
+        /* Stamp Effect */
+        .stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 4px solid #10b981;
+            color: #10b981;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transform: rotate(15deg);
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.5);
+            mask-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="black"/><circle cx="20%" cy="20%" r="5%" fill="white"/><circle cx="80%" cy="70%" r="3%" fill="white"/><circle cx="50%" cy="90%" r="4%" fill="white"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="black"/><circle cx="20%" cy="20%" r="5%" fill="white"/><circle cx="80%" cy="70%" r="3%" fill="white"/><circle cx="50%" cy="90%" r="4%" fill="white"/></svg>');
+            display: none;
+        }
+
+        .flipped .stamp {
+            display: block;
+            animation: stampIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes stampIn {
+            0% {
+                transform: scale(3) rotate(30deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) rotate(15deg);
+                opacity: 0.8;
+            }
+        }
+
+        .copyright-text {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <!-- System Notification -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-slate-800 border border-slate-700 text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-sm sm:text-base z-50 flex items-center gap-3 transition-all duration-500">
+        <span class="text-sky-400">⚡</span>
+        <span id="toast-message">SYSTEM INITIALIZING...</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30 flex flex-col h-full">
+
+        <!-- =================== WELCOME SCREEN (DATA DASHBOARD) =================== -->
+        <div id="welcome-screen" class="assessment-panel flex-col h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: flex;">
+            <div class="panel-header">
+                <div class="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-400" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <div class="text-sm font-bold tracking-widest text-slate-300">QA MODULE v1.0</div>
+                </div>
+                <div class="badge-pending border-slate-600 bg-slate-800 text-slate-300">20 METRICS PENDING</div>
+            </div>
+
+            <div class="p-5 sm:p-8 flex flex-col flex-1 min-h-0 bg-white relative z-10">
+                <div
+                    class="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100 shrink-0">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Descriptive
+                            Qualities</h1>
+                        <p class="text-slate-500 text-sm mt-1 font-medium">Business Adjectives Assessment</p>
+                    </div>
+                    <div
+                        class="bg-sky-50 text-sky-700 px-4 py-2 rounded-lg text-sm font-bold border border-sky-100 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Evaluate 20 items
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-6 border border-slate-200 rounded-xl w-full shrink min-h-0 relative shadow-sm">
+                    <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-slate-50 shadow-sm text-slate-500 text-xs uppercase tracking-wider font-bold">
+                            <tr>
+                                <th class="p-4 border-b border-slate-200">Attribute (Adj)</th>
+                                <th class="p-4 border-b border-slate-200">Value (Meaning)</th>
+                                <th class="p-4 border-b border-slate-200 hidden sm:table-cell">Context Preview</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-700 font-medium divide-y divide-slate-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="startStudy()"
+                    class="btn-action w-full sm:w-2/3 mx-auto py-3.5 text-base sm:text-lg flex items-center justify-center gap-2 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    START ASSESSMENT
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-4">
+                    <p class="copyright-text">Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== MAIN FLASHCARD SCREEN =================== -->
+        <div id="main-content" class="w-full flex-grow flex flex-col" style="display: none;">
+
+            <!-- Header Tools (Tracker) -->
+            <div class="flex justify-between items-center mb-4 px-1 w-full shrink-0">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="bg-slate-800 text-white hover:bg-slate-700 border border-slate-600 flex items-center justify-center gap-1 px-3 py-2 text-xs sm:text-sm rounded-lg shadow-sm transition-colors"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span>Previous</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[340px] mb-2 bg-slate-800 px-4 py-2 border border-slate-700 rounded-xl shadow-lg text-sm font-semibold text-slate-300">
+                        <div class="flex items-center gap-2 text-sky-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span id="timer-display" class="font-mono text-base tracking-wider">00:00</span>
+                        </div>
+                        <div class="border-l border-slate-600 h-5 mx-3"></div>
+                        <div class="flex items-center text-emerald-400">
+                            <span class="text-[10px] uppercase mr-2 tracking-widest text-slate-400">Audit</span>
+                            <span id="progress-text" class="text-base font-bold">1/20</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar (Badge icon) -->
+                    <div
+                        class="w-full max-w-md bg-slate-700 h-2.5 rounded-full relative mt-1 overflow-hidden border border-slate-800 shadow-inner">
+                        <div id="progress-bar"
+                            class="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full transition-all duration-500 ease-out"
+                            style="width: 0%;"></div>
+                        <div id="progress-icon"
+                            class="absolute top-1/2 transform -translate-y-1/2 -ml-2 text-white drop-shadow text-xs transition-all duration-500 ease-out z-10"
+                            style="left: 0%;">🎖️</div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="bg-slate-800 border border-slate-600 hover:bg-slate-700 text-white flex items-center justify-center w-10 h-10 rounded-lg shrink-0 transition-colors shadow-sm">
+                    <span id="music-icon" class="text-base sm:text-lg">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card flex-grow" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD (Testing Criteria) -->
+                    <div class="flip-card-front assessment-panel custom-scrollbar">
+                        <div class="panel-header bg-white text-slate-800 border-b border-slate-200">
+                            <div class="text-sm font-bold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                CRITERIA EVALUATION
+                            </div>
+                            <div class="badge-pending">PENDING INPUT</div>
+                        </div>
+
+                        <div class="flex flex-col flex-grow bg-white">
+                            <!-- Info Row -->
+                            <div
+                                class="flex items-center justify-between p-4 sm:p-6 border-b border-slate-100 bg-slate-50/50">
+                                <div>
+                                    <p
+                                        class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">
+                                        Target Value</p>
+                                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800" id="word-mean"></h2>
+                                </div>
+                                <div
+                                    class="px-3 py-1.5 bg-sky-50 border border-sky-100 rounded-lg text-sky-600 text-xs font-bold uppercase tracking-wider">
+                                    Adjective
+                                </div>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="p-4 sm:p-8 flex flex-col flex-grow relative">
+
+                                <div
+                                    class="w-full max-w-2xl mx-auto mb-8 bg-white border-2 border-dashed border-slate-200 rounded-xl p-5 shadow-sm relative">
+                                    <div
+                                        class="absolute -top-3 left-4 bg-white px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                        Context Instance</div>
+                                    <p class="text-lg sm:text-2xl text-slate-700 leading-relaxed font-medium"
+                                        id="word-ex"></p>
+                                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-start gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-4 w-4 text-slate-400 mt-0.5 shrink-0" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                                        </svg>
+                                        <p class="text-sm sm:text-base text-slate-500 font-medium" id="word-exVi"></p>
+                                    </div>
+                                </div>
+
+                                <div class="w-full flex flex-col items-center mt-auto mb-2">
+                                    <p
+                                        class="text-xs text-sky-500 font-bold uppercase mb-4 tracking-widest flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                        </svg>
+                                        Provide Missing Attribute
+                                    </p>
+
+                                    <div id="letter-inputs-container"
+                                        class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-2 w-full px-1 mb-6">
+                                    </div>
+
+                                    <div class="flex items-center justify-center gap-3 w-full flex-wrap">
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="w-11 h-11 btn-secondary flex items-center justify-center rounded-xl"
+                                            title="Listen Audio">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <button id="hint-btn" onclick="giveHint()"
+                                            class="px-5 h-11 btn-secondary disabled:opacity-40 text-sm font-bold rounded-xl">Request
+                                            Hint</button>
+                                        <button onclick="checkAnswer()"
+                                            class="btn-action px-8 h-11 text-sm font-bold flex items-center gap-2 rounded-xl">
+                                            Verify Data
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="w-full flex justify-center items-center shrink-0 mt-4 border-t border-slate-100 pt-3">
+                                    <p class="copyright-text">Copyright &copy; Hoàng Trường English</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD (Verification Success) -->
+                    <div class="flip-card-back assessment-panel custom-scrollbar">
+                        <div class="panel-header !bg-emerald-600 !border-emerald-700">
+                            <div class="text-sm font-bold flex items-center gap-2 text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                EVALUATION COMPLETE
+                            </div>
+                            <div class="badge-verified bg-white text-emerald-700 border-white" id="result-header">
+                                VERIFIED</div>
+                        </div>
+
+                        <div class="flex flex-col flex-grow bg-white relative p-6 sm:p-8">
+                            <div class="stamp">QUALITY<br>ASSURED</div>
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center w-full max-w-2xl mx-auto z-10">
+
+                                <div class="bg-slate-50 border border-slate-100 p-6 rounded-2xl w-full mb-6 shadow-sm">
+                                    <h2 class="text-4xl sm:text-5xl font-black text-slate-800 mb-3 tracking-tight font-['Space_Grotesk']"
+                                        id="back-word"></h2>
+
+                                    <div class="flex items-center justify-center gap-3">
+                                        <p class="text-lg sm:text-xl text-slate-500 font-mono font-medium"
+                                            id="back-phonetic"></p>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-sky-500 hover:text-sky-700 bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer p-1.5 rounded-full"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p class="text-xl sm:text-2xl text-emerald-600 font-bold mb-6" id="back-mean"></p>
+
+                                <div
+                                    class="w-full text-left bg-sky-50/50 border-l-4 border-sky-400 rounded-r-xl p-4 sm:p-5 relative">
+                                    <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-medium"
+                                        id="back-ex"></p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 flex justify-center gap-3 w-full shrink-0 z-10">
+                                <button onclick="prevCard()"
+                                    class="btn-secondary flex-1 max-w-[140px] py-3 text-sm font-bold rounded-xl">Review
+                                    Data</button>
+                                <button onclick="nextCard()" id="next-btn"
+                                    class="btn-action flex-1 max-w-[200px] py-3 flex items-center justify-center gap-2 text-sm font-bold rounded-xl">
+                                    Next Metric
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div
+                                class="w-full flex justify-center items-center shrink-0 mt-4 border-t border-slate-100 pt-3 z-10">
+                                <p class="copyright-text">Copyright &copy; Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== SUMMARY SCREEN (FINAL AUDIT REPORT) =================== -->
+        <div id="final-screen" class="assessment-panel flex-col relative z-20 h-[80vh] min-h-[600px] max-h-[850px]"
+            style="display: none;">
+            <div class="panel-header">
+                <div class="text-sm font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-400" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    AUDIT REPORT GENERATED
+                </div>
+            </div>
+
+            <div class="p-5 sm:p-8 flex flex-col flex-1 min-h-0 bg-white relative">
+                <div class="text-center mb-6 shrink-0">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 bg-sky-100 text-sky-600 rounded-full mx-auto mb-3 shadow-inner border-4 border-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800">ASSESSMENT COMPLETE</h2>
+                    <p id="completion-datetime" class="text-xs sm:text-sm text-slate-500 mt-1 font-mono"></p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 shrink-0">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Quality
+                            Score</p>
+                        <p class="text-2xl font-black mt-1 text-slate-800 font-['Space_Grotesk']" id="score-percent">-
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Time
+                            Elapsed</p>
+                        <p class="text-xl font-bold mt-1 text-slate-600 font-mono" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Verified
+                        </p>
+                        <p class="text-xl text-emerald-600 font-bold mt-1" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-widest font-bold">Assisted
+                        </p>
+                        <p class="text-xl text-amber-500 font-bold mt-1" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-slate-200 rounded-xl w-full mb-6 shrink min-h-0 relative shadow-sm">
+                    <table class="w-full min-w-[450px] text-left text-sm border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-slate-100 text-slate-600 text-[11px] uppercase tracking-wider font-bold">
+                            <tr>
+                                <th class="p-3 pl-4 border-b border-slate-200">Status</th>
+                                <th class="p-3 border-b border-slate-200">Metric (Word)</th>
+                                <th class="p-3 border-b border-slate-200">Definition</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body"
+                            class="text-slate-700 font-medium divide-y divide-slate-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="resetQuizToSummary()"
+                    class="btn-action w-full sm:w-1/2 mx-auto py-3.5 text-sm sm:text-base font-bold tracking-wide shrink-0">
+                    START NEW AUDIT
+                </button>
+                <div class="w-full flex justify-center items-center shrink-0 mt-4 border-t border-slate-100 pt-3">
+                    <p class="copyright-text">Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for TOEIC VOCAB - ADJECTIVES (Descriptive Qualities)
+        const flashcards = [
+            { word: "available", phonetic: "/əˈveɪləbl/", type: "adj", mean: "có sẵn", ex: "The room is _______ now.", exVi: "Căn phòng hiện đã có sẵn." },
+            { word: "convenient", phonetic: "/kənˈviːniənt/", type: "adj", mean: "thuận tiện", ex: "The location is _______.", exVi: "Vị trí này rất thuận tiện." },
+            { word: "affordable", phonetic: "/əˈfɔːrdəbl/", type: "adj", mean: "giá cả phải chăng", ex: "The hotel is _______.", exVi: "Khách sạn có giá cả phải chăng." },
+            { word: "reliable", phonetic: "/rɪˈlaɪəbl/", type: "adj", mean: "đáng tin cậy", ex: "We need a _______ supplier.", exVi: "Chúng tôi cần một nhà cung cấp đáng tin cậy." },
+            { word: "efficient", phonetic: "/ɪˈfɪʃnt/", type: "adj", mean: "hiệu quả", ex: "The new system is more _______.", exVi: "Hệ thống mới này hoạt động hiệu quả hơn." },
+            { word: "successful", phonetic: "/səkˈsesfl/", type: "adj", mean: "thành công", ex: "The campaign was _______.", exVi: "Chiến dịch đã rất thành công." },
+            { word: "experienced", phonetic: "/ɪkˈspɪəriənst/", type: "adj", mean: "có kinh nghiệm", ex: "She is an _______ manager.", exVi: "Cô ấy là một người quản lý có nhiều kinh nghiệm." },
+            { word: "qualified", phonetic: "/ˈkwɒlɪfaɪd/", type: "adj", mean: "đủ năng lực", ex: "He is _______ for the position.", exVi: "Anh ấy đủ năng lực cho vị trí này." },
+            { word: "responsible", phonetic: "/rɪˈspɒnsəbl/", type: "adj", mean: "chịu trách nhiệm", ex: "She is _______ for sales.", exVi: "Cô ấy chịu trách nhiệm về doanh số bán hàng." },
+            { word: "necessary", phonetic: "/ˈnesəsəri/", type: "adj", mean: "cần thiết", ex: "Training is _______ for new staff.", exVi: "Việc đào tạo là cần thiết cho nhân viên mới." },
+            { word: "urgent", phonetic: "/ˈɜːrdʒənt/", type: "adj", mean: "khẩn cấp", ex: "This is an _______ request.", exVi: "Đây là một yêu cầu khẩn cấp." },
+            { word: "current", phonetic: "/ˈkɜːrənt/", type: "adj", mean: "hiện tại", ex: "Please check the _______ schedule.", exVi: "Vui lòng kiểm tra lịch trình hiện tại." },
+            { word: "previous", phonetic: "/ˈpriːviəs/", type: "adj", mean: "trước đó", ex: "The _______ manager retired.", exVi: "Người quản lý trước đó đã nghỉ hưu." },
+            { word: "annual", phonetic: "/ˈænjuəl/", type: "adj", mean: "hằng năm", ex: "The _______ meeting is in March.", exVi: "Cuộc họp hằng năm diễn ra vào tháng Ba." },
+            { word: "regular", phonetic: "/ˈreɡjələr/", type: "adj", mean: "thường xuyên", ex: "_______ maintenance is important.", exVi: "Việc bảo trì thường xuyên là rất quan trọng." },
+            { word: "temporary", phonetic: "/ˈtemprəri/", type: "adj", mean: "tạm thời", ex: "This is a _______ position.", exVi: "Đây là một vị trí tạm thời." },
+            { word: "permanent", phonetic: "/ˈpɜːrmənənt/", type: "adj", mean: "lâu dài / cố định", ex: "She got a _______ job.", exVi: "Cô ấy đã có được một công việc cố định." },
+            { word: "spacious", phonetic: "/ˈspeɪʃəs/", type: "adj", mean: "rộng rãi", ex: "The office is _______.", exVi: "Văn phòng rất rộng rãi." },
+            { word: "modern", phonetic: "/ˈmɒdərn/", type: "adj", mean: "hiện đại", ex: "The building has _______ facilities.", exVi: "Tòa nhà có cơ sở vật chất hiện đại." },
+            { word: "satisfied", phonetic: "/ˈsætɪsfaɪd/", type: "adj", mean: "hài lòng", ex: "Customers are _______ with the service.", exVi: "Khách hàng rất hài lòng với dịch vụ." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Background focus track
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-calm-peaceful-chill-hop-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.15;
+
+        // Custom UI sounds for Software/Audit Theme
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.4);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                // System boot chime
+                playTone('sine', 440, 880, 0.05, 0.3, 0);
+                playTone('sine', 880, 1320, 0.05, 0.4, 0.1);
+            } else if (type === 'success') {
+                // Verified Stamp sound (crisp ping)
+                playTone('sine', 1046.5, 1046.5, 0.08, 0.15, 0); // C6
+                playTone('sine', 1318.5, 1318.5, 0.08, 0.3, 0.1);  // E6
+            } else if (type === 'error') {
+                // Soft error buzz
+                playTone('sawtooth', 150, 100, 0.05, 0.3, 0);
+            } else if (type === 'flip') {
+                // Smooth slide
+                playTone('sine', 400, 200, 0.03, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="transition-colors hover:bg-sky-50/50">
+                    <td class="p-4 font-bold text-slate-800 font-['Space_Grotesk']">${item.word}</td>
+                    <td class="p-4 text-slate-600">${item.mean}</td>
+                    <td class="p-4 text-slate-400 text-xs italic hidden sm:table-cell truncate max-w-[200px]">"${item.ex.replace('_______', item.word)}"</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 7 ? 'w-24' : (wordLength < 10 ? 'w-32' : 'w-40');
+
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-slate-300 inline-block ${underlineWidth} mx-1 align-text-bottom bg-slate-100 rounded-t-sm h-6"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-lg sm:text-xl font-bold text-slate-400 self-center px-0.5';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+
+                        input.className = 'metric-input editable-input w-[28px] h-[38px] sm:w-[40px] sm:h-[50px] text-base sm:text-xl';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('text-rose-500', 'border-rose-400', 'bg-rose-50');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-3'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('progress-icon').style.left = `calc(${progressPercent}% - 12px)`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.metric-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 6 ? 1 : (target.length >= 10 ? 3 : 2);
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'metric-input w-[28px] h-[38px] sm:w-[40px] sm:h-[50px] text-base sm:text-xl text-amber-600 border-amber-300 bg-amber-50 pointer-events-none';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.metric-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const header = document.getElementById('result-header');
+
+                if (hintUsedThisCard) {
+                    header.textContent = "VERIFIED (ASSISTED)";
+                    header.className = "badge-verified bg-white text-amber-600 border-white";
+                } else {
+                    header.textContent = "VERIFIED";
+                    header.className = "badge-verified bg-white text-emerald-700 border-white";
+                }
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="text-sky-600 font-bold bg-sky-100 px-1.5 py-0.5 rounded border border-sky-200 shadow-sm">${card.word}</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-rose-500', 'border-rose-400', 'bg-rose-50');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `LOG: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-2xl font-black mt-1 font-['Space_Grotesk'] ${scorePercentage >= 80 ? 'text-emerald-600' : 'text-sky-600'}`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-600 text-[10px] font-bold border border-amber-200 bg-amber-50 px-2 py-1 rounded-md uppercase">Assisted</span>'
+                    : '<span class="text-emerald-600 text-[10px] font-bold border border-emerald-200 bg-emerald-50 px-2 py-1 rounded-md uppercase">Verified</span>';
+
+                return `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-3 pl-4">${statusIcon}</td>
+                        <td class="p-3 font-bold text-slate-800 font-['Space_Grotesk']">${item.word}</td>
+                        <td class="p-3 text-slate-500 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
