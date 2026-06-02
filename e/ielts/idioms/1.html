@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS IDIOMS 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Special Elite for typewriter effect, Inter for UI -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Special+Elite&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --paper-color: #fcf9f2;
+            --ink-color: #1a1a1a;
+            --red-marker: #dc2626;
+            --tape-color: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Realistic Corkboard texture */
+            background-color: #d4b589;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.15'/%3E%3C/svg%3E");
+            color: var(--ink-color);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .typewriter-font {
+            font-family: 'Special Elite', cursive;
+        }
+
+        /* --- Paper Note Panels --- */
+        .detective-panel {
+            background: var(--paper-color);
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px, 100% 2px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            box-shadow:
+                3px 5px 15px rgba(0, 0, 0, 0.2),
+                inset 0 0 20px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        /* Masking Tape effect */
+        .masking-tape {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 120px;
+            height: 25px;
+            background-color: #e5e0d8;
+            opacity: 0.8;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .masking-tape::before,
+        .masking-tape::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: inherit;
+        }
+
+        .masking-tape::before {
+            left: -3px;
+            transform: skewY(-15deg);
+        }
+
+        .masking-tape::after {
+            right: -3px;
+            transform: skewY(15deg);
+        }
+
+        /* --- Flip Card --- */
+        .flip-card {
+            perspective: 2500px;
+            width: 100%;
+            height: 75vh;
+            min-height: 580px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 720px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 780px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Crossword / Typewriter Inputs --- */
+        .idiom-input {
+            background: #ffffff;
+            border: 2px solid #4b5563;
+            border-radius: 4px;
+            color: var(--ink-color);
+            text-align: center;
+            font-family: 'Special Elite', cursive;
+            transition: all 0.2s ease;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+            text-transform: lowercase;
+            font-weight: bold;
+        }
+
+        .idiom-input:focus {
+            background: #fef08a;
+            /* Highlight yellow like a marker */
+            border-color: #1a1a1a;
+            outline: none;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Buttons - Typewriter Keys / Stamped paper */
+        .detective-btn {
+            background: #1f2937;
+            color: #ffffff;
+            border: 2px solid #111827;
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+            transition: all 0.1s;
+            border-radius: 4px;
+            font-family: 'Special Elite', cursive;
+            letter-spacing: 0.05em;
+        }
+
+        .detective-btn:hover {
+            background: #374151;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .detective-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .outline-btn {
+            background: var(--paper-color);
+            border: 2px solid #4b5563;
+            color: #1f2937;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+            transition: all 0.1s;
+            border-radius: 4px;
+            font-family: 'Special Elite', cursive;
+        }
+
+        .outline-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .outline-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Rubber Stamp Effect */
+        .rubber-stamp {
+            border: 4px solid;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transform: rotate(-15deg);
+            opacity: 0.8;
+            pointer-events: none;
+            display: inline-block;
+            font-family: 'Courier New', Courier, monospace;
+            mask-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 3 -1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 4 -1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        .stamp-solved {
+            color: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .stamp-hint {
+            color: #d97706;
+            border-color: #d97706;
+        }
+
+        /* Polaroid Photo Effect */
+        .polaroid {
+            background: white;
+            padding: 10px 10px 25px 10px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
+            transform: rotate(2deg);
+            border: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <!-- System Toast -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[#1a1a1a] border-2 border-white text-white px-6 py-3 rounded shadow-xl typewriter-font font-bold text-base sm:text-lg z-50 flex items-center gap-3 transition-all duration-500 uppercase tracking-widest">
+        <span class="text-xl">🕵️</span>
+        <span id="toast-message">CASE FILE OPENED</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen" class="detective-panel flex-col h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: flex;">
+            <div class="masking-tape"></div>
+
+            <div class="p-6 sm:p-8 flex flex-col h-full bg-transparent">
+                <div class="mb-4 text-center border-b-2 border-dashed border-gray-400 pb-4 shrink-0">
+                    <p
+                        class="text-xs sm:text-sm text-red-600 font-bold mb-2 tracking-widest uppercase flex items-center justify-center gap-2 typewriter-font">
+                        [ CLASSIFIED: TOP SECRET ]
+                    </p>
+                    <h1
+                        class="typewriter-font text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tight">
+                        ENGLISH IDIOMS</h1>
+                    <p class="text-gray-600 font-medium text-sm sm:text-base mt-2 typewriter-font">Decode the Hidden
+                        Meanings (B1 Level)</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border-2 border-gray-300 bg-white/50 w-full shrink relative rounded p-2">
+                    <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse font-sans">
+                        <thead
+                            class="sticky top-0 bg-gray-200 text-gray-800 z-20 shadow-sm border-b-2 border-gray-400 typewriter-font">
+                            <tr>
+                                <th class="p-3 sm:p-4 font-bold uppercase text-xs tracking-wider">Idiom (Code)</th>
+                                <th class="p-3 sm:p-4 font-bold text-center uppercase text-xs tracking-wider">IPA</th>
+                                <th class="p-3 sm:p-4 font-bold uppercase text-xs tracking-wider">Meaning (Decoded)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="divide-y divide-gray-300 text-gray-800 bg-transparent">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="startStudy()"
+                    class="detective-btn w-full sm:w-2/3 mx-auto py-3 text-lg sm:text-xl flex items-center justify-center gap-3 mb-2 shrink-0">
+                    START INVESTIGATION 🔍
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-2">
+                    <p
+                        class="text-[10px] sm:text-xs text-gray-500 font-bold tracking-widest uppercase m-0 typewriter-font">
+                        Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+
+            <!-- Header Tools (Dashboard) -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="outline-btn flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 z-20 relative font-bold shrink-0 text-xs sm:text-sm"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[340px] mb-2 bg-[#fdfbf7] px-4 py-1.5 sm:px-6 sm:py-2 border-2 border-gray-400 shadow-[2px_2px_0_rgba(0,0,0,0.1)] text-sm sm:text-base font-bold text-gray-800 typewriter-font">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs uppercase text-gray-500">TIME:</span>
+                            <span id="timer-display" class="tracking-wider text-red-600">00:00</span>
+                        </div>
+                        <div class="border-l-2 border-dotted border-gray-400 h-4 mx-2"></div>
+                        <div class="flex items-center">
+                            <span class="text-xs uppercase text-gray-500 mr-2">CASE:</span>
+                            <span id="progress-text" class="tracking-widest text-gray-900">1/10</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div
+                        class="w-full max-w-md bg-gray-300 h-1 sm:h-2 relative mt-2 border-b border-gray-400 border-dashed">
+                        <div id="progress-bar"
+                            class="bg-red-600 h-full transition-all duration-500 ease-out relative z-10"
+                            style="width: 0%;"></div>
+                        <div id="cart-icon"
+                            class="absolute top-1/2 -translate-y-1/2 text-xl sm:text-2xl transition-all duration-500 ease-out transform -translate-x-1/2 z-20 drop-shadow-md"
+                            style="left: 0%">🔍</div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="outline-btn flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD (Exercise / Test Page) -->
+                    <div class="flip-card-front detective-panel custom-scrollbar">
+                        <div class="masking-tape"></div>
+
+                        <div class="p-5 sm:p-8 flex flex-col h-full bg-transparent relative mt-4">
+
+                            <!-- Evidence Photo Style -->
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+
+                                <div class="mb-5 sm:mb-8 flex flex-col items-center polaroid w-full max-w-2xl relative">
+                                    <div class="absolute top-2 left-2 flex gap-1">
+                                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                    </div>
+                                    <div
+                                        class="absolute -top-3 bg-red-600 px-3 py-0.5 border border-red-800 text-[10px] sm:text-xs font-bold text-white tracking-widest typewriter-font shadow-sm transform -rotate-2">
+                                        EVIDENCE: MEANING</div>
+
+                                    <h2 class="typewriter-font text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 mt-4 px-2"
+                                        id="word-mean"></h2>
+                                    <span
+                                        class="inline-block px-2 py-0.5 bg-gray-200 text-gray-600 font-bold text-xs uppercase tracking-widest border border-gray-400"
+                                        id="word-type"></span>
+                                </div>
+
+                                <div
+                                    class="w-full max-w-2xl bg-white/70 p-4 sm:p-6 mb-6 border-l-4 border-red-600 relative text-left shadow-sm">
+                                    <div class="absolute top-2 right-2 opacity-20"><svg
+                                            xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                        </svg></div>
+                                    <p class="font-sans text-lg sm:text-xl md:text-2xl text-gray-800 mb-3 leading-relaxed font-medium"
+                                        id="word-ex"></p>
+                                    <p class="text-sm sm:text-base text-gray-500 font-normal italic" id="word-exVi"></p>
+                                </div>
+
+                                <div class="w-full flex flex-col items-center gap-4 sm:gap-6 mb-2">
+                                    <p class="typewriter-font text-xs text-gray-500 tracking-widest uppercase mb-1">
+                                        Enter Missing Idiom:</p>
+                                    <!-- Vùng nhập liệu từ vựng -->
+                                    <div id="letter-inputs-container"
+                                        class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-1">
+                                    </div>
+
+                                    <div class="flex items-center justify-center gap-3 w-full flex-wrap mt-4">
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="w-10 h-10 sm:w-11 sm:h-11 outline-btn flex items-center justify-center"
+                                            title="Listen to witness">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <button id="hint-btn" onclick="giveHint()"
+                                            class="px-4 sm:px-5 h-10 sm:h-11 outline-btn disabled:opacity-40 disabled:cursor-not-allowed text-sm uppercase tracking-wider">HINT</button>
+                                        <button onclick="checkAnswer()"
+                                            class="detective-btn px-6 sm:px-8 h-10 sm:h-11 text-sm sm:text-base flex items-center gap-2 uppercase tracking-wider">
+                                            DECODE
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="mt-auto w-full flex justify-center items-center shrink-0 pt-4 border-t border-gray-300">
+                                <p
+                                    class="text-[10px] sm:text-xs text-gray-500 font-bold tracking-widest uppercase m-0 typewriter-font">
+                                    Copyright &copy; Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD (Result Page) -->
+                    <div class="flip-card-back detective-panel custom-scrollbar relative">
+                        <div class="masking-tape"></div>
+
+                        <div class="p-5 sm:p-8 flex flex-col h-full bg-transparent relative mt-4">
+
+                            <div id="result-header"
+                                class="text-center pb-2 mb-2 sm:mb-4 font-bold tracking-widest uppercase typewriter-font">
+                            </div>
+
+                            <!-- QC Stamp -->
+                            <div class="absolute top-16 right-4 sm:right-10 z-0">
+                                <div id="qc-stamp" class="rubber-stamp stamp-solved">SOLVED</div>
+                            </div>
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full mt-4">
+                                <h2 class="typewriter-font text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight"
+                                    id="back-word"></h2>
+
+                                <div
+                                    class="flex items-center gap-3 mb-6 bg-gray-100 border border-gray-300 px-4 py-2 shadow-inner">
+                                    <p class="text-lg sm:text-2xl text-gray-600 font-sans" id="back-phonetic"></p>
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="text-gray-500 hover:text-gray-800 transition-colors cursor-pointer relative z-50"
+                                        title="Listen">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <p class="typewriter-font text-xl sm:text-2xl text-red-700 font-bold mb-6 bg-red-50 border border-red-200 px-4 py-2"
+                                    id="back-mean"></p>
+
+                                <div
+                                    class="py-4 w-full max-w-2xl text-left bg-white/80 border-l-4 border-gray-800 p-4 relative shadow-sm">
+                                    <div
+                                        class="absolute -top-3 left-4 bg-gray-800 px-2 py-0.5 text-[10px] sm:text-xs font-bold text-white typewriter-font tracking-widest">
+                                        WITNESS STATEMENT</div>
+                                    <p class="font-sans text-base sm:text-xl text-gray-800 leading-relaxed font-medium mt-2"
+                                        id="back-ex"></p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 sm:mt-10 flex justify-center gap-4 w-full shrink-0">
+                                <button onclick="prevCard()"
+                                    class="outline-btn flex-1 max-w-[140px] py-2 sm:py-3 text-sm uppercase tracking-widest">PREVIOUS</button>
+                                <button onclick="nextCard()" id="next-btn"
+                                    class="detective-btn flex-1 max-w-[200px] py-2 sm:py-3 flex items-center justify-center gap-2 text-sm uppercase tracking-widest">
+                                    NEXT CASE
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div
+                                class="mt-auto w-full flex justify-center items-center shrink-0 pt-6 border-t border-gray-300">
+                                <p
+                                    class="text-[10px] sm:text-xs text-gray-500 font-bold tracking-widest uppercase m-0 typewriter-font">
+                                    Copyright &copy; Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen" class="detective-panel flex-col relative z-20 h-[80vh] min-h-[580px] max-h-[850px]"
+            style="display: none;">
+            <div class="masking-tape"></div>
+
+            <div class="p-6 sm:p-8 flex flex-col h-full text-center bg-transparent mt-4">
+                <h2
+                    class="typewriter-font text-3xl sm:text-4xl font-black text-gray-900 mb-2 shrink-0 uppercase tracking-tight flex justify-center items-center gap-2 border-b-2 border-gray-900 pb-2 inline-block mx-auto">
+                    FINAL REPORT
+                </h2>
+
+                <p id="completion-datetime" class="typewriter-font text-xs sm:text-sm text-gray-600 mb-6 shrink-0 mt-2">
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 shrink-0 typewriter-font">
+                    <div class="bg-white border-2 border-gray-400 p-3 shadow-[2px_2px_0_rgba(0,0,0,0.1)]">
+                        <p class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest font-bold">Accuracy</p>
+                        <p class="text-2xl sm:text-3xl font-black mt-1 text-gray-900" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-white border-2 border-gray-400 p-3 shadow-[2px_2px_0_rgba(0,0,0,0.1)]">
+                        <p class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest font-bold">Time</p>
+                        <p class="text-xl sm:text-2xl font-bold mt-1 text-gray-800" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-white border-2 border-gray-400 p-3 shadow-[2px_2px_0_rgba(0,0,0,0.1)]">
+                        <p class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest font-bold">Solved</p>
+                        <p class="text-xl sm:text-2xl text-green-700 font-bold mt-1" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-white border-2 border-gray-400 p-3 shadow-[2px_2px_0_rgba(0,0,0,0.1)]">
+                        <p class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest font-bold">Assisted</p>
+                        <p class="text-xl sm:text-2xl text-red-600 font-bold mt-1" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border-2 border-gray-400 bg-white/80 w-full mb-6 shrink relative shadow-inner">
+                    <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse font-sans">
+                        <thead class="sticky top-0 bg-gray-200 z-20 border-b-2 border-gray-400 typewriter-font text-xs">
+                            <tr>
+                                <th class="p-3 font-bold w-1/4 text-gray-600 uppercase tracking-widest">Status</th>
+                                <th class="p-3 font-bold w-1/3 text-gray-800 uppercase tracking-widest">Idiom</th>
+                                <th class="p-3 font-bold text-gray-600 uppercase tracking-widest">Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="divide-y divide-gray-300 text-gray-700 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="resetQuizToSummary()"
+                    class="detective-btn w-full sm:w-1/2 mx-auto py-3 text-lg uppercase tracking-widest mb-2 shrink-0">
+                    REVIEW FILES 🔄
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-2">
+                    <p
+                        class="text-[10px] sm:text-xs text-gray-500 font-bold tracking-widest uppercase m-0 typewriter-font">
+                        Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for IELTS IDIOMS - Detective Theme
+        const flashcards = [
+            { word: "bite the bullet", phonetic: "/baɪt ðə ˈbʊlɪt/", type: "idiom", mean: "cắn răng chịu đựng, đối mặt với điều khó khăn", ex: "I do not enjoy public speaking, but I _______ and give the presentation because it is an important part of my course.", exVi: "Tôi không thích nói trước đám đông, nhưng tôi đành cắn răng chịu đựng và thuyết trình vì đó là một phần quan trọng của khóa học." },
+            { word: "kick the bucket", phonetic: "/kɪk ðə ˈbʌkɪt/", type: "idiom", mean: "chết (cách nói thân mật, hài hước)", ex: "In the comedy movie, an old man always jokes about when he will _______, which makes everyone laugh.", exVi: "Trong bộ phim hài, một ông lão luôn nói đùa về lúc ông ấy qua đời, điều này khiến mọi người bật cười." },
+            { word: "spill the beans", phonetic: "/spɪl ðə biːnz/", type: "idiom", mean: "tiết lộ bí mật", ex: "We are planning a surprise party for our teacher, so nobody wants to _______ before the special day.", exVi: "Chúng tôi đang lên kế hoạch cho một bữa tiệc bất ngờ dành cho giáo viên, vì vậy không ai muốn tiết lộ bí mật trước ngày đặc biệt." },
+            { word: "break the ice", phonetic: "/breɪk ði aɪs/", type: "idiom", mean: "phá vỡ sự ngại ngùng ban đầu", ex: "A simple game at the beginning of the workshop helps _______ and encourage people to talk to each other.", exVi: "Một trò chơi đơn giản ở đầu buổi hội thảo giúp phá vỡ sự ngại ngùng và khuyến khích mọi người nói chuyện với nhau." },
+            { word: "barking up the wrong tree", phonetic: "/ˈbɑːrkɪŋ ʌp ðə rɒŋ triː/", type: "idiom", mean: "hiểu sai vấn đề, đổ lỗi nhầm người", ex: "If you think I hid your notebook, you are _______ because I never touched your desk.", exVi: "Nếu bạn nghĩ tôi đã giấu cuốn sổ của bạn, bạn đã đổ lỗi nhầm người rồi vì tôi chưa bao giờ chạm vào bàn của bạn." },
+            { word: "hit the nail on the head", phonetic: "/hɪt ðə neɪl ɒn ðə hed/", type: "idiom", mean: "nói/chỉ ra chính xác vấn đề", ex: "My friend really _______ when he explained the main reason for the team's poor performance.", exVi: "Bạn tôi thực sự đã chỉ ra chính xác vấn đề khi cậu ấy giải thích lý do chính khiến đội thi đấu kém." },
+            { word: "let the cat out of the bag", phonetic: "/let ðə kæt aʊt əv ðə bæɡ/", type: "idiom", mean: "làm lộ bí mật", ex: "We wanted to keep the wedding plan secret, but my cousin accidentally _______.", exVi: "Chúng tôi muốn giữ bí mật kế hoạch đám cưới, nhưng anh họ tôi đã vô tình làm lộ bí mật." },
+            { word: "under the weather", phonetic: "/ˈʌndər ðə ˈweðər/", type: "idiom", mean: "cảm thấy không khỏe", ex: "I feel a little _______ today, so I prefer to stay at home and get some rest.", exVi: "Hôm nay tôi cảm thấy hơi mệt, nên tôi thích ở nhà và nghỉ ngơi hơn." },
+            { word: "a piece of cake", phonetic: "/ə piːs əv keɪk/", type: "idiom", mean: "rất dễ dàng", ex: "The final exam looked difficult at first, but it became _______ after careful preparation.", exVi: "Bài kiểm tra cuối kỳ thoạt nhìn có vẻ khó, nhưng nó trở nên rất dễ dàng sau khi chuẩn bị kỹ lưỡng." },
+            { word: "burn the midnight oil", phonetic: "/bɜːrn ðə ˈmɪdnaɪt ɔɪl/", type: "idiom", mean: "thức khuya học tập hoặc làm việc", ex: "Many students _______ before an important examination in order to achieve better results.", exVi: "Nhiều sinh viên thức khuya học bài trước một kỳ thi quan trọng để đạt kết quả tốt hơn." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Background music (Mystery/Jazz Noir)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2021/11/25/audio_91b3cb81dd.mp3?filename=noir-jazz-background-106599.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.15;
+
+        // Custom Detective Audio Synthesis
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                // Typewriter ding + carriage return sound approximation
+                playTone('triangle', 800, 800, 0.1, 0.2, 0);
+                playTone('square', 200, 100, 0.05, 0.3, 0.1);
+            } else if (type === 'success') {
+                // Heavy stamp sound
+                playTone('square', 150, 100, 0.2, 0.1, 0);
+                playTone('triangle', 600, 600, 0.05, 0.2, 0.05);
+            } else if (type === 'error') {
+                // Error buzzer / wrong note
+                playTone('sawtooth', 150, 120, 0.1, 0.3, 0);
+            } else if (type === 'flip') {
+                // Paper rustling
+                playTone('square', 300, 100, 0.02, 0.2, 0);
+                playTone('noise', 1000, 500, 0.05, 0.1, 0); // pseudo-noise
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-gray-100 transition-colors border-b border-gray-300">
+                    <td class="p-3 sm:p-4 font-bold text-gray-900 typewriter-font">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center text-sm font-sans text-gray-600">${item.phonetic}</td>
+                    <td class="p-3 sm:p-4 text-gray-700 font-sans">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 10 ? 'w-24' : (wordLength < 15 ? 'w-32' : 'w-48');
+
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-dashed border-gray-500 inline-block ${underlineWidth} mx-1.5 align-text-bottom opacity-80"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            // Handle words with spaces (Idioms)
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-2xl font-bold text-gray-400 self-center px-1 typewriter-font';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+
+                        // Smaller inputs for potentially long idioms
+                        input.className = 'idiom-input editable-input w-[22px] h-[30px] sm:w-[32px] sm:h-[40px] text-base sm:text-xl';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('text-red-600', 'border-red-500', 'bg-red-50');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-4'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('cart-icon').style.left = `${progressPercent}%`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.idiom-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            // Adjust hint count based on idiom length
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'idiom-input w-[22px] h-[30px] sm:w-[32px] sm:h-[40px] text-base sm:text-xl text-blue-800 border-blue-400 bg-blue-100 pointer-events-none opacity-80';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.idiom-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const header = document.getElementById('result-header');
+                const stamp = document.getElementById('qc-stamp');
+
+                if (hintUsedThisCard) {
+                    header.textContent = "[ PARTIAL MATCH - ASSISTED ]";
+                    header.className = "text-center pb-2 mb-2 sm:mb-4 text-sm sm:text-base text-yellow-600 font-bold border-b border-dashed border-gray-300 typewriter-font uppercase tracking-widest";
+                    stamp.textContent = "ASSISTED";
+                    stamp.className = "rubber-stamp stamp-hint";
+                } else {
+                    header.textContent = "[ CASE SOLVED - PERFECT ]";
+                    header.className = "text-center pb-2 mb-2 sm:mb-4 text-sm sm:text-base text-red-600 font-bold border-b border-dashed border-gray-300 typewriter-font uppercase tracking-widest";
+                    stamp.textContent = "SOLVED";
+                    stamp.className = "rubber-stamp stamp-solved";
+                }
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="bg-yellow-200 text-gray-900 px-1 font-bold border-b-2 border-yellow-400 typewriter-font">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 500);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 300);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-red-600', 'border-red-500', 'bg-red-50');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 400);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `FILE CLOSED: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-2xl sm:text-3xl font-black mt-1 ${scorePercentage >= 80 ? 'text-gray-900' : 'text-red-600'}`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-yellow-600 text-[10px] sm:text-xs font-bold border-2 border-yellow-600 px-1 transform -rotate-2 inline-block">ASSISTED</span>'
+                    : '<span class="text-red-600 text-[10px] sm:text-xs font-bold border-2 border-red-600 px-1 transform -rotate-2 inline-block">SOLVED</span>';
+                const rowClass = usedHint ? 'bg-gray-100' : 'hover:bg-gray-50';
+
+                return `
+                    <tr class="transition-colors ${rowClass} border-b border-gray-300">
+                        <td class="p-3 sm:p-4">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 font-bold text-gray-900 text-sm sm:text-base typewriter-font">${item.word}</td>
+                        <td class="p-3 sm:p-4 text-gray-600 text-xs sm:text-sm font-sans">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
