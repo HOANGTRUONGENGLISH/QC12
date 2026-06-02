@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS IDIOMS 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Caveat:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --parchment: #f4e8d1;
+            --parchment-dark: #e3d1b1;
+            --ink: #2c1e16;
+            --accent-gold: #c59b27;
+            --wax-red: #8b0000;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            /* Dark mahogany wood background */
+            background-color: #1a0f0a;
+            background-image:
+                radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%),
+                repeating-linear-gradient(45deg, #24150f 25%, transparent 25%, transparent 75%, #24150f 75%, #24150f),
+                repeating-linear-gradient(45deg, #24150f 25%, #1a0f0a 25%, #1a0f0a 75%, #24150f 75%, #24150f);
+            background-position: 0 0, 10px 10px, 10px 10px;
+            background-size: 100% 100%, 20px 20px, 20px 20px;
+            color: var(--ink);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .title-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        .handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* --- Journal Page Panels --- */
+        .journal-page {
+            background-color: var(--parchment);
+            background-image:
+                linear-gradient(rgba(200, 180, 150, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200, 180, 150, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 4px 12px 12px 4px;
+            box-shadow:
+                -5px 0 15px rgba(0, 0, 0, 0.4),
+                inset -2px 0 10px rgba(0, 0, 0, 0.1),
+                inset 15px 0 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            border-right: 3px solid #d4c0a1;
+            border-bottom: 2px solid #d4c0a1;
+        }
+
+        .journal-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 30px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.15), transparent);
+            border-radius: 4px 0 0 4px;
+        }
+
+        /* --- Flip Card --- */
+        .flip-card {
+            perspective: 2500px;
+            width: 100%;
+            height: 75vh;
+            min-height: 600px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 720px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 780px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.64, 0.04, 0.35, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Input Fields (Vintage Blocks) --- */
+        .idiom-input {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid #a68c63;
+            border-bottom: 3px solid #8b6b42;
+            border-radius: 3px;
+            color: var(--ink);
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            font-weight: bold;
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .idiom-input:focus {
+            background: #fffdf5;
+            border-bottom-color: var(--accent-gold);
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #b89c72;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #8b6b42;
+        }
+
+        /* Buttons */
+        .vintage-btn {
+            background: linear-gradient(135deg, #2c1e16, #4a3625);
+            color: var(--parchment);
+            border: 1px solid #1a0f0a;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.15s;
+            border-radius: 6px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+        }
+
+        .vintage-btn:hover {
+            background: linear-gradient(135deg, #3d2a1f, #5b432e);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .vintage-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        .outline-btn {
+            background: transparent;
+            border: 2px solid #8b6b42;
+            color: #4a3625;
+            transition: all 0.15s;
+            border-radius: 6px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+        }
+
+        .outline-btn:hover {
+            background: rgba(139, 107, 66, 0.1);
+            color: #2c1e16;
+        }
+
+        .outline-btn:active {
+            transform: translateY(2px);
+        }
+
+        /* --- Wax Seal Effect --- */
+        .wax-seal {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #b30000, #730000 60%, #4a0000);
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                3px 5px 8px rgba(0, 0, 0, 0.4),
+                inset -2px -4px 6px rgba(0, 0, 0, 0.5),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.3);
+            transform: rotate(-15deg);
+            z-index: 20;
+            border: 2px solid #5c0000;
+        }
+
+        .wax-seal::after {
+            content: 'SOLVED';
+            font-family: 'Cinzel', serif;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8), 1px 1px 1px rgba(255, 255, 255, 0.2);
+            border: 1px double rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            padding: 15px 5px;
+        }
+
+        .wax-hint {
+            background: radial-gradient(circle at 30% 30%, #d4af37, #aa8222 60%, #7a5c13);
+            border-color: #59430c;
+        }
+
+        .wax-hint::after {
+            content: 'HINTED';
+        }
+
+        .ornament-divider {
+            width: 100%;
+            height: 20px;
+            background-image: radial-gradient(circle, #8b6b42 2px, transparent 2.5px);
+            background-size: 15px 15px;
+            background-position: center;
+            background-repeat: repeat-x;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[#2c1e16] border border-[#d4af37] text-[#f4e8d1] px-6 py-3 rounded shadow-2xl title-font font-bold text-base sm:text-lg z-50 flex items-center gap-3 transition-all duration-500 uppercase tracking-widest">
+        <span class="text-xl text-[#d4af37]">✨</span>
+        <span id="toast-message">THE JOURNAL UNLOCKED</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen" class="journal-page flex-col h-[80vh] min-h-[600px] max-h-[850px]"
+            style="display: flex;">
+
+            <div class="p-6 sm:p-10 flex flex-col h-full bg-transparent relative z-10">
+                <div class="mb-4 text-center pb-4 shrink-0 relative">
+                    <p class="text-xs sm:text-sm text-[#8b6b42] font-bold mb-2 tracking-widest uppercase title-font">
+                        Chapter II
+                    </p>
+                    <h1
+                        class="title-font text-3xl sm:text-4xl md:text-5xl font-black text-[#2c1e16] uppercase tracking-wider drop-shadow-sm">
+                        ENGLISH IDIOMS</h1>
+                    <p class="text-[#5b432e] font-medium text-sm sm:text-base mt-2 italic">Decode the Hidden Meanings
+                        (B1 Level)</p>
+                    <div class="ornament-divider mt-4"></div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-4 sm:mb-6 border border-[#c59b27] bg-[#fffdf5]/60 w-full shrink relative rounded p-2 shadow-inner">
+                    <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 bg-[#e3d1b1] text-[#2c1e16] z-20 shadow-sm border-b-2 border-[#8b6b42] title-font">
+                            <tr>
+                                <th class="p-3 sm:p-4 font-bold uppercase text-xs tracking-wider">Idiom (Incantation)
+                                </th>
+                                <th class="p-3 sm:p-4 font-bold text-center uppercase text-xs tracking-wider">IPA</th>
+                                <th class="p-3 sm:p-4 font-bold uppercase text-xs tracking-wider">Meaning (Decoded)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="divide-y divide-[#d4c0a1] text-[#4a3625] bg-transparent">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="startStudy()"
+                    class="vintage-btn w-full sm:w-2/3 mx-auto py-3 text-lg sm:text-xl flex items-center justify-center gap-3 mb-2 shrink-0">
+                    OPEN THE JOURNAL 📖
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-3 border-t border-[#d4c0a1]">
+                    <p class="text-[10px] sm:text-xs text-[#8b6b42] font-bold tracking-widest uppercase m-0 title-font">
+                        Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== PHẦN CHÍNH (FLASHCARD) =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="outline-btn bg-[#f4e8d1] flex items-center justify-center gap-1 sm:gap-2 px-3 py-2 z-20 relative font-bold shrink-0 text-xs sm:text-sm"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Turn Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[340px] mb-2 bg-[#f4e8d1] px-4 py-1.5 sm:px-6 sm:py-2 border border-[#8b6b42] rounded shadow-md text-sm sm:text-base font-bold text-[#2c1e16] title-font">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs uppercase text-[#8b6b42]">TIME:</span>
+                            <span id="timer-display" class="tracking-wider text-[#8b0000]">00:00</span>
+                        </div>
+                        <div class="border-l border-[#8b6b42] h-4 mx-2"></div>
+                        <div class="flex items-center">
+                            <span class="text-xs uppercase text-[#8b6b42] mr-2">PAGE:</span>
+                            <span id="progress-text" class="tracking-widest">1/10</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar (Quill) -->
+                    <div
+                        class="w-full max-w-md bg-[#e3d1b1] h-1.5 sm:h-2 rounded-full relative mt-2 border border-[#8b6b42]">
+                        <div id="progress-bar"
+                            class="bg-[#8b0000] h-full rounded-full transition-all duration-500 ease-out relative z-10"
+                            style="width: 0%;"></div>
+                        <div id="cart-icon"
+                            class="absolute top-1/2 -translate-y-1/2 text-xl sm:text-2xl transition-all duration-500 ease-out transform -translate-x-1/2 z-20 drop-shadow-md"
+                            style="left: 0%">🪶</div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="outline-btn bg-[#f4e8d1] flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD (Exercise / Test Page) -->
+                    <div class="flip-card-front journal-page custom-scrollbar">
+
+                        <div class="p-6 sm:p-10 flex flex-col h-full bg-transparent relative z-10">
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center w-full relative z-10">
+
+                                <div class="mb-5 sm:mb-8 flex flex-col items-center w-full max-w-2xl relative">
+                                    <div class="text-[#c59b27] mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-10 sm:w-10"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                    <h2 class="title-font text-2xl sm:text-3xl md:text-4xl font-bold text-[#2c1e16] mb-2 px-2"
+                                        id="word-mean"></h2>
+                                    <span
+                                        class="inline-block px-3 py-0.5 border border-[#8b6b42] text-[#5b432e] font-bold text-xs uppercase tracking-widest rounded-full"
+                                        id="word-type"></span>
+                                </div>
+
+                                <div
+                                    class="w-full max-w-2xl bg-[#fffdf5]/60 p-5 sm:p-8 mb-8 border border-[#c59b27] relative text-left shadow-sm rounded-sm">
+                                    <div
+                                        class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#f4e8d1] px-2 text-[#8b6b42] text-xs title-font tracking-widest font-bold">
+                                        THE SCRIPTURE</div>
+                                    <p class="font-serif text-lg sm:text-xl md:text-2xl text-[#2c1e16] mb-3 leading-relaxed font-medium italic"
+                                        id="word-ex"></p>
+                                    <p class="text-sm sm:text-base text-[#8b6b42] font-normal" id="word-exVi"></p>
+                                </div>
+
+                                <div class="w-full flex flex-col items-center gap-4 sm:gap-6 mb-2">
+                                    <p
+                                        class="title-font text-xs text-[#8b0000] font-bold tracking-widest uppercase mb-1">
+                                        Decipher the Phrase:</p>
+
+                                    <!-- Vùng nhập liệu từ vựng -->
+                                    <div id="letter-inputs-container"
+                                        class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-1">
+                                    </div>
+
+                                    <div class="flex items-center justify-center gap-3 w-full flex-wrap mt-6">
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="w-10 h-10 sm:w-11 sm:h-11 outline-btn flex items-center justify-center rounded-full bg-[#f4e8d1]"
+                                            title="Listen to pronunciation">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <button id="hint-btn" onclick="giveHint()"
+                                            class="px-4 sm:px-5 h-10 sm:h-11 outline-btn bg-[#f4e8d1] disabled:opacity-40 disabled:cursor-not-allowed text-sm uppercase tracking-wider">REVEAL</button>
+                                        <button onclick="checkAnswer()"
+                                            class="vintage-btn px-6 sm:px-8 h-10 sm:h-11 text-sm sm:text-base flex items-center gap-2 uppercase tracking-wider">
+                                            INCANT
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="mt-auto w-full flex justify-center items-center shrink-0 pt-4 border-t border-[#d4c0a1]">
+                                <p
+                                    class="text-[10px] sm:text-xs text-[#8b6b42] font-bold tracking-widest uppercase m-0 title-font">
+                                    Copyright &copy; Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD (Result Page) -->
+                    <div class="flip-card-back journal-page custom-scrollbar relative">
+
+                        <div class="p-6 sm:p-10 flex flex-col h-full bg-transparent relative z-10">
+
+                            <div id="result-header"
+                                class="text-center pb-2 mb-2 sm:mb-4 font-bold tracking-widest uppercase title-font">
+                            </div>
+
+                            <!-- Wax Seal -->
+                            <div class="absolute top-12 right-6 sm:right-12 z-0 hidden sm:flex">
+                                <div id="qc-stamp" class="wax-seal"></div>
+                            </div>
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center relative z-10 w-full mt-4">
+                                <!-- Handwriting font for revealed idiom -->
+                                <h2 class="handwriting text-4xl sm:text-5xl md:text-6xl font-bold text-[#8b0000] mb-6 tracking-wide drop-shadow-sm"
+                                    id="back-word"></h2>
+
+                                <div
+                                    class="flex items-center gap-3 mb-6 bg-[#fffdf5]/80 border border-[#d4c0a1] px-5 py-2 rounded-full shadow-inner">
+                                    <p class="text-lg sm:text-2xl text-[#4a3625] font-serif" id="back-phonetic"></p>
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="text-[#8b6b42] hover:text-[#2c1e16] transition-colors cursor-pointer relative z-50"
+                                        title="Listen">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <p class="title-font text-xl sm:text-2xl text-[#2c1e16] font-bold mb-8" id="back-mean">
+                                </p>
+
+                                <div
+                                    class="py-5 w-full max-w-2xl text-left bg-[#e3d1b1]/30 border-l-4 border-[#c59b27] p-5 relative shadow-sm rounded-r-md">
+                                    <p class="font-serif text-lg sm:text-2xl text-[#2c1e16] leading-relaxed font-medium italic"
+                                        id="back-ex"></p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 sm:mt-10 flex justify-center gap-4 w-full shrink-0">
+                                <button onclick="prevCard()"
+                                    class="outline-btn bg-[#f4e8d1] flex-1 max-w-[140px] py-2 sm:py-3 text-sm uppercase tracking-widest">TURN
+                                    BACK</button>
+                                <button onclick="nextCard()" id="next-btn"
+                                    class="vintage-btn flex-1 max-w-[200px] py-2 sm:py-3 flex items-center justify-center gap-2 text-sm uppercase tracking-widest">
+                                    NEXT PAGE
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div
+                                class="mt-auto w-full flex justify-center items-center shrink-0 pt-6 border-t border-[#d4c0a1]">
+                                <p
+                                    class="text-[10px] sm:text-xs text-[#8b6b42] font-bold tracking-widest uppercase m-0 title-font">
+                                    Copyright &copy; Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen" class="journal-page flex-col relative z-20 h-[80vh] min-h-[600px] max-h-[850px]"
+            style="display: none;">
+
+            <div class="p-6 sm:p-10 flex flex-col h-full text-center bg-transparent mt-2">
+                <h2
+                    class="title-font text-3xl sm:text-4xl font-black text-[#2c1e16] mb-2 shrink-0 uppercase tracking-widest flex justify-center items-center gap-2 border-b border-[#8b6b42] pb-4 inline-block mx-auto">
+                    EPILOGUE
+                </h2>
+
+                <p id="completion-datetime"
+                    class="font-serif italic text-sm sm:text-base text-[#5b432e] mb-6 shrink-0 mt-2"></p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 shrink-0 title-font">
+                    <div class="bg-[#fffdf5]/60 border border-[#d4c0a1] p-3 shadow-sm rounded-md">
+                        <p class="text-[10px] sm:text-xs text-[#8b6b42] uppercase tracking-widest font-bold">Accuracy
+                        </p>
+                        <p class="text-2xl sm:text-3xl font-black mt-1 text-[#2c1e16]" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-[#fffdf5]/60 border border-[#d4c0a1] p-3 shadow-sm rounded-md">
+                        <p class="text-[10px] sm:text-xs text-[#8b6b42] uppercase tracking-widest font-bold">Time Spent
+                        </p>
+                        <p class="text-xl sm:text-2xl font-bold mt-1 text-[#4a3625]" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-[#fffdf5]/60 border border-[#d4c0a1] p-3 shadow-sm rounded-md">
+                        <p class="text-[10px] sm:text-xs text-[#8b6b42] uppercase tracking-widest font-bold">Decoded</p>
+                        <p class="text-xl sm:text-2xl text-[#166534] font-bold mt-1" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-[#fffdf5]/60 border border-[#d4c0a1] p-3 shadow-sm rounded-md">
+                        <p class="text-[10px] sm:text-xs text-[#8b6b42] uppercase tracking-widest font-bold">Revealed
+                        </p>
+                        <p class="text-xl sm:text-2xl text-[#8b0000] font-bold mt-1" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-[#c59b27] bg-[#fffdf5]/80 w-full mb-6 shrink relative shadow-inner rounded-sm">
+                    <table class="w-full min-w-[450px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 bg-[#e3d1b1] z-20 border-b border-[#8b6b42] title-font text-xs">
+                            <tr>
+                                <th class="p-3 font-bold w-1/4 text-[#4a3625] uppercase tracking-widest">Status</th>
+                                <th class="p-3 font-bold w-1/3 text-[#2c1e16] uppercase tracking-widest">Incantation
+                                </th>
+                                <th class="p-3 font-bold text-[#4a3625] uppercase tracking-widest">Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body"
+                            class="divide-y divide-[#d4c0a1] text-[#2c1e16] font-medium font-serif italic">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="resetQuizToSummary()"
+                    class="vintage-btn w-full sm:w-1/2 mx-auto py-3 text-lg uppercase tracking-widest mb-2 shrink-0">
+                    READ AGAIN 🔄
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-2 border-t border-[#d4c0a1]">
+                    <p class="text-[10px] sm:text-xs text-[#8b6b42] font-bold tracking-widest uppercase m-0 title-font">
+                        Copyright &copy; Hoàng Trường English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for IELTS IDIOMS 2 - The Mystic Journal Theme
+        const flashcards = [
+            { word: "when pigs fly", phonetic: "/wen pɪɡz flaɪ/", type: "idiom", mean: "khi điều gì đó không bao giờ xảy ra", ex: "He says he will clean his room every day, but I think that will happen _______.", exVi: "Cậu ấy nói sẽ dọn phòng mỗi ngày, nhưng tôi nghĩ điều đó không bao giờ xảy ra đâu." },
+            { word: "cut to the chase", phonetic: "/kʌt tuː ðə tʃeɪs/", type: "idiom", mean: "đi thẳng vào vấn đề", ex: "Please _______ because we only have ten minutes to discuss the main problem.", exVi: "Vui lòng đi thẳng vào vấn đề vì chúng ta chỉ có mười phút để thảo luận vấn đề chính." },
+            { word: "on cloud nine", phonetic: "/ɒn klaʊd naɪn/", type: "idiom", mean: "vô cùng hạnh phúc", ex: "She is _______ because she got a scholarship to study at her dream university.", exVi: "Cô ấy vô cùng hạnh phúc vì nhận được học bổng vào học tại ngôi trường mơ ước." },
+            { word: "beat around the bush", phonetic: "/biːt əˈraʊnd ðə bʊʃ/", type: "idiom", mean: "nói vòng vo, không đi thẳng vào vấn đề", ex: "Do not _______; just tell me what you really think about my idea.", exVi: "Đừng có nói vòng vo nữa; hãy nói cho tôi biết bạn thực sự nghĩ gì về ý tưởng của tôi." },
+            { word: "the ball is in your court", phonetic: "/ðə bɔːl ɪz ɪn jɔːr kɔːrt/", type: "idiom", mean: "đến lượt bạn quyết định/hành động", ex: "I gave you all the information, so now _______.", exVi: "Tôi đã cung cấp cho bạn tất cả thông tin rồi, giờ đến lượt bạn quyết định đấy." },
+            { word: "a dime a dozen", phonetic: "/ə daɪm ə ˈdʌzən/", type: "idiom", mean: "rất phổ biến, không đặc biệt", ex: "Cheap phone cases are _______, but good quality ones are harder to find.", exVi: "Ốp lưng điện thoại rẻ tiền thì rất phổ biến, nhưng loại chất lượng tốt thì khó tìm hơn." },
+            { word: "throw in the towel", phonetic: "/θrəʊ ɪn ðə ˈtaʊəl/", type: "idiom", mean: "bỏ cuộc, đầu hàng", ex: "The project is difficult, but our team does not want to _______ too early.", exVi: "Dự án này rất khó, nhưng đội của chúng tôi không muốn bỏ cuộc quá sớm." },
+            { word: "caught red-handed", phonetic: "/kɔːt ˌred ˈhændɪd/", type: "idiom", mean: "bị bắt quả tang", ex: "The boy is _______ when the teacher sees him copying answers during the test.", exVi: "Cậu bé bị bắt quả tang khi giáo viên nhìn thấy cậu ấy chép bài trong giờ kiểm tra." },
+            { word: "bite off more than you can chew", phonetic: "/baɪt ɒf mɔːr ðən ju kæn tʃuː/", type: "idiom", mean: "ôm đồm quá nhiều việc", ex: "You should not _______ by joining five clubs and taking extra classes at the same time.", exVi: "Bạn không nên ôm đồm quá nhiều việc bằng cách tham gia năm câu lạc bộ và học thêm cùng một lúc." },
+            { word: "break a leg", phonetic: "/breɪk ə leɡ/", type: "idiom", mean: "chúc may mắn", ex: "Before my sister goes on stage, I smile and say “_______” to help her feel confident.", exVi: "Trước khi em gái tôi lên sân khấu, tôi mỉm cười và nói “chúc may mắn” để giúp em ấy tự tin hơn." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Background music (Fantasy/Mystical Instrumental)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2021/11/24/audio_32b00db50f.mp3?filename=enchanted-forest-music-105151.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.2;
+
+        // Custom Magic Audio Synthesis
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                // Book opening / magical chime
+                playTone('sine', 880, 1760, 0.1, 0.5, 0);
+                playTone('sine', 1320, 2640, 0.05, 0.6, 0.1);
+            } else if (type === 'success') {
+                // Magical shimmer + heavy wax seal stamp
+                playTone('square', 100, 50, 0.15, 0.2, 0); // stamp
+                playTone('sine', 1046, 2093, 0.05, 0.4, 0.1); // chime
+                playTone('sine', 1567, 3135, 0.03, 0.6, 0.2); // chime 2
+            } else if (type === 'error') {
+                // Low thud (wrong spell)
+                playTone('triangle', 150, 100, 0.15, 0.3, 0);
+            } else if (type === 'flip') {
+                // Paper turning sound
+                playTone('noise', 1000, 500, 0.03, 0.2, 0);
+                playTone('square', 250, 150, 0.02, 0.15, 0.05);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-[#f4e8d1] transition-colors border-b border-[#d4c0a1]">
+                    <td class="p-3 sm:p-4 font-bold text-[#2c1e16] handwriting text-xl sm:text-2xl">${item.word}</td>
+                    <td class="p-3 sm:p-4 text-center text-sm font-serif text-[#8b6b42]">${item.phonetic}</td>
+                    <td class="p-3 sm:p-4 text-[#4a3625] font-serif italic">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 10 ? 'w-24' : (wordLength < 15 ? 'w-32' : 'w-48');
+
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-dashed border-[#8b6b42] inline-block ${underlineWidth} mx-1.5 align-text-bottom opacity-80"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            // Handle words with spaces (Idioms)
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl sm:text-2xl font-bold text-[#8b6b42] self-center px-1 title-font';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+
+                        input.className = 'idiom-input editable-input w-[22px] h-[30px] sm:w-[32px] sm:h-[40px] text-base sm:text-xl';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('text-[#8b0000]', 'border-[#8b0000]', 'bg-[#ffcccc]');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-4'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('cart-icon').style.left = `${progressPercent}%`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.idiom-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            // Adjust hint count based on idiom length
+            const count = target.length <= 6 ? 1 : (target.length >= 15 ? 4 : (target.length >= 9 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'idiom-input w-[22px] h-[30px] sm:w-[32px] sm:h-[40px] text-base sm:text-xl text-[#0f4d19] border-[#c59b27] bg-[#f4e8d1] pointer-events-none opacity-90';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.idiom-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const header = document.getElementById('result-header');
+                const stamp = document.getElementById('qc-stamp');
+
+                if (hintUsedThisCard) {
+                    header.textContent = "— PARTIALLY REVEALED —";
+                    header.className = "text-center pb-2 mb-2 sm:mb-4 text-sm sm:text-base text-[#c59b27] font-bold border-b border-dashed border-[#8b6b42] title-font uppercase tracking-widest";
+                    stamp.className = "wax-seal wax-hint";
+                } else {
+                    header.textContent = "— PERFECTLY DECODED —";
+                    header.className = "text-center pb-2 mb-2 sm:mb-4 text-sm sm:text-base text-[#8b0000] font-bold border-b border-dashed border-[#8b6b42] title-font uppercase tracking-widest";
+                    stamp.className = "wax-seal";
+                }
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="handwriting text-2xl sm:text-3xl text-[#8b0000] px-1 font-bold">\u00A0${card.word}\u00A0</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 800); // match flip animation time
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 300);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-[#8b0000]', 'border-[#8b0000]', 'bg-[#ffcccc]');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `Journal sealed on: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-2xl sm:text-3xl font-black mt-1 ${scorePercentage >= 80 ? 'text-[#166534]' : 'text-[#8b0000]'}`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-[#c59b27] text-[10px] sm:text-xs font-bold border border-[#c59b27] px-1 title-font rounded-sm">REVEALED</span>'
+                    : '<span class="text-[#8b0000] text-[10px] sm:text-xs font-bold border border-[#8b0000] px-1 title-font rounded-sm">DECODED</span>';
+                const rowClass = usedHint ? 'bg-[#e3d1b1]/50' : 'hover:bg-[#f4e8d1]';
+
+                return `
+                    <tr class="transition-colors ${rowClass} border-b border-[#d4c0a1]">
+                        <td class="p-3 sm:p-4">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 font-bold text-[#8b0000] handwriting text-xl sm:text-2xl">${item.word}</td>
+                        <td class="p-3 sm:p-4 text-[#4a3625] text-xs sm:text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
