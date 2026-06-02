@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC - ACTION VERBS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --workspace-bg: #f3f4f6;
+            /* Tailwind gray-100 */
+            --card-bg: #ffffff;
+            --brand-purple: #6366f1;
+            /* Tailwind indigo-500 */
+            --brand-purple-hover: #4f46e5;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--workspace-bg);
+            background-image:
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- Task Window Style (Kanban Card Feel) --- */
+        .workspace-window {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .window-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-todo {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+        .status-done {
+            background-color: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* --- Flip Card Mechanics --- */
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            height: 75vh;
+            min-height: 550px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 700px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 750px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-card-back {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Input Fields (Task Inputs) --- */
+        .task-input {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            color: var(--text-main);
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            font-weight: 800;
+        }
+
+        .task-input:focus {
+            border-color: var(--brand-purple);
+            background: #ffffff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        /* --- Custom Scrollbar --- */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        /* --- Buttons --- */
+        .btn-primary {
+            background-color: var(--brand-purple);
+            color: white;
+            transition: all 0.2s;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--brand-purple-hover);
+            box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-outline:hover {
+            border-color: #9ca3af;
+            color: var(--text-main);
+            background: #f9fafb;
+        }
+
+        /* --- Task Properties Table --- */
+        .task-prop-row {
+            display: flex;
+            padding: 10px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.875rem;
+        }
+
+        .task-prop-label {
+            width: 100px;
+            color: #9ca3af;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .task-prop-content {
+            color: #374151;
+            font-weight: 500;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-white border border-indigo-200 text-indigo-700 px-6 py-3 rounded-xl shadow-xl font-bold text-sm sm:text-base z-50 flex items-center gap-3 transition-all duration-500">
+        <span class="text-xl">⚡</span>
+        <span id="toast-message">SYNCING WORKSPACE...</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30 flex flex-col h-full">
+
+        <!-- =================== WELCOME SCREEN (WORKSPACE DASHBOARD) =================== -->
+        <div id="welcome-screen" class="workspace-window flex-col h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: flex;">
+            <div class="window-header bg-slate-50">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <div class="text-xs text-slate-400 font-bold uppercase tracking-wider">Hoàng Trường Workspace</div>
+            </div>
+
+            <div class="p-6 sm:p-8 flex flex-col h-full bg-white relative z-10">
+                <div class="mb-4 flex items-center gap-4 pb-5 border-b border-slate-100 shrink-0">
+                    <div
+                        class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center shrink-0 shadow-inner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800">Common TOEIC Verbs</h1>
+                        <p class="text-slate-500 text-sm mt-1 font-medium">Business Action Words &bull; 20 Tasks pending
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 border border-slate-200 rounded-xl w-full shrink relative">
+                    <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-slate-50 shadow-sm text-slate-500 text-xs uppercase tracking-wider font-semibold">
+                            <tr>
+                                <th class="p-4 border-b border-slate-200">Action (Verb)</th>
+                                <th class="p-4 text-center border-b border-slate-200">Tag</th>
+                                <th class="p-4 border-b border-slate-200">Description (Meaning)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-700 font-medium divide-y divide-slate-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="startStudy()"
+                    class="btn-primary w-full sm:w-2/3 mx-auto py-3.5 text-base sm:text-lg flex items-center justify-center gap-2 mb-2 shrink-0 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    START SPRINT
+                </button>
+
+                <div class="mt-auto w-full flex justify-center items-center shrink-0 pt-3">
+                    <p class="text-[11px] text-slate-400 font-medium tracking-wide m-0">Copyright &copy; Hoàng Trường
+                        English</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== MAIN FLASHCARD SCREEN =================== -->
+        <div id="main-content" class="w-full flex-grow flex flex-col" style="display: none;">
+
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center mb-4 px-1 w-full shrink-0">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="btn-outline flex items-center justify-center gap-1 px-3 py-2 text-xs sm:text-sm bg-white shadow-sm"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span>Previous Task</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center justify-between w-full max-w-[320px] mb-2 bg-white px-4 py-2 border border-slate-200 rounded-xl shadow-sm text-sm font-semibold text-slate-600">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span id="timer-display" class="font-mono text-base">00:00</span>
+                        </div>
+                        <div class="border-l border-slate-200 h-5 mx-3"></div>
+                        <div class="flex items-center text-indigo-600">
+                            <span class="text-xs uppercase mr-2 tracking-wider text-slate-400">Progress</span>
+                            <span id="progress-text" class="text-base">1/20</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar (Checkmark icon) -->
+                    <div
+                        class="w-full max-w-md bg-slate-200 h-2 rounded-full relative mt-1 overflow-hidden border border-slate-300">
+                        <div id="progress-bar"
+                            class="bg-indigo-500 h-full rounded-full transition-all duration-500 ease-out"
+                            style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn-outline flex items-center justify-center w-10 h-10 shrink-0 bg-white shadow-sm">
+                    <span id="music-icon" class="text-base sm:text-lg">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flip-card flex-grow" id="flashcard">
+                <div class="flip-card-inner">
+
+                    <!-- FRONT CARD (Task To Do) -->
+                    <div class="flip-card-front workspace-window custom-scrollbar">
+                        <div class="window-header">
+                            <div class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                Task Details
+                            </div>
+                            <div class="status-badge status-todo">TO DO</div>
+                        </div>
+
+                        <div class="flex flex-col flex-grow bg-white">
+                            <!-- Task Properties -->
+                            <div class="task-prop-row">
+                                <div class="task-prop-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                    </svg>
+                                    Tag
+                                </div>
+                                <div class="task-prop-content">
+                                    <span
+                                        class="px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded text-[11px] uppercase font-bold border border-indigo-100"
+                                        id="word-type"></span>
+                                </div>
+                            </div>
+                            <div class="task-prop-row bg-slate-50/50">
+                                <div class="task-prop-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6h16M4 12h16m-7 6h7" />
+                                    </svg>
+                                    Meaning
+                                </div>
+                                <div class="task-prop-content font-bold text-slate-800" id="word-mean"></div>
+                            </div>
+
+                            <!-- Task Content -->
+                            <div class="p-6 sm:p-8 flex flex-col flex-grow relative">
+                                <div
+                                    class="w-full max-w-2xl mx-auto mb-8 bg-slate-50 border border-slate-100 rounded-xl p-5 shadow-sm">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Context
+                                        (Example)</h3>
+                                    <p class="text-base sm:text-xl text-slate-700 leading-relaxed font-medium"
+                                        id="word-ex"></p>
+                                    <p class="text-sm text-slate-500 mt-3 pt-3 border-t border-slate-200/60"
+                                        id="word-exVi"></p>
+                                </div>
+
+                                <div class="w-full flex flex-col items-center mt-auto mb-2">
+                                    <p
+                                        class="text-xs text-indigo-400 font-bold uppercase mb-4 tracking-widest flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                        Execute Action (Type Word)
+                                    </p>
+
+                                    <div id="letter-inputs-container"
+                                        class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-2 w-full px-1 mb-6">
+                                    </div>
+
+                                    <div class="flex items-center justify-center gap-3 w-full flex-wrap">
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="w-11 h-11 btn-outline flex items-center justify-center rounded-xl"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <button id="hint-btn" onclick="giveHint()"
+                                            class="px-5 h-11 btn-outline disabled:opacity-40 text-sm font-bold rounded-xl">Get
+                                            Hint</button>
+                                        <button onclick="checkAnswer()"
+                                            class="btn-primary px-8 h-11 text-sm font-bold flex items-center gap-2 rounded-xl">
+                                            Mark as Done
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    class="w-full flex justify-center items-center shrink-0 mt-4 border-t border-slate-100 pt-3">
+                                    <p class="text-[11px] text-slate-400 font-medium tracking-wide m-0">Copyright &copy;
+                                        Hoàng Trường English</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BACK CARD (Task Done) -->
+                    <div class="flip-card-back workspace-window custom-scrollbar">
+                        <div class="window-header bg-emerald-50 border-emerald-100">
+                            <div class="text-sm font-bold text-emerald-800 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Task Verified
+                            </div>
+                            <div class="status-badge status-done" id="result-header">DONE</div>
+                        </div>
+
+                        <div class="flex flex-col flex-grow bg-white relative p-6 sm:p-8">
+
+                            <div
+                                class="flex-grow flex flex-col justify-center items-center text-center w-full max-w-2xl mx-auto">
+                                <h2 class="text-4xl sm:text-6xl font-extrabold text-indigo-600 mb-4 tracking-tight"
+                                    id="back-word"></h2>
+
+                                <div
+                                    class="flex items-center gap-3 mb-6 bg-slate-50 border border-slate-200 px-5 py-2 rounded-xl shadow-sm">
+                                    <p class="text-lg sm:text-xl text-slate-600 font-mono font-medium"
+                                        id="back-phonetic"></p>
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="text-indigo-500 hover:text-indigo-700 hover:bg-indigo-50 transition-colors cursor-pointer p-1.5 rounded-full"
+                                        title="Listen">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <p class="text-xl sm:text-2xl text-slate-800 font-bold mb-6" id="back-mean"></p>
+
+                                <div
+                                    class="w-full text-left bg-indigo-50/50 border border-indigo-100 rounded-xl p-5 shadow-sm relative mt-2">
+                                    <div
+                                        class="absolute -top-3 left-4 bg-white px-3 border border-indigo-100 rounded-full text-[10px] font-bold text-indigo-500 uppercase tracking-wide">
+                                        Context Confirmed</div>
+                                    <p class="text-base sm:text-lg text-slate-700 leading-relaxed font-medium"
+                                        id="back-ex"></p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 flex justify-center gap-3 w-full shrink-0">
+                                <button onclick="prevCard()"
+                                    class="btn-outline flex-1 max-w-[140px] py-3 text-sm font-bold rounded-xl">Review
+                                    Task</button>
+                                <button onclick="nextCard()" id="next-btn"
+                                    class="btn-primary flex-1 max-w-[180px] py-3 flex items-center justify-center gap-2 text-sm font-bold shadow-md rounded-xl">
+                                    Next Task
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div
+                                class="w-full flex justify-center items-center shrink-0 mt-4 border-t border-slate-100 pt-3">
+                                <p class="text-[11px] text-slate-400 font-medium tracking-wide m-0">Copyright &copy;
+                                    Hoàng Trường English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== SUMMARY SCREEN (SPRINT REVIEW) =================== -->
+        <div id="final-screen" class="workspace-window flex-col relative z-20 h-[80vh] min-h-[600px] max-h-[850px]"
+            style="display: none;">
+            <div class="window-header bg-slate-50">
+                <div class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Sprint Report
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 flex flex-col h-full bg-white relative">
+                <div class="text-center mb-6 shrink-0">
+                    <div
+                        class="inline-flex items-center justify-center w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto mb-4 shadow-sm border border-emerald-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800">SPRINT COMPLETED</h2>
+                    <p id="completion-datetime" class="text-sm text-slate-500 mt-1 font-medium"></p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 shrink-0">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Accuracy
+                        </p>
+                        <p class="text-2xl font-extrabold mt-1 text-slate-800" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Time
+                            Tracked</p>
+                        <p class="text-xl font-bold mt-1 text-slate-700" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Completed
+                        </p>
+                        <p class="text-xl text-emerald-600 font-bold mt-1" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <p class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">Assisted
+                        </p>
+                        <p class="text-xl text-amber-500 font-bold mt-1" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-slate-200 rounded-xl w-full mb-6 shrink relative shadow-sm">
+                    <table class="w-full min-w-[450px] text-left text-sm border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-slate-100 text-slate-500 text-xs uppercase tracking-wider font-bold">
+                            <tr>
+                                <th class="p-3 pl-4 border-b border-slate-200">Status</th>
+                                <th class="p-3 border-b border-slate-200">Task (Verb)</th>
+                                <th class="p-3 border-b border-slate-200">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body"
+                            class="text-slate-700 font-medium divide-y divide-slate-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="resetQuizToSummary()"
+                    class="btn-primary w-full sm:w-1/2 mx-auto py-3.5 text-sm sm:text-base font-bold tracking-wide mb-2 shrink-0">
+                    START NEW SPRINT
+                </button>
+                <div class="w-full flex justify-center items-center shrink-0 mt-3 pt-3 border-t border-slate-100">
+                    <p class="text-[11px] text-slate-400 font-medium tracking-wide m-0">Copyright &copy; Hoàng Trường
+                        English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for TOEIC VOCAB - ACTION VERBS
+        // Modified example sentences to ensure base form of verbs fit perfectly for grammar accuracy.
+        const flashcards = [
+            { word: "provide", phonetic: "/prəˈvaɪd/", type: "verb", mean: "cung cấp", ex: "The hotel will _______ free breakfast.", exVi: "Khách sạn sẽ cung cấp bữa sáng miễn phí." },
+            { word: "offer", phonetic: "/ˈɒfər/", type: "verb", mean: "cung cấp / đề nghị", ex: "The company can _______ excellent benefits.", exVi: "Công ty có thể cung cấp những phúc lợi tuyệt vời." },
+            { word: "require", phonetic: "/rɪˈkwaɪər/", type: "verb", mean: "yêu cầu", ex: "This position will _______ experience.", exVi: "Vị trí này sẽ yêu cầu kinh nghiệm." },
+            { word: "include", phonetic: "/ɪnˈkluːd/", type: "verb", mean: "bao gồm", ex: "Does the price _______ tax?", exVi: "Giá cả có bao gồm thuế không?" },
+            { word: "increase", phonetic: "/ɪnˈkriːs/", type: "verb", mean: "tăng", ex: "We expect sales to _______ next month.", exVi: "Chúng tôi kỳ vọng doanh số sẽ tăng vào tháng tới." },
+            { word: "decrease", phonetic: "/dɪˈkriːs/", type: "verb", mean: "giảm", ex: "We need to _______ our costs by 5%.", exVi: "Chúng ta cần giảm chi phí của mình xuống 5%." },
+            { word: "improve", phonetic: "/ɪmˈpruːv/", type: "verb", mean: "cải thiện", ex: "We must _______ our customer service.", exVi: "Chúng ta phải cải thiện dịch vụ khách hàng." },
+            { word: "reduce", phonetic: "/rɪˈdjuːs/", type: "verb", mean: "giảm", ex: "The company wants to _______ expenses.", exVi: "Công ty muốn giảm các khoản chi phí." },
+            { word: "expand", phonetic: "/ɪkˈspænd/", type: "verb", mean: "mở rộng", ex: "We plan to _______ the business overseas.", exVi: "Chúng tôi dự định mở rộng kinh doanh ra nước ngoài." },
+            { word: "develop", phonetic: "/dɪˈveləp/", type: "verb", mean: "phát triển", ex: "They will _______ a new product.", exVi: "Họ sẽ phát triển một sản phẩm mới." },
+            { word: "launch", phonetic: "/lɔːntʃ/", type: "verb", mean: "ra mắt", ex: "The company will _______ the product in June.", exVi: "Công ty sẽ ra mắt sản phẩm vào tháng Sáu." },
+            { word: "submit", phonetic: "/səbˈmɪt/", type: "verb", mean: "nộp", ex: "Please _______ your application by Friday.", exVi: "Vui lòng nộp đơn ứng tuyển của bạn trước thứ Sáu." },
+            { word: "complete", phonetic: "/kəmˈpliːt/", type: "verb", mean: "hoàn thành", ex: "Please _______ the form carefully.", exVi: "Vui lòng hoàn thành biểu mẫu một cách cẩn thận." },
+            { word: "review", phonetic: "/rɪˈvjuː/", type: "verb", mean: "xem xét", ex: "The manager will _______ the report today.", exVi: "Quản lý sẽ xem xét bản báo cáo vào hôm nay." },
+            { word: "approve", phonetic: "/əˈpruːv/", type: "verb", mean: "phê duyệt", ex: "The board will _______ the proposal tomorrow.", exVi: "Hội đồng quản trị sẽ phê duyệt đề xuất vào ngày mai." },
+            { word: "arrange", phonetic: "/əˈreɪndʒ/", type: "verb", mean: "sắp xếp", ex: "Can you _______ a meeting for us?", exVi: "Bạn có thể sắp xếp một cuộc họp cho chúng tôi không?" },
+            { word: "attend", phonetic: "/əˈtend/", type: "verb", mean: "tham dự", ex: "I plan to _______ the seminar.", exVi: "Tôi dự định tham dự buổi hội thảo." },
+            { word: "contact", phonetic: "/ˈkɒntækt/", type: "verb", mean: "liên hệ", ex: "Please _______ customer service.", exVi: "Vui lòng liên hệ dịch vụ khách hàng." },
+            { word: "recommend", phonetic: "/ˌrekəˈmend/", type: "verb", mean: "đề xuất", ex: "I highly _______ this service.", exVi: "Tôi đánh giá cao (đề xuất) dịch vụ này." },
+            { word: "announce", phonetic: "/əˈnaʊns/", type: "verb", mean: "thông báo", ex: "The company will _______ a new policy soon.", exVi: "Công ty sẽ sớm thông báo một chính sách mới." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-calm-peaceful-chill-hop-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.15;
+
+        // Custom UI sounds for Productivity Theme
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.3);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                // Workspace boot sound
+                playTone('sine', 600, 900, 0.05, 0.2, 0);
+                playTone('sine', 900, 1200, 0.05, 0.3, 0.1);
+            } else if (type === 'success') {
+                // Task Done Ping (like Asana/Todoist)
+                playTone('sine', 880, 880, 0.08, 0.15, 0);
+                playTone('sine', 1320, 1320, 0.08, 0.3, 0.1);
+            } else if (type === 'error') {
+                // Soft error thud
+                playTone('triangle', 300, 200, 0.08, 0.2, 0);
+            } else if (type === 'flip') {
+                // Card swipe swoosh
+                playTone('sine', 500, 300, 0.03, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="transition-colors hover:bg-slate-50">
+                    <td class="p-4 pl-4 font-bold text-slate-800">${item.word}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-2 py-1 bg-indigo-50 text-indigo-600 rounded text-[10px] font-bold uppercase tracking-wide border border-indigo-100">${item.type}</span>
+                    </td>
+                    <td class="p-4 text-slate-500">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause();
+                currentFallbackAudio.currentTime = 0;
+            }
+            const word = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`);
+
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(word);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-20' : (wordLength < 9 ? 'w-28' : 'w-36');
+
+            document.getElementById('word-ex').innerHTML = card.ex.replace('_______', `<span class="border-b-2 border-slate-300 inline-block ${underlineWidth} mx-1 align-text-bottom opacity-80"></span>`);
+            document.getElementById('word-exVi').textContent = card.exVi;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-lg sm:text-xl font-bold text-slate-400 self-center px-0.5';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+
+                        input.className = 'task-input editable-input w-[28px] h-[38px] sm:w-[38px] sm:h-[48px] text-base sm:text-xl';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('text-red-500', 'border-red-400', 'bg-red-50');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-3'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.task-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 5 ? 1 : (target.length >= 10 ? 3 : 2);
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].className = 'task-input w-[28px] h-[38px] sm:w-[38px] sm:h-[48px] text-base sm:text-xl text-amber-600 border-amber-300 bg-amber-50 pointer-events-none';
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = card.word.replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.task-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const header = document.getElementById('result-header');
+
+                if (hintUsedThisCard) {
+                    header.textContent = "DONE (WITH HELP)";
+                    header.className = "status-badge bg-amber-50 text-amber-600 border border-amber-200";
+                } else {
+                    header.textContent = "DONE";
+                    header.className = "status-badge status-done";
+                }
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = `${card.mean}`;
+
+                document.getElementById('back-ex').innerHTML = card.ex.replace('_______', `<span class="text-indigo-600 font-bold bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 shadow-sm">${card.word}</span>`);
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 300);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-red-500', 'border-red-400', 'bg-red-50');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `Log recorded: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            scoreEl.className = `text-2xl font-extrabold mt-1 ${scorePercentage >= 80 ? 'text-emerald-600' : 'text-indigo-600'}`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-600 text-[10px] font-bold border border-amber-200 bg-amber-50 px-2 py-1 rounded-full uppercase">Assisted</span>'
+                    : '<span class="text-emerald-600 text-[10px] font-bold border border-emerald-200 bg-emerald-50 px-2 py-1 rounded-full uppercase">Done</span>';
+
+                return `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-3 pl-4">${statusIcon}</td>
+                        <td class="p-3 font-bold text-slate-800">${item.word}</td>
+                        <td class="p-3 text-slate-500 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
