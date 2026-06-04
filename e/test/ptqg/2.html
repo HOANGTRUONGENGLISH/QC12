@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KỲ THI THPTQG - ĐỀ THAM KHẢO 02</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS cho thanh cuộn */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        #passage-container::-webkit-scrollbar,
+        #questions-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #passage-container::-webkit-scrollbar-track,
+        #questions-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #passage-container::-webkit-scrollbar-thumb,
+        #questions-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+
+    <div id="app" class="flex flex-col h-full w-full"></div>
+
+    <script>
+        const quizData = [
+            {
+                title: "Part 1: Guided Cloze Test - Smart Solar Solutions",
+                instruction: "Read the following leaflet and mark the letter A, B, C, or D on your answer sheet to indicate the correct word or phrase that best fits each of the numbered blanks from 1 to 6.",
+                passage: "🌞 GO GREEN, BRIGHTEN YOUR SCENE: SMART SOLAR SOLUTIONS! 🌞\nAre you looking to cut down on electricity bills while elegantly illuminating your garden? SunGlow Solar provides eco-friendly lighting systems tailored for modern homes. To maximize your investment, we strongly recommend (1) _______ the setup guidelines carefully before unboxing your new lights.\n\nQuick Installation Tips:\n❖ Location is key: Select a spot that receives uninterrupted sunlight for at least 8 hours a day. Avoid placing panels near streetlamps, as external brightness will prevent the built-in sensors (2) _______ triggering the automatic night mode.\n❖ Secure the foundation: Whether mounting on walls (3) _______ driving stakes into the soil, ensure that every fixture is firmly anchored to withstand heavy rain and strong winds.\n❖ Keep it spotless: A thick layer of dust can significantly reduce energy absorption. Therefore, wiping the solar panels (4) _______ is essential to maintain peak efficiency year-round.\n\nSpecial Offer for Early Birds! Don't miss this opportunity to upgrade to (5) _______ truly sustainable energy system. (6) _______ you require professional assistance, our 24/7 technical support team is always ready to help. Call us at 1800-SUNGLOW today!",
+                passageTranslation: "🌞 SỐNG XANH, THẮP SÁNG KHÔNG GIAN CỦA BẠN: GIẢI PHÁP NĂNG LƯỢNG MẶT TRỜI THÔNG MINH! 🌞\nBạn đang tìm cách cắt giảm hóa đơn tiền điện trong khi vẫn chiếu sáng khu vườn của mình một cách thanh lịch? SunGlow Solar cung cấp các hệ thống chiếu sáng thân thiện với môi trường được thiết kế riêng cho các ngôi nhà hiện đại. Để tối đa hóa khoản đầu tư của bạn, chúng tôi đặc biệt khuyên bạn nên (1) đọc kỹ các hướng dẫn thiết lập trước khi mở hộp đèn mới.\n\nMẹo Cài đặt Nhanh:\n❖ Vị trí là chìa khóa: Chọn một điểm nhận được ánh sáng mặt trời không bị gián đoạn ít nhất 8 giờ mỗi ngày. Tránh đặt các tấm pin gần đèn đường, vì độ sáng bên ngoài sẽ ngăn các cảm biến tích hợp (2) khỏi việc kích hoạt chế độ ban đêm tự động.\n❖ Cố định nền tảng: Cho dù gắn trên tường (3) hay đóng cọc xuống đất, hãy đảm bảo rằng mỗi thiết bị cố định được neo chắc chắn để chịu được mưa lớn và gió mạnh.\n❖ Giữ nó sạch sẽ: Một lớp bụi dày có thể làm giảm đáng kể sự hấp thụ năng lượng. Do đó, việc lau chùi các tấm pin mặt trời (4) một cách thường xuyên là điều cần thiết để duy trì hiệu suất cao nhất quanh năm.\n\nƯu đãi Đặc biệt cho Người mua sớm! Đừng bỏ lỡ cơ hội này để nâng cấp lên (5) một hệ thống năng lượng thực sự bền vững. (6) Nếu bạn cần hỗ trợ chuyên nghiệp, đội ngũ hỗ trợ kỹ thuật 24/7 của chúng tôi luôn sẵn sàng trợ giúp. Gọi cho chúng tôi theo số 1800-SUNGLOW ngay hôm nay!",
+                questions: [
+                    { id: 1, text: "Question 1", options: ["to read", "reading", "read", "to reading"], correct: 1, explanation: "Cấu trúc: recommend + V-ing (đề xuất làm việc gì đó)." },
+                    { id: 2, text: "Question 2", options: ["against", "with", "from", "about"], correct: 2, explanation: "Cấu trúc: prevent somebody/something FROM doing something (ngăn cản ai/cái gì làm gì)." },
+                    { id: 3, text: "Question 3", options: ["so", "or", "but", "and"], correct: 1, explanation: "Cấu trúc tương quan: Whether... or... (Cho dù... hay...)." },
+                    { id: 4, text: "Question 4", options: ["regular", "regularity", "regulate", "regularly"], correct: 3, explanation: "Cần một trạng từ (adverb) để bổ nghĩa cho động từ (danh động từ) 'wiping'. Regularly = một cách thường xuyên." },
+                    { id: 5, text: "Question 5", options: ["a", "an", "the", "Ø (no article)"], correct: 0, explanation: "'system' là danh từ đếm được số ít, bắt đầu bằng phụ âm (truly) nên dùng mạo từ 'a' (một hệ thống năng lượng thực sự bền vững)." },
+                    { id: 6, text: "Question 6", options: ["Had", "Unless", "Should", "Were"], correct: 2, explanation: "Đảo ngữ câu điều kiện loại 1: Should + S + V(nguyên thể), S + will/can/may... (Nếu bạn cần...)." }
+                ]
+            },
+            {
+                title: "Part 2: Reading Comprehension - Sharenting",
+                instruction: "Read the passage and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions from 7 to 16.",
+                passage: "In today’s hyper-connected world, documenting family milestones has shifted from private photo albums to public social media feeds. This phenomenon, widely known as \"sharenting,\" involves parents broadcasting their children's daily lives to a virtual audience. [I] To many modern parents, sharing a video of a toddler's first steps or a messy breakfast feels like a natural extension of their digital existence. [II] It offers a quick way to keep distant relatives informed and helps isolated caregivers build a supportive online community. [III] Child privacy advocates warn that this practice inadvertently creates a permanent digital footprint for minors long before they can provide informed consent. [IV]\n\nThe motivations driving this constant sharing are often deeply psychological. Social media platforms are engineered to provide immediate validation, and for exhausted parents, the influx of \"likes\" and affirming comments serves as a digital reward that temporarily alleviates the stress of child-rearing. Yet, this pursuit of online camaraderie often blinds caregivers to severe cybersecurity threats. When parents publicly post names, birthdates, and locations, they expose their children to identity theft and \"digital kidnapping,\" a disturbing trend where strangers misappropriate images of minors to roleplay as their parents on malicious forums.\n\nBeyond the immediate security risks, the emotional toll on the subjects of sharenting is becoming increasingly apparent. As the first generation of \"sharented\" children transitions into adolescence, many experience a profound sense of betrayal upon discovering their entire childhood has been publicly archived. Rather than enjoying their formative years privately, young people frequently feel that their most vulnerable moments were commodified into content to boost their parents' online engagement. Family psychologists note that these teenagers are increasingly exhibiting symptoms of anxiety, feeling as though their private lives are constantly under public surveillance.\n\nAddressing this modern dilemma requires a fundamental shift in how society views digital ownership within the family. Parents must recognize that a child’s life is an independent narrative, not merely an extension of their own personal brand. Implementing mindful practices such as blurring faces, using pseudonyms, and proactively asking for a child's permission before posting is imperative. Ultimately, prioritizing a child's right to digital self-determination must outweigh the desire for online validation if parental pride is to give way to genuine protection.",
+                passageTranslation: "Trong thế giới siêu kết nối ngày nay, việc ghi lại các cột mốc quan trọng của gia đình đã chuyển từ các album ảnh riêng tư sang các bảng tin mạng xã hội công khai. Hiện tượng này, được biết đến rộng rãi với cái tên \"sharenting\" (cha mẹ chia sẻ quá mức hình ảnh con cái), liên quan đến việc các bậc phụ huynh phát sóng cuộc sống hàng ngày của con cái họ cho một lượng khán giả ảo. Đối với nhiều bậc cha mẹ hiện đại, việc chia sẻ video về những bước đi đầu tiên của trẻ mới biết đi hay một bữa sáng lộn xộn có cảm giác như một sự mở rộng tự nhiên của sự tồn tại kỹ thuật số của họ. Nó mang lại một cách nhanh chóng để giữ cho những người họ hàng ở xa được cập nhật thông tin và giúp những người chăm sóc bị cô lập xây dựng một cộng đồng trực tuyến hỗ trợ. Tuy nhiên, các nhà vận động quyền riêng tư của trẻ em cảnh báo rằng hành vi này vô tình tạo ra một dấu chân kỹ thuật số vĩnh viễn cho trẻ vị thành niên rất lâu trước khi chúng có thể đưa ra sự đồng ý có hiểu biết.\n\nNhững động lực thúc đẩy việc chia sẻ liên tục này thường mang đậm tính tâm lý. Các nền tảng truyền thông xã hội được thiết kế để cung cấp sự xác nhận ngay lập tức, và đối với những bậc cha mẹ kiệt sức, dòng chảy của những lượt \"thích\" và những bình luận khẳng định đóng vai trò như một phần thưởng kỹ thuật số giúp tạm thời làm giảm bớt căng thẳng của việc nuôi dạy con cái. Tuy nhiên, việc theo đuổi tình bạn trực tuyến này thường làm những người chăm sóc mù quáng trước các mối đe dọa an ninh mạng nghiêm trọng. Khi cha mẹ công khai đăng tên, ngày sinh và vị trí, họ phơi bày con cái mình trước hành vi đánh cắp danh tính và \"bắt cóc kỹ thuật số\", một xu hướng đáng lo ngại nơi những người lạ lạm dụng hình ảnh của trẻ vị thành niên để đóng vai làm cha mẹ chúng trên các diễn đàn độc hại.\n\nBên cạnh những rủi ro an ninh trước mắt, tổn thất tinh thần đối với các đối tượng của sharenting đang trở nên ngày càng rõ ràng. Khi thế hệ những đứa trẻ bị \"sharented\" đầu tiên bước vào tuổi vị thành niên, nhiều em trải qua một cảm giác bị phản bội sâu sắc khi phát hiện ra toàn bộ tuổi thơ của mình đã được lưu trữ công khai. Thay vì được tận hưởng những năm tháng hình thành nhân cách một cách riêng tư, những người trẻ tuổi thường xuyên cảm thấy rằng những khoảnh khắc dễ bị tổn thương nhất của họ đã bị thương mại hóa thành nội dung để thúc đẩy tương tác trực tuyến của cha mẹ họ. Các nhà tâm lý học gia đình lưu ý rằng những thanh thiếu niên này đang ngày càng thể hiện các triệu chứng lo âu, cảm thấy như thể cuộc sống riêng tư của chúng liên tục bị giám sát công khai.\n\nViệc giải quyết tình thế tiến thoái lưỡng nan thời hiện đại này đòi hỏi một sự thay đổi cơ bản trong cách xã hội nhìn nhận quyền sở hữu kỹ thuật số trong gia đình. Cha mẹ phải nhận ra rằng cuộc sống của một đứa trẻ là một câu chuyện độc lập, không chỉ đơn thuần là một sự mở rộng của thương hiệu cá nhân của chính họ. Việc thực hiện các thực hành có chánh niệm như làm mờ khuôn mặt, sử dụng biệt danh và chủ động xin phép trẻ trước khi đăng bài là điều bắt buộc. Cuối cùng, việc ưu tiên quyền tự quyết kỹ thuật số của trẻ em phải vượt lên trên mong muốn được xác nhận trực tuyến nếu niềm tự hào của cha mẹ nhường chỗ cho sự bảo vệ chân chính.",
+                questions: [
+                    {
+                        id: 7, text: "According to paragraph 1, broadcasting children's lives online rather than keeping private photo albums will _______.", options: [
+                            "bring about a full redesign of the virtual audience for distant relatives",
+                            "lead to the creation of an unerasable digital footprint without the minors' consent",
+                            "cause psychological injuries to isolated caregivers seeking a supportive community",
+                            "involve spending a huge amount of money building a digital existence"
+                        ], correct: 1, explanation: "Đoạn 1 nêu: 'Child privacy advocates warn that this practice inadvertently creates a permanent digital footprint for minors long before they can provide informed consent.' (Hành vi này tạo ra dấu chân kỹ thuật số vĩnh viễn (unerasable) mà không có sự đồng ý của trẻ)."
+                    },
+                    { id: 8, text: "The word alleviates in paragraph 2 mostly means _______.", options: ["aggravates", "mitigates", "evaluates", "triggers"], correct: 1, explanation: "'Alleviate' có nghĩa là làm giảm bớt (căng thẳng, nỗi đau). Đồng nghĩa với nó là 'mitigate' (làm dịu bớt, giảm nhẹ)." },
+                    {
+                        id: 9, text: "Which of the following best summarises paragraph 2?", options: [
+                            "The stories about child-rearing reach a much wider audience due to the joint effort of malicious forums and social media platforms.",
+                            "Cybersecurity threats and malicious online forums have a role to play in the dissemination of comforting comments.",
+                            "Identity theft buzzwords now fill every sector, with their reach being amplified by exhausted parents and distant relatives.",
+                            "Parents seek validation to ease the stress of child-rearing, but this oversharing inadvertently subjects their children to severe digital risks."
+                        ], correct: 3, explanation: "Đoạn 2 nói về nguyên nhân tâm lý (cha mẹ cần lời khen để giảm stress) nhưng hậu quả lại là phơi bày con cái trước rủi ro mạng (đánh cắp danh tính, bắt cóc kỹ thuật số). D tóm tắt chính xác hai ý này."
+                    },
+                    {
+                        id: 10, text: "According to paragraph 2, what fundamentally drives modern caregivers to continuously broadcast their children's lives?", options: [
+                            "Increasing psychological stress and the need for immediate digital validation",
+                            "Public pressure on families to opt for digital kidnapping and identity theft",
+                            "Growing public interest in the development of unerasable digital footprints",
+                            "Public belief that online engagement and public surveillance are unnecessary"
+                        ], correct: 0, explanation: "Đoạn 2 nêu: 'The motivations driving this constant sharing are often deeply psychological. Social media platforms are engineered to provide immediate validation, and for exhausted parents... serves as a digital reward that temporarily alleviates the stress...'"
+                    },
+                    {
+                        id: 11, text: "What emotional challenge do \"sharented\" adolescents face regarding their parents' oversharing?", options: [
+                            "Exposure to severe risks like identity theft and digital kidnapping on malicious forums",
+                            "Insufficient comforting comments from a supportive digital community",
+                            "Elevated anxiety due to the feeling that their private lives are constantly under public surveillance",
+                            "A lack of clear terminology regarding their digital self-determination"
+                        ], correct: 2, explanation: "Đoạn 3 chỉ ra: 'these teenagers are increasingly exhibiting symptoms of anxiety, feeling as though their private lives are constantly under public surveillance.'"
+                    },
+                    { id: 12, text: "The word their in paragraph 3 refers to _______.", options: ["parents", "psychologists", "strangers", "teenagers"], correct: 3, explanation: "'these teenagers are increasingly exhibiting symptoms of anxiety, feeling as though their private lives are constantly under public surveillance.' Từ 'their' thay thế cho 'these teenagers'." },
+                    {
+                        id: 13, text: "Which of the following best paraphrases the underlined sentence in paragraph 3?\n(Rather than enjoying their formative years privately, young people frequently feel that their most vulnerable moments were commodified into content to boost their parents' online engagement.)", options: [
+                            "For their formative years to be enjoyed privately, revelations about their vulnerable moments and practical measures to boost online engagement are required.",
+                            "Instead of having a shielded upbringing, youths often feel their sensitive early experiences were turned into material just to increase their parents' social media interactions.",
+                            "To make way for meaningful online engagement in reality, it is vital to expose young people to proper and specific content in their formative years.",
+                            "The real solution to the issue of online engagement is to commodify vulnerable moments into content rather than just enjoy formative years privately."
+                        ], correct: 1, explanation: "Câu gốc: Thay vì được tận hưởng những năm tháng hình thành nhân cách một cách riêng tư, những người trẻ cảm thấy khoảnh khắc dễ tổn thương của họ bị biến thành nội dung câu view cho cha mẹ. Đáp án B diễn giải lại chính xác ý nghĩa này."
+                    },
+                    {
+                        id: 14, text: "Which of the following can be inferred from the passage?", options: [
+                            "Parents are effectively utilising the tools and resources to verify most malicious forums, tackling the wide spread of digital kidnapping.",
+                            "Sharenting brings parents benefits in terms of validation and camaraderie without having to expose their minors to severe risks.",
+                            "A child’s digital identity is often shaped and exposed to the public by caregivers before the child has any awareness or agency over it.",
+                            "The shift from private photo albums to public broadcasting reflects parents' genuine commitment to their children's digital self-determination."
+                        ], correct: 2, explanation: "Có thể suy luận từ đoạn 1: 'creates a permanent digital footprint for minors long before they can provide informed consent' - dấu chân số của trẻ bị cha mẹ định hình từ rất sớm khi trẻ chưa có nhận thức."
+                    },
+                    { id: 15, text: "Where in the passage does the following sentence best fit?\nThe flip side of this virtual community-building, unfortunately, involves a complex web of ethical and security concerns.", options: ["[IV]", "[III]", "[II]", "[I]"], correct: 1, explanation: "Câu này đóng vai trò bản lề. Phía trước nó (vị trí [III]) nói về lợi ích 'build a supportive online community'. Chữ 'The flip side of this virtual community-building' (mặt trái của việc xây dựng cộng đồng ảo này) móc nối trực tiếp với câu trước đó." },
+                    {
+                        id: 16, text: "Which of the following best summarises the passage?", options: [
+                            "Sharenting is surging as parents broadcast milestones in well-meaning rhetoric, distracting the public and postponing the deep psychological cuts experts deem urgent.",
+                            "Malicious strangers follow the trend of sharenting, boasting about promising online forums in press releases while quietly going on damaging the digital community.",
+                            "Instead of investing in digital self-determination, modern parents have a tendency to opt for denying the claim of identity theft on their social media feeds.",
+                            "While parents use sharenting to seek validation and community, the practice compromises children's privacy, creates security risks, and inflicts psychological distress."
+                        ], correct: 3, explanation: "Đoạn văn trình bày: Lý do cha mẹ thích sharenting (tìm sự xác nhận, cộng đồng) -> Rủi ro bảo mật (đánh cắp danh tính) -> Hậu quả tâm lý cho trẻ -> Lời khuyên. Đáp án D bao quát trọn vẹn các ý này."
+                    }
+                ]
+            },
+            {
+                title: "Part 3: Guided Cloze Test - The Film 'Red Rain'",
+                instruction: "Read the following piece of news and mark the letter A, B, C or D on your answer sheet to indicate the option that best fits each of the numbered blanks from 17 to 22.",
+                passage: "On the afternoon of July 23rd, in Hanoi, the People's Army Film Studio held a press conference to introduce and launch the film “Red Rain”, (17)_____ from a script by writer Chu Lai, and directed by Meritorious Artist Dang Thai Huyen, Deputy Director in charge of Art, People's Army Film.\n\nThe film is inspired by and based on the events of the 81 days and nights of (18)_____ and tenacious fighting by the people, cadres, and soldiers defending Quang Tri Citadel in 1972, (19)_____ was one of the fiercest battles of the 20th century. \n\nThe film combines real-life footage with modern special effects, allowing viewers to (20)_____ the atmosphere of the 81-day and 81-night battle. In addition, the film recreates the Paris Conference, showcasing Vietnam 's diplomatic prowess and just cause, contributing to a (21)_____ portrayal of the journey to independence and peace. The film is expected to be a bridge between the past and the present, inspiring and awakening in today's young generation a spirit of historical inquiry, appreciation for (22)_____ sacrifice of their ancestors, fostering patriotism.",
+                passageTranslation: "Vào chiều ngày 23 tháng 7, tại Hà Nội, Điện ảnh Quân đội Nhân dân đã tổ chức họp báo giới thiệu và ra mắt bộ phim \"Mưa Đỏ\", được chuyển thể (17) từ kịch bản của nhà văn Chu Lai, và do Nghệ sĩ Ưu tú Đặng Thái Huyền, Phó Giám đốc phụ trách Nghệ thuật, Điện ảnh Quân đội Nhân dân đạo diễn.\n\nBộ phim được lấy cảm hứng và dựa trên các sự kiện của 81 ngày đêm chiến đấu anh dũng (18) và kiên cường của nhân dân, cán bộ, chiến sĩ bảo vệ Thành cổ Quảng Trị năm 1972, trận đánh mà (19) là một trong những trận chiến ác liệt nhất của thế kỷ 20.\n\nPhim kết hợp những thước phim tư liệu đời thực với các kỹ xảo hiện đại, cho phép người xem đắm chìm (20) vào bầu không khí của trận chiến 81 ngày đêm. Ngoài ra, phim còn tái hiện Hội nghị Paris, phô diễn sức mạnh ngoại giao và chính nghĩa của Việt Nam, góp phần tạo nên một bức chân dung toàn diện (21) về hành trình đi đến độc lập và hòa bình. Bộ phim được kỳ vọng sẽ là cầu nối giữa quá khứ và hiện tại, truyền cảm hứng và đánh thức trong thế hệ trẻ ngày nay tinh thần tìm hiểu lịch sử, sự trân trọng đối với mọi (22) sự hy sinh của cha ông, nuôi dưỡng lòng yêu nước.",
+                questions: [
+                    { id: 17, text: "Question 17", options: ["adapting", "to adapt", "which adapted", "adapted"], correct: 3, explanation: "Rút gọn mệnh đề quan hệ dạng bị động: bộ phim 'Mưa Đỏ' được chuyển thể từ... (which was adapted from... -> adapted from)." },
+                    { id: 18, text: "Question 18", options: ["hero", "heroine", "heroic", "heroically"], correct: 2, explanation: "Trước danh từ 'fighting' và sau giới từ 'of', ta cần tính từ để bổ nghĩa. Heroic (anh dũng)." },
+                    { id: 19, text: "Question 19", options: ["who", "which", "when", "that"], correct: 1, explanation: "Đại từ quan hệ 'which' thay thế cho toàn bộ sự kiện trận chiến bảo vệ Thành cổ Quảng Trị trước dấu phẩy. 'That' không dùng sau dấu phẩy." },
+                    { id: 20, text: "Question 20", options: ["soak up", "put up", "live up", "bring up"], correct: 0, explanation: "Cụm động từ 'soak up' có nghĩa là đắm chìm, tận hưởng, hấp thụ (bầu không khí)." },
+                    { id: 21, text: "Question 21", options: ["inclusive", "thorough", "comprehensive", "holistic"], correct: 2, explanation: "'a comprehensive portrayal' (một bức chân dung toàn diện). 'Comprehensive' đi rất tự nhiên với 'portrayal' trong ngữ cảnh này." },
+                    { id: 22, text: "Question 22", options: ["every", "most", "all", "many"], correct: 0, explanation: "Danh từ 'sacrifice' ở đây đang để ở dạng số ít, đếm được. Do đó chỉ có 'every' (mỗi, mọi) là phù hợp (every sacrifice). All, most, many phải đi với danh từ số nhiều." }
+                ]
+            },
+            {
+                title: "Part 4: Reading Comprehension - North-South High-Speed Railway",
+                instruction: "Read the passage and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions from 23 to 30.",
+                passage: "Vietnam is currently taking significant steps toward realizing one of its most ambitious infrastructure projects to date: the North-South high-speed railway. Spanning over 1,500 kilometers, this mega-project aims to seamlessly connect the capital city of Hanoi in the north with the southern economic hub of Ho Chi Minh City. By operating at design speeds of up to 350 kilometers per hour, the new railway will shave hours off travel time, transforming a journey that currently takes more than a day into a brief trip of just over five hours.\n\nThe economic implications of this colossal network are profound. Experts anticipate that the railway will act as a powerful catalyst for regional development. It will streamline the movement of labor and goods, thereby attracting foreign investment to provinces that were previously considered too remote. Furthermore, the tourism sector is expected to experience a massive boom. With easier access, both domestic and international travelers will be able to explore coastal cities and cultural heritage sites along the route with unprecedented convenience.\n\nBeyond economic growth, the project promises substantial environmental benefits. Designed as a fully electrified system, the high-speed trains will offer a greener alternative to domestic flights and road transport, which currently dominate the route. While the railway will significantly reduce national carbon emissions, its immense construction costs and complex land clearance procedures remain formidable challenges for the government. Addressing these financial and logistical hurdles will require meticulous planning and international cooperation.\n\nUltimately, the North-South high-speed railway represents more than just a modern mode of transportation; it is a symbol of Vietnam's long-term vision for sustainable growth. Although the completion of the entire route will span over a decade, citizens are already optimistic about the future. Once fully operational, it will undoubtedly reshape the country's demographic distribution, bridging the geographical and economic divide between urban centers and rural landscapes.",
+                passageTranslation: "Việt Nam hiện đang thực hiện những bước đi quan trọng hướng tới việc hiện thực hóa một trong những dự án cơ sở hạ tầng tham vọng nhất cho đến nay: tuyến đường sắt cao tốc Bắc-Nam. Kéo dài hơn 1.500 km, siêu dự án này nhằm mục đích kết nối liền mạch thủ đô Hà Nội ở phía bắc với trung tâm kinh tế phía nam là Thành phố Hồ Chí Minh. Bằng cách hoạt động ở tốc độ thiết kế lên tới 350 km một giờ, tuyến đường sắt mới sẽ cắt giảm (shave off) hàng giờ thời gian di chuyển, biến một hành trình hiện tại mất hơn một ngày thành một chuyến đi ngắn chỉ hơn năm giờ.\n\nÝ nghĩa kinh tế của mạng lưới khổng lồ này là rất sâu sắc. Các chuyên gia dự đoán rằng tuyến đường sắt sẽ đóng vai trò như một chất xúc tác mạnh mẽ cho phát triển khu vực. Nó sẽ tinh giản (streamline) sự di chuyển của lao động và hàng hóa, từ đó thu hút đầu tư nước ngoài vào các tỉnh mà trước đây bị coi là quá xa xôi. Hơn nữa, ngành du lịch dự kiến sẽ trải qua một sự bùng nổ lớn. Với sự tiếp cận dễ dàng hơn, cả du khách trong và ngoài nước sẽ có thể khám phá các thành phố ven biển và các di sản văn hóa dọc theo tuyến đường với sự thuận tiện chưa từng có.\n\nNgoài tăng trưởng kinh tế, dự án còn hứa hẹn những lợi ích môi trường đáng kể. Được thiết kế như một hệ thống điện khí hóa hoàn toàn, các chuyến tàu cao tốc sẽ cung cấp một giải pháp thay thế xanh hơn cho các chuyến bay nội địa và vận tải đường bộ, những thứ hiện đang thống trị tuyến đường này. Mặc dù tuyến đường sắt sẽ giảm thiểu đáng kể lượng khí thải carbon quốc gia, chi phí xây dựng khổng lồ và quy trình giải phóng mặt bằng phức tạp vẫn là những thách thức đáng gờm đối với chính phủ. Việc giải quyết những rào cản tài chính và hậu cần này sẽ đòi hỏi sự lập kế hoạch tỉ mỉ và hợp tác quốc tế.\n\nCuối cùng, tuyến đường sắt cao tốc Bắc-Nam đại diện cho nhiều thứ hơn chỉ là một phương thức giao thông hiện đại; nó là biểu tượng cho tầm nhìn dài hạn của Việt Nam về tăng trưởng bền vững. Mặc dù việc hoàn thành toàn bộ tuyến đường sẽ kéo dài hơn một thập kỷ, người dân đã tỏ ra lạc quan về tương lai. Một khi đi vào hoạt động toàn diện, nó chắc chắn sẽ định hình lại sự phân bổ nhân khẩu học của đất nước, thu hẹp khoảng cách địa lý và kinh tế giữa các trung tâm đô thị và cảnh quan nông thôn.",
+                questions: [
+                    { id: 23, text: "The phrase shave hours off in paragraph 1 is OPPOSITE in meaning to _______.", options: ["curtail", "enact", "prolong", "defy"], correct: 2, explanation: "'Shave off' có nghĩa là cắt giảm, gọt bớt (thời gian). Trái nghĩa với nó là 'prolong' (kéo dài)." },
+                    { id: 24, text: "The word streamline in paragraph 2 is closest in meaning to _______.", options: ["prosecute", "scatter", "accumulate", "facilitate"], correct: 3, explanation: "'Streamline' có nghĩa là tổ chức hợp lý hóa, làm cho trôi chảy, tạo thuận lợi. Đồng nghĩa với 'facilitate' (tạo điều kiện thuận lợi)." },
+                    {
+                        id: 25, text: "Which of the following is TRUE according to paragraph 2?", options: [
+                            "The project will stimulate regional economies by improving the mobility of workers and products.",
+                            "Domestic flights will experience a massive boom due to easier access to coastal cities.",
+                            "The railway will discourage foreign investors from visiting remote provinces.",
+                            "Coastal cities and cultural heritage sites will remain too remote for international travelers."
+                        ], correct: 0, explanation: "Đoạn 2 nêu: 'act as a powerful catalyst for regional development. It will streamline the movement of labor and goods' (thúc đẩy kinh tế bằng cách cải thiện sự di chuyển của lao động và hàng hóa)."
+                    },
+                    {
+                        id: 26, text: "Which of the following best paraphrases the underlined sentence in paragraph 3?\n(While the railway will significantly reduce national carbon emissions, its immense construction costs and complex land clearance procedures remain formidable challenges for the government.)", options: [
+                            "Because the railway will reduce national carbon emissions, the government faces immense construction costs and complex land clearance procedures.",
+                            "Although the project will considerably lower the country's carbon footprint, the huge financial burden and difficult site clearance pose major difficulties.",
+                            "The government has overcome the challenges of construction costs in order to significantly reduce complex land clearance procedures.",
+                            "To significantly reduce the immense construction costs, the government will mandate complex land clearance procedures and national carbon emissions."
+                        ], correct: 1, explanation: "Câu gốc: Mặc dù giảm phát thải, nhưng chi phí và giải phóng mặt bằng là thách thức lớn. Câu B diễn giải lại chính xác: Mặc dù dự án giảm lượng carbon, gánh nặng tài chính khổng lồ và giải tỏa mặt bằng khó khăn đặt ra những khó khăn lớn."
+                    },
+                    { id: 27, text: "The word it in paragraph 4 refers to _______.", options: ["demographic distribution", "long-term vision", "the high-speed railway", "a decade"], correct: 2, explanation: "Câu: 'Once fully operational, it will undoubtedly reshape...'. 'it' ở đây thay thế cho dự án đang được nói tới là 'the high-speed railway'." },
+                    {
+                        id: 28, text: "Which of the following is NOT mentioned as a benefit of the high-speed railway?", options: [
+                            "Easing the movement of labor and goods.",
+                            "Providing a greener alternative to domestic flights.",
+                            "Bridging the economic divide between urban and rural areas.",
+                            "Eliminating the need for urban road transport entirely."
+                        ], correct: 3, explanation: "Bài đọc nói đường sắt là sự thay thế xanh hơn cho đường bộ/đường hàng không, nhưng KHÔNG hề nói nó sẽ 'loại bỏ hoàn toàn nhu cầu vận tải đường bộ đô thị' (Eliminating entirely)."
+                    },
+                    { id: 29, text: "Which paragraph mentions the anticipated reduction in travel time between the two major cities?", options: ["Paragraph 4", "Paragraph 1", "Paragraph 2", "Paragraph 3"], correct: 1, explanation: "Đoạn 1 đề cập: 'shave hours off travel time, transforming a journey that currently takes more than a day into a brief trip of just over five hours'." },
+                    { id: 30, text: "Which paragraph mentions the potential of the project to alter the population spread across the country?", options: ["Paragraph 4", "Paragraph 3", "Paragraph 2", "Paragraph 1"], correct: 0, explanation: "Đoạn 4 đề cập đến việc thay đổi dân cư: 'reshape the country's demographic distribution'." }
+                ]
+            },
+            {
+                title: "Part 5: Sentence Completion - Sports Naturalisation",
+                instruction: "Read the following passage and mark the letter A, B, C or D on your answer sheet to indicate the option that best fits each of the numbered blanks from 31 to 35.",
+                passage: "The practice of naturalising foreign athletes to compete for national sports teams has sparked intense debates globally. Some nations undertake a process of aggressive talent scouting, in which top-tier players are recruited from abroad with lucrative contracts and fast-tracked citizenship. To ensure immediate eligibility for upcoming tournaments, (31)_____. Others with no patience to develop homegrown youth academies (32)_____, for the sake of immediate international glory rather than waiting for grassroots development to yield results.\n\nBeyond the passionate debates among supporters regarding national identity, this short-term sporting strategy has a profound impact on domestic players. The more frequently foreign stars are fielded, (33)_____. Consequently, some promising youngsters who have been content with their steady progress in the domestic leagues in the past may feel discouraged and opt for different career paths.\n\nFinally, (34)_____. While this is more typical of athletes from distant continents, it is by no means unknown among players from neighbouring countries. (35)_____, though, especially when team cohesion must be built at short notice - a process frequently hindered by language barriers.",
+                passageTranslation: "Thực tiễn nhập tịch cho các vận động viên nước ngoài để thi đấu cho các đội tuyển thể thao quốc gia đã làm dấy lên những cuộc tranh luận dữ dội trên toàn cầu. Một số quốc gia thực hiện quá trình tìm kiếm tài năng tích cực, trong đó các cầu thủ hàng đầu được chiêu mộ từ nước ngoài với những hợp đồng béo bở và việc nhập quốc tịch được rút ngắn thời gian. Để đảm bảo đủ điều kiện tham gia ngay các giải đấu sắp tới, (31) các liên đoàn này thường nhờ người xúc tiến nhanh các thủ tục giấy tờ hành chính cần thiết. Những quốc gia khác không có sự kiên nhẫn để phát triển các học viện đào tạo trẻ trong nước (32) sẽ phụ thuộc nhiều vào các tài năng nước ngoài có sẵn, vì lợi ích của vinh quang quốc tế trước mắt thay vì chờ đợi sự phát triển ở cấp cơ sở mang lại kết quả.\n\nBên cạnh những cuộc tranh luận sôi nổi giữa những người hâm mộ về bản sắc dân tộc, chiến lược thể thao ngắn hạn này có tác động sâu sắc đến các cầu thủ trong nước. Các ngôi sao nước ngoài càng được tung ra sân thường xuyên, (33) các triển vọng trong nước này càng nhận được ít thời gian thi đấu để mài giũa kỹ năng của họ. Hậu quả là, một số cầu thủ trẻ đầy triển vọng, những người từng hài lòng với sự tiến bộ đều đặn của họ ở các giải đấu quốc nội trong quá khứ, có thể cảm thấy nản lòng và chọn những con đường sự nghiệp khác.\n\nCuối cùng, (34) sự hòa nhập văn hóa của những vận động viên nhập tịch này không phải lúc nào cũng suôn sẻ. Mặc dù điều này điển hình hơn ở các vận động viên đến từ các lục địa xa xôi, nhưng nó không hề hiếm gặp ở các cầu thủ đến từ các quốc gia láng giềng. (35) Việc nhập tịch thể thao như vậy được chứng minh là một xu hướng gây tranh cãi, đặc biệt là khi sự gắn kết của đội bóng phải được xây dựng trong thời gian ngắn - một quá trình thường xuyên bị cản trở bởi rào cản ngôn ngữ.",
+                questions: [
+                    {
+                        id: 31, text: "Question 31.", options: [
+                            "these federations have frequently expedited the necessary administrative paperwork",
+                            "the necessary administrative paperwork frequently has these federations expedite",
+                            "the necessary administrative paperwork has frequently expedited these federations",
+                            "these federations frequently have the necessary administrative paperwork expedited"
+                        ], correct: 3, explanation: "Cấu trúc thể nhờ vảo: have + something + V3/ed (nhờ/thuê ai đó làm gì cho mình). Các liên đoàn này thường để/nhờ các thủ tục giấy tờ được xúc tiến nhanh chóng."
+                    },
+                    {
+                        id: 32, text: "Question 32.", options: [
+                            "will heavily rely on ready-made foreign talents",
+                            "heavily relying on ready-made foreign talents",
+                            "to rely heavily on ready-made foreign talents",
+                            "has heavily relied on ready-made foreign talents"
+                        ], correct: 0, explanation: "Chủ ngữ là 'Others with no patience...'. Câu thiếu một động từ chính được chia ở thì. Phù hợp nhất là tương lai đơn 'will heavily rely' (sẽ phụ thuộc nhiều vào)."
+                    },
+                    {
+                        id: 33, text: "Question 33.", options: [
+                            "the more skills these domestic prospects hone to receive their playing time",
+                            "the less playing time these domestic prospects receive to hone their skills",
+                            "the more playing time these domestic prospects receive to hone skills",
+                            "the less skills these domestic prospects receive to hone playing time"
+                        ], correct: 1, explanation: "Cấu trúc so sánh kép (Double comparison): The more..., the less... (Càng nhiều sao ngoại ra sân, thời gian thi đấu của cầu thủ nội càng ít đi)."
+                    },
+                    {
+                        id: 34, text: "Question 34.", options: [
+                            "these athletes are not always naturalised the smooth cultural integration",
+                            "the smooth cultural integration of these athletes is not always naturalised",
+                            "the cultural integration of these naturalised athletes is not always smooth",
+                            "the naturalised cultural integration is not always smooth to these athletes"
+                        ], correct: 2, explanation: "Câu C có cấu trúc chủ ngữ + động từ tobe + tính từ hoàn chỉnh và hợp nghĩa nhất: Sự hòa nhập văn hóa của các vận động viên này không phải lúc nào cũng suôn sẻ."
+                    },
+                    {
+                        id: 35, text: "Question 35.", options: [
+                            "Such sports naturalisation proves to be a controversial trend",
+                            "Although the controversial sports naturalisation proves to be a trend",
+                            "That proves a controversial trend is sports naturalisation",
+                            "Such a controversial proved sports naturalisation trend"
+                        ], correct: 0, explanation: "Cần một mệnh đề độc lập hoàn chỉnh để đóng vai trò làm câu chốt. Câu A đúng cấu trúc: S (Such sports naturalisation) + V (proves) + to be + Noun."
+                    }
+                ]
+            },
+            {
+                title: "Part 6: Sentence Arrangement",
+                instruction: "Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances or sentences to make a cohesive and coherent exchange or text in each of the following questions from 36 to 40.",
+                passage: "",
+                passageTranslation: "",
+                questions: [
+                    { id: 36, text: "a. Shop assistant: Can I help you find anything?\nb. Shop assistant: Let me know if you need any assistance with the sizes.\nc. Customer: No thanks, I'm just browsing for now.", options: ["c-a-b", "a-b-c", "b-c-a", "a-c-b"], correct: 3, explanation: "Hội thoại mua sắm: NV hỏi giúp đỡ (a) -> Khách từ chối, chỉ xem qua (c) -> NV dặn dò nếu cần gì thì gọi (b).", translation: "a. Nhân viên: Tôi có thể giúp bạn tìm gì không?\nc. Khách hàng: Không, cảm ơn, tôi chỉ đang xem qua thôi.\nb. Nhân viên: Hãy cho tôi biết nếu bạn cần hỗ trợ về kích cỡ nhé." },
+                    { id: 37, text: "a. Son: I know, but if they don't fit, the return policy is actually very simple.\nb. Son: Yes, there was a massive sale yesterday so I bought some clothes.\nc. Mom: Well, just make sure you aren't spending money on things you don't really need.\nd. Mom: It's convenient, but buying things you can't try on is quite risky.\ne. Mom: Look at all these boxes. Have you been shopping online again?", options: ["e-b-d-a-c", "e-d-b-a-c", "b-e-d-c-a", "e-a-d-b-c"], correct: 0, explanation: "Hội thoại logic: Mẹ ngạc nhiên thấy nhiều hộp (e) -> Con trai giải thích mua đồ sale (b) -> Mẹ nói mua online không thử được thì rủi ro (d) -> Con trai trấn an là chính sách đổi trả dễ (a) -> Mẹ nhắc nhở tiêu xài hợp lý (c).", translation: "e. Mẹ: Nhìn những cái hộp này xem. Con lại mua sắm online nữa à?\nb. Con trai: Vâng, hôm qua có đợt giảm giá lớn nên con mua vài bộ.\nd. Mẹ: Tiện thì tiện thật, nhưng mua đồ không thử được khá rủi ro đấy.\na. Con trai: Con biết, nhưng nếu không vừa, chính sách đổi trả rất đơn giản.\nc. Mẹ: Chà, chỉ cần đảm bảo con không tiêu tiền vào những thứ không thực sự cần." },
+                    { id: 38, text: "Dear Admissions Committee,\na. Throughout this period, he has consistently demonstrated exceptional analytical skills and a strong work ethic.\nb. Beyond academics, he also shows great leadership as the president of our school's Science Club.\nc. It is my absolute pleasure to recommend Nguyen Van A for the undergraduate program at your university.\nd. For these reasons, I highly endorse his application without any reservation.\ne. I have had the privilege of teaching him Advanced Mathematics for the past three years.\nYours faithfully,\nThomas Edison", options: ["c-a-e-b-d", "c-e-a-b-d", "e-c-a-b-d", "c-e-b-a-d"], correct: 1, explanation: "Thư giới thiệu: Mở đầu bằng lời giới thiệu mục đích (c) -> Cung cấp bối cảnh biết học sinh từ đâu (e) -> Khen ngợi học thuật (a) -> Khen ngợi ngoại khóa (b) -> Chốt lại lời đề cử (d).", translation: "Kính gửi Hội đồng tuyển sinh,\nc. Tôi vô cùng hân hạnh được giới thiệu Nguyễn Văn A cho chương trình đại học tại trường của quý vị.\ne. Tôi đã có đặc quyền dạy em ấy môn Toán cao cấp trong ba năm qua.\na. Trong suốt thời gian này, em ấy luôn thể hiện kỹ năng phân tích đặc biệt...\nb. Ngoài học thuật, em ấy còn cho thấy khả năng lãnh đạo tuyệt vời...\nd. Vì những lý do này, tôi đánh giá cao đơn đăng ký của em ấy mà không có bất kỳ e ngại nào." },
+                    { id: 39, text: "a. Giving the body enough time to rest from food, such as through regular fasting periods, allows cells to repair more effectively.\nb. Choosing better eating habits not only supports physical health but also helps people age in a stronger and healthier way.\nc. Many people still consume too much processed food, sugary snacks, and large evening meals, which can speed up ageing and weaken the body over time.\nd. What we eat every day can have a major impact on how quickly our bodies age.\ne. Eating more whole grains, colourful vegetables, fruits, and foods rich in omega-3 such as fish can also improve both brain and heart health.", options: ["d-e-c-b-a", "d-a-c-e-b", "d-c-a-e-b", "d-b-e-a-c"], correct: 2, explanation: "Trình tự: Mở đầu về tác động của thức ăn (d) -> Chỉ ra thói quen ăn uống xấu hiện tại (c) -> Giải pháp 1: cho cơ thể nghỉ ngơi/nhịn ăn (a) -> Giải pháp 2: ăn thức ăn tốt (e) -> Kết luận về lối sống (b).", translation: "d. Những gì chúng ta ăn hàng ngày có thể tác động lớn đến việc cơ thể già đi nhanh cỡ nào.\nc. Nhiều người vẫn tiêu thụ quá nhiều thực phẩm chế biến sẵn... làm cơ thể yếu đi.\na. Cho cơ thể đủ thời gian nghỉ ngơi khỏi thức ăn... cho phép tế bào tự sửa chữa.\ne. Ăn nhiều ngũ cốc nguyên hạt, rau quả nhiều màu sắc... cải thiện sức khỏe não bộ.\nb. Lựa chọn thói quen ăn uống tốt hơn không chỉ hỗ trợ sức khỏe thể chất..." },
+                    { id: 40, text: "a. These collective developments illustrate a clear maturation of VR, transforming it from a mere gaming accessory into a critical pillar of modern education and professional training.\nb. This widespread adoption was further accelerated by a significant reduction in hardware costs, making high-quality headsets accessible to mainstream institutions.\nc. The most notable initial shift occurred in the educational sector, where interactive 3D simulations began replacing traditional textbooks for complex subjects.\nd. Simultaneously, corporate training programs embraced these immersive environments, allowing employees to practice high-risk tasks in completely safe virtual workspaces.\ne. In recent years, Virtual Reality (VR) technology has undergone a profound evolution, expanding its applications far beyond its original roots in the entertainment industry.", options: ["e-d-b-a-c", "e-b-a-c-d", "e-c-a-d-b", "e-c-d-b-a"], correct: 3, explanation: "Đoạn văn logic: Giới thiệu sự phát triển của VR (e) -> Ví dụ đầu tiên trong giáo dục (c) -> Ví dụ thứ hai trong đào tạo doanh nghiệp (d) -> Lý do cho sự phổ biến này (b) -> Kết luận sự trưởng thành của VR (a).", translation: "e. Trong những năm gần đây, công nghệ Thực tế Ảo (VR) đã trải qua một sự tiến hóa sâu sắc...\nc. Sự thay đổi ban đầu đáng chú ý nhất xảy ra trong lĩnh vực giáo dục...\nd. Đồng thời, các chương trình đào tạo doanh nghiệp đã nắm lấy những môi trường nhập vai này...\nb. Sự áp dụng rộng rãi này còn được đẩy nhanh hơn nữa nhờ việc giảm đáng kể chi phí phần cứng...\na. Những sự phát triển tập thể này minh họa cho sự trưởng thành rõ rệt của VR..." }
+                ]
+            }
+        ];
+
+        // State quản lý
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        // Hàm render giao diện chính
+        function renderApp() {
+            const app = document.getElementById('app');
+            const answeredCount = Object.keys(state.answers).length;
+            const currentSection = quizData[state.currentPartIndex];
+
+            // Lưu vị trí cuộn
+            const qContainer = document.getElementById('questions-container');
+            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+                            <i class="fa-regular fa-file-lines text-blue-600"></i>
+                            KỲ THI THPTQG - ĐỀ THAM KHẢO 02
+                        </h1>
+                        <p class="text-sm text-slate-500">Mã đề: 02 | Thời gian làm bài: 50 phút</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200 hidden md:block">
+                        Đã làm: ${answeredCount} / ${totalQuestions}
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted ? `
+                    <div class="flex-none bg-white p-4 rounded-xl border border-green-200 shadow-sm flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-4 animate-in fade-in duration-500">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-circle-check text-green-500 text-4xl"></i>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
+                                <p class="text-slate-600 text-sm">
+                                    Số câu đúng: <strong class="text-green-600 text-lg">${state.score}</strong> / ${totalQuestions} &nbsp;—&nbsp; 
+                                    <span class="italic hidden md:inline">Nhấn "Xem giải thích chi tiết" ở mỗi câu để tự học nhé.</span>
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="resetQuiz()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow font-medium">
+                            Làm lại bài thi
+                        </button>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-sm md:text-base font-bold text-blue-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-[11px] md:text-xs text-slate-600 mt-0.5 italic line-clamp-1">${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <span class="flex-none text-[11px] md:text-xs font-bold text-slate-700 bg-white border border-slate-300 px-2 py-1 rounded shadow-sm whitespace-nowrap ml-2">
+                                Phần ${state.currentPartIndex + 1}/${quizData.length}
+                            </span>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC TẠI ĐÂY -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/80 border-b-[3px] md:border-b-0 md:border-r-[3px] border-blue-200 p-4 md:p-6 lg:p-8 shadow-inner">
+                                <div class="text-slate-800 leading-relaxed whitespace-pre-wrap text-[15px] md:text-base font-medium text-justify ${state.showPassageTranslation ? 'italic' : ''}">
+                                    ${state.showPassageTranslation ? currentSection.passageTranslation : currentSection.passage}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 lg:p-8 bg-white">
+                                <div class="max-w-5xl mx-auto space-y-5">
+                                    ${currentSection.questions.map(q => renderQuestion(q)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-8 pb-8">
+                                        <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-blue-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-none flex justify-between items-center bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                            <button onclick="changePart(${Math.max(0, state.currentPartIndex - 1)})" ${state.currentPartIndex === 0 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-white text-slate-700 border border-slate-300 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition font-medium text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                &larr; Quay lại
+                            </button>
+                            <button onclick="changePart(${Math.min(quizData.length - 1, state.currentPartIndex + 1)})" ${state.currentPartIndex === quizData.length - 1 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-blue-600 text-white border border-blue-600 rounded hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition font-bold text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                Tiếp theo &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Tiến độ (${answeredCount}/${totalQuestions})</span>
+                            ${!state.isSubmitted ? `
+                            <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-blue-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                const isAnswered = state.answers[q.id] !== undefined;
+                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+
+                if (!state.isSubmitted) {
+                    btnClass += isAnswered
+                        ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                        : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                } else {
+                    const isCorrect = state.answers[q.id] === q.correct;
+                    btnClass += isCorrect
+                        ? "bg-green-500 text-white border-green-500 shadow-sm"
+                        : "bg-red-500 text-white border-red-500 shadow-sm";
+                }
+
+                return `<button onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
+
+            // Phục hồi scroll
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = scrollPos;
+        }
+
+        // Render từng câu hỏi
+        function renderQuestion(q) {
+            const isAnswered = state.answers[q.id] !== undefined;
+            const isCorrect = state.answers[q.id] === q.correct;
+            const showExp = state.expandedExplanations[q.id];
+
+            let containerClass = `p-4 md:p-5 rounded-xl border transition-all `;
+            if (state.isSubmitted) {
+                containerClass += isCorrect ? 'bg-green-50/50 border-green-200' : 'bg-red-50/50 border-red-200';
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-blue-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            let optionsHtml = q.options.map((option, optIdx) => {
+                const isSelected = state.answers[q.id] === optIdx;
+                const isOptionCorrect = optIdx === q.correct;
+
+                let optionClass = "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ";
+                let iconHtml = '';
+
+                if (!state.isSubmitted) {
+                    optionClass += isSelected
+                        ? "bg-blue-50 border-blue-400 shadow-sm"
+                        : "bg-white border-slate-200 hover:bg-slate-50";
+                } else {
+                    optionClass += "cursor-default ";
+                    if (isOptionCorrect) {
+                        optionClass += "bg-green-100 border-green-500 font-medium ";
+                        iconHtml = `<i class="fa-solid fa-check text-green-600 mt-1"></i>`;
+                    } else if (isSelected && !isOptionCorrect) {
+                        optionClass += "bg-red-100 border-red-400 ";
+                        iconHtml = `<i class="fa-solid fa-xmark text-red-500 mt-1"></i>`;
+                    } else {
+                        optionClass += "bg-white/50 border-slate-200 opacity-60 ";
+                    }
+                }
+
+                let circleClass = `w-6 h-6 shrink-0 rounded-full border-2 flex items-center justify-center text-xs font-bold mt-0.5 transition-colors bg-white `;
+                if (isSelected) {
+                    circleClass += (state.isSubmitted && !isOptionCorrect) ? 'border-red-500 text-red-500' : 'border-blue-500 text-blue-500';
+                } else {
+                    circleClass += 'border-slate-300 text-slate-400';
+                }
+                if (state.isSubmitted && isOptionCorrect) circleClass += ' border-green-600 text-green-600';
+
+                // Lọc bỏ ký hiệu (*) và các ký tự A, B, C, D thừa ở đầu option nếu có
+                let cleanOption = option.replace(/\(\*\)/g, '').trim();
+
+                return `
+                    <label class="${optionClass}">
+                        <input type="radio" name="question-${q.id}" class="hidden" ${isSelected ? 'checked' : ''} ${state.isSubmitted ? 'disabled' : ''} onchange="handleOptionChange(${q.id}, ${optIdx})">
+                        <div class="${circleClass}">${String.fromCharCode(65 + optIdx)}</div>
+                        <span class="flex-1 text-slate-700 leading-relaxed pt-[2px] text-sm md:text-base text-justify">${cleanOption}</span>
+                        ${iconHtml}
+                    </label>
+                `;
+            }).join('');
+
+            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/50 p-3 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <p>Bạn đã chọn sai. Đáp án đúng là <strong>${String.fromCharCode(65 + q.correct)}</strong>.</p>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (state.isSubmitted && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/60 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-blue-600 hover:text-blue-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                            ${q.translation ? `
+                            <div class="mt-4 pt-4 border-t border-indigo-200/60">
+                                <div class="flex items-center gap-1.5 font-bold text-indigo-900 mb-2">
+                                    <i class="fa-solid fa-language"></i> Bản dịch tham khảo:
+                                </div>
+                                <div class="whitespace-pre-wrap leading-relaxed italic text-slate-700 text-justify">${q.translation}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            // Tiền xử lý chữ Question X để tránh lặp từ
+            let rawText = q.text || '';
+            let prefix = 'Question ' + q.id;
+            if (rawText.startsWith(prefix)) {
+                rawText = rawText.substring(prefix.length).replace(/^[\\.\\:\\-\\s]+/, '').trim();
+            }
+
+            // Xóa dấu (*) trong text nếu có
+            rawText = rawText.replace(/\(\*\)/g, '');
+
+            let questionTextHtml = `<p class="text-slate-800 whitespace-pre-wrap mb-4 text-sm md:text-base leading-relaxed text-justify"><strong>Question ${q.id}.</strong> ${rawText}</p>`;
+
+            return `
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        ${questionTextHtml}
+                        <div class="space-y-2.5">
+                            ${optionsHtml}
+                        </div>
+                        ${errorHtml}
+                        ${explanationHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event Handlers
+        window.handleOptionChange = (qId, optIdx) => {
+            if (state.isSubmitted) return;
+            state.answers[qId] = optIdx;
+            renderApp();
+        };
+
+        window.calculateScore = () => {
+            let currentScore = 0;
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    if (state.answers[q.id] === q.correct) {
+                        currentScore += 1;
+                    }
+                });
+            });
+            state.score = currentScore;
+            state.isSubmitted = true;
+            renderApp();
+        };
+
+        window.changePart = (newIndex) => {
+            state.currentPartIndex = newIndex;
+            state.showPassageTranslation = false; // Reset dịch khi đổi bài
+            renderApp();
+            setTimeout(() => {
+                const qContainer = document.getElementById('questions-container');
+                if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                const pContainer = document.getElementById('passage-container');
+                if (pContainer) pContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 50);
+        };
+
+        window.resetQuiz = () => {
+            if (confirm('Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án hiện tại sẽ bị xóa.')) {
+                state.answers = {};
+                state.isSubmitted = false;
+                state.score = 0;
+                state.expandedExplanations = {};
+                changePart(0);
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                const targetScroll = currentScroll + (elTop - containerTop) - 16;
+
+                container.scrollTo({
+                    top: targetScroll,
+                    behavior: "smooth"
+                });
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            const targetPartIndex = quizData.findIndex(section =>
+                section.questions.some(q => q.id === id)
+            );
+
+            if (targetPartIndex !== -1 && targetPartIndex !== state.currentPartIndex) {
+                state.currentPartIndex = targetPartIndex;
+                state.showPassageTranslation = false;
+                renderApp();
+                setTimeout(() => performScroll(id), 100);
+            } else {
+                performScroll(id);
+            }
+        };
+
+        // Khởi chạy lần đầu
+        renderApp();
+
+        // ==========================================
+        // TÍNH NĂNG QUÉT KHỐI - TỰ ĐỘNG DỊCH VÀ ĐỌC TO (GIỌNG NỮ MIỀN NAM)
+        // ==========================================
+
+        // Nạp danh sách các giọng nói có sẵn trên hệ thống
+        let availableVoices = [];
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+            }
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+        }
+
+        document.addEventListener('mouseup', handleSelection);
+        document.addEventListener('touchend', (e) => {
+            setTimeout(() => handleSelection(e), 150);
+        });
+
+        async function handleSelection() {
+            const selection = window.getSelection();
+            const text = selection.toString().trim();
+
+            if (text.length > 0 && text.length < 1500) {
+                try {
+                    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+                    const data = await res.json();
+                    const currentViText = data[0].map(item => item[0]).join('');
+                    speakText(currentViText);
+                } catch (err) {
+                    console.error("Lỗi dịch thuật:", err);
+                }
+            } else if (text.length === 0) {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            }
+        }
+
+        // Hàm sử dụng Web Speech API để tìm và đọc giọng miền Nam
+        function speakText(text) {
+            if (!text || !('speechSynthesis' in window)) return;
+
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            if (availableVoices.length === 0) loadVoices();
+
+            const viVoices = availableVoices.filter(v => v.lang.includes('vi'));
+            let selectedVoice = null;
+
+            if (viVoices.length > 0) {
+                selectedVoice = viVoices.find(v =>
+                    v.name.includes('HoaiMy') ||
+                    v.name.includes('Linh') ||
+                    v.name.toLowerCase().includes('southern') ||
+                    v.name.toLowerCase().includes('nam')
+                );
+
+                if (!selectedVoice) {
+                    selectedVoice = viVoices[0];
+                }
+                utterance.voice = selectedVoice;
+            } else {
+                utterance.lang = 'vi-VN';
+            }
+
+            utterance.rate = 1.5; // Tốc độ đọc nhanh hơn (1.5x)
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+
+</html>
