@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REFINED ĐỀ 1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts cho chủ đề Academic/Corporate -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+Pro:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        .serif-font {
+            font-family: 'Merriweather', serif;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            overflow-x: hidden;
+            background-color: #0f172a;
+            /* Nền xanh Navy rất đậm */
+        }
+
+        /* Animations cho chủ đề học thuật */
+        @keyframes float-slow {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.15;
+            }
+
+            80% {
+                opacity: 0.15;
+            }
+
+            100% {
+                transform: translateY(-20vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: float-slow linear infinite;
+            z-index: 0;
+            opacity: 0;
+            pointer-events: none;
+            color: rgba(253, 224, 71, 0.4);
+            /* Màu vàng nhạt */
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+        }
+
+        /* Hiệu ứng rung lắc khi chọn sai */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-6px);
+            }
+
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* UI Styles - Deep Glassmorphism */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            /* slate-800 với opacity */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            /* border-yellow-400 */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Highlight cho từ vựng */
+        .question-text strong {
+            color: #fde047;
+            /* text-yellow-300 */
+            font-weight: 900;
+            font-size: 1.15em;
+            letter-spacing: 0.5px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #eab308;
+        }
+    </style>
+</head>
+
+<body class="text-slate-200 min-h-screen relative flex items-center justify-center p-4">
+
+    <!-- Background (Cố định ở lớp dưới cùng) -->
+    <div id="background-layer" class="fixed inset-0 overflow-hidden" style="z-index: 0; pointer-events: none;">
+        <div
+            class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black">
+        </div>
+        <div id="floating-container"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="main-content" class="relative w-full max-w-3xl transition-all duration-500"
+        style="z-index: 10; pointer-events: auto;">
+
+        <!-- START SCREEN -->
+        <div id="screen-start"
+            class="glass-panel rounded-3xl p-8 md:p-12 text-center transform hover:scale-[1.02] transition-transform duration-300">
+            <div class="text-5xl md:text-6xl mb-6 flex justify-center gap-4">
+                <span>⚖️</span><span>🏛️</span><span>📈</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black mb-6 text-yellow-400 serif-font tracking-tight">
+                Tòa Tháp Tri Thức
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 mb-10 font-medium">
+                Thử thách với <span id="total-count"
+                    class="font-bold text-yellow-300 bg-slate-800/80 px-3 py-1 rounded border border-yellow-500/30"></span>
+                từ vựng học thuật nâng cao. Bạn đã sẵn sàng?
+            </p>
+            <button id="btn-start"
+                class="px-8 py-4 bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-slate-900 font-bold rounded-full text-lg md:text-xl shadow-[0_0_20px_rgba(234,179,8,0.3)] transition-all cursor-pointer transform hover:-translate-y-1">
+                Bắt Đầu Thử Thách ✒️
+            </button>
+            <div class="mt-10 text-xs md:text-sm text-slate-500 font-semibold tracking-wide">© Copyright 2026 by Hoang
+                Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-6 md:p-10 hidden border-t-4 border-t-yellow-500">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-8 border-b border-slate-700/50 pb-5">
+                <span id="progress-text" class="text-yellow-500 font-bold tracking-widest uppercase text-xs md:text-sm">
+                    CÂU HỎI 1
+                </span>
+                <span id="score-text"
+                    class="bg-slate-800 border border-yellow-500/40 px-4 py-1.5 rounded-full text-yellow-400 font-bold text-sm md:text-base shadow-sm">
+                    Điểm: 0
+                </span>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-8 md:mb-10">
+                <h2 id="question-text"
+                    class="text-xl md:text-2xl font-semibold leading-relaxed question-text text-slate-100 serif-font">
+                </h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-8">
+                <!-- Buttons will be injected here by JS -->
+            </div>
+
+            <!-- Explanation & Next Button -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-slate-800/80 border-l-4 border-yellow-500 rounded-r-xl p-5 md:p-6 mb-6 shadow-inner">
+                    <div id="rationale-text" class="hidden text-base md:text-lg">
+                        <span id="rationale-content" class="block"></span>
+                    </div>
+                </div>
+
+                <button id="btn-next"
+                    class="w-full py-4 bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-slate-900 font-bold rounded-xl text-lg md:text-xl shadow-[0_4px_15px_rgba(234,179,8,0.2)] transition-all flex justify-center items-center gap-2 cursor-pointer transform hover:-translate-y-0.5">
+                    Câu Tiếp Theo ➔
+                </button>
+            </div>
+            <div class="mt-6 text-center text-xs md:text-sm text-slate-500 font-semibold tracking-wide">© Copyright 2026
+                by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end"
+            class="glass-panel rounded-3xl p-8 md:p-10 text-center transform hover:scale-105 transition-transform duration-300 hidden">
+            <div class="text-6xl md:text-7xl mb-6">🎓📜</div>
+            <h1 class="text-3xl md:text-4xl font-black mb-3 text-yellow-400 serif-font tracking-tight">
+                Hoàn Thành Khảo Sát!
+            </h1>
+            <p id="final-message" class="text-base md:text-lg text-slate-300 mb-8 font-medium"></p>
+
+            <!-- Bảng Tổng Kết -->
+            <div
+                class="max-w-md mx-auto bg-slate-800/60 border border-slate-600 rounded-2xl p-6 text-left shadow-lg mb-8 relative overflow-hidden backdrop-blur-sm">
+                <div class="absolute top-0 left-0 w-1.5 h-full bg-yellow-500"></div>
+                <h3 class="text-xl font-bold text-slate-100 mb-5 border-b border-slate-700 pb-3 text-center serif-font">
+                    Báo Cáo Chi Tiết</h3>
+                <ul class="space-y-4 text-slate-300 text-sm md:text-base font-medium">
+                    <li class="flex justify-between items-center border-b border-slate-700/50 pb-2">
+                        <span class="flex items-center gap-2">🕒 Kỷ lục lúc:</span>
+                        <span id="end-time" class="text-yellow-200 text-xs md:text-sm font-mono"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-slate-700/50 pb-2">
+                        <span class="flex items-center gap-2">✅ Xuất sắc (đúng Lần 1):</span>
+                        <span id="stat-correct" class="font-bold text-emerald-400 text-xl"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-slate-700/50 pb-2">
+                        <span class="flex items-center gap-2">⚠️ Cần suy nghĩ (đúng Lần 2):</span>
+                        <span id="stat-second" class="font-bold text-yellow-400 text-xl"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2">❌ Sai lệch (sai cả 2 lần):</span>
+                        <span id="stat-wrong" class="font-bold text-rose-400 text-xl"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <button id="btn-restart"
+                class="px-8 py-4 bg-transparent hover:bg-slate-800 border-2 border-yellow-500/50 text-yellow-400 hover:text-yellow-300 font-bold rounded-full text-lg transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-sm">
+                🔄 Khảo Sát Lại Từ Đầu
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-slate-500 font-semibold tracking-wide">© Copyright 2026 by Hoang
+                Truong English</div>
+        </div>
+
+    </div>
+
+    <!-- Logic JavaScript -->
+    <script>
+        // Dữ liệu 38 từ/cụm từ trích xuất từ hình ảnh
+        // (Do không có ngữ cảnh cụ thể, mình đã tự bổ sung từ loại, phiên âm và ví dụ chuẩn xác cho cấp độ B2-C2)
+        const rawVocab = [
+            ["disturbing", "làm xáo trộn, gây lo âu", "adj", "/dɪˈstɜːbɪŋ/", "The news reports presented a disturbing picture of the conflict."],
+            ["deliberately", "một cách có chủ ý, cố tình", "adv", "/dɪˈlɪbərətli/", "He deliberately ignored my instructions."],
+            ["intermittent", "gián đoạn, thỉnh thoảng", "adj", "/ˌɪntəˈmɪtənt/", "The weather forecast predicts intermittent rain throughout the day."],
+            ["anticipation", "sự dự đoán, sự mong đợi", "n", "/ænˌtɪsɪˈpeɪʃn/", "The crowd waited in eager anticipation for the concert to begin."],
+            ["compulsive", "có tính ép buộc, khó kiểm soát", "adj", "/kəmˈpʌlsɪv/", "Compulsive buying is a recognized psychological condition."],
+            ["irreversible", "không thể đảo ngược", "adj", "/ˌɪrɪˈvɜːsəbl/", "Climate change could cause irreversible damage to the ecosystem."],
+            ["rehabilitation", "sự phục hồi (chức năng, nhân phẩm)", "n", "/ˌriːhəˌbɪlɪˈteɪʃn/", "The clinic specializes in the rehabilitation of sports injuries."],
+            ["craftsmanship", "sự khéo léo, sự lành nghề", "n", "/ˈkrɑːftsmənʃɪp/", "The fine craftsmanship of the furniture was evident in every detail."],
+            ["intrinsic", "thuộc bản chất, nội tại", "adj", "/ɪnˈtrɪnzɪk/", "Education has intrinsic value beyond just getting a job."],
+            ["meticulously", "một cách tỉ mỉ, cẩn thận", "adv", "/məˈtɪkjələsli/", "The investigation was carried out meticulously."],
+            ["unprecedented", "chưa từng có, vô tiền khoáng hậu", "adj", "/ʌnˈpresɪdəntɪd/", "The project received an unprecedented amount of funding."],
+            ["excel at", "xuất sắc về (lĩnh vực gì)", "phrasal verb", "/ɪkˈsel ət/", "She has always excelled at foreign languages."],
+            ["interpretation", "sự giải thích, sự phiên dịch", "n", "/ɪnˌtɜːprɪˈteɪʃn/", "The rules are open to different interpretations."],
+            ["compromising", "làm tổn hại (uy tín, nguyên tắc)", "adj", "/ˈkɒmprəmaɪzɪŋ/", "They were caught in a compromising situation."],
+            ["metropolitan", "thuộc vùng đô thị", "adj", "/ˌmetrəˈpɒlɪtən/", "Traffic congestion is a major problem in metropolitan areas."],
+            ["strain", "áp lực, sự căng thẳng", "n", "/streɪn/", "The sudden influx of refugees put a severe strain on resources."],
+            ["protocols", "nghi thức, quy trình", "n", "/ˈprəʊtəkɒlz/", "Medical staff must follow strict safety protocols."],
+            ["tailored to", "được thiết kế/điều chỉnh cho phù hợp với", "phrasal verb", "/ˈteɪlərd tuː/", "The course is tailored to the needs of individual students."],
+            ["subsidy", "tiền trợ cấp", "n", "/ˈsʌbsədi/", "The government provides a subsidy for agricultural products."],
+            ["complementary", "bù trừ, bổ sung cho nhau", "adj", "/ˌkɒmplɪˈmentri/", "The two theories are complementary rather than conflicting."],
+            ["decentralized", "phi tập trung, phân tán", "adj", "/diːˈsentrəlaɪzd/", "Blockchain is a decentralized ledger technology."],
+            ["hamper", "cản trở, gây khó khăn", "v", "/ˈhæmpər/", "The rescue effort was hampered by bad weather."],
+            ["framework", "khuôn khổ, sườn", "n", "/ˈfreɪmwɜːk/", "The agreement provides a framework for future cooperation."],
+            ["money laundering", "rửa tiền", "n", "/ˈmʌni ˌlɔːndərɪŋ/", "Strict banking laws are enacted to prevent money laundering."],
+            ["impose", "áp đặt, ban hành", "v", "/ɪmˈpəʊz/", "The council decided to impose a new tax on fuel."],
+            ["spark", "châm ngòi, khơi mào", "v", "/spɑːk/", "The decision sparked widespread protests."],
+            ["facilitate", "tạo điều kiện thuận lợi", "v", "/fəˈsɪlɪteɪt/", "The new airport will facilitate the development of tourism."],
+            ["spontaneous", "tự phát, tự nhiên", "adj", "/spɒnˈteɪniəs/", "The audience broke into spontaneous applause."],
+            ["grapple with", "vật lộn với, cố gắng giải quyết", "phrasal verb", "/ˈɡræpl wɪð/", "The government has to grapple with the problem of unemployment."],
+            ["mounting pressure", "áp lực ngày càng tăng", "noun phrase", "/ˈmaʊntɪŋ ˈpreʃər/", "The CEO resigned due to mounting pressure from the board."],
+            ["pressing", "cấp bách, thúc bách", "adj", "/ˈpresɪŋ/", "Climate change is one of the most pressing issues of our time."],
+            ["perpetuate", "làm cho kéo dài mãi, duy trì", "v", "/pəˈpetʃueɪt/", "This system only perpetuates the cycle of poverty."],
+            ["prejudice", "định kiến, thành kiến", "n", "/ˈpredʒədɪs/", "We must fight against racial prejudice."],
+            ["discrimination", "sự phân biệt đối xử", "n", "/dɪˌskrɪmɪˈneɪʃn/", "The law prohibits discrimination on the basis of gender."],
+            ["surveillance", "sự giám sát", "n", "/sɜːˈveɪləns/", "The police kept the suspect under constant surveillance."],
+            ["consent", "sự đồng ý, sự ưng thuận", "n", "/kənˈsent/", "Medical treatment cannot be given without the patient's consent."],
+            ["autonomy", "quyền tự chủ, sự độc lập", "n", "/ɔːˈtɒnəmi/", "Universities want to preserve their academic autonomy."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        // Sinh Quiz Động
+        const quizData = rawVocab.map((item, index) => {
+            const word = item[0];
+            const meaning = item[1];
+            const type = item[2];
+            const ipa = item[3];
+            const example = item[4];
+
+            let wrongMeanings = [];
+
+            // Lấy 3 đáp án nhiễu ngẫu nhiên
+            while (wrongMeanings.length < 3) {
+                const randomItem = rawVocab[Math.floor(Math.random() * rawVocab.length)];
+                if (randomItem[1] !== meaning && !wrongMeanings.includes(randomItem[1])) {
+                    wrongMeanings.push(randomItem[1]);
+                }
+            }
+
+            const options = [
+                { text: meaning, isCorrect: true },
+                { text: wrongMeanings[0], isCorrect: false },
+                { text: wrongMeanings[1], isCorrect: false },
+                { text: wrongMeanings[2], isCorrect: false }
+            ];
+
+            return {
+                questionNumber: index + 1,
+                word: word,
+                question: `Nghĩa của từ/cụm từ **${word}** là gì?`,
+                answerOptions: options,
+                rationale: `
+                    <div class="flex items-center flex-wrap gap-3 mb-4 border-b border-slate-700/50 pb-4">
+                        <span class="text-3xl font-black text-yellow-400 tracking-wide">${word}</span>
+                        <span class="text-slate-400 italic text-lg bg-slate-900/50 px-2 py-0.5 rounded border border-slate-700">(${type})</span>
+                        <span class="text-yellow-200/70 font-mono text-lg">${ipa}</span>
+                        <button onclick="speakWord('${word.replace(/'/g, "\\'")}')" class="ml-2 p-2.5 bg-slate-700 hover:bg-slate-600 text-yellow-400 rounded-full transition-colors flex items-center justify-center w-11 h-11 shadow border border-slate-600 hover:border-yellow-500/50" title="Nghe phát âm">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-slate-200 font-medium text-lg leading-relaxed pl-2 border-l-2 border-yellow-600/50">
+                        <span class="text-yellow-500 mr-2">📌</span><span class="font-normal tracking-wide">${example}</span>
+                    </div>`
+            };
+        });
+
+        // Background Floating Items
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['⚖️', '📚', '📈', '🔬', '🏛️', '🔍'];
+            for (let i = 0; i < 20; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+
+                const duration = Math.random() * 20 + 15;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 20}s`;
+
+                const scale = Math.random() * 0.4 + 0.6;
+                item.style.transform = `scale(${scale})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        // Biến trạng thái
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0;
+        let hasAnswered = false;
+        let currentShuffledOptions = [];
+
+        // DOM Elements
+        const screenStart = document.getElementById('screen-start');
+        const screenPlaying = document.getElementById('screen-playing');
+        const screenEnd = document.getElementById('screen-end');
+
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+
+        const rationaleText = document.getElementById('rationale-text');
+        const rationaleContent = document.getElementById('rationale-content');
+        const btnNext = document.getElementById('btn-next');
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatMarkdownBold(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-yellow-400 font-black">$1</strong>');
+        }
+
+        // Khởi động
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            hasAnswered = false;
+
+            screenStart.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenPlaying.classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        // Tải câu hỏi
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+
+            const currentQ = quizData[currentQuestionIndex];
+
+            progressText.innerText = `PHÂN TÍCH TỪ ${currentQuestionIndex + 1} / ${quizData.length}`;
+            scoreText.innerText = `Điểm: ${score}`;
+            questionText.innerHTML = formatMarkdownBold(currentQ.question);
+
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+
+            optionsContainer.innerHTML = '';
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "text-left p-4 md:p-5 rounded-xl border border-slate-600 transition-all duration-300 text-base md:text-lg bg-slate-800/80 hover:bg-slate-700 hover:border-yellow-500/50 text-slate-200 cursor-pointer shadow-sm font-medium";
+                btn.innerText = option.text;
+                btn.onclick = () => handleAnswer(index, option.isCorrect);
+                optionsContainer.appendChild(btn);
+            });
+
+            explanationContainer.classList.remove('max-h-[800px]', 'opacity-100');
+            explanationContainer.classList.add('max-h-0', 'opacity-0');
+            rationaleText.className = "hidden";
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                btnNext.innerText = 'Câu Tiếp Theo ➔';
+            } else {
+                btnNext.innerText = 'Kết Thúc Khảo Sát 📝';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    score++;
+                    scoreText.innerText = `Điểm: ${score}`;
+                } else if (attempts === 1) {
+                    correctSecondTry++;
+                }
+
+                // Style cho nút đúng
+                btn.className = "text-left p-4 md:p-5 rounded-xl border border-emerald-500 transition-all duration-300 text-base md:text-lg bg-emerald-900/30 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)] font-bold";
+
+                // Khóa các nút khác
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-900/30')) {
+                        buttons[i].className += " opacity-40 cursor-not-allowed";
+                    }
+                }
+
+                speakWord(currentQ.word);
+                showRationale(currentQ);
+            } else {
+                attempts++;
+
+                // Style cho nút sai (Lắc và đỏ)
+                btn.className = "text-left p-4 md:p-5 rounded-xl border border-rose-500 transition-all duration-300 text-base md:text-lg bg-rose-900/30 text-rose-300 animate-shake";
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    btn.classList.remove('animate-shake');
+                }, 400);
+
+                // Sai 2 lần => Chốt
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    failedQuestions++;
+
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            // Hiển thị đáp án đúng
+                            buttons[i].className = "text-left p-4 md:p-5 rounded-xl border border-emerald-500 transition-all duration-300 text-base md:text-lg bg-emerald-900/30 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)] font-bold";
+                        } else if (!buttons[i].classList.contains('bg-rose-900/30')) {
+                            buttons[i].className += " opacity-40 cursor-not-allowed";
+                        }
+                    }
+                    speakWord(currentQ.word);
+                    showRationale(currentQ);
+                }
+            }
+        }
+
+        // Hiện giải thích
+        function showRationale(currentQ) {
+            rationaleContent.innerHTML = currentQ.rationale;
+            rationaleText.className = "block text-base md:text-lg";
+
+            explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            explanationContainer.classList.add('max-h-[800px]', 'opacity-100');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        // Kết thúc
+        function endGame() {
+            screenPlaying.classList.add('hidden');
+            screenEnd.classList.remove('hidden');
+
+            document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
+
+            const finalMessage = document.getElementById('final-message');
+            if (score >= quizData.length * 0.9) {
+                finalMessage.innerText = "Kiến thức hàn lâm của bạn thực sự uyên bác! Vô cùng ấn tượng.";
+            } else if (score >= quizData.length * 0.5) {
+                finalMessage.innerText = "Nền tảng của bạn rất vững chắc, hãy tiếp tục trau dồi nhé!";
+            } else {
+                finalMessage.innerText = "Đây là những từ vựng khá khó. Đừng nản chí, hãy làm lại để ghi nhớ sâu hơn.";
+            }
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('vi-VN');
+
+            document.getElementById('end-time').innerText = `${timeString}, ${dateString}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        // TTS
+        let availableVoices = [];
+        if ('speechSynthesis' in window) {
+            availableVoices = window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
+                availableVoices = window.speechSynthesis.getVoices();
+            };
+        }
+
+        window.speakWord = function (text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+
+                const auVoices = availableVoices.filter(v => v.lang.startsWith('en-AU'));
+                if (auVoices.length > 0) {
+                    const preferredVoice = auVoices.find(v => v.name.includes('Google') || v.name.includes('Natural')) || auVoices[0];
+                    utterance.voice = preferredVoice;
+                } else {
+                    const englishVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+                    if (englishVoices.length > 0) {
+                        utterance.voice = englishVoices[0];
+                    }
+                }
+
+                utterance.lang = 'en-AU';
+                utterance.rate = 0.85;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+
+                try { window.speechSynthesis.speak(utterance); } catch (e) { }
+            }
+        };
+
+        // Init App
+        function initApp() {
+            createFloatingItems();
+            document.getElementById('btn-start').addEventListener('click', startGame);
+            document.getElementById('btn-restart').addEventListener('click', startGame);
+            document.getElementById('btn-next').addEventListener('click', nextQuestion);
+
+            // Phím tắt Enter
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    if (!screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault();
+                        nextQuestion();
+                    } else if (!screenStart.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    } else if (!screenEnd.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    }
+                }
+            });
+        }
+
+        initApp();
+
+    </script>
+</body>
+
+</html>
