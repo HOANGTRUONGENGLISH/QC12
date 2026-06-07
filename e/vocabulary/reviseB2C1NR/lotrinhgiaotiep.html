@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LỘ TRÌNH HỌC GIAO TIẾP</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b', // Warm yellow base
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                            950: '#451a03',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 60s linear infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #fffdf5;
+            /* Very light warm background */
+            background-image: radial-gradient(#fde68a 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #fffbeb;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fbbf24;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+    </style>
+</head>
+
+<body class="text-brand-950 font-sans antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav
+        class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-brand-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+                    <!-- SVG Logo: HTE inside open book -->
+                    <svg class="h-12 w-12 text-brand-600 drop-shadow-md" viewBox="0 0 100 100" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <!-- Book Pages -->
+                        <path d="M50 85 C50 85 35 75 15 80 L15 30 C35 25 50 40 50 40 Z" fill="#fffbeb"
+                            stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+                        <path d="M50 85 C50 85 65 75 85 80 L85 30 C65 25 50 40 50 40 Z" fill="#fffbeb"
+                            stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+                        <!-- Book Cover edge -->
+                        <path d="M50 88 C50 88 35 78 12 83 L12 80 C35 75 50 85 50 85 Z" fill="currentColor" />
+                        <path d="M50 88 C50 88 65 78 88 83 L88 80 C65 75 50 85 50 85 Z" fill="currentColor" />
+                        <!-- HTE Text -->
+                        <text x="50" y="65" font-family="'Montserrat', sans-serif" font-weight="800" font-size="20"
+                            text-anchor="middle" fill="currentColor" letter-spacing="1">HTE</text>
+                        <!-- Sparkles -->
+                        <circle cx="25" cy="20" r="2" fill="#fbbf24" />
+                        <circle cx="75" cy="25" r="3" fill="#fbbf24" />
+                        <circle cx="50" cy="15" r="2.5" fill="#f59e0b" />
+                    </svg>
+                    <span class="font-serif font-bold text-xl md:text-2xl text-brand-900 tracking-wide">Hoàng Trường
+                        English</span>
+                </div>
+                <!-- Links -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#hero" class="text-brand-800 hover:text-brand-500 font-medium transition">Trang Chủ</a>
+                    <a href="#roadmap" class="text-brand-800 hover:text-brand-500 font-medium transition">Lộ Trình</a>
+                    <a href="#footer" class="text-brand-800 hover:text-brand-500 font-medium transition">Liên Hệ</a>
+                </div>
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <a href="https://zalo.me/0969866171" target="_blank"
+                        class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-brand-500 to-brand-600 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
+                        <span
+                            class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                        <span class="relative flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                </path>
+                            </svg>
+                            Đăng Ký Ngay
+                        </span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Button (Optional, not implemented but space reserved) -->
+                <div class="md:hidden flex items-center">
+                    <a href="https://zalo.me/0969866171" target="_blank"
+                        class="inline-flex items-center justify-center px-4 py-2 text-xs font-bold text-white bg-brand-500 rounded-full shadow-md">Đăng
+                        Ký</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative pt-32 pb-20 lg:pt-40 lg:pb-24 overflow-hidden">
+        <!-- Decorative bg elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div
+                class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-brand-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse-slow">
+            </div>
+            <div
+                class="absolute bottom-[-10%] left-[-10%] w-80 h-80 bg-brand-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 animate-fade-in-up">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-brand-100 text-brand-700 font-semibold text-sm mb-4 border border-brand-300 shadow-sm">
+                Nền tảng vững chắc - Giao tiếp tự tin
+            </span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brand-950 leading-tight mb-6">
+                Nội Dung Khoá Học Giao Tiếp <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-700">Từ Cơ Bản Đến
+                    Nâng Cao</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-brand-800 mb-10">
+                Lộ trình thiết kế chuyên biệt tại Hoàng Trường English, giúp bạn làm chủ ngôn ngữ và giao tiếp thực tế.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
+                <div
+                    class="flex items-center gap-3 bg-white px-6 py-4 rounded-2xl shadow-lg border-b-4 border-brand-400">
+                    <div class="p-3 bg-brand-100 rounded-full text-brand-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-brand-500 font-medium">Thời lượng</p>
+                        <p class="text-xl font-bold text-brand-900">80 Buổi học</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-center gap-3 bg-white px-6 py-4 rounded-2xl shadow-lg border-b-4 border-brand-400">
+                    <div class="p-3 bg-brand-100 rounded-full text-brand-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-brand-500 font-medium">Trình độ đầu ra</p>
+                        <p class="text-xl font-bold text-brand-900">Chuẩn A1 đến B2+</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Circular Timelines Section -->
+    <section id="roadmap" class="py-16 bg-white border-t border-brand-100 shadow-[0_-10px_40px_rgba(245,158,11,0.05)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-900 mb-4">Chi Tiết Lộ Trình</h2>
+                <p
+                    class="text-brand-600 max-w-2xl mx-auto bg-brand-50 p-3 rounded-lg border border-brand-200 inline-block">
+                    Rê chuột vào các điểm số trên vòng tròn để khám phá chi tiết nội dung tương ứng ở vị trí trung tâm.
+                </p>
+            </div>
+
+            <!-- Grid container for 2 Circles -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center justify-items-center">
+
+                <!-- Grammar Circle -->
+                <div class="relative w-full max-w-[500px] aspect-square">
+                    <!-- Dashed track -->
+                    <div class="absolute inset-0 rounded-full border-[3px] border-dashed border-brand-300/40"></div>
+
+                    <!-- Nodes Container (Injected by JS) -->
+                    <div id="grammar-container" class="absolute inset-0"></div>
+
+                    <!-- Center Information Display -->
+                    <div id="grammar-center"
+                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[65%] h-[65%] bg-white rounded-full shadow-[0_10px_40px_-10px_rgba(245,158,11,0.3)] border-4 border-white flex flex-col justify-center items-center p-4 text-center transition-all duration-300 z-20 overflow-hidden">
+
+                        <!-- Default View (Visible initially) -->
+                        <div class="default-view transition-opacity duration-300 flex flex-col items-center">
+                            <div
+                                class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-brand-100 text-brand-600 mb-2 shadow-inner">
+                                <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg sm:text-2xl font-bold text-brand-800 uppercase tracking-wider">Ngữ Pháp
+                            </h3>
+                            <p class="text-xs sm:text-sm text-brand-500 font-medium mt-1"><span
+                                    id="grammar-count">40</span> Điểm Cốt Lõi</p>
+                        </div>
+
+                        <!-- Hover View (Hidden initially) -->
+                        <div
+                            class="hover-view absolute inset-0 flex flex-col justify-center items-center p-6 sm:p-8 opacity-0 pointer-events-none transition-opacity duration-300 bg-white rounded-full">
+                            <span
+                                class="text-xs sm:text-sm font-bold text-brand-500 mb-2 uppercase tracking-wider border-b border-brand-200 pb-1 hover-num">Bài
+                                1</span>
+                            <div
+                                class="text-brand-900 font-bold text-xs sm:text-sm md:text-base leading-tight hover-text px-2 w-full flex justify-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vocabulary Circle -->
+                <div class="relative w-full max-w-[500px] aspect-square">
+                    <!-- Dashed track -->
+                    <div class="absolute inset-0 rounded-full border-[3px] border-dashed border-brand-300/40"></div>
+
+                    <!-- Nodes Container (Injected by JS) -->
+                    <div id="vocab-container" class="absolute inset-0"></div>
+
+                    <!-- Center Information Display -->
+                    <div id="vocab-center"
+                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[65%] h-[65%] bg-white rounded-full shadow-[0_10px_40px_-10px_rgba(245,158,11,0.3)] border-4 border-white flex flex-col justify-center items-center p-4 text-center transition-all duration-300 z-20 overflow-hidden">
+
+                        <!-- Default View -->
+                        <div class="default-view transition-opacity duration-300 flex flex-col items-center">
+                            <div
+                                class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-brand-100 text-brand-600 mb-2 shadow-inner">
+                                <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg sm:text-2xl font-bold text-brand-800 uppercase tracking-wider">Từ Vựng
+                            </h3>
+                            <p class="text-xs sm:text-sm text-brand-500 font-medium mt-1"><span
+                                    id="vocab-count">40</span> Chủ Đề Thực Tế</p>
+                        </div>
+
+                        <!-- Hover View -->
+                        <div
+                            class="hover-view absolute inset-0 flex flex-col justify-center items-center p-6 sm:p-8 opacity-0 pointer-events-none transition-opacity duration-300 bg-white rounded-full">
+                            <span
+                                class="text-xs sm:text-sm font-bold text-brand-500 mb-2 uppercase tracking-wider border-b border-brand-200 pb-1 hover-num">Bài
+                                1</span>
+                            <div
+                                class="text-brand-900 font-bold text-xs sm:text-sm md:text-base leading-tight hover-text px-2 w-full flex justify-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Details & Pricing Section -->
+    <section id="course-details" class="py-16 bg-white/40 relative overflow-hidden border-t border-brand-100">
+        <!-- Decorative Elements -->
+        <div
+            class="absolute top-20 left-[-5%] w-64 h-64 bg-brand-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30">
+        </div>
+        <div
+            class="absolute bottom-10 right-[-5%] w-72 h-72 bg-brand-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <div class="text-center mb-12">
+                <span class="text-brand-500 font-bold tracking-wider uppercase text-sm mb-2 block">Lộ trình rõ
+                    ràng</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-900 mb-4">Cấu Trúc & Chi Phí Khóa Học
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-brand-300 to-brand-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Two Phases Grid -->
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <!-- Phase 1 Card -->
+                <div
+                    class="bg-white rounded-3xl p-8 shadow-[0_10px_40px_rgba(245,158,11,0.08)] border border-brand-100 relative group hover:-translate-y-1 transition-all duration-300">
+                    <div
+                        class="absolute top-0 right-0 bg-brand-100 text-brand-700 text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-3xl uppercase tracking-wider">
+                        Khởi Đầu</div>
+                    <h3 class="text-2xl font-serif font-bold text-brand-900 mb-2">Giai đoạn 1</h3>
+                    <p class="text-brand-600 mb-6 font-medium">20 buổi Ngữ pháp & 20 buổi Từ vựng đầu</p>
+
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span><strong>Tổng số buổi:</strong> 40 buổi</span>
+                        </li>
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <span><strong>Tổng thời gian:</strong> 5-6 tháng</span>
+                        </li>
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <span><strong>Thời lượng học:</strong> 90 phút/ buổi</span>
+                        </li>
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span><strong>Tần suất học:</strong> 2 buổi/ tuần</span>
+                        </li>
+                    </ul>
+                    <div class="pt-6 border-t border-brand-100">
+                        <p class="text-sm text-brand-500 font-medium mb-1">Học phí</p>
+                        <p
+                            class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-700 mb-4">
+                            7.500.000 đ</p>
+                    </div>
+                </div>
+
+                <!-- Phase 2 Card -->
+                <div
+                    class="bg-white rounded-3xl p-8 shadow-[0_10px_40px_rgba(245,158,11,0.08)] border border-brand-100 relative group hover:-translate-y-1 transition-all duration-300">
+                    <div
+                        class="absolute top-0 right-0 bg-brand-200 text-brand-800 text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-3xl uppercase tracking-wider">
+                        Nâng Cao</div>
+                    <h3 class="text-2xl font-serif font-bold text-brand-900 mb-2">Giai đoạn 2</h3>
+                    <p class="text-brand-600 mb-6 font-medium">20 buổi Ngữ pháp & 20 buổi Từ vựng sau</p>
+
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span><strong>Tổng số buổi:</strong> 40 buổi</span>
+                        </li>
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <span><strong>Tổng thời gian:</strong> 5-6 tháng</span>
+                        </li>
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <span><strong>Thời lượng học:</strong> 90 phút/ buổi</span>
+                        </li>
+                        <li class="flex items-center text-brand-800">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500 mr-3 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span><strong>Tần suất học:</strong> 2 buổi/ tuần</span>
+                        </li>
+                    </ul>
+                    <div class="pt-6 border-t border-brand-100">
+                        <p class="text-sm text-brand-500 font-medium mb-1">Học phí</p>
+                        <p
+                            class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-700 mb-4">
+                            7.500.000 đ</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global CTA inside Pricing -->
+            <div class="flex justify-center mb-16">
+                <a href="https://zalo.me/0969866171" target="_blank"
+                    class="inline-flex items-center justify-center px-10 py-4 text-lg font-bold text-white bg-gradient-to-r from-brand-500 via-brand-600 to-brand-500 rounded-full shadow-[0_10px_30px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_40px_rgba(245,158,11,0.4)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group bg-[length:200%_auto] hover:bg-right animate-[pulse_3s_infinite]">
+                    <span
+                        class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
+                    <span class="relative flex items-center gap-3">
+                        <svg class="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        Tư Vấn & Đăng Ký Ngay Qua Zalo
+                    </span>
+                </a>
+            </div>
+
+            <!-- Notes & Format Banner -->
+            <div
+                class="bg-gradient-to-br from-brand-50 to-white rounded-3xl p-6 md:p-8 border border-brand-200 shadow-sm flex flex-col md:flex-row gap-8 items-start md:items-center">
+                <div
+                    class="flex-shrink-0 w-full md:w-1/3 border-b md:border-b-0 md:border-r border-brand-200 pb-6 md:pb-0 md:pr-6">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="p-2 bg-brand-100 rounded-lg text-brand-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-brand-900">Hình thức học</h4>
+                    </div>
+                    <p class="text-brand-700 font-medium text-lg ml-11">Online 1-1 qua GG Meet</p>
+                </div>
+
+                <div class="w-full md:w-2/3">
+                    <h4 class="text-sm font-bold text-brand-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Lưu ý quan trọng
+                    </h4>
+                    <ul class="space-y-3 text-brand-800 text-sm md:text-base">
+                        <li class="flex items-start">
+                            <span class="text-brand-500 mr-2 mt-0.5 text-lg leading-none">&bull;</span>
+                            <span>2 buổi/ tuần trao đổi sắp xếp lịch phù hợp giữa học viên và giáo viên phụ
+                                trách.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-500 mr-2 mt-0.5 text-lg leading-none">&bull;</span>
+                            <span>Nếu đến buổi học mà học viên bận không tham gia lớp học thì trung tâm sẽ gửi video bài
+                                giảng và bài tập dưới sự giám sát của giáo viên.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-500 mr-2 mt-0.5 text-lg leading-none">&bull;</span>
+                            <span class="font-medium">Cam kết hoàn thành bài tập đầy đủ.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Outcomes & Gifts Section -->
+    <section id="outcomes-gifts"
+        class="py-16 bg-white relative border-t border-brand-100 shadow-[0_-10px_40px_rgba(245,158,11,0.03)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Gifts Banner -->
+            <div class="mb-16">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-serif font-bold text-brand-900 inline-flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7">
+                            </path>
+                        </svg>
+                        Quà Tặng Đặc Quyền
+                    </h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div
+                        class="bg-brand-50 rounded-xl p-4 flex items-center gap-4 border border-brand-200 hover:bg-brand-100 transition-colors cursor-pointer group">
+                        <div
+                            class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-brand-500 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-brand-800">Link Listening miễn phí</span>
+                    </div>
+                    <div
+                        class="bg-brand-50 rounded-xl p-4 flex items-center gap-4 border border-brand-200 hover:bg-brand-100 transition-colors cursor-pointer group">
+                        <div
+                            class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-brand-500 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-brand-800">Link Flashcards từ vựng miễn phí</span>
+                    </div>
+                    <div
+                        class="bg-brand-50 rounded-xl p-4 flex items-center gap-4 border border-brand-200 hover:bg-brand-100 transition-colors cursor-pointer group">
+                        <div
+                            class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-brand-500 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-brand-800">Link Quiz ngữ pháp miễn phí</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outcomes Grid -->
+            <div class="text-center mb-10">
+                <span class="text-brand-500 font-bold tracking-wider uppercase text-sm mb-2 block">Cam kết chất
+                    lượng</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-900 mb-4">Sau Khóa Học Học Viên Có Thể
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Listening Box -->
+                <div
+                    class="bg-white rounded-2xl p-6 border-2 border-brand-100 hover:border-brand-300 transition-colors shadow-sm">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-brand-50">
+                        <div class="p-3 bg-brand-100 rounded-xl text-brand-600">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-900">1. Kỹ năng Listening</h3>
+                    </div>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Hiểu được các đoạn hội thoại ngắn, trung bình và dài trong đời
+                                sống hằng ngày.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Nhận diện được thông tin chính, chi tiết, thái độ người nói và
+                                mục đích giao tiếp.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Nghe hiểu các chủ đề quen thuộc như gia đình, công việc, du
+                                lịch, mua sắm, sức khỏe, giáo dục, công nghệ và xã hội.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Ghi chú thông tin quan trọng khi nghe.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Phản hồi phù hợp sau khi nghe thông tin.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Speaking Box -->
+                <div
+                    class="bg-white rounded-2xl p-6 border-2 border-brand-100 hover:border-brand-300 transition-colors shadow-sm">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-brand-50">
+                        <div class="p-3 bg-brand-100 rounded-xl text-brand-600">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-900">2. Kỹ năng Speaking</h3>
+                    </div>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Giới thiệu bản thân, mô tả thói quen, sở thích, kinh nghiệm và
+                                kế hoạch cá nhân.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Hỏi và trả lời trong nhiều tình huống giao tiếp thực tế.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Trình bày ý kiến, đồng tình, phản đối, giải thích lý do và đưa
+                                ví dụ.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Tham gia hội thoại nhóm, phỏng vấn ngắn, role-play và thuyết
+                                trình.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-brand-800">Nói rõ ràng hơn nhờ cải thiện phát âm, nối âm, trọng âm và ngữ
+                                điệu.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Final CTA Button -->
+            <div class="flex justify-center mt-16 pt-8 border-t border-brand-50">
+                <a href="https://zalo.me/0969866171" target="_blank"
+                    class="inline-flex items-center justify-center px-10 py-4 text-lg font-bold text-white bg-gradient-to-r from-brand-500 via-brand-600 to-brand-500 rounded-full shadow-[0_10px_30px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_40px_rgba(245,158,11,0.4)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group bg-[length:200%_auto] hover:bg-right animate-[pulse_3s_infinite]">
+                    <span
+                        class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
+                    <span class="relative flex items-center gap-3">
+                        <svg class="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        Tư Vấn & Đăng Ký Ngay Qua Zalo
+                    </span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-brand-950 text-brand-100 py-12 relative overflow-hidden mt-10">
+        <div class="absolute inset-0 opacity-5">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="p" width="100" height="100" patternUnits="userSpaceOnUse">
+                        <circle cx="50" cy="50" r="1" fill="#fff" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#p)" />
+            </svg>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center">
+            <!-- Footer Logo -->
+            <svg class="h-16 w-16 text-brand-400 mb-6" viewBox="0 0 100 100" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 85 C50 85 35 75 15 80 L15 30 C35 25 50 40 50 40 Z" fill="rgba(251,191,36,0.1)"
+                    stroke="currentColor" stroke-width="2" />
+                <path d="M50 85 C50 85 65 75 85 80 L85 30 C65 25 50 40 50 40 Z" fill="rgba(251,191,36,0.1)"
+                    stroke="currentColor" stroke-width="2" />
+                <path d="M50 88 C50 88 35 78 12 83 L12 80 C35 75 50 85 50 85 Z" fill="currentColor" />
+                <path d="M50 88 C50 88 65 78 88 83 L88 80 C65 75 50 85 50 85 Z" fill="currentColor" />
+                <text x="50" y="65" font-family="'Montserrat', sans-serif" font-weight="800" font-size="20"
+                    text-anchor="middle" fill="currentColor" letter-spacing="1">HTE</text>
+            </svg>
+
+            <h4 class="text-2xl font-serif font-bold text-white mb-2">Hoàng Trường English</h4>
+            <p class="text-brand-300 text-sm mb-8 text-center max-w-md">Đồng hành cùng bạn trên con đường chinh phục
+                tiếng Anh giao tiếp từ A1 đến B2+.</p>
+
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-700 to-transparent mb-8"></div>
+
+            <p class="text-sm text-brand-400 font-medium uppercase tracking-widest">
+                &copy; 2026 Copyright by Hoàng Trường English
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts for Data Generation -->
+    <script>
+        // Data sources
+        const rawGrammarData = [
+            "Nouns (Danh từ)",
+            "Pronouns (Đại từ) // Reflexive pronouns (Đại từ phản thân)",
+            "Word Forms (Từ loại): Nouns // Verbs // Adjectives // Types of adverb",
+            "There be // Have/has got // Used to // Would Vo (for past habits) // Be/get used to",
+            "Articles // Determiners",
+            "Present Simple // -s/es endings",
+            "Present Continuous",
+            "Present Perfect",
+            "Past Simple // -ed endings // Irregular verbs",
+            "Past Continuous // Past Perfect",
+            "Future tenses (will + Vo & be going to + Vo) // Future Continuous",
+            "Sentence structures (Cấu trúc câu))",
+            "Subjects & Verbs Agreement",
+            "Sequence of tenses (Phối thì)",
+            "Modal verbs // Modal verbs in the past",
+            "Expressions of quantity (Lượng từ)",
+            "Wh-questions // Yes/No questions // Indirect questions // Requests: Could you…?",
+            "Tag questions // Imperatives",
+            "Suggestions: Let’s…, Why don’t we…?, How about…? // Suggest ...",
+            "Comparative adjectives (So sánh hơ)",
+            "Superlative adjectives (So sánh nhất)",
+            "As…as ... // Other types of comparisons",
+            "Too ... to ... // Enough ... // So ... that ... // Such ... that ... // Exclamatory sentence",
+            "To Infinitives // V + object + to V",
+            "Gerunds // V-bare infinitives",
+            "Noun clause (Mệnh đề danh từ)",
+            "Relative clauses (Mệnh đề quan hệ)",
+            "Passive voice (Câu bị động) // Causative forms",
+            "Reported speech (Câu tường thuậ)",
+            "Conditional type 1 (Câu điều kiện) // Unless // As long as ...",
+            "Conditional type 2 // Conditional type 3",
+            "Wish type 1,2,3 (Câu ao ước) // If only ...",
+            "Common phrasal verbs (Cụm động từ)",
+            "Common collocations (Ngữ kết hợp)",
+            "Common idioms (Thành ngữ)",
+            "Prepositions of time (Giới từ thời gian)",
+            "Preposition of places (Giới từ nơi chốn)",
+            "Prepositions after verbs/adjectives/nouns (Giới từ khác)",
+            "Linking words // Conjunctions (Từ nối/ Liên từ)",
+            "It’s (high/ about) time... // Had better // Would rather // Other special structures"
+        ];
+
+        const rawVocabData = [
+            "Personal information (Thông tin cá nhân)",
+            "Greetings and small talk (Chào hỏi và giao tiếp cơ bản)",
+            "Daily routines (Thói quen hàng ngày)",
+            "Habits and lifestyle (Thói quen và lối sống)",
+            "Family members (Các thành viên trong gia đình)",
+            "Personality (Tính cách)",
+            "Friends and relationships (Bạn bè và các mối quan hệ)",
+            "Hobbies and free time (Sở thích và thời gian rảnh)",
+            "Food and drinks (Đồ ăn và thức uống)",
+            "Cooking and recipes (Nấu ăn và công thức)",
+            "Restaurants and eating out (Nhà hàng và ăn ngoài)",
+            "Shopping and money (Mua sắm và tiền bạc)",
+            "Online shopping (Mua sắm trực tuyến)",
+            "Services and complaints (Dịch vụ và phàn nàn)",
+            "Transportation (Giao thông vận tải)",
+            "Asking for directions (Hỏi đường)",
+            "Travel plans (Kế hoạch du lịch)",
+            "Travel experiences (Trải nghiệm du lịch)",
+            "Health problems (Các vấn đề sức khỏe)",
+            "Healthy lifestyle (Lối sống lành mạnh)",
+            "Accidents and emergencies (Tai nạn và khẩn cấp)",
+            "Problems and solutions (Vấn đề và giải pháp)",
+            "Education and learning (Giáo dục và học tập)",
+            "Exams and study habits (Thi cử và thói quen học tập)",
+            "Goals and motivation (Mục tiêu và động lực)",
+            "Jobs and careers (Công việc và sự nghiệp)",
+            "Workplace communication (Giao tiếp nơi công sở)",
+            "Job interviews (Phỏng vấn xin việc)",
+            "Technology (Công nghệ)",
+            "Social media (Mạng xã hội)",
+            "Online safety (An toàn trực tuyến)",
+            "City life and countryside (Thành thị và nông thôn)",
+            "Environment; Nature & Global issues (Môi trường; Thiên nhiên & Vấn đề toàn cầu)",
+            "Culture and festivals (Văn hóa và lễ hội)",
+            "Entertainment & Sports (Giải trí & Thể thao)",
+            "Politics (Chính trị)",
+            "History (Lịch sử)",
+            "Outer space (Vũ trụ)",
+            "Maths; Geography; Physics; Chemistry; Literature; Biology; IT; Arts; PE, CE. (Toán, Địa, Lý, Hóa, Văn, Sinh, IT, Mỹ thuật, Thể dục, GDCD)",
+            "140 expressions / functional languages (140 mẫu câu giao tiếp chức năng)"
+        ];
+
+        // Process data: Keep exactly 40 items. We will process '//' dynamically on hover
+        const grammarData = rawGrammarData;
+        const vocabData = rawVocabData;
+
+        // Function to render items on a circle
+        function renderCircularTimeline(data, containerId, centerId) {
+            const container = document.getElementById(containerId);
+            const total = data.length;
+            let htmlContent = '';
+
+            data.forEach((item, index) => {
+                const num = index + 1;
+                // Calculate angle: start at top (-90 degrees) and go clockwise
+                const angleRad = (index / total) * 2 * Math.PI - (Math.PI / 2);
+
+                // 50% radius places the center of the dot exactly on the container's border track
+                const radiusPercent = 50;
+                const left = 50 + radiusPercent * Math.cos(angleRad);
+                const top = 50 + radiusPercent * Math.sin(angleRad);
+
+                // Clean quotes so they don't break HTML syntax when passed in JS functions inline
+                const safeItem = item.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+                htmlContent += `
+                    <div class="absolute w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-brand-300 to-brand-500 text-white flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-md border-2 border-white cursor-pointer z-10 transition-all duration-300 hover:scale-150 hover:z-30 hover:shadow-xl hover:ring-4 hover:ring-brand-200" 
+                         style="left: ${left}%; top: ${top}%; transform: translate(-50%, -50%);"
+                         onmouseenter="showDetail('${centerId}', ${num}, '${safeItem}')"
+                         onmouseleave="hideDetail('${centerId}')">
+                        ${num}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = htmlContent;
+        }
+
+        // Global functions for inline event listeners
+        window.showDetail = function (centerId, num, item) {
+            const centerEl = document.getElementById(centerId);
+            centerEl.querySelector('.default-view').style.opacity = '0';
+            centerEl.querySelector('.hover-view').style.opacity = '1';
+            centerEl.querySelector('.hover-num').innerText = 'BÀI ' + num;
+
+            // Tách các điểm bằng '//' và tạo danh sách bullet point dạng ngôi sao
+            const parts = item.split('//').map(s => s.trim()).filter(Boolean);
+            const formattedHtml = '<ul class="space-y-1.5 sm:space-y-2 text-left w-full max-w-[90%] mx-auto py-2">' +
+                parts.map(part => `
+                    <li class="flex items-start gap-1.5 sm:gap-2">
+                        <!-- SVG Star Icon -->
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        <span>${part}</span>
+                    </li>
+                `).join('') +
+                '</ul>';
+
+            centerEl.querySelector('.hover-text').innerHTML = formattedHtml;
+
+            // Add slight pop & glow effect to the center display
+            centerEl.style.transform = 'translate(-50%, -50%) scale(1.05)';
+            centerEl.style.borderColor = '#fbbf24'; // brand-400
+            centerEl.style.boxShadow = '0 0 50px rgba(245,158,11,0.4)';
+        }
+
+        window.hideDetail = function (centerId) {
+            const centerEl = document.getElementById(centerId);
+            centerEl.querySelector('.default-view').style.opacity = '1';
+            centerEl.querySelector('.hover-view').style.opacity = '0';
+
+            // Revert effects
+            centerEl.style.transform = 'translate(-50%, -50%) scale(1)';
+            centerEl.style.borderColor = '#ffffff';
+            centerEl.style.boxShadow = '0 10px 40px -10px rgba(245,158,11,0.3)';
+        }
+
+        // Initialize timelines
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCircularTimeline(grammarData, 'grammar-container', 'grammar-center');
+            renderCircularTimeline(vocabData, 'vocab-container', 'vocab-center');
+
+            // Update dynamic counts based on the separated items
+            const grammarCountEl = document.getElementById('grammar-count');
+            const vocabCountEl = document.getElementById('vocab-count');
+            if (grammarCountEl) grammarCountEl.innerText = grammarData.length;
+            if (vocabCountEl) vocabCountEl.innerText = vocabData.length;
+        });
+    </script>
+</body>
+
+</html>
