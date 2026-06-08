@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRREGULAR VERBS 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #2c2a26;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .chalk-text {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- Nền Lớp Học Sinh Động --- */
+        .classroom-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wall {
+            flex: 2;
+            background-color: #f0ead6;
+            background-image: radial-gradient(#d3cbb8 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: relative;
+            border-bottom: 10px solid #5c3a21;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .wainscoting {
+            flex: 1;
+            background: linear-gradient(to right, #8b5a2b, #a0522d, #8b5a2b);
+            background-size: 100px 100%;
+            box-shadow: inset 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .wainscoting::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(0, 0, 0, 0.2) 48px, rgba(0, 0, 0, 0.2) 50px);
+        }
+
+        /* Đồng hồ lớp học */
+        .clock {
+            position: absolute;
+            top: 40px;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #fff9e6;
+            border: 8px solid #8b5a2b;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clock-center {
+            width: 8px;
+            height: 8px;
+            background: #b91c1c;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hand-hour {
+            position: absolute;
+            width: 5px;
+            height: 22px;
+            background: #4a2f18;
+            bottom: 50%;
+            transform-origin: bottom;
+            transform: rotate(45deg);
+            border-radius: 3px;
+        }
+
+        .hand-min {
+            position: absolute;
+            width: 3px;
+            height: 32px;
+            background: #4a2f18;
+            bottom: 50%;
+            transform-origin: bottom;
+            transform: rotate(320deg);
+            border-radius: 2px;
+        }
+
+        /* Poster cổ động */
+        .poster {
+            position: absolute;
+            top: 60px;
+            left: 8%;
+            width: 100px;
+            height: 140px;
+            background: #fef08a;
+            border: 2px solid #eab308;
+            transform: rotate(-3deg);
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%) rotate(5deg);
+            width: 30px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Bụi Phấn Animation --- */
+        .chalk-dust-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(1px);
+            pointer-events: none;
+            animation: floatDust linear infinite;
+        }
+
+        @keyframes floatDust {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            80% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* --- STREAMING_CHUNK: Designing the blackboard container and wooden borders... --- */
+        .blackboard {
+            background-color: #2b4535;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 30%),
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
+            border: 14px solid #6b4423;
+            border-radius: 12px;
+            box-shadow:
+                inset 0 0 40px rgba(0, 0, 0, 0.9),
+                0 20px 50px rgba(0, 0, 0, 0.6),
+                inset 0 0 0 2px #4a2f18;
+            color: #f8f9fa;
+            position: relative;
+        }
+
+        .blackboard::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: -14px;
+            right: -14px;
+            height: 18px;
+            background: #4a2f18;
+            border-radius: 0 0 12px 12px;
+            border-top: 2px solid #2a1a0c;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        /* --- Hiệu ứng lật thẻ đơn giản mượt mà (Fade & smooth scale) --- */
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 75vh;
+            min-height: 550px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .flip-card {
+                height: 700px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .flip-card {
+                height: 750px;
+            }
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Thao tác lật thẻ đơn giản, không bị ngược chữ hay méo khung hình */
+        .flip-card-front {
+            opacity: 1;
+            z-index: 2;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .flip-card-back {
+            opacity: 0;
+            z-index: 1;
+            transform: scale(0.97);
+            pointer-events: none;
+        }
+
+        /* Khi được kích hoạt lật */
+        .flip-card.flipped .flip-card-front {
+            opacity: 0;
+            z-index: 1;
+            transform: scale(1.03);
+            pointer-events: none;
+        }
+
+        .flip-card.flipped .flip-card-back {
+            opacity: 1;
+            z-index: 2;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        /* --- Ô nhập từ bằng phấn --- */
+        .chalk-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            transition: all 0.2s;
+        }
+
+        .chalk-input:focus {
+            border-color: #fde047;
+            background: rgba(253, 224, 71, 0.1);
+            outline: none;
+            box-shadow: 0 0 8px rgba(253, 224, 71, 0.3);
+            text-shadow: 0 0 5px rgba(253, 224, 71, 0.5);
+        }
+
+        /* --- STREAMING_CHUNK: Adding animations and wood buttons... --- */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .wood-btn {
+            background: linear-gradient(to bottom, #8b5a2b, #6b4423);
+            border: 2px solid #4a2f18;
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.2), 0 4px 6px rgba(0, 0, 0, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            transition: all 0.1s;
+        }
+
+        .wood-btn:active {
+            transform: translateY(2px);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        .chalk-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+        }
+
+        .chalk-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+
+        .chalk-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <div class="classroom-bg">
+        <div class="wall">
+            <div class="clock">
+                <div class="hand-hour"></div>
+                <div class="hand-min"></div>
+                <div class="clock-center"></div>
+            </div>
+            <div class="poster">
+                Learn<br>Every Day! 📚
+            </div>
+        </div>
+        <div class="wainscoting"></div>
+        <div id="chalk-dust-container" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
+    </div>
+
+    <!-- Toast Thông báo tiêu đề bài học -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[#2b4535] border-2 border-[#6b4423] text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-xl z-50 flex items-center gap-3 chalk-text">
+        <span>🔔</span>
+        <span id="toast-message">IRREGULAR VERBS 1</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen"
+            class="blackboard p-3 sm:p-8 text-center flex-col h-[80vh] min-h-[550px] max-h-[850px] relative"
+            style="display: flex;">
+            <h1
+                class="text-3xl sm:text-5xl font-black text-white mb-2 chalk-text tracking-widest drop-shadow-md animate-pulse">
+                IRREGULAR VERBS</h1>
+            <p
+                class="text-yellow-200 chalk-text text-lg sm:text-2xl mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-2 border-dashed border-white/30">
+                Master your V0 - V2 - V3 forms (Trang 1)</p>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar mb-16 sm:mb-20 border border-white/20 rounded-lg bg-black/20 shadow-inner w-full shrink relative">
+                <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse chalk-text">
+                    <thead class="sticky top-0 bg-[#1e3226] text-yellow-300 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold tracking-wider border-b-2 border-white/50 w-1/4">Meaning
+                            </th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider text-center border-b-2 border-white/50 text-yellow-200">
+                                V0 (Infinitive)</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider text-center border-b-2 border-white/50 text-orange-200">
+                                V2 (Past)</th>
+                            <th
+                                class="p-3 sm:p-4 font-bold tracking-wider text-center border-b-2 border-white/50 text-green-200">
+                                V3 (Participle)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcome-table-body" class="divide-y divide-white/20 text-white">
+                        <!-- Chèn bằng JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="absolute bottom-14 left-1/2 transform -translate-x-1/2 w-full px-4 sm:px-8 shrink-0">
+                <button onclick="startStudy()"
+                    class="wood-btn w-full sm:w-2/3 mx-auto py-3 text-white font-black text-xl sm:text-2xl rounded-xl flex items-center justify-center gap-3 uppercase tracking-widest font-sans shadow-xl">
+                    START STUDYING 📖
+                </button>
+            </div>
+
+            <!-- Dòng chữ bản quyền cố định ở chân bảng chào -->
+            <div
+                class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center shrink-0 pointer-events-none">
+                <div
+                    class="px-6 py-1.5 bg-black/30 border border-white/20 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md">
+                    <p
+                        class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                        &copy; Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =================== STREAMING_CHUNK: Structuring the main flashcard workspace... =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-6 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="border-2 border-orange-400 text-orange-300 hover:bg-orange-400/20 bg-black/40 flex items-center justify-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl z-20 relative transition-all shadow-lg hover:scale-105 font-bold shrink-0"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline font-sans text-sm">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center gap-2 sm:gap-6 mb-2 sm:mb-3 bg-black/40 px-2 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl border border-white/20 shadow-lg chalk-text text-sm sm:text-xl font-bold max-w-full">
+                        <div class="flex items-center gap-1 sm:gap-2 text-cyan-300 shrink-0">
+                            <span class="text-lg sm:text-2xl drop-shadow-md">⏱️</span>
+                            <span id="timer-display" class="tracking-wider drop-shadow-md">00:00</span>
+                        </div>
+                        <div
+                            class="border-l-2 border-dashed border-white/50 pl-2 sm:pl-6 text-white truncate flex items-center justify-center">
+                            <span id="progress-text"
+                                class="text-amber-400 font-black tracking-wider drop-shadow-md text-base sm:text-2xl">1
+                                / X</span>
+                        </div>
+                    </div>
+                    <div
+                        class="w-full bg-black/50 rounded-full h-2 sm:h-4 overflow-hidden border border-white/30 sm:border-2 shadow-inner">
+                        <div id="progress-bar"
+                            class="bg-gradient-to-r from-green-400 to-emerald-300 h-full transition-all duration-300 shadow-[0_0_12px_#4ade80]"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="chalk-btn flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 text-white rounded-lg sm:rounded-xl bg-black/40 shadow-lg shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Flashcard chính -->
+            <div class="flip-card" id="flashcard">
+                <div class="flip-card-inner">
+                    <!-- Mặt trước bảng -->
+                    <div class="flip-card-front blackboard custom-scrollbar p-3 sm:p-8 relative">
+                        <!-- pb-24 giúp nội dung học không bao giờ bị đè bởi bản quyền cố định phía dưới -->
+                        <div
+                            class="flex-grow flex flex-col justify-start items-center text-center w-full relative z-10 pb-24">
+                            <div class="mb-2 sm:mb-4 mt-2">
+                                <h2 class="text-3xl sm:text-5xl font-bold text-white chalk-text mb-1 sm:mb-2 drop-shadow-md"
+                                    id="word-mean"></h2>
+                                <span
+                                    class="inline-block px-3 py-0.5 border-2 border-blue-300 text-blue-200 rounded-lg font-bold text-base sm:text-lg uppercase chalk-text transform -rotate-1"
+                                    id="word-type"></span>
+                            </div>
+
+                            <!-- Bảng 3 thì ví dụ học tập dạng điền khuyết -->
+                            <div class="w-full max-w-2xl bg-black/25 rounded-xl p-2.5 sm:p-4 mb-2 border border-white/10 text-xs sm:text-base animate-pulse"
+                                id="word-ex">
+                                <!-- Điền tự động qua JS -->
+                            </div>
+                            <div id="word-exVi" class="w-full max-w-2xl">
+                                <!-- Bản dịch tương ứng -->
+                            </div>
+
+                            <div class="w-full flex flex-col items-center gap-3 sm:gap-4 mb-2 mt-2">
+                                <!-- Khối nhập từ vựng 3 hàng V0, V2, V3 -->
+                                <div id="letter-inputs-container"
+                                    class="flex flex-col items-center gap-2 sm:gap-3 w-full my-1"></div>
+
+                                <div
+                                    class="flex items-center justify-center gap-2 sm:gap-3 w-full flex-wrap font-sans mt-1">
+                                    <button onclick="speakCurrentWord(event)"
+                                        class="w-10 h-10 sm:w-12 sm:h-12 border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300/20 rounded-full flex items-center justify-center transition-colors shadow-sm"
+                                        title="Nghe phát âm chuẩn cả 3 dạng">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                        </svg>
+                                    </button>
+                                    <button id="hint-btn" onclick="giveHint()"
+                                        class="px-4 sm:px-6 h-10 sm:h-12 border-2 border-blue-300 text-blue-200 hover:bg-blue-300/20 font-bold rounded-xl disabled:opacity-50 text-sm sm:text-base">Hint</button>
+                                    <button onclick="checkAnswer()"
+                                        class="wood-btn px-6 sm:px-8 h-10 sm:h-12 text-white font-bold rounded-xl text-sm sm:text-lg flex items-center gap-2">
+                                        Check
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Copyright cố định tuyệt đối ở dưới cùng bảng mặt trước -->
+                        <div
+                            class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center z-20 pointer-events-none">
+                            <div
+                                class="px-6 py-1.5 bg-black/40 border border-white/20 rounded-xl shadow-lg backdrop-blur-md">
+                                <p
+                                    class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                                    &copy; Copyright by Hoang Truong English</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mặt sau bảng -->
+                    <div class="flip-card-back blackboard custom-scrollbar p-3 sm:p-8 relative">
+                        <div
+                            class="absolute top-4 left-4 w-16 border-t-2 border-white/20 transform -rotate-12 hidden sm:block">
+                        </div>
+                        <div
+                            class="absolute top-6 left-2 w-12 border-t-2 border-white/20 transform rotate-6 hidden sm:block">
+                        </div>
+
+                        <div id="result-header" class="text-center pb-1 mb-2 sm:mb-3 chalk-text"></div>
+
+                        <!-- pb-24 giúp nội dung học không bao giờ bị đè bởi bản quyền cố định phía dưới -->
+                        <div
+                            class="flex-grow flex flex-col justify-start items-center text-center relative z-10 w-full pb-24">
+                            <h2 class="text-3xl sm:text-5xl font-bold text-white chalk-text mb-3 leading-snug"
+                                id="back-word"></h2>
+
+                            <!-- Nút phát âm tinh gọn dạng capsule chuẩn kèm biểu tượng loa -->
+                            <div class="mb-4">
+                                <button onclick="speakCurrentWord(event)"
+                                    class="text-yellow-300 hover:text-yellow-200 hover:bg-white/10 transition-all px-4 py-2 rounded-full cursor-pointer relative z-50 flex items-center gap-2 border border-yellow-300/30 bg-black/30 shadow-md hover:scale-105"
+                                    title="Nghe phát âm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7"
+                                        fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                                    </svg>
+                                    <span class="text-sm sm:text-base font-bold font-sans tracking-wide">Pronounce
+                                        🔊</span>
+                                </button>
+                            </div>
+
+                            <p class="text-2xl sm:text-3xl text-green-300 font-bold mb-3 chalk-text" id="back-mean"></p>
+
+                            <div
+                                class="border-2 border-dashed border-white/20 rounded-2xl p-3 sm:p-4 w-full max-w-2xl text-center bg-black/10 text-sm sm:text-base">
+                                <p class="text-white chalk-text leading-relaxed" id="back-ex"></p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="absolute bottom-14 left-1/2 transform -translate-x-1/2 flex justify-center gap-3 sm:gap-4 w-[90%] max-w-md font-sans z-30">
+                            <button onclick="prevCard()"
+                                class="border-2 border-orange-400 text-orange-300 hover:bg-orange-400/20 bg-black/20 flex-1 py-2 sm:py-3 font-bold rounded-xl text-sm sm:text-lg transition-all shadow-md hover:scale-105">Back</button>
+                            <button onclick="nextCard()" id="next-btn"
+                                class="wood-btn flex-1 py-2 sm:py-3 text-white font-bold rounded-xl flex items-center justify-center gap-2 text-sm sm:text-lg">
+                                Next
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Copyright cố định tuyệt đối ở dưới cùng bảng mặt sau -->
+                        <div
+                            class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center z-20 pointer-events-none">
+                            <div
+                                class="px-6 py-1.5 bg-black/40 border border-white/20 rounded-xl shadow-lg backdrop-blur-md">
+                                <p
+                                    class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                                    &copy; Copyright by Hoang Truong English</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen"
+            class="blackboard p-3 sm:p-8 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: none;">
+            <h2 class="text-3xl sm:text-5xl font-black text-yellow-300 chalk-text mb-1 shrink-0 drop-shadow-md">LESSON
+                SUMMARY</h2>
+
+            <p id="completion-datetime"
+                class="text-xs sm:text-sm text-gray-300 mb-3 shrink-0 font-sans italic tracking-wide"></p>
+
+            <!-- Bộ chỉ số trực quan ở Summary -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-3 shrink-0 chalk-text">
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Score</p>
+                    <p class="text-xl sm:text-3xl text-yellow-300 font-black mt-0.5" id="score-percent">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Time</p>
+                    <p class="text-lg sm:text-2xl text-cyan-300 font-bold mt-0.5" id="elapsed-time">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Perfect</p>
+                    <p class="text-lg sm:text-2xl text-green-400 font-bold mt-0.5" id="correct-count">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Hints</p>
+                    <p class="text-lg sm:text-2xl text-red-400 font-bold mt-0.5" id="hint-count">-</p>
+                </div>
+            </div>
+
+            <!-- Bảng lưu trữ xem lại lỗi sai và đáp án kèm Phiên âm chuẩn -->
+            <div
+                class="flex-grow overflow-auto custom-scrollbar border border-white/30 rounded-xl bg-black/30 w-full mb-16 sm:mb-20 shrink shadow-inner relative">
+                <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse chalk-text">
+                    <thead class="sticky top-0 bg-[#1e3226] text-yellow-300 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold w-1/5 border-b-2 border-white/50">Status</th>
+                            <th class="p-3 sm:p-4 font-bold w-1/2 border-b-2 border-white/50">Word & Phonetic</th>
+                            <th class="p-3 sm:p-4 font-bold border-b-2 border-white/50">Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final-review-table-body" class="divide-y divide-white/20 text-white">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="absolute bottom-14 left-1/2 transform -translate-x-1/2 w-full px-4 sm:px-8 shrink-0">
+                <button onclick="resetQuizToSummary()"
+                    class="wood-btn w-full sm:w-1/2 mx-auto py-2.5 text-white font-bold text-lg sm:text-xl rounded-xl uppercase tracking-wider font-sans shadow-xl">
+                    Study Again 🔄
+                </button>
+            </div>
+
+            <div
+                class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center shrink-0 pointer-events-none">
+                <div
+                    class="px-6 py-1.5 bg-black/30 border border-white/20 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md">
+                    <p
+                        class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                        &copy; Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        const flashcards = [
+            { topic: "IRREGULAR VERBS", mean: "Thì, là, ở", v0: "be", v2: "was", v3: "been", p0: "/biː/", p2: "/wɒz/", p3: "/biːn/", exV0: "I want to _______ happy every day.", exV2: "She _______ at school yesterday.", exV3: "They have _______ friends for a long time.", exViV0: "Tôi muốn luôn hạnh phúc mỗi ngày.", exViV2: "Hôm qua cô ấy đã ở trường học.", exViV3: "Họ đã làm bạn với nhau trong một khoảng thời gian dài." },
+            { topic: "IRREGULAR VERBS", mean: "Trở thành", v0: "become", v2: "became", v3: "become", p0: "/bɪˈkʌm/", p2: "/bɪˈkeɪm/", p3: "/bɪˈkʌm/", exV0: "I want to _______ a skilled doctor.", exV2: "He _______ a teacher two years ago.", exV3: "The weather has _______ colder recently.", exViV0: "Tôi muốn trở thành một bác sĩ giỏi.", exViV2: "Anh ấy đã trở thành giáo viên hai năm trước.", exViV3: "Thời tiết gần đây đã trở nên lạnh hơn." },
+            { topic: "IRREGULAR VERBS", mean: "Bắt đầu", v0: "begin", v2: "began", v3: "begun", p0: "/bɪˈɡɪn/", p2: "/bɪˈɡæn/", p3: "/bɪˈɡʌn/", exV0: "We _______ classes at 8 AM.", exV2: "It _______ to rain heavily an hour ago.", exV3: "The match has already _______.", exViV0: "Chúng tôi bắt đầu buổi học lúc 8 giờ sáng.", exViV2: "Trời đã bắt đầu mưa rất to cách đây một tiếng.", exViV3: "Trận đấu đã được bắt đầu rồi." },
+            { topic: "IRREGULAR VERBS", mean: "Đập, vỡ", v0: "break", v2: "broke", v3: "broken", p0: "/breɪk/", p2: "/brəʊk/", p3: "/ˈbrəʊkən/", exV0: "Be careful or you will _______ the vase.", exV2: "She accidently _______ her phone screen.", exV3: "They have _______ their promises.", exViV0: "Hãy cẩn làm vỡ chiếc bình hoa.", exViV2: "Cô ấy vô tình làm vỡ màn hình điện thoại.", exViV3: "Họ đã thất hứa (phá vỡ lời hứa)." },
+            { topic: "IRREGULAR VERBS", mean: "Mang theo", v0: "bring", v2: "brought", v3: "brought", p0: "/brɪŋ/", p2: "/brɔːt/", p3: "/brɔːt/", exV0: "Please _______ your book here.", exV2: "He _______ lunch to work yesterday.", exV3: "She has _______ some snacks for us.", exViV0: "Làm ơn hãy mang cuốn sách của bạn đến đây.", exViV2: "Hôm qua anh ấy đã mang bữa trưa đi làm.", exViV3: "Cô ấy đã mang theo một ít đồ ăn nhẹ cho chúng ta." },
+            { topic: "IRREGULAR VERBS", mean: "Xây dựng", v0: "build", v2: "built", v3: "built", p0: "/bɪld/", p2: "/bɪlt/", p3: "/bɪlt/", exV0: "Birds _______ nests in spring.", exV2: "They _______ this house in 2010.", exV3: "The company has _______ a new bridge.", exViV0: "Những chú chim xây tổ vào mùa xuân.", exViV2: "Họ đã xây dựng ngôi nhà này vào năm 2010.", exViV3: "Công ty vừa mới xây dựng xong một cây cầu mới." },
+            { topic: "IRREGULAR VERBS", mean: "Đốt cháy", v0: "burn", v2: "burnt", v3: "burnt", p0: "/bɜːn/", p2: "/bɜːnt/", p3: "/bɜːnt/", exV0: "Dry leaves _______ very quickly.", exV2: "The fire _______ the wooden shack completely.", exV3: "I have _______ my tongue with hot soup.", exViV0: "Lá khô bắt lửa và cháy rất nhanh.", exViV2: "Ngọn lửa đã thiêu rụi hoàn toàn căn lều gỗ.", exViV3: "Tôi vừa bị bỏng lưỡi (đốt cháy lưỡi) vì món súp nóng." },
+            { topic: "IRREGULAR VERBS", mean: "Mua", v0: "buy", v2: "bought", v3: "bought", p0: "/baɪ/", p2: "/bɔːt/", p3: "/bɔːt/", exV0: "I _______ fresh food daily.", exV2: "He _______ a new laptop last week.", exV3: "We have _______ a ticket for the show.", exViV0: "Tôi mua thực phẩm tươi sống hàng ngày.", exViV2: "Anh ấy đã mua chiếc laptop mới tuần trước.", exViV3: "Chúng tôi đã mua vé cho buổi biểu diễn." },
+            { topic: "IRREGULAR VERBS", mean: "Có thể", v0: "can", v2: "could", v3: "could", p0: "/kæn/", p2: "/kʊd/", p3: "/kʊd/", exV0: "I _______ speak English fluently.", exV2: "He _______ run fast when he was young.", exV3: "She has never _______ swim before.", exViV0: "Tôi có thể nói tiếng Anh một cách lưu loát.", exViV2: "Anh ấy đã có thể chạy rất nhanh khi còn trẻ.", exViV3: "Cô ấy chưa từng có thể biết bơi trước đây." },
+            { topic: "IRREGULAR VERBS", mean: "Chụp, bắt", v0: "catch", v2: "caught", v3: "caught", p0: "/kætʃ/", p2: "/kɔːt/", p3: "/kɔːt/", exV0: "Cats love to _______ mice.", exV2: "The police _______ the thief yesterday.", exV3: "I have _______ a bad cold.", exViV0: "Loài mèo rất thích săn bắt chuột.", exViV2: "Cảnh sát đã bắt được tên trộm ngày hôm qua.", exViV3: "Tôi vừa bị nhiễm (bắt phải) một trận cảm lạnh nặng." },
+            { topic: "IRREGULAR VERBS", mean: "Chọn", v0: "choose", v2: "chose", v3: "chosen", p0: "/tʃuːz/", p2: "/tʃəʊz/", p3: "/ˈtʃəʊzn/", exV0: "You must _______ a color.", exV2: "She _______ the red dress last night.", exV3: "We have _______ our team leader.", exViV0: "Bạn phải lựa chọn một màu sắc.", exViV2: "Tối qua cô ấy đã chọn chiếc đầm màu đỏ.", exViV3: "Chúng tôi đã chọn xong đội trưởng của nhóm." },
+            { topic: "IRREGULAR VERBS", mean: "Đến", v0: "come", v2: "came", v3: "come", p0: "/kʌm/", p2: "/keɪm/", p3: "/kʌm/", exV0: "They _______ here every morning.", exV2: "He _______ home very late last night.", exV3: "Spring has finally _______.", exViV0: "Họ đến đây vào mỗi buổi sáng.", exViV2: "Tối qua anh ấy đã về nhà rất muộn.", exViV3: "Mùa xuân cuối cùng cũng đã đến rồi." },
+            { topic: "IRREGULAR VERBS", mean: "Có giá", v0: "cost", v2: "cost", v3: "cost", p0: "/kɒst/", p2: "/kɒst/", p3: "/kɒst/", exV0: "Tickets _______ ten dollars each.", exV2: "The car repair _______ a fortune.", exV3: "It has _______ me a lot of energy.", exViV0: "Mỗi chiếc vé có giá là mười đô la.", exViV2: "Việc sửa xe đã tiêu tốn một khoản tiền lớn.", exViV3: "Việc đó đã tốn của tôi rất nhiều công sức." },
+            { topic: "IRREGULAR VERBS", mean: "Cắt", v0: "cut", v2: "cut", v3: "cut", p0: "/kʌt/", p2: "/kʌt/", p3: "/kʌt/", exV0: "I _______ the cake into pieces.", exV2: "He _______ his hair yesterday morning.", exV3: "She has _______ her index finger.", exViV0: "Tôi cắt chiếc bánh kem ra thành nhiều phần.", exViV2: "Sáng qua anh ấy đã tự cắt tóc của mình.", exViV3: "Cô ấy vừa bị đứt (cắt trúng) ngón tay trỏ." },
+            { topic: "IRREGULAR VERBS", mean: "Làm", v0: "do", v2: "did", v3: "done", p0: "/duː/", p2: "/dɪd/", p3: "/dʌn/", exV0: "We _______ homework every evening.", exV2: "She _______ her laundry yesterday.", exV3: "They have _______ a great job.", exViV0: "Chúng tôi làm bài tập về nhà mỗi tối.", exViV2: "Cô ấy đã giặt quần áo vào ngày hôm qua.", exViV3: "Họ đã hoàn thành xuất sắc công việc." },
+            { topic: "IRREGULAR VERBS", mean: "Vẽ", v0: "draw", v2: "drew", v3: "drawn", p0: "/drɔː/", p2: "/druː/", p3: "/drɔːn/", exV0: "Children love to _______ animals.", exV2: "He _______ a landscape last week.", exV3: "She has _______ a beautiful picture.", exViV0: "Trẻ em rất thích vẽ các loài động vật.", exViV2: "Anh ấy đã vẽ một bức tranh phong cảnh tuần trước.", exViV3: "Cô ấy đã hoàn thành việc vẽ một bức tranh tuyệt đẹp." },
+            { topic: "IRREGULAR VERBS", mean: "Uống", v0: "drink", v2: "drank", v3: "drunk", p0: "/drɪŋk/", p2: "/dræŋk/", p3: "/drʌŋk/", exV0: "I _______ a glass of water.", exV2: "He _______ a cup of hot tea.", exV3: "They have _______ all the milk.", exViV0: "Tôi uống một ly nước lọc.", exViV2: "Anh ấy đã uống một tách trà nóng.", exViV3: "Họ đã uống hết sạch sữa rồi." },
+            { topic: "IRREGULAR VERBS", mean: "Lái xe", v0: "drive", v2: "drove", v3: "driven", p0: "/draɪv/", p2: "/drəʊv/", p3: "/ˈdrɪvən/", exV0: "I _______ to work every day.", exV2: "He _______ all night to get here.", exV3: "She has never _______ an automatic car.", exViV0: "Tôi lái xe đi làm mỗi ngày.", exViV2: "Anh ấy đã lái xe suốt đêm để tới đây.", exViV3: "Cô ấy chưa từng lái xe số tự động bao giờ." },
+            { topic: "IRREGULAR VERBS", mean: "Mơ", v0: "dream", v2: "dreamt", v3: "dreamt", p0: "/driːm/", p2: "/dremt/", p3: "/dremt/", exV0: "I often _______ of a house on beach.", exV2: "Last night she _______ about flying.", exV3: "He has always _______ of visiting space.", exViV0: "Tôi thường mơ về một ngôi nhà bên bờ biển.", exViV2: "Tối qua cô ấy đã mơ thấy mình đang bay lượn.", exViV3: "Anh ấy luôn mơ ước được đi du hành vũ trụ." },
+            { topic: "IRREGULAR VERBS", mean: "Ăn", v0: "eat", v2: "ate", v3: "eaten", p0: "/iːt/", p2: "/et/", p3: "/ˈiːtn/", exV0: "We _______ breakfast at 7 AM.", exV2: "He _______ pizza for dinner last night.", exV3: "I have _______ too much dessert.", exViV0: "Chúng tôi ăn sáng lúc 7 giờ.", exViV2: "Anh ấy đã ăn pizza cho bữa tối qua.", exViV3: "Tôi đã ăn quá nhiều đồ tráng miệng mất rồi." },
+            { topic: "IRREGULAR VERBS", mean: "Ngã, rơi", v0: "fall", v2: "fell", v3: "fallen", p0: "/fɔːl/", p2: "/fel/", p3: "/ˈfɔːlən/", exV0: "Leaves _______ in the autumn.", exV2: "He _______ off his bicycle yesterday.", exV3: "Prices have _______ drastically.", exViV0: "Lá cây rụng (rơi) nhiều vào mùa thu.", exViV2: "Anh ấy bị ngã khỏi xe đạp vào ngày hôm qua.", exViV3: "Mức giá cả vừa sụt giảm mạnh mẽ." },
+            { topic: "IRREGULAR VERBS", mean: "Cảm thấy", v0: "feel", v2: "felt", v3: "felt", p0: "/fiːl/", p2: "/felt/", p3: "/felt/", exV0: "I _______ great about my exam.", exV2: "She _______ very tired last night.", exV3: "We have _______ so happy lately.", exViV0: "Tôi cảm thấy tuyệt vời về bài thi của mình.", exViV2: "Cô ấy đã cảm thấy rất mệt mỏi vào tối qua.", exViV3: "Dạo gần đây chúng tôi đã cảm thấy rất hạnh phúc." },
+            { topic: "IRREGULAR VERBS", mean: "Tìm thấy", v0: "find", v2: "found", v3: "found", p0: "/faɪnd/", p2: "/faʊnd/", p3: "/faʊnd/", exV0: "I always _______ my keys easily.", exV2: "He _______ a wallet on the street.", exV3: "They have _______ a great solution.", exViV0: "Tôi luôn tìm thấy chìa khóa của mình dễ dàng.", exViV2: "Anh ấy đã tìm thấy một chiếc ví trên đường phố.", exViV3: "Họ đã tìm ra một giải pháp tuyệt hảo." },
+            { topic: "IRREGULAR VERBS", mean: "Bay", v0: "fly", v2: "flew", v3: "flown", p0: "/flaɪ/", p2: "/fluː/", p3: "/fləʊn/", exV0: "Birds _______ south for the winter.", exV2: "We _______ to Hanoi last summer.", exV3: "He has _______ on a plane twice.", exViV0: "Những đàn chim bay về phía nam tránh rét.", exViV2: "Chúng tôi đã bay ra Hà Nội vào mùa hè năm ngoái.", exViV3: "Anh ấy đã từng đi máy bay (bay) hai lần." },
+            { topic: "IRREGULAR VERBS", mean: "Quên", v0: "forget", v2: "forgot", v3: "forgotten", p0: "/fəˈɡet/", p2: "/fəˈɡɒt/", p3: "/fəˈɡɒtn/", exV0: "I often _______ people's names.", exV2: "He _______ his key at home yesterday.", exV3: "She has _______ her passport.", exViV0: "Tôi thường quên tên của người khác.", exViV2: "Hôm qua anh ấy đã quên chìa khóa ở nhà.", exViV3: "Cô ấy đã để quên hộ chiếu của mình rồi." },
+            { topic: "IRREGULAR VERBS", mean: "Có được, lấy", v0: "get", v2: "got", v3: "got", p0: "/ɡet/", p2: "/ɡɒt/", p3: "/ɡɒt/", exV0: "I _______ up early in the morning.", exV2: "She _______ a nice present last night.", exV3: "They have _______ lost in the woods.", exViV0: "Tôi thức dậy sớm vào buổi sáng.", exViV2: "Cô ấy đã nhận được món quà đẹp tối qua.", exViV3: "Họ đã bị lạc đường ở trong rừng sâu." },
+            { topic: "IRREGULAR VERBS", mean: "Cho, tặng, biếu", v0: "give", v2: "gave", v3: "given", p0: "/ɡɪv/", p2: "/ɡeɪv/", p3: "/ˈɡɪvən/", exV0: "I _______ gifts to friends.", exV2: "He _______ me a flower yesterday.", exV3: "She has _______ up smoking.", exViV0: "Tôi tặng các món quà cho bạn bè của mình.", exViV2: "Hôm qua anh ấy đã tặng tôi một bông hoa.", exViV3: "Cô ấy đã từ bỏ thói quen hút thuốc lá." },
+            { topic: "IRREGULAR VERBS", mean: "Đi", v0: "go", v2: "went", v3: "gone", p0: "/ɡəʊ/", p2: "/went/", p3: "/ɡɒn/", exV0: "We _______ to school by bus.", exV2: "She _______ to the park last Sunday.", exV3: "They have already _______ out.", exViV0: "Chúng tôi đi học bằng xe buýt.", exViV2: "Cô ấy đã đi công viên chủ nhật tuần trước.", exViV3: "Họ đã đi ra ngoài chơi mất rồi." },
+            { topic: "IRREGULAR VERBS", mean: "Phát triển", v0: "grow", v2: "grew", v3: "grown", p0: "/ɡrəʊ/", p2: "/gruː/", p3: "/ɡrəʊn/", exV0: "Trees _______ quickly in damp weather.", exV2: "The boy _______ five centimeters last year.", exV3: "The company has _______ into a giant.", exViV0: "Cây cối phát triển rất nhanh trong thời tiết ẩm.", exViV2: "Cậu bé đã cao thêm (phát triển) 5cm vào năm ngoái.", exViV3: "Công ty đã phát triển thành một tập đoàn khổng lồ." },
+            { topic: "IRREGULAR VERBS", mean: "Có", v0: "have", v2: "had", v3: "had", p0: "/hæv/", p2: "/hæd/", p3: "/hæd/", exV0: "I _______ a cat named Luna.", exV2: "She _______ a bad headache last night.", exV3: "They have _______ many opportunities.", exViV0: "Tôi có nuôi một chú mèo tên là Luna.", exViV2: "Tối qua cô ấy đã có một trận đau đầu dữ dội.", exViV3: "Họ đã có được rất nhiều cơ hội tốt." },
+            { topic: "IRREGULAR VERBS", mean: "Nghe thấy", v0: "hear", v2: "heard", v3: "heard", p0: "/hɪə(r)/", p2: "/hɜːd/", p3: "/hɜːd/", exV0: "I _______ the birds singing.", exV2: "She _______ a strange noise last night.", exV3: "They have _______ this song before.", exViV0: "Tôi nghe thấy tiếng chim hót.", exViV2: "Tối qua cô ấy đã nghe thấy tiếng động lạ.", exViV3: "Họ đã được nghe ca khúc này trước đây rồi." },
+            { topic: "IRREGULAR VERBS", mean: "Trốn, giấu", v0: "hide", v2: "hid", v3: "hidden", p0: "/haɪd/", p2: "/hɪd/", p3: "/ˈhɪdn/", exV0: "The boys _______ behind the door.", exV2: "She _______ her diary under the bed.", exV3: "He has _______ his true feelings.", exViV0: "Những cậu bé trốn sau cánh cửa.", exViV2: "Cô ấy đã giấu cuốn nhật ký ở dưới gầm giường.", exViV3: "Anh ấy đã che giấu cảm xúc thật của mình." },
+            { topic: "IRREGULAR VERBS", mean: "Đánh, đấm", v0: "hit", v2: "hit", v3: "hit", p0: "/hɪt/", p2: "/hɪt/", p3: "/hɪt/", exV0: "Don't _______ the ball too hard.", exV2: "The car _______ the pole yesterday.", exV3: "A storm has _______ the city.", exViV0: "Đừng đánh quả bóng quá mạnh.", exViV2: "Chiếc xe đã đâm (đánh) trúng cột đèn ngày hôm qua.", exViV3: "Một trận bão lớn vừa tấn công (đánh trúng) thành phố." },
+            { topic: "IRREGULAR VERBS", mean: "Làm đau", v0: "hurt", v2: "hurt", v3: "hurt", p0: "/hɜːt/", p2: "/hɜːt/", p3: "/hɜːt/", exV0: "My feet _______ after long walk.", exV2: "He _______ his ankle playing tennis.", exV3: "She has _______ her back lifting boxes.", exViV0: "Chân tôi bị đau sau chuyến đi bộ dài ngày.", exViV2: "Anh ấy bị thương (làm đau) ở mắt cá chân khi chơi tennis.", exViV3: "Cô ấy đã bị đau lưng khi cố nâng những chiếc hộp." },
+            { topic: "IRREGULAR VERBS", mean: "Cầm, nắm giữ", v0: "hold", v2: "held", v3: "held", p0: "/həʊld/", p2: "/held/", p3: "/held/", exV0: "I _______ the baby carefully.", exV2: "She _______ his hand yesterday.", exV3: "They have _______ the conference.", exViV0: "Tôi ôm (nắm giữ) em bé một cách cẩn thận.", exViV2: "Hôm qua cô ấy đã nắm chặt lấy tay anh ấy.", exViV3: "Họ đã đứng ra tổ chức (nắm giữ) cuộc hội nghị." },
+            { topic: "IRREGULAR VERBS", mean: "Giữ, duy trì", v0: "keep", v2: "kept", v3: "kept", p0: "/kiːp/", p2: "/kept/", p3: "/kept/", exV0: "I _______ my room always clean.", exV2: "He _______ his word to his mother.", exV3: "She has _______ a diary for ten years.", exViV0: "Tôi luôn giữ phòng của mình được sạch sẽ.", exViV2: "Anh ấy đã giữ đúng lời hứa với mẹ mình.", exViV3: "Cô ấy đã duy trì thói quen viết nhật ký được 10 năm." },
+            { topic: "IRREGULAR VERBS", mean: "Biết, hiểu biết", v0: "know", v2: "knew", v3: "known", p0: "/nəʊ/", p2: "/njuː/", p3: "/nəʊn/", exV0: "I _______ the answer to the quiz.", exV2: "She _______ him when they were kids.", exV3: "We have _______ each other for ages.", exViV0: "Tôi biết đáp án cho câu đố vui.", exViV2: "Cô ấy đã quen biết anh ấy từ khi họ còn nhỏ.", exViV3: "Chúng tôi đã biết nhau trong một khoảng thời gian dài." },
+            { topic: "IRREGULAR VERBS", mean: "Học", v0: "learn", v2: "learnt", v3: "learnt", p0: "/lɜːn/", p2: "/lɜːnt/", p3: "/lɜːnt/", exV0: "Students _______ new words every day.", exV2: "He _______ English last year.", exV3: "They have _______ many valuable skills.", exViV0: "Học sinh học từ vựng mới mỗi ngày.", exViV2: "Anh ấy đã học tiếng Anh từ năm ngoái.", exViV3: "Họ đã học được rất nhiều kỹ năng đáng quý." },
+            { topic: "IRREGULAR VERBS", mean: "Để, cho phép", v0: "let", v2: "let", v3: "let", p0: "/let/", p2: "/let/", p3: "/let/", exV0: "Please _______ me try again.", exV2: "He _______ his sister use his computer.", exV3: "They have _______ the dog out.", exViV0: "Làm ơn hãy để tôi thử lại lần nữa.", exViV2: "Anh ấy đã cho phép em gái mình dùng máy tính.", exViV3: "Họ đã thả (để) cho chú chó ra ngoài chạy chơi." },
+            { topic: "IRREGULAR VERBS", mean: "Rời khỏi", v0: "leave", v2: "left", v3: "left", p0: "/liːv/", p2: "/left/", p3: "/left/", exV0: "Trains _______ station on time.", exV2: "She _______ the party early last night.", exV3: "They have already _______ for airport.", exViV0: "Những chuyến tàu rời khỏi ga vô cùng đúng giờ.", exViV2: "Tối qua cô ấy đã rời khỏi bữa tiệc từ sớm.", exViV3: "Họ đã khởi hành (rời đi) ra sân bay rồi." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false;
+
+        let currentAudio = null;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+
+        function createChalkDust() {
+            const container = document.getElementById('chalk-dust-container');
+            for (let i = 0; i < 30; i++) {
+                const dust = document.createElement('div');
+                dust.className = 'chalk-dust-particle';
+                const size = Math.random() * 6 + 2;
+                dust.style.width = `${size}px`;
+                dust.style.height = `${size}px`;
+                dust.style.left = `${Math.random() * 100}vw`;
+                dust.style.top = `${Math.random() * 100}vh`;
+                dust.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                dust.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(dust);
+            }
+        }
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                playTone('sine', 523.25, 1046.50, 0.1, 0.8);
+            } else if (type === 'success') {
+                playTone('sine', 523.25, 523.25, 0.08, 0.4, 0);
+                playTone('sine', 659.25, 659.25, 0.08, 0.5, 0.15);
+            } else if (type === 'error') {
+                playTone('sine', 300, 250, 0.1, 0.4, 0);
+            } else if (type === 'flip') {
+                playTone('sine', 300, 150, 0.03, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-white/10 transition-colors">
+                    <td class="p-3 sm:p-4 font-bold text-white border-b border-white/10">${item.mean}</td>
+                    <td class="p-3 sm:p-4 text-center border-b border-white/10">
+                        <span class="font-bold text-yellow-200">${item.v0}</span>
+                        <div class="text-xs text-yellow-300/65 font-sans">${item.p0}</div>
+                    </td>
+                    <td class="p-3 sm:p-4 text-center border-b border-white/10">
+                        <span class="font-bold text-orange-200">${item.v2}</span>
+                        <div class="text-xs text-orange-300/65 font-sans">${item.p2}</div>
+                    </td>
+                    <td class="p-3 sm:p-4 text-center border-b border-white/10">
+                        <span class="font-bold text-green-200">${item.v3}</span>
+                        <div class="text-xs text-green-300/65 font-sans">${item.p3}</div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+
+            const card = flashcards[currentIndex];
+            const textToSpeak = `${card.v0} ... ${card.v2} ... ${card.v3}`;
+            const cleanText = `${card.v0}, ${card.v2}, ${card.v3}`;
+            const encodedText = encodeURIComponent(cleanText);
+
+            // Vì trình duyệt trong iframe chặn SpeechSynthesis, sử dụng thẻ Audio tải tệp trực tiếp là tối ưu nhất.
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+
+            // Fallback 1: Google Translate TTS (âm thanh Mỹ chuẩn, không bị giới hạn iframe)
+            const googleUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodedText}`;
+            // Fallback 2: Youdao Dict TTS
+            const youdaoUrl = `https://dict.youdao.com/dictvoice?audio=${encodedText}&type=2`;
+
+            currentAudio = new Audio(googleUrl);
+            currentAudio.play().catch(err => {
+                console.warn("Google TTS bị lỗi nhúng iframe, thử chuyển sang Youdao TTS...", err);
+                currentAudio = new Audio(youdaoUrl);
+                currentAudio.play().catch(err2 => {
+                    console.warn("Cả hai API TTS ngoài đều lỗi, sử dụng công cụ gốc trình duyệt Web Speech...", err2);
+                    // Fallback cuối cùng: SpeechSynthesis nội địa
+                    try {
+                        if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                            const utter = new SpeechSynthesisUtterance(textToSpeak);
+                            utter.lang = 'en-US';
+                            utter.rate = 0.75;
+                            window.activeUtterance = utter;
+                            window.speechSynthesis.speak(utter);
+                        }
+                    } catch (synthErr) {
+                        console.error("Không hỗ trợ hệ thống phát âm trên môi trường trình duyệt này:", synthErr);
+                    }
+                });
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = "Irregular Verb";
+
+            document.getElementById('word-ex').innerHTML = `
+                <div class="text-left space-y-1 sm:space-y-2 text-white">
+                    <p class="flex items-start gap-2"><span class="text-yellow-300 font-black min-w-[30px]">V0:</span> <span>${card.exV0.replace('_______', '<span class="border-b-4 border-dashed border-yellow-300 inline-block w-16 sm:w-20 mx-1"></span>')}</span></p>
+                    <p class="flex items-start gap-2"><span class="text-orange-300 font-black min-w-[30px]">V2:</span> <span>${card.exV2.replace('_______', '<span class="border-b-4 border-dashed border-orange-300 inline-block w-16 sm:w-20 mx-1"></span>')}</span></p>
+                    <p class="flex items-start gap-2"><span class="text-green-300 font-black min-w-[30px]">V3:</span> <span>${card.exV3.replace('_______', '<span class="border-b-4 border-dashed border-green-300 inline-block w-16 sm:w-20 mx-1"></span>')}</span></p>
+                </div>
+            `;
+            document.getElementById('word-exVi').innerHTML = `
+                <div class="text-left space-y-1 text-[11px] sm:text-sm mt-2 pt-2 border-t border-white/15 text-pink-300 leading-relaxed">
+                    <p>1. ${card.exViV0}</p>
+                    <p>2. ${card.exViV2}</p>
+                    <p>3. ${card.exViV3}</p>
+                </div>
+            `;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+            container.className = 'flex flex-col items-center gap-2 sm:gap-3 w-full my-1';
+
+            const formTypes = [
+                { label: 'V0', word: card.v0, color: 'text-yellow-300', borderColor: 'border-yellow-300/50', focusColor: 'focus:border-yellow-300' },
+                { label: 'V2', word: card.v2, color: 'text-orange-300', borderColor: 'border-orange-300/50', focusColor: 'focus:border-orange-300' },
+                { label: 'V3', word: card.v3, color: 'text-green-300', borderColor: 'border-green-300/50', focusColor: 'focus:border-green-300' }
+            ];
+
+            formTypes.forEach((form) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-center gap-2 sm:gap-4 w-full flex-wrap';
+
+                const label = document.createElement('div');
+                label.className = `font-black text-lg sm:text-xl chalk-text w-10 sm:w-12 text-right ${form.color}`;
+                label.textContent = form.label;
+                row.appendChild(label);
+
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                form.word.split('').forEach((char, i) => {
+                    const input = document.createElement('input');
+                    input.type = 'text'; input.maxLength = 1;
+                    input.className = `chalk-input editable-input w-[22px] h-[32px] sm:w-[36px] sm:h-[46px] text-base sm:text-2xl font-bold rounded border ${form.borderColor} ${form.focusColor}`;
+                    input.dataset.char = char.toLowerCase();
+
+                    input.addEventListener('input', function () {
+                        this.value = this.value.toLowerCase();
+                        this.classList.remove('text-red-400', 'bg-red-400/20');
+
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if (this.value && idx < inputs.length - 1) {
+                            let next = idx + 1;
+                            while (next < inputs.length && inputs[next].readOnly) next++;
+                            if (next < inputs.length) inputs[next].focus();
+                        }
+                    });
+
+                    input.addEventListener('keydown', function (e) {
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if (e.key === 'Backspace' && !this.value && idx > 0) {
+                            let prev = idx - 1;
+                            while (prev >= 0 && inputs[prev].readOnly) prev--;
+                            if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                        }
+                    });
+                    group.appendChild(input);
+                });
+                row.appendChild(group);
+                container.appendChild(row);
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 100);
+            document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const card = flashcards[currentIndex];
+            const target = (card.v0 + card.v2 + card.v3).replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.chalk-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = target.length <= 8 ? 1 : (target.length >= 15 ? 4 : (target.length >= 10 ? 3 : 2));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('text-blue-300', 'bg-blue-300/20', 'pointer-events-none');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(card.v0);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = (card.v0 + card.v2 + card.v3).replace(/[\s-]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.chalk-input');
+            const user = Array.from(inputs).map(i => i.value).join('').toLowerCase();
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+                const header = document.getElementById('result-header');
+                header.textContent = "🎉 CORRECT!";
+                header.className = "text-center pb-2 mb-2 sm:mb-4 text-xl sm:text-2xl text-green-400 font-bold border-b-2 border-dashed border-green-400 chalk-text uppercase tracking-widest";
+
+                document.getElementById('back-word').innerHTML = `
+                    <div class="flex flex-col gap-2 justify-center items-center font-bold">
+                        <div>
+                            <span class="text-yellow-300">${card.v0}</span> 
+                            <span class="text-xs sm:text-sm text-yellow-400/80 font-sans font-medium px-2">${card.p0}</span>
+                        </div>
+                        <div class="text-gray-400 text-lg sm:text-xl font-normal">↓</div>
+                        <div>
+                            <span class="text-orange-300">${card.v2}</span> 
+                            <span class="text-xs sm:text-sm text-orange-400/80 font-sans font-medium px-2">${card.p2}</span>
+                        </div>
+                        <div class="text-gray-400 text-lg sm:text-xl font-normal">↓</div>
+                        <div>
+                            <span class="text-green-300">${card.v3}</span> 
+                            <span class="text-xs sm:text-sm text-green-400/80 font-sans font-medium px-2">${card.p3}</span>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                document.getElementById('back-ex').innerHTML = `
+                    <div class="text-left space-y-3 text-white">
+                        <p><span class="text-yellow-300 font-bold mr-2">V0:</span>${card.exV0.replace('_______', `<span class="text-yellow-300 underline decoration-2 underline-offset-4 font-black">\u00A0${card.v0}\u00A0</span>`)}</p>
+                        <p><span class="text-orange-300 font-bold mr-2">V2:</span>${card.exV2.replace('_______', `<span class="text-orange-300 underline decoration-2 underline-offset-4 font-black">\u00A0${card.v2}\u00A0</span>`)}</p>
+                        <p><span class="text-green-300 font-bold mr-2">V3:</span>${card.exV3.replace('_______', `<span class="text-green-300 underline decoration-2 underline-offset-4 font-black">\u00A0${card.v3}\u00A0</span>`)}</p>
+                    </div>
+                `;
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => {
+                    document.getElementById('next-btn').focus();
+                    isTransitioning = false;
+                }, 400);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && input.value.toLowerCase() !== target[idx]) {
+                        input.classList.add('text-red-400', 'bg-red-400/20');
+                        input.classList.remove('border-yellow-300/50', 'border-orange-300/50', 'border-green-300/50');
+                        input.style.borderColor = '#f87171';
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 350);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 350);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateOptions = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+            const dateString = now.toLocaleDateString('vi-VN', dateOptions);
+            document.getElementById('completion-datetime').textContent = `Hoàn thành lúc: ${timeString} - ${dateString}`;
+
+            document.getElementById('score-percent').textContent = `${scorePercentage}%`;
+            document.getElementById('score-percent').className = `text-2xl sm:text-4xl font-black mt-1 ${scorePercentage >= 80 ? 'text-green-400' : (scorePercentage >= 50 ? 'text-yellow-300' : 'text-red-400')}`;
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.v0);
+                const statusIcon = usedHint
+                    ? '💡 <span class="text-red-300 text-xs sm:text-sm ml-1 font-sans">Hinted</span>'
+                    : '✅ <span class="text-green-300 text-xs sm:text-sm ml-1 font-sans">Perfect</span>';
+                const rowClass = usedHint ? 'bg-red-900/30' : 'hover:bg-white/10';
+
+                return `
+                    <tr class="transition-colors border-b border-dashed border-white/10 ${rowClass}">
+                        <td class="p-3 sm:p-4">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 text-xs sm:text-sm">
+                            <div class="mb-1">
+                                <span class="text-yellow-300 font-bold">${item.v0}</span> <span class="text-yellow-400/60 font-sans">${item.p0}</span> - 
+                                <span class="text-orange-300 font-bold">${item.v2}</span> <span class="text-orange-400/60 font-sans">${item.p2}</span> - 
+                                <span class="text-green-300 font-bold">${item.v3}</span> <span class="text-green-400/60 font-sans">${item.p3}</span>
+                            </div>
+                        </td>
+                        <td class="p-3 sm:p-4 text-gray-200 text-xs sm:text-base font-bold">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+            createChalkDust();
+        });
+
+        // Hỗ trợ lối tắt bàn phím
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+
+                if (document.getElementById('flashcard').classList.contains('flipped')) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
