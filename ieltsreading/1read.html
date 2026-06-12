@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS READING PRACTICE - Note Completion</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS cho thanh cuộn */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        #passage-container::-webkit-scrollbar,
+        #questions-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #passage-container::-webkit-scrollbar-track,
+        #questions-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #passage-container::-webkit-scrollbar-thumb,
+        #questions-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+
+    <div id="app" class="flex flex-col h-full w-full"></div>
+
+    <script>
+        const quizData = [
+            {
+                title: "IELTS Reading - Note Completion",
+                instruction: "Complete the notes below. Choose ONE WORD ONLY from the passage for each answer.",
+                passage: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-4'>How to find your way out of a food desert</h2><p class='mb-4 text-slate-700 italic'>Ordinary citizens have been using the internet to draw attention to the lack of healthy eating options in inner cities</p><p class='mb-4'>Over the last few months, a survey has been carried out of over 200 greengrocers and convenience stores in Crown Heights, a neighborhood in Brooklyn, New York. As researchers from the Brooklyn Food Association enter the details, colorful dots appear on their online map, which display the specific location of each of the food stores in a handful of central Brooklyn neighborhoods. Clicking on a dot will show you the store's name and whether it carries fresh fruit and vegetables, wholegrain bread, low-fat dairy and other healthy options.</p><p class='mb-4'>The researchers plan eventually to survey the entire borough of Brooklyn. ‘We want to get to a more specific and detailed description of what that looks like’, says Jeffrey Heehs, who leads the project. He hopes it will help residents find fresh food in urban areas where the stores sell mostly packaged snacks or fast food, areas otherwise known as food deserts. The aim of the project is also to assist government officials in assessing food availability, and in forming future policies about what kind of food should be sold and where.</p><p class='mb-4'>In fact, the Brooklyn project represents the intersection of two growing trends: mapping fresh food markets in US cities, and private citizens creating online maps of local neighborhood features. According to Michael Goodchild, a geographer at the University of California at Santa Barbara, citizen map makers may make maps because there is no good government map, or to record problems such as burned-out traffic lights.</p><p class='mb-4'>According to recent studies, people at higher risk of chronic disease and who receive minimal incomes for the work they do, frequently live in neighborhoods located in food deserts. But how did these food deserts arise? Linda Alwitt and Thomas Donley, marketing researchers at DePaul University in Chicago, found that supermarkets often can’t afford the amount of land required for their stores in cities. City planning researcher Cliff Guy and colleagues at the University of Leeds in the UK found in 2004 that smaller urban groceries tend to close due to competition from suburban supermarkets.</p>",
+                passageTranslation: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-4'>Làm thế nào để tìm lối ra khỏi \"sa mạc thực phẩm\"</h2><p class='mb-4 text-slate-700 italic'>Những công dân bình thường đã và đang sử dụng internet để thu hút sự chú ý đến tình trạng thiếu các lựa chọn ăn uống lành mạnh ở các khu vực trung tâm thành phố.</p><p class='mb-4'>Trong vài tháng qua, một cuộc khảo sát đã được thực hiện tại hơn 200 cửa hàng rau quả và cửa hàng tiện lợi ở Crown Heights, một khu phố ở Brooklyn, New York. Khi các nhà nghiên cứu từ Hiệp hội Thực phẩm Brooklyn nhập thông tin chi tiết, những dấu chấm đầy màu sắc xuất hiện trên bản đồ trực tuyến của họ, hiển thị vị trí cụ thể của từng cửa hàng thực phẩm ở một số khu phố trung tâm Brooklyn. Nhấp vào một dấu chấm sẽ cho bạn thấy tên cửa hàng và liệu nó có bán trái cây và rau quả tươi, bánh mì nguyên cám, các sản phẩm từ sữa ít béo và các lựa chọn lành mạnh khác hay không.</p><p class='mb-4'>Các nhà nghiên cứu dự định cuối cùng sẽ khảo sát toàn bộ quận Brooklyn. ‘Chúng tôi muốn có được một mô tả cụ thể và chi tiết hơn về việc đó trông như thế nào’, Jeffrey Heehs, người đứng đầu dự án, cho biết. Ông hy vọng nó sẽ giúp cư dân tìm thấy thực phẩm tươi sống ở các khu vực đô thị nơi các cửa hàng chủ yếu bán đồ ăn vặt đóng gói hoặc thức ăn nhanh, những khu vực được biết đến với tên gọi là \"sa mạc thực phẩm\" (food deserts). Mục tiêu của dự án cũng là hỗ trợ các quan chức chính phủ trong việc đánh giá sự sẵn có của thực phẩm, và trong việc hình thành các chính sách trong tương lai về loại thực phẩm nào nên được bán và ở đâu.</p><p class='mb-4'>Trên thực tế, dự án Brooklyn đại diện cho sự giao thoa của hai xu hướng đang phát triển: lập bản đồ các chợ thực phẩm tươi sống ở các thành phố của Mỹ, và công dân tự tạo bản đồ trực tuyến về các đặc điểm của khu phố địa phương. Theo Michael Goodchild, một nhà địa lý học tại Đại học California ở Santa Barbara, những người lập bản đồ công dân có thể tạo bản đồ vì không có bản đồ chính phủ nào tốt, hoặc để ghi lại các vấn đề như đèn giao thông bị hỏng.</p><p class='mb-4'>Theo các nghiên cứu gần đây, những người có nguy cơ cao mắc bệnh mãn tính và nhận được thu nhập tối thiểu cho công việc họ làm, thường xuyên sống ở các khu phố nằm trong \"sa mạc thực phẩm\". Nhưng làm thế nào những sa mạc thực phẩm này lại xuất hiện? Linda Alwitt và Thomas Donley, các nhà nghiên cứu tiếp thị tại Đại học DePaul ở Chicago, phát hiện ra rằng các siêu thị thường không đủ khả năng chi trả cho diện tích đất cần thiết cho các cửa hàng của họ trong thành phố. Nhà nghiên cứu quy hoạch thành phố Cliff Guy và các đồng nghiệp tại Đại học Leeds ở Vương quốc Anh đã phát hiện ra vào năm 2004 rằng các cửa hàng tạp hóa nhỏ ở đô thị có xu hướng đóng cửa do sự cạnh tranh từ các siêu thị ngoại ô.</p>",
+                questions: [
+                    {
+                        id: 1,
+                        heading: "Data on food deserts and their effects on health<br><span class='text-sm md:text-base font-normal text-slate-600 mt-1 block'>The Brooklyn Food Association</span>",
+                        text: "The online map provides users with a store's name, <strong>[1]</strong> and details of its produce.",
+                        type: "text",
+                        correct: "location",
+                        explanation: "<strong>Từ khóa:</strong> online map, store's name, details of produce.\n\n<strong>Trong bài (Đoạn 2):</strong> \"...colorful dots appear on their online map, which display the specific <strong>location</strong> of each of the food stores... Clicking on a dot will show you the store's name and whether it carries fresh fruit and vegetables...\"\n\nBản đồ hiển thị vị trí (location), nhấp vào sẽ thấy tên cửa hàng (store's name) và chi tiết sản phẩm (whether it carries fresh fruit...)."
+                    },
+                    {
+                        id: 2,
+                        text: "One goal of the mapping project is to help develop new <strong>[2]</strong> on food.",
+                        type: "text",
+                        correct: "policies",
+                        explanation: "<strong>Từ khóa:</strong> goal, mapping project, help develop new, food.\n\n<strong>Trong bài (Đoạn 3):</strong> \"The aim (goal) of the project is also to assist government officials in assessing food availability, and in forming (develop) future <strong>policies</strong> about what kind of food should be sold and where.\""
+                    },
+                    {
+                        id: 3,
+                        text: "Citizen maps are sometimes made when <strong>[3]</strong> maps are unsatisfactory.",
+                        type: "text",
+                        correct: "government",
+                        explanation: "<strong>Từ khóa:</strong> Citizen maps, made when, unsatisfactory.\n\n<strong>Trong bài (Đoạn 4):</strong> \"According to Michael Goodchild... citizen map makers may make maps because there is no good <strong>government</strong> map...\"\n\nKhông có bản đồ chính phủ nào tốt (no good government map) đồng nghĩa với việc các bản đồ này không đạt yêu cầu (unsatisfactory)."
+                    },
+                    {
+                        id: 4,
+                        heading: "Reasons for the development of food deserts",
+                        text: "New research suggests that people living in food deserts often have low <strong>[4]</strong>.",
+                        type: "text",
+                        correct: "incomes",
+                        explanation: "<strong>Từ khóa:</strong> New research, people living in food deserts, low.\n\n<strong>Trong bài (Đoạn 5):</strong> \"According to recent studies, people at higher risk of chronic disease and who receive minimal <strong>incomes</strong> for the work they do, frequently live in neighborhoods located in food deserts.\"\n\nThu nhập tối thiểu (minimal incomes) tương đương với thu nhập thấp (low incomes)."
+                    },
+                    {
+                        id: 5,
+                        text: "Some supermarkets are unable to buy enough <strong>[5]</strong> inside cities for their stores.",
+                        type: "text",
+                        correct: "land",
+                        explanation: "<strong>Từ khóa:</strong> supermarkets, unable to buy enough, inside cities, for their stores.\n\n<strong>Trong bài (Đoạn 5):</strong> \"...found that supermarkets often can’t afford (unable to buy) the amount of <strong>land</strong> required for their stores in cities.\""
+                    },
+                    {
+                        id: 6,
+                        text: "Small grocery stores in cities often cannot cope with supermarket <strong>[6]</strong>.",
+                        type: "text",
+                        correct: "competition",
+                        explanation: "<strong>Từ khóa:</strong> Small grocery stores, cannot cope with, supermarket.\n\n<strong>Trong bài (Đoạn 5):</strong> \"...found in 2004 that smaller urban groceries tend to close due to <strong>competition</strong> from suburban supermarkets.\"\n\nCác cửa hàng nhỏ có xu hướng đóng cửa (tend to close / cannot cope with) do sự cạnh tranh (competition) từ siêu thị."
+                    }
+                ]
+            }
+        ];
+
+        // State quản lý
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            incorrectIds: [],
+            startTime: Date.now(),
+            endTime: null,
+            submitTime: null,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        // Hàm render giao diện chính
+        function renderApp() {
+            const app = document.getElementById('app');
+            const answeredCount = Object.keys(state.answers).filter(k => state.answers[k].toString().trim() !== '').length;
+            const currentSection = quizData[state.currentPartIndex];
+
+            // Lưu vị trí cuộn
+            const qContainer = document.getElementById('questions-container');
+            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+            // Tính toán thời gian và định dạng ngày giờ
+            let timeStr = "";
+            let dateStr = "";
+            if (state.isSubmitted && state.submitTime) {
+                const totalSeconds = Math.floor((state.endTime - state.startTime) / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timeStr = `${minutes} phút ${seconds} giây`;
+
+                const d = state.submitTime;
+                const hours = String(d.getHours()).padStart(2, '0');
+                const mins = String(d.getMinutes()).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const year = d.getFullYear();
+                dateStr = `${hours}:${mins} - ${day}/${month}/${year}`;
+            }
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-indigo-700 flex items-center gap-2">
+                            <i class="fa-brands fa-discourse text-indigo-600"></i>
+                            IELTS READING PRACTICE
+                        </h1>
+                        <p class="text-sm text-slate-500">Mô phỏng đề thi IELTS Reading - Dạng Note Completion</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div id="progress-text-container" class="text-sm font-medium bg-indigo-50 text-indigo-800 px-3 py-1 rounded-full border border-indigo-200 hidden md:block">
+                        <span id="progress-text">Đã làm: ${answeredCount} / ${totalQuestions}</span>
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted ? `
+                    <div class="flex-none bg-white p-5 md:p-6 rounded-xl border border-green-200 shadow-sm animate-in fade-in duration-500 mb-2">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-circle-check text-green-500 text-4xl md:text-5xl"></i>
+                                <div>
+                                    <h2 class="text-xl md:text-2xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
+                                    <p class="text-slate-600 mt-1">Tuyệt vời, bạn đã hoàn thành bài tập. Hãy xem kết quả chi tiết bên dưới.</p>
+                                </div>
+                            </div>
+                            <button onclick="resetQuiz()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow font-medium whitespace-nowrap">
+                                <i class="fa-solid fa-rotate-right mr-2"></i>Làm lại bài thi
+                            </button>
+                        </div>
+                        
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-regular fa-clock text-indigo-500 mr-2"></i>Giờ, ngày nộp:</span>
+                                    <span class="font-bold text-slate-800">${dateStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-solid fa-stopwatch text-indigo-500 mr-2"></i>Tổng thời gian làm:</span>
+                                    <span class="font-bold text-slate-800">${timeStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center bg-green-50/50">
+                                    <span class="text-green-700 font-medium"><i class="fa-solid fa-check text-green-600 mr-2"></i>Số câu đúng:</span>
+                                    <span class="font-bold text-green-700 text-lg">${state.score} / ${totalQuestions}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center ${state.incorrectIds.length > 0 ? 'bg-red-50/50' : 'bg-slate-50'}">
+                                    <span class="${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-600'} font-medium"><i class="fa-solid fa-xmark text-red-500 mr-2"></i>Số câu sai/chưa làm:</span>
+                                    <span class="font-bold ${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-800'} text-lg">${state.incorrectIds.length} / ${totalQuestions}</span>
+                                </div>
+                            </div>
+                            ${state.incorrectIds.length > 0 ? `
+                            <div class="p-4 border-t border-slate-200 bg-white">
+                                <span class="text-slate-600 font-medium block mb-3"><i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>Các câu sai hoặc chưa trả lời:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    ${state.incorrectIds.map(id => `<button onclick="scrollToQuestion(${id})" class="px-4 py-1.5 bg-red-50 text-red-700 font-bold rounded-md border border-red-200 hover:bg-red-100 transition shadow-sm">Câu ${id}</button>`).join('')}
+                                </div>
+                            </div>
+                            ` : `
+                            <div class="p-4 border-t border-slate-200 bg-white text-center">
+                                <span class="text-green-600 font-bold"><i class="fa-solid fa-star text-yellow-400 mr-1"></i> Xuất sắc! Bạn đã trả lời đúng tất cả các câu hỏi.</span>
+                            </div>
+                            `}
+                        </div>
+                        <p class="text-sm text-slate-500 italic mt-4 text-center"><i class="fa-solid fa-arrow-down mr-1"></i> Kéo xuống dưới và nhấn "Xem giải thích chi tiết" ở mỗi câu để xem đáp án nhé.</p>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-2.5 md:px-4 md:py-3 border-b border-slate-200 flex justify-between items-center">
+                            <div class="flex-1 pr-4">
+                                <h2 class="text-sm md:text-base font-bold text-indigo-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-xs md:text-sm text-slate-700 mt-1 font-medium bg-yellow-50 border-l-4 border-yellow-400 pl-3 py-1">${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <div class="flex-none flex items-center gap-3">
+                                <button onclick="togglePassageTranslation()" class="text-xs font-bold px-3 py-1.5 rounded-md shadow-sm transition-colors ${state.showPassageTranslation ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-white text-slate-600 border border-slate-300 hover:bg-slate-50'}">
+                                    <i class="fa-solid fa-language mr-1"></i> ${state.showPassageTranslation ? 'Đang bật dịch' : 'Bật dịch VN'}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC TẠI ĐÂY -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/50 border-b-[3px] md:border-b-0 md:border-r-[3px] border-slate-200 p-5 md:p-8 shadow-inner">
+                                <div class="text-slate-800 leading-relaxed text-[15px] md:text-[17px] text-justify ${state.showPassageTranslation ? '' : ''}">
+                                    ${state.showPassageTranslation ? currentSection.passageTranslation : currentSection.passage}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 bg-white">
+                                <div class="max-w-5xl mx-auto space-y-6">
+                                    ${currentSection.questions.map((q, idx) => renderQuestion(q, idx)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-8 pb-8">
+                                        <button id="submit-btn-main" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Danh sách câu hỏi</span>
+                            ${!state.isSubmitted ? `
+                            <button id="submit-btn-nav" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                const userAnswer = state.answers[q.id] || '';
+                const isAnswered = userAnswer.trim() !== '';
+                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+
+                if (!state.isSubmitted) {
+                    btnClass += isAnswered
+                        ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                } else {
+                    const isCorrect = userAnswer.toLowerCase().trim() === q.correct.toLowerCase().trim();
+                    btnClass += isCorrect
+                        ? "bg-green-500 text-white border-green-500 shadow-sm"
+                        : "bg-red-500 text-white border-red-500 shadow-sm";
+                }
+
+                return `<button id="nav-btn-${q.id}" onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
+
+            // Phục hồi scroll
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = scrollPos;
+        }
+
+        // Render từng câu hỏi
+        function renderQuestion(q, idx) {
+            const userAnswer = state.answers[q.id] || '';
+            const isAnswered = userAnswer.trim() !== '';
+            const showExp = state.expandedExplanations[q.id];
+            const isCorrect = state.isSubmitted && userAnswer.toLowerCase().trim() === q.correct.toLowerCase().trim();
+
+            let containerClass = `p-5 rounded-xl border transition-all `;
+            if (state.isSubmitted) {
+                containerClass += isCorrect ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200';
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            // Xử lý Input text field dạng Inline (Điền vào chỗ trống)
+            let inputClass = `inline-block w-32 md:w-40 px-3 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-base shadow-sm `;
+            let feedbackIcon = '';
+
+            if (!state.isSubmitted) {
+                inputClass += isAnswered ? 'border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200' : 'border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200';
+            } else {
+                if (isCorrect) {
+                    inputClass += 'border-green-500 bg-green-50 text-green-700';
+                    feedbackIcon = `<i class="fa-solid fa-circle-check text-green-500 text-lg absolute -right-6 top-1/2 mt-0.5 -translate-y-1/2"></i>`;
+                } else {
+                    inputClass += 'border-red-500 bg-red-50 text-red-700';
+                    feedbackIcon = `<i class="fa-solid fa-circle-xmark text-red-500 text-lg absolute -right-6 top-1/2 mt-0.5 -translate-y-1/2"></i>`;
+                }
+            }
+
+            let inputHtml = `
+                <span class="relative inline-block align-middle whitespace-nowrap mx-1">
+                    <span class="font-bold text-indigo-700 mr-1">[${q.id}]</span>
+                    <input type="text" 
+                        class="${inputClass}" 
+                        placeholder="" 
+                        value="${userAnswer}" 
+                        ${state.isSubmitted ? 'disabled' : ''}
+                        oninput="handleInputChange(${q.id}, this.value)"
+                        autocomplete="off" spellcheck="false"
+                    >
+                    ${feedbackIcon}
+                </span>
+            `;
+
+            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/60 p-3.5 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <div>
+                        <p class="mb-1">Bạn đã trả lời sai hoặc để trống.</p>
+                        <p>Đáp án đúng là: <strong class="text-base uppercase text-red-800 tracking-wider">${q.correct}</strong></p>
+                    </div>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (state.isSubmitted && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/80 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-indigo-600 hover:text-indigo-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            let headingHtml = q.heading ? `
+                <div class="${idx !== 0 ? 'mt-8' : ''} mb-4">
+                    <h3 class="text-[17px] font-bold text-slate-800 border-b-2 border-indigo-100 pb-2">${q.heading}</h3>
+                </div>
+            ` : '';
+
+            // Lồng ô input vào thay thế trực tiếp cho cụm [1] hoặc <strong>[1]</strong> trong chuỗi
+            let rawText = q.text.replace(/<strong>\[\d+\]<\/strong>|\[\d+\]/, inputHtml);
+            let questionTextHtml = `
+                <div class="flex items-start gap-3">
+                    <div class="mt-2 w-1.5 h-1.5 rounded-full bg-slate-500 shrink-0"></div>
+                    <p class="text-slate-800 mb-0 text-[15px] md:text-base leading-relaxed text-justify">${rawText}</p>
+                </div>
+            `;
+
+            return `
+                ${headingHtml}
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        ${questionTextHtml}
+                        ${errorHtml}
+                        ${explanationHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event Handlers
+        // Cập nhật giao diện phụ (thanh tiến trình) thay vì render lại toàn bộ app để không bị mất focus của Input
+        window.updateProgress = () => {
+            const answeredCount = Object.keys(state.answers).filter(k => state.answers[k].toString().trim() !== '').length;
+
+            // Cập nhật text tiến độ
+            const progressText = document.getElementById('progress-text');
+            if (progressText) progressText.innerText = `Đã làm: ${answeredCount} / ${totalQuestions}`;
+
+            // Cập nhật nút Submit
+            const submitBtnMain = document.getElementById('submit-btn-main');
+            const submitBtnNav = document.getElementById('submit-btn-nav');
+
+            if (answeredCount > 0) {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = false;
+                    submitBtnMain.className = "px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = false;
+                    submitBtnNav.className = "px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors";
+                }
+            } else {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = true;
+                    submitBtnMain.className = "opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = true;
+                    submitBtnNav.className = "opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed";
+                }
+            }
+
+            // Cập nhật style cho các ô điều hướng nhỏ bên dưới
+            allQuestions.forEach(q => {
+                const btn = document.getElementById(`nav-btn-${q.id}`);
+                if (btn && !state.isSubmitted) {
+                    const isAnswered = state.answers[q.id] && state.answers[q.id].toString().trim() !== '';
+                    btn.className = isAnswered
+                        ? "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                }
+            });
+        };
+
+        window.handleInputChange = (qId, val) => {
+            if (state.isSubmitted) return;
+            state.answers[qId] = val;
+            updateProgress();
+        };
+
+        window.calculateScore = () => {
+            let currentScore = 0;
+            let incorrectIds = [];
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    const userAnswer = (state.answers[q.id] || "").toString().toLowerCase().trim();
+                    const correctAnswer = q.correct.toString().toLowerCase().trim();
+                    if (userAnswer === correctAnswer) {
+                        currentScore += 1;
+                    } else {
+                        incorrectIds.push(q.id);
+                    }
+                });
+            });
+            state.score = currentScore;
+            state.incorrectIds = incorrectIds;
+            state.endTime = Date.now();
+            state.submitTime = new Date();
+            state.isSubmitted = true;
+            renderApp();
+        };
+
+        window.resetQuiz = () => {
+            if (confirm('Bạn có chắc chắn muốn làm lại bài thi? Mọi đáp án hiện tại sẽ bị xóa.')) {
+                state.answers = {};
+                state.isSubmitted = false;
+                state.score = 0;
+                state.incorrectIds = [];
+                state.startTime = Date.now();
+                state.endTime = null;
+                state.submitTime = null;
+                state.expandedExplanations = {};
+                renderApp();
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                // Cuộn mượt mà đến vị trí câu hỏi, trừ đi 20px padding
+                const targetScroll = currentScroll + (elTop - containerTop) - 20;
+
+                container.scrollTo({
+                    top: targetScroll,
+                    behavior: "smooth"
+                });
+
+                // Nháy sáng ô input để gây chú ý
+                const inputEl = el.querySelector('input');
+                if (inputEl) {
+                    inputEl.focus();
+                    inputEl.classList.add('bg-indigo-100', 'border-indigo-500');
+                    setTimeout(() => inputEl.classList.remove('bg-indigo-100', 'border-indigo-500'), 1000);
+                }
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            performScroll(id);
+        };
+
+        // Khởi chạy lần đầu
+        renderApp();
+
+    </script>
+</body>
+
+</html>
