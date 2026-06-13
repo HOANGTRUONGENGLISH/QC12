@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUMMARY COMPLETION - RUBIK'S CUBE</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS cho thanh cuộn */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        #passage-container::-webkit-scrollbar,
+        #questions-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #passage-container::-webkit-scrollbar-track,
+        #questions-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #passage-container::-webkit-scrollbar-thumb,
+        #questions-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            border: 2px solid white;
+        }
+
+        /* Đảm bảo các thẻ định dạng văn bản hoạt động tốt cùng Tailwind */
+        #app b,
+        #app strong {
+            font-weight: bolder;
+        }
+
+        #app i,
+        #app em {
+            font-style: italic;
+        }
+
+        #app u {
+            text-decoration: underline;
+        }
+
+        #app strike,
+        #app s {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+
+    <div id="app" class="flex flex-col h-full w-full relative"></div>
+
+    <script>
+        const quizData = [
+            {
+                title: "IELTS Reading - Summary Completion",
+                instruction: "Complete the summary below. Choose NO MORE THAN TWO WORDS from the passage for each answer.",
+                passage: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-4'>Rubik’s Cube: How the puzzle achieved success</h2><p class='mb-4'>Erno Rubik first studied sculpture and then later architecture in Budapest, where he went on to become a teacher of interior design. It was while he was working as a teacher that he began the preliminary work on an invention that he called the ‘Magic Cube’.</p><p class='mb-4'>Rubik was inspired by geometric puzzles such as the Chinese tangram, a puzzle consisting of various triangles, a square and a parallelogram which can be combined to create different shapes and figures. However, unlike the tangram, which is two-dimensional, Rubik was more interested in investigating how three-dimensional forms, such as the cube, could be moved and combined to produce other forms.</p><p class='mb-4'>His design consisted of a cube made up of layers of individual smaller cubes, and each smaller cube could be turned in any direction except diagonally. To ensure that the cubes could move independently, without falling apart, Rubik first attempted to join them together using elastic bands. However, this proved to be impossible, so Rubik then solved the problem by assembling them using a rounded interior. This permitted them to move smoothly and easily. He experimented with different ways of marking the smaller cubes, but ended up with the simple solution of giving a different colour to each side. The object was to twist the layers of small cubes so that each side of the large cube was an identical colour.</p><p class='mb-4'>Rubik took out a patent for the Cube in 1977 and started manufacturing it in the same year. The Cube came to the attention of a Hungarian businessman, Tibor Laczi, who then demonstrated it at the Nuremberg Toy Fair. When British toy expert Tom Kremer saw it, he thought it was amazing and he persuaded a manufacturer, Ideal Toys, to produce 1 million of them in 1979. Ideal Toys renamed the Cube after the toy’s inventor, and in 1980, Rubik’s Cube was shown at toy fairs all over the world. It won that year’s prize in Germany for Best Puzzle. Rubik’s Cube is believed to be the world’s best-selling puzzle; since its invention, more than 300 million Cubes have been sold worldwide.</p>",
+                passageTranslation: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-4'>Khối Rubik: Cách món đồ chơi này đạt được thành công</h2><p class='mb-4'>Erno Rubik ban đầu học điêu khắc và sau đó là kiến trúc ở Budapest, nơi ông tiếp tục trở thành giáo viên thiết kế nội thất. Chính trong lúc làm giáo viên, ông đã bắt đầu công việc sơ bộ cho một phát minh mà ông gọi là ‘Khối lập phương Ma thuật’ (Magic Cube).</p><p class='mb-4'>Rubik được lấy cảm hứng từ các câu đố hình học như trò tangram của Trung Quốc, một câu đố bao gồm nhiều hình tam giác khác nhau, một hình vuông và một hình bình hành có thể kết hợp với nhau để tạo ra các hình dạng và hình vẽ khác nhau. Tuy nhiên, không giống như tangram là hai chiều, Rubik quan tâm nhiều hơn đến việc nghiên cứu làm thế nào các dạng ba chiều, chẳng hạn như khối lập phương, có thể di chuyển và kết hợp để tạo ra các dạng khác.</p><p class='mb-4'>Thiết kế của ông bao gồm một khối lập phương được tạo thành từ các lớp khối nhỏ hơn riêng lẻ, và mỗi khối nhỏ hơn có thể xoay theo bất kỳ hướng nào ngoại trừ theo đường chéo. Để đảm bảo rằng các khối có thể di chuyển độc lập mà không bị rơi ra, ban đầu Rubik cố gắng nối chúng lại với nhau bằng dây thun. Tuy nhiên, điều này tỏ ra không thể thực hiện được, vì vậy Rubik sau đó đã giải quyết vấn đề bằng cách lắp ráp chúng bằng cách sử dụng phần bên trong bo tròn. Điều này cho phép chúng di chuyển trơn tru và dễ dàng. Ông đã thử nghiệm nhiều cách khác nhau để đánh dấu các khối nhỏ hơn, nhưng cuối cùng lại chọn giải pháp đơn giản là cho mỗi mặt một màu khác nhau. Mục tiêu là xoay các lớp khối nhỏ sao cho mỗi mặt của khối lớn có màu giống hệt nhau.</p><p class='mb-4'>Rubik đã xin cấp bằng sáng chế cho Khối lập phương vào năm 1977 và bắt đầu sản xuất nó trong cùng năm đó. Khối lập phương thu hút sự chú ý của một doanh nhân người Hungary, Tibor Laczi, người sau đó đã trình diễn nó tại Hội chợ Đồ chơi Nuremberg. Khi chuyên gia đồ chơi người Anh Tom Kremer nhìn thấy nó, ông ấy nghĩ rằng nó thật tuyệt vời và ông đã thuyết phục một nhà sản xuất, Ideal Toys, sản xuất 1 triệu chiếc vào năm 1979. Ideal Toys đã đổi tên Khối lập phương theo tên người phát minh ra đồ chơi này, và vào năm 1980, Khối Rubik đã được trưng bày tại các hội chợ đồ chơi trên toàn thế giới. Nó đã giành được giải thưởng năm đó ở Đức cho Câu đố hay nhất. Khối Rubik được cho là câu đố bán chạy nhất thế giới; kể từ khi phát minh ra, hơn 300 triệu Khối Rubik đã được bán ra trên toàn thế giới.</p>",
+                questions: [
+                    {
+                        id: 1,
+                        heading: "Rubik’s Cube",
+                        text: "Originally named the <strong>[1]</strong>,",
+                        type: "text",
+                        correct: "Magic Cube",
+                        explanation: "<strong>Từ khóa:</strong> Originally named.\n\n<strong>Trong bài (Đoạn 1):</strong> \"...he began the preliminary work on an invention that he called the <strong>'Magic Cube'</strong>.\"\n\nBan đầu, ông gọi phát minh của mình là Magic Cube (Khối lập phương ma thuật)."
+                    },
+                    {
+                        id: 2,
+                        text: "...Rubik’s Cube consists of a number of smaller cubes organised in <strong>[2]</strong>.",
+                        type: "text",
+                        correct: "layers",
+                        explanation: "<strong>Từ khóa:</strong> consists of, smaller cubes, organised in.\n\n<strong>Trong bài (Đoạn 3):</strong> \"His design consisted of a cube made up of <strong>layers</strong> of individual smaller cubes...\"\n\nCác khối lập phương nhỏ được sắp xếp thành từng lớp (layers)."
+                    },
+                    {
+                        id: 3,
+                        text: "The smaller cubes can be twisted in almost any way, though not <strong>[3]</strong>.",
+                        type: "text",
+                        correct: "diagonally",
+                        explanation: "<strong>Từ khóa:</strong> smaller cubes, twisted, any way, not.\n\n<strong>Trong bài (Đoạn 3):</strong> \"...and each smaller cube could be turned in any direction except <strong>diagonally</strong>.\"\n\nCác khối nhỏ có thể xoay theo bất kỳ hướng nào ngoại trừ theo đường chéo (diagonally)."
+                    },
+                    {
+                        id: 4,
+                        text: "The Cube’s <strong>[4]</strong> is shaped in a way that allows the smaller cubes to move smoothly.",
+                        type: "text",
+                        correct: "interior",
+                        explanation: "<strong>Từ khóa:</strong> shaped in a way, allows, move smoothly.\n\n<strong>Trong bài (Đoạn 3):</strong> \"...solved the problem by assembling them using a rounded <strong>interior</strong>. This permitted them to move smoothly and easily.\"\n\nPhần bên trong (interior) được làm tròn để các khối có thể di chuyển trơn tru."
+                    },
+                    {
+                        id: 5,
+                        text: "Each side of the smaller cubes has a different colour, and the aim of the puzzle is to organise the cubes so that the colours on the sides of the large cube are <strong>[5]</strong>.",
+                        type: "text",
+                        correct: "identical",
+                        explanation: "<strong>Từ khóa:</strong> aim, colours, sides of the large cube.\n\n<strong>Trong bài (Đoạn 3):</strong> \"The object was to twist the layers of small cubes so that each side of the large cube was an <strong>identical</strong> colour.\"\n\nMục tiêu là làm cho các mặt của khối lập phương lớn có màu giống hệt nhau (identical)."
+                    },
+                    {
+                        id: 6,
+                        text: "The manufacturers of the puzzle changed the name of the Cube to the name of its <strong>[6]</strong>.",
+                        type: "text",
+                        correct: "inventor",
+                        explanation: "<strong>Từ khóa:</strong> manufacturers, changed the name, name of its.\n\n<strong>Trong bài (Đoạn 4):</strong> \"Ideal Toys renamed the Cube after the toy’s <strong>inventor</strong>...\"\n\nNhà sản xuất (Ideal Toys) đã đổi tên Khối lập phương theo tên của người phát minh (inventor) ra nó."
+                    },
+                    {
+                        id: 7,
+                        text: "It has now sold more than any other <strong>[7]</strong> in the world.",
+                        type: "text",
+                        correct: "puzzle",
+                        explanation: "<strong>Từ khóa:</strong> sold more than any other, in the world.\n\n<strong>Trong bài (Đoạn 4):</strong> \"Rubik’s Cube is believed to be the world’s best-selling <strong>puzzle</strong>...\"\n\nNó là câu đố (puzzle) bán chạy nhất trên thế giới."
+                    }
+                ]
+            }
+        ];
+
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            incorrectIds: [],
+            startTime: Date.now(),
+            endTime: null,
+            submitTime: null,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {},
+            expandedNotes: {},
+            showResetConfirm: false,
+            // Quản lý format và ghi chú
+            notes: {},
+            formattedPassage: null,
+            formattedPassageTrans: null,
+            formattedQuestions: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        // Lưu lại format HTML trước khi re-render
+        window.saveFormatting = () => {
+            const passageEl = document.getElementById('passage-content');
+            if (passageEl) {
+                if (state.showPassageTranslation) {
+                    state.formattedPassageTrans = passageEl.innerHTML;
+                } else {
+                    state.formattedPassage = passageEl.innerHTML;
+                }
+            }
+            allQuestions.forEach(q => {
+                const qEl = document.getElementById(`q-text-${q.id}`);
+                if (qEl) {
+                    state.formattedQuestions[q.id] = qEl.innerHTML;
+                }
+            });
+        };
+
+        // Hàm thực thi format (được gọi từ toolbar)
+        window.formatText = (command, value = null) => {
+            document.execCommand(command, false, value);
+            saveFormatting();
+        };
+
+        // Chặn user tự gõ phím vào khu vực text
+        window.preventTyping = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.target.isContentEditable) {
+                if (!e.ctrlKey && !e.metaKey && e.key.length === 1) {
+                    e.preventDefault();
+                }
+                if (['Backspace', 'Delete', 'Enter'].includes(e.key)) {
+                    e.preventDefault();
+                }
+            }
+        };
+
+        // Quản lý nhập Note
+        window.handleNoteChange = (qId, val) => {
+            state.notes[qId] = val;
+        };
+
+        window.generateInputHtml = (q, isAnswered, isCorrect, userAnswer) => {
+            let inputClass = `inline-block w-32 md:w-40 px-3 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-base shadow-sm `;
+            let feedbackIcon = '';
+
+            if (!state.isSubmitted) {
+                inputClass += isAnswered ? 'border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200' : 'border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200';
+            } else {
+                if (isCorrect) {
+                    inputClass += 'border-green-500 bg-green-50 text-green-700';
+                    feedbackIcon = `<i class="fa-solid fa-circle-check text-green-500 text-lg absolute -right-6 top-1/2 mt-0.5 -translate-y-1/2"></i>`;
+                } else {
+                    inputClass += 'border-red-500 bg-red-50 text-red-700';
+                    feedbackIcon = `<i class="fa-solid fa-circle-xmark text-red-500 text-lg absolute -right-6 top-1/2 mt-0.5 -translate-y-1/2"></i>`;
+                }
+            }
+
+            return `
+                <span class="font-bold text-indigo-700 mr-1">[${q.id}]</span>
+                <input type="text" 
+                    class="${inputClass}" 
+                    placeholder="" 
+                    value="${userAnswer}" 
+                    ${state.isSubmitted ? 'disabled' : ''}
+                    oninput="handleInputChange(${q.id}, this.value)"
+                    autocomplete="off" spellcheck="false"
+                >
+                ${feedbackIcon}
+            `;
+        };
+
+        window.restoreInputs = () => {
+            allQuestions.forEach(q => {
+                const wrapper = document.getElementById(`input-wrap-${q.id}`);
+                if (wrapper) {
+                    const userAnswer = state.answers[q.id] || '';
+                    const isAnswered = userAnswer.trim() !== '';
+                    const isCorrect = state.isSubmitted && userAnswer.toLowerCase().trim() === q.correct.toLowerCase().trim();
+                    wrapper.innerHTML = window.generateInputHtml(q, isAnswered, isCorrect, userAnswer);
+                }
+            });
+        };
+
+        function renderApp() {
+            const app = document.getElementById('app');
+            const answeredCount = Object.keys(state.answers).filter(k => state.answers[k].toString().trim() !== '').length;
+            const currentSection = quizData[state.currentPartIndex];
+
+            // Lưu vị trí cuộn
+            const qContainer = document.getElementById('questions-container');
+            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+            // Tính toán thời gian
+            let timeStr = "";
+            let dateStr = "";
+            if (state.isSubmitted && state.submitTime) {
+                const totalSeconds = Math.floor((state.endTime - state.startTime) / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timeStr = `${minutes} phút ${seconds} giây`;
+
+                const d = state.submitTime;
+                const hours = String(d.getHours()).padStart(2, '0');
+                const mins = String(d.getMinutes()).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const year = d.getFullYear();
+                dateStr = `${hours}:${mins} - ${day}/${month}/${year}`;
+            }
+
+            let passageHtml = state.showPassageTranslation
+                ? (state.formattedPassageTrans || currentSection.passageTranslation)
+                : (state.formattedPassage || currentSection.passage);
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-indigo-700 flex items-center gap-2">
+                            <i class="fa-brands fa-discourse text-indigo-600"></i>
+                            IELTS READING PRACTICE
+                        </h1>
+                        <p class="text-sm text-slate-500">Mô phỏng đề thi IELTS Reading</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div id="progress-text-container" class="text-sm font-medium bg-indigo-50 text-indigo-800 px-3 py-1 rounded-full border border-indigo-200 hidden md:block">
+                        <span id="progress-text">Đã làm: ${answeredCount} / ${totalQuestions}</span>
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted ? `
+                    <div class="flex-none bg-white p-5 md:p-6 rounded-xl border border-green-200 shadow-sm animate-in fade-in duration-500 mb-2">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-circle-check text-green-500 text-4xl md:text-5xl"></i>
+                                <div>
+                                    <h2 class="text-xl md:text-2xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
+                                    <p class="text-slate-600 mt-1">Tuyệt vời, bạn đã hoàn thành bài tập. Hãy xem kết quả chi tiết bên dưới.</p>
+                                </div>
+                            </div>
+                            <button onclick="resetQuiz()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow font-medium whitespace-nowrap">
+                                <i class="fa-solid fa-rotate-right mr-2"></i>Làm lại bài thi
+                            </button>
+                        </div>
+                        
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-regular fa-clock text-indigo-500 mr-2"></i>Giờ, ngày nộp:</span>
+                                    <span class="font-bold text-slate-800">${dateStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-solid fa-stopwatch text-indigo-500 mr-2"></i>Tổng thời gian làm:</span>
+                                    <span class="font-bold text-slate-800">${timeStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center bg-green-50/50">
+                                    <span class="text-green-700 font-medium"><i class="fa-solid fa-check text-green-600 mr-2"></i>Số câu đúng:</span>
+                                    <span class="font-bold text-green-700 text-lg">${state.score} / ${totalQuestions}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center ${state.incorrectIds.length > 0 ? 'bg-red-50/50' : 'bg-slate-50'}">
+                                    <span class="${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-600'} font-medium"><i class="fa-solid fa-xmark text-red-500 mr-2"></i>Số câu sai/chưa làm:</span>
+                                    <span class="font-bold ${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-800'} text-lg">${state.incorrectIds.length} / ${totalQuestions}</span>
+                                </div>
+                            </div>
+                            ${state.incorrectIds.length > 0 ? `
+                            <div class="p-4 border-t border-slate-200 bg-white">
+                                <span class="text-slate-600 font-medium block mb-3"><i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>Các câu sai hoặc chưa trả lời:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    ${state.incorrectIds.map(id => `<button onclick="scrollToQuestion(${id})" class="px-4 py-1.5 bg-red-50 text-red-700 font-bold rounded-md border border-red-200 hover:bg-red-100 transition shadow-sm">Câu ${id}</button>`).join('')}
+                                </div>
+                            </div>
+                            ` : `
+                            <div class="p-4 border-t border-slate-200 bg-white text-center">
+                                <span class="text-green-600 font-bold"><i class="fa-solid fa-star text-yellow-400 mr-1"></i> Xuất sắc! Bạn đã trả lời đúng tất cả các câu hỏi.</span>
+                            </div>
+                            `}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-2.5 md:px-4 md:py-3 border-b border-slate-200 flex justify-between items-center">
+                            <div class="flex-1 pr-4">
+                                <h2 class="text-sm md:text-base font-bold text-indigo-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-xs md:text-sm text-slate-700 mt-1 font-medium bg-yellow-50 border-l-4 border-yellow-400 pl-3 py-1">${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <div class="flex-none flex items-center gap-3">
+                                <button onclick="togglePassageTranslation()" class="text-xs font-bold px-3 py-1.5 rounded-md shadow-sm transition-colors ${state.showPassageTranslation ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-white text-slate-600 border border-slate-300 hover:bg-slate-50'}">
+                                    <i class="fa-solid fa-language mr-1"></i> ${state.showPassageTranslation ? 'Đang bật dịch' : 'Bật dịch VN'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Formatting Toolbar -->
+                        <div class="flex-none bg-white border-b border-slate-200 px-3 py-1.5 flex items-center gap-1 md:gap-2 z-40 text-sm overflow-x-auto custom-scrollbar shadow-sm">
+                            <span class="text-slate-500 font-bold px-2 whitespace-nowrap text-[11px] uppercase tracking-wide"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Bút đánh dấu</span>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('bold')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="In đậm (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('italic')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="In nghiêng (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('underline')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="Gạch chân (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('strikeThrough')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="Gạch bỏ"><i class="fa-solid fa-strikethrough"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fef08a')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-yellow-50 transition text-yellow-500" title="Highlight Vàng"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#bbf7d0')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-green-50 transition text-green-500" title="Highlight Xanh lá"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fecaca')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-red-50 transition text-red-500" title="Highlight Đỏ"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#bae6fd')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-blue-50 transition text-blue-500" title="Highlight Xanh lam"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#e9d5ff')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-purple-50 transition text-purple-500" title="Highlight Tím"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fed7aa')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-orange-50 transition text-orange-500" title="Highlight Cam"><i class="fa-solid fa-highlighter"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#ef4444')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-red-50 transition text-red-500" title="Chữ Đỏ"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#3b82f6')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-blue-50 transition text-blue-500" title="Chữ Xanh dương"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#16a34a')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-green-50 transition text-green-600" title="Chữ Xanh lá"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#a855f7')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-purple-50 transition text-purple-500" title="Chữ Tím"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#f97316')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-orange-50 transition text-orange-500" title="Chữ Cam"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#000000')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-200 transition text-black" title="Chữ Đen"><i class="fa-solid fa-font"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('removeFormat')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 transition text-slate-500" title="Xóa định dạng"><i class="fa-solid fa-eraser"></i></button>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC TẠI ĐÂY -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/50 border-b-[3px] md:border-b-0 md:border-r-[3px] border-slate-200 p-5 md:p-8 shadow-inner custom-scrollbar relative">
+                                <div id="passage-content" class="text-slate-800 leading-relaxed text-[15px] md:text-[17px] text-justify outline-none focus:outline-none" contenteditable="true" onkeydown="preventTyping(event)" onpaste="event.preventDefault()">
+                                    ${passageHtml}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 bg-white custom-scrollbar">
+                                <div class="max-w-5xl mx-auto space-y-6">
+                                    ${currentSection.questions.map((q, idx) => renderQuestion(q, idx)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-8 pb-8">
+                                        <button id="submit-btn-main" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Danh sách câu hỏi</span>
+                            ${!state.isSubmitted ? `
+                            <button id="submit-btn-nav" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                const userAnswer = state.answers[q.id] || '';
+                const isAnswered = userAnswer.trim() !== '';
+                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+
+                if (!state.isSubmitted) {
+                    btnClass += isAnswered
+                        ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                } else {
+                    const isCorrect = userAnswer.toLowerCase().trim() === q.correct.toLowerCase().trim();
+                    btnClass += isCorrect
+                        ? "bg-green-500 text-white border-green-500 shadow-sm"
+                        : "bg-red-500 text-white border-red-500 shadow-sm";
+                }
+
+                return `<button id="nav-btn-${q.id}" onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+            }).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Confirmation Modal -->
+                ${state.showResetConfirm ? `
+                <div class="fixed inset-0 bg-slate-900/40 z-[100] flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-[pulse_0.2s_ease-in-out]">
+                        <div class="flex items-center gap-3 text-red-600 mb-4">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                            <h3 class="text-xl font-bold">Làm lại bài thi?</h3>
+                        </div>
+                        <p class="text-slate-600 mb-6 leading-relaxed">Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án, định dạng và kết quả hiện tại của bạn sẽ bị xoá.</p>
+                        <div class="flex justify-end gap-3">
+                            <button onclick="cancelReset()" class="px-5 py-2 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg font-bold transition-colors">Hủy</button>
+                            <button onclick="confirmReset()" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors shadow-sm">Đồng ý xoá</button>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            app.innerHTML = html;
+
+            // Phục hồi lại các input vào bên trong câu hỏi đã được format HTML
+            restoreInputs();
+
+            // Phục hồi scroll
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = scrollPos;
+        }
+
+        function renderQuestion(q, idx) {
+            const userAnswer = state.answers[q.id] || '';
+            const isAnswered = userAnswer.trim() !== '';
+            const showExp = state.expandedExplanations[q.id];
+            const isCorrect = state.isSubmitted && userAnswer.toLowerCase().trim() === q.correct.toLowerCase().trim();
+
+            let containerClass = `relative p-5 rounded-xl border transition-all `;
+            if (state.isSubmitted) {
+                containerClass += isCorrect ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200';
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/60 p-3.5 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <div>
+                        <p class="mb-1">Bạn đã trả lời sai hoặc để trống.</p>
+                        <p>Đáp án đúng là: <strong class="text-base uppercase text-red-800 tracking-wider">${q.correct}</strong></p>
+                    </div>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (state.isSubmitted && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/80 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-indigo-600 hover:text-indigo-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            const showNote = state.expandedNotes[q.id];
+            const hasNote = state.notes[q.id] && state.notes[q.id].trim() !== '';
+
+            let notesHtml = `
+                <div class="absolute top-4 right-4 z-10 flex flex-col items-end">
+                    <button onclick="toggleNote(${q.id})" class="text-slate-400 hover:text-amber-500 transition-colors p-1.5 rounded-md hover:bg-slate-100 relative" title="Ghi chú của giáo viên">
+                        <i class="fa-solid fa-comment-dots text-xl ${hasNote ? 'text-amber-500' : ''}"></i>
+                        ${hasNote ? '<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>' : ''}
+                    </button>
+                    
+                    ${showNote ? `
+                    <div class="mt-2 bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-xl w-64 md:w-80 relative animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                        <div class="absolute -top-2 right-3 w-4 h-4 bg-amber-50 border-t border-l border-amber-200 transform rotate-45"></div>
+                        <div class="relative z-10">
+                            <div class="text-xs font-bold text-amber-800 mb-2 flex items-center justify-between uppercase tracking-wider">
+                                <span><i class="fa-solid fa-pen-clip mr-1"></i> Ghi chú riêng</span>
+                                <button onclick="toggleNote(${q.id})" class="text-amber-600 hover:text-amber-800 bg-amber-100 hover:bg-amber-200 rounded-full w-5 h-5 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <textarea 
+                                class="w-full bg-white border border-amber-300 rounded p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-[90px] custom-scrollbar text-slate-700 transition-all shadow-inner" 
+                                placeholder="Nhập ghi chú, phân tích câu hỏi tại đây..."
+                                oninput="handleNoteChange(${q.id}, this.value)"
+                            >${state.notes[q.id] || ''}</textarea>
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            let headingHtml = q.heading ? `
+                <div class="${idx !== 0 ? 'mt-8' : ''} mb-4" contenteditable="true" onkeydown="preventTyping(event)" onpaste="event.preventDefault()">
+                    <h3 class="text-[17px] font-bold text-slate-800 border-b-2 border-indigo-100 pb-2 outline-none">${q.heading}</h3>
+                </div>
+            ` : '';
+
+            // Nếu câu hỏi đã được format trước đó, ta lấy lại HTML đó.
+            // Nếu chưa, ta bọc wrapper vào vị trí cần đặt thẻ input một cách chính xác theo id
+            let rawText = "";
+            if (state.formattedQuestions[q.id]) {
+                rawText = state.formattedQuestions[q.id];
+            } else {
+                const regex = new RegExp(`<strong>\\[${q.id}\\]<\\/strong>|\\[${q.id}\\]`);
+                rawText = q.text.replace(regex, `<span id="input-wrap-${q.id}" contenteditable="false" class="relative inline-block align-middle whitespace-nowrap mx-1"></span>`);
+            }
+
+            let questionTextHtml = `
+                <div class="flex items-start gap-3 pr-10">
+                    <div class="mt-2 w-1.5 h-1.5 rounded-full bg-slate-500 shrink-0 mt-1.5"></div>
+                    <div id="q-text-${q.id}" class="text-slate-800 mb-0 text-[15px] md:text-base leading-relaxed text-justify w-full outline-none focus:outline-none" contenteditable="true" onkeydown="preventTyping(event)" onpaste="event.preventDefault()">
+                        ${rawText}
+                    </div>
+                </div>
+            `;
+
+            return `
+                ${headingHtml}
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        ${questionTextHtml}
+                        ${errorHtml}
+                        ${explanationHtml}
+                        ${notesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        window.updateProgress = () => {
+            const answeredCount = Object.keys(state.answers).filter(k => state.answers[k].toString().trim() !== '').length;
+
+            const progressText = document.getElementById('progress-text');
+            if (progressText) progressText.innerText = `Đã làm: ${answeredCount} / ${totalQuestions}`;
+
+            const submitBtnMain = document.getElementById('submit-btn-main');
+            const submitBtnNav = document.getElementById('submit-btn-nav');
+
+            if (answeredCount > 0) {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = false;
+                    submitBtnMain.className = "px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = false;
+                    submitBtnNav.className = "px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors";
+                }
+            } else {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = true;
+                    submitBtnMain.className = "opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = true;
+                    submitBtnNav.className = "opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed";
+                }
+            }
+
+            // Cập nhật giao diện input và container trực tiếp không cần render lại toàn bộ
+            allQuestions.forEach(q => {
+                const btn = document.getElementById(`nav-btn-${q.id}`);
+                const isAnswered = state.answers[q.id] && state.answers[q.id].toString().trim() !== '';
+
+                if (btn && !state.isSubmitted) {
+                    btn.className = isAnswered
+                        ? "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                }
+
+                const wrapper = document.getElementById(`input-wrap-${q.id}`);
+                if (wrapper) {
+                    const inputEl = wrapper.querySelector('input');
+                    if (inputEl && !state.isSubmitted) {
+                        if (isAnswered) {
+                            inputEl.className = "inline-block w-32 md:w-40 px-3 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-base shadow-sm border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200";
+                        } else {
+                            inputEl.className = "inline-block w-32 md:w-40 px-3 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-base shadow-sm border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200";
+                        }
+                    }
+                }
+
+                const container = document.getElementById(`question-${q.id}`);
+                if (container && !state.isSubmitted) {
+                    container.className = `p-5 rounded-xl border transition-all ${isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`;
+                }
+            });
+        };
+
+        window.handleInputChange = (qId, val) => {
+            if (state.isSubmitted) return;
+            state.answers[qId] = val;
+            updateProgress();
+        };
+
+        window.calculateScore = () => {
+            saveFormatting(); // Lưu định dạng trước khi nộp
+            let currentScore = 0;
+            let incorrectIds = [];
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    const userAnswer = (state.answers[q.id] || "").toString().toLowerCase().trim();
+                    const correctAnswer = q.correct.toString().toLowerCase().trim();
+                    if (userAnswer === correctAnswer) {
+                        currentScore += 1;
+                    } else {
+                        incorrectIds.push(q.id);
+                    }
+                });
+            });
+            state.score = currentScore;
+            state.incorrectIds = incorrectIds;
+            state.endTime = Date.now();
+            state.submitTime = new Date();
+            state.isSubmitted = true;
+            renderApp();
+        };
+
+        window.resetQuiz = () => {
+            state.showResetConfirm = true;
+            renderApp();
+        };
+
+        window.cancelReset = () => {
+            state.showResetConfirm = false;
+            renderApp();
+        };
+
+        window.confirmReset = () => {
+            state.answers = {};
+            state.isSubmitted = false;
+            state.score = 0;
+            state.incorrectIds = [];
+            state.startTime = Date.now();
+            state.endTime = null;
+            state.submitTime = null;
+            state.expandedExplanations = {};
+            state.showResetConfirm = false;
+            // Xoá luôn các định dạng và ghi chú khi làm lại
+            state.notes = {};
+            state.formattedPassage = null;
+            state.formattedPassageTrans = null;
+            state.formattedQuestions = {};
+
+            renderApp();
+        };
+
+        window.togglePassageTranslation = () => {
+            saveFormatting(); // Lưu định dạng bản dịch hiện tại
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            saveFormatting();
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.toggleNote = (qId) => {
+            saveFormatting();
+            state.expandedNotes[qId] = !state.expandedNotes[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                // Cuộn mượt mà
+                const targetScroll = currentScroll + (elTop - containerTop) - 20;
+
+                container.scrollTo({
+                    top: targetScroll,
+                    behavior: "smooth"
+                });
+
+                // Nháy sáng ô input
+                const wrapper = document.getElementById(`input-wrap-${id}`);
+                if (wrapper) {
+                    const inputEl = wrapper.querySelector('input');
+                    if (inputEl) {
+                        inputEl.focus();
+                        inputEl.classList.add('bg-indigo-100', 'border-indigo-500');
+                        setTimeout(() => inputEl.classList.remove('bg-indigo-100', 'border-indigo-500'), 1000);
+                    }
+                }
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            performScroll(id);
+        };
+
+        // Khởi chạy lần đầu
+        renderApp();
+
+    </script>
+</body>
+
+</html>
