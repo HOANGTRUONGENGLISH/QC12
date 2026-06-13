@@ -9,6 +9,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2canvas cho tính năng chụp màn hình -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* CSS cho thanh cuộn */
         .custom-scrollbar::-webkit-scrollbar {
@@ -76,60 +78,59 @@
     <script>
         const quizData = [
             {
-                title: "IELTS Reading - Summary Completion",
+                title: "Summary Completion - RUBIK'S CUBE",
                 instruction: "Complete the summary below. Choose NO MORE THAN TWO WORDS from the passage for each answer.",
-                passage: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-4'>Rubik’s Cube: How the puzzle achieved success</h2><p class='mb-4'>Erno Rubik first studied sculpture and then later architecture in Budapest, where he went on to become a teacher of interior design. It was while he was working as a teacher that he began the preliminary work on an invention that he called the ‘Magic Cube’.</p><p class='mb-4'>Rubik was inspired by geometric puzzles such as the Chinese tangram, a puzzle consisting of various triangles, a square and a parallelogram which can be combined to create different shapes and figures. However, unlike the tangram, which is two-dimensional, Rubik was more interested in investigating how three-dimensional forms, such as the cube, could be moved and combined to produce other forms.</p><p class='mb-4'>His design consisted of a cube made up of layers of individual smaller cubes, and each smaller cube could be turned in any direction except diagonally. To ensure that the cubes could move independently, without falling apart, Rubik first attempted to join them together using elastic bands. However, this proved to be impossible, so Rubik then solved the problem by assembling them using a rounded interior. This permitted them to move smoothly and easily. He experimented with different ways of marking the smaller cubes, but ended up with the simple solution of giving a different colour to each side. The object was to twist the layers of small cubes so that each side of the large cube was an identical colour.</p><p class='mb-4'>Rubik took out a patent for the Cube in 1977 and started manufacturing it in the same year. The Cube came to the attention of a Hungarian businessman, Tibor Laczi, who then demonstrated it at the Nuremberg Toy Fair. When British toy expert Tom Kremer saw it, he thought it was amazing and he persuaded a manufacturer, Ideal Toys, to produce 1 million of them in 1979. Ideal Toys renamed the Cube after the toy’s inventor, and in 1980, Rubik’s Cube was shown at toy fairs all over the world. It won that year’s prize in Germany for Best Puzzle. Rubik’s Cube is believed to be the world’s best-selling puzzle; since its invention, more than 300 million Cubes have been sold worldwide.</p>",
-                passageTranslation: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-4'>Khối Rubik: Cách món đồ chơi này đạt được thành công</h2><p class='mb-4'>Erno Rubik ban đầu học điêu khắc và sau đó là kiến trúc ở Budapest, nơi ông tiếp tục trở thành giáo viên thiết kế nội thất. Chính trong lúc làm giáo viên, ông đã bắt đầu công việc sơ bộ cho một phát minh mà ông gọi là ‘Khối lập phương Ma thuật’ (Magic Cube).</p><p class='mb-4'>Rubik được lấy cảm hứng từ các câu đố hình học như trò tangram của Trung Quốc, một câu đố bao gồm nhiều hình tam giác khác nhau, một hình vuông và một hình bình hành có thể kết hợp với nhau để tạo ra các hình dạng và hình vẽ khác nhau. Tuy nhiên, không giống như tangram là hai chiều, Rubik quan tâm nhiều hơn đến việc nghiên cứu làm thế nào các dạng ba chiều, chẳng hạn như khối lập phương, có thể di chuyển và kết hợp để tạo ra các dạng khác.</p><p class='mb-4'>Thiết kế của ông bao gồm một khối lập phương được tạo thành từ các lớp khối nhỏ hơn riêng lẻ, và mỗi khối nhỏ hơn có thể xoay theo bất kỳ hướng nào ngoại trừ theo đường chéo. Để đảm bảo rằng các khối có thể di chuyển độc lập mà không bị rơi ra, ban đầu Rubik cố gắng nối chúng lại với nhau bằng dây thun. Tuy nhiên, điều này tỏ ra không thể thực hiện được, vì vậy Rubik sau đó đã giải quyết vấn đề bằng cách lắp ráp chúng bằng cách sử dụng phần bên trong bo tròn. Điều này cho phép chúng di chuyển trơn tru và dễ dàng. Ông đã thử nghiệm nhiều cách khác nhau để đánh dấu các khối nhỏ hơn, nhưng cuối cùng lại chọn giải pháp đơn giản là cho mỗi mặt một màu khác nhau. Mục tiêu là xoay các lớp khối nhỏ sao cho mỗi mặt của khối lớn có màu giống hệt nhau.</p><p class='mb-4'>Rubik đã xin cấp bằng sáng chế cho Khối lập phương vào năm 1977 và bắt đầu sản xuất nó trong cùng năm đó. Khối lập phương thu hút sự chú ý của một doanh nhân người Hungary, Tibor Laczi, người sau đó đã trình diễn nó tại Hội chợ Đồ chơi Nuremberg. Khi chuyên gia đồ chơi người Anh Tom Kremer nhìn thấy nó, ông ấy nghĩ rằng nó thật tuyệt vời và ông đã thuyết phục một nhà sản xuất, Ideal Toys, sản xuất 1 triệu chiếc vào năm 1979. Ideal Toys đã đổi tên Khối lập phương theo tên người phát minh ra đồ chơi này, và vào năm 1980, Khối Rubik đã được trưng bày tại các hội chợ đồ chơi trên toàn thế giới. Nó đã giành được giải thưởng năm đó ở Đức cho Câu đố hay nhất. Khối Rubik được cho là câu đố bán chạy nhất thế giới; kể từ khi phát minh ra, hơn 300 triệu Khối Rubik đã được bán ra trên toàn thế giới.</p>",
+                passage: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-2'>Rubik’s Cube</h2><h3 class='text-lg font-medium text-slate-700 mb-4 italic'>How the puzzle achieved success</h3><p class='mb-4'>Erno Rubik first studied sculpture and then later architecture in Budapest, where he went on to become a teacher of interior design. It was while he was working as a teacher that he began the preliminary work on an invention that he called the ‘Magic Cube’.</p><p class='mb-4'>Rubik was inspired by geometric puzzles such as the Chinese tangram, a puzzle consisting of various triangles, a square and a parallelogram which can be combined to create different shapes and figures. However, unlike the tangram, which is two-dimensional, Rubik was more interested in investigating how three-dimensional forms, such as the cube, could be moved and combined to produce other forms.</p><p class='mb-4'>His design consisted of a cube made up of layers of individual smaller cubes, and each smaller cube could be turned in any direction except diagonally. To ensure that the cubes could move independently, without falling apart, Rubik first attempted to join them together using elastic bands. However, this proved to be impossible, so Rubik then solved the problem by assembling them using a rounded interior. This permitted them to move smoothly and easily. He experimented with different ways of marking the smaller cubes, but ended up with the simple solution of giving a different colour to each side. The object was to twist the layers of small cubes so that each side of the large cube was an identical colour.</p><p class='mb-4'>Rubik took out a patent for the Cube in 1977 and started manufacturing it in the same year. The Cube came to the attention of a Hungarian businessman, Tibor Laczi, who then demonstrated it at the Nuremberg Toy Fair. When British toy expert Tom Kremer saw it, he thought it was amazing and he persuaded a manufacturer, Ideal Toys, to produce 1 million of them in 1979. Ideal Toys renamed the Cube after the toy’s inventor, and in 1980, Rubik’s Cube was shown at toy fairs all over the world. It won that year’s prize in Germany for Best Puzzle. Rubik’s Cube is believed to be the world’s best-selling puzzle; since its invention, more than 300 million Cubes have been sold worldwide.</p>",
+                passageTranslation: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-2'>Khối Rubik</h2><h3 class='text-lg font-medium text-slate-700 mb-4 italic'>Câu đố đã đạt được thành công như thế nào</h3><p class='mb-4'>Erno Rubik ban đầu học điêu khắc và sau đó học kiến trúc tại Budapest, nơi ông tiếp tục trở thành giáo viên thiết kế nội thất. Trong thời gian làm giáo viên, ông đã bắt đầu công việc sơ bộ cho một phát minh mà ông gọi là 'Khối lập phương ma thuật' (Magic Cube).</p><p class='mb-4'>Rubik được truyền cảm hứng từ các câu đố hình học như trò chơi tangram của Trung Quốc, một câu đố bao gồm nhiều hình tam giác khác nhau, một hình vuông và một hình bình hành có thể được kết hợp để tạo ra các hình dạng và hình vẽ khác nhau. Tuy nhiên, không giống như tangram là không gian hai chiều, Rubik quan tâm hơn đến việc điều tra xem các hình thức ba chiều, chẳng hạn như hình khối, có thể được di chuyển và kết hợp như thế nào để tạo ra các hình thức khác.</p><p class='mb-4'>Thiết kế của ông bao gồm một khối lập phương được tạo thành từ các lớp của các khối lập phương nhỏ hơn riêng lẻ, và mỗi khối lập phương nhỏ hơn có thể được xoay theo bất kỳ hướng nào ngoại trừ đường chéo. Để đảm bảo rằng các khối có thể di chuyển độc lập mà không bị rơi ra, ban đầu Rubik đã cố gắng nối chúng lại với nhau bằng các dải thun. Tuy nhiên, điều này được chứng minh là không thể, vì vậy sau đó Rubik đã giải quyết vấn đề bằng cách lắp ráp chúng sử dụng một phần lõi bên trong bo tròn. Điều này cho phép chúng di chuyển trơn tru và dễ dàng. Ông đã thử nghiệm các cách khác nhau để đánh dấu các khối nhỏ hơn, nhưng cuối cùng đã chọn giải pháp đơn giản là tạo cho mỗi mặt một màu khác nhau. Mục tiêu là xoay các lớp của khối nhỏ sao cho mỗi mặt của khối lớn có một màu đồng nhất.</p><p class='mb-4'>Rubik đã xin cấp bằng sáng chế cho Khối Rubik vào năm 1977 và bắt đầu sản xuất nó trong cùng năm. Khối lập phương đã thu hút sự chú ý của một doanh nhân người Hungary, Tibor Laczi, người sau đó đã trình diễn nó tại Hội chợ Đồ chơi Nuremberg. Khi chuyên gia đồ chơi người Anh Tom Kremer nhìn thấy nó, ông nghĩ nó thật tuyệt vời và ông đã thuyết phục một nhà sản xuất, Ideal Toys, sản xuất 1 triệu chiếc vào năm 1979. Ideal Toys đã đổi tên Khối lập phương theo tên người phát minh ra đồ chơi, và vào năm 1980, Khối Rubik đã được trưng bày tại các hội chợ đồ chơi trên toàn thế giới. Nó đã giành giải thưởng năm đó ở Đức cho Câu đố hay nhất. Khối Rubik được cho là câu đố bán chạy nhất thế giới; kể từ khi được phát minh, hơn 300 triệu Khối Rubik đã được bán ra trên toàn thế giới.</p>",
                 questions: [
                     {
                         id: 1,
-                        heading: "Rubik’s Cube",
                         text: "Originally named the <strong>[1]</strong>,",
                         type: "text",
                         correct: "Magic Cube",
-                        explanation: "<strong>Từ khóa:</strong> Originally named.\n\n<strong>Trong bài (Đoạn 1):</strong> \"...he began the preliminary work on an invention that he called the <strong>'Magic Cube'</strong>.\"\n\nBan đầu, ông gọi phát minh của mình là Magic Cube (Khối lập phương ma thuật)."
+                        explanation: "<strong>Từ khóa:</strong> Originally named.<br><br><strong>Trong bài (Đoạn 1):</strong> \"...he began the preliminary work on an invention that he called the <strong>'Magic Cube'</strong>.\""
                     },
                     {
                         id: 2,
-                        text: "...Rubik’s Cube consists of a number of smaller cubes organised in <strong>[2]</strong>.",
+                        text: "Rubik's Cube consists of a number of smaller cubes organised in <strong>[2]</strong>.",
                         type: "text",
                         correct: "layers",
-                        explanation: "<strong>Từ khóa:</strong> consists of, smaller cubes, organised in.\n\n<strong>Trong bài (Đoạn 3):</strong> \"His design consisted of a cube made up of <strong>layers</strong> of individual smaller cubes...\"\n\nCác khối lập phương nhỏ được sắp xếp thành từng lớp (layers)."
+                        explanation: "<strong>Từ khóa:</strong> number of smaller cubes organised in.<br><br><strong>Trong bài (Đoạn 3):</strong> \"His design consisted of a cube made up of <strong>layers</strong> of individual smaller cubes...\""
                     },
                     {
                         id: 3,
                         text: "The smaller cubes can be twisted in almost any way, though not <strong>[3]</strong>.",
                         type: "text",
                         correct: "diagonally",
-                        explanation: "<strong>Từ khóa:</strong> smaller cubes, twisted, any way, not.\n\n<strong>Trong bài (Đoạn 3):</strong> \"...and each smaller cube could be turned in any direction except <strong>diagonally</strong>.\"\n\nCác khối nhỏ có thể xoay theo bất kỳ hướng nào ngoại trừ theo đường chéo (diagonally)."
+                        explanation: "<strong>Từ khóa:</strong> twisted in almost any way, though not.<br><br><strong>Trong bài (Đoạn 3):</strong> \"...each smaller cube could be turned in any direction except <strong>diagonally</strong>.\""
                     },
                     {
                         id: 4,
-                        text: "The Cube’s <strong>[4]</strong> is shaped in a way that allows the smaller cubes to move smoothly.",
+                        text: "The Cube's <strong>[4]</strong> is shaped in a way that allows the smaller cubes to move smoothly.",
                         type: "text",
-                        correct: "interior",
-                        explanation: "<strong>Từ khóa:</strong> shaped in a way, allows, move smoothly.\n\n<strong>Trong bài (Đoạn 3):</strong> \"...solved the problem by assembling them using a rounded <strong>interior</strong>. This permitted them to move smoothly and easily.\"\n\nPhần bên trong (interior) được làm tròn để các khối có thể di chuyển trơn tru."
+                        correct: "rounded interior",
+                        explanation: "<strong>Từ khóa:</strong> shaped in a way, allows the smaller cubes to move smoothly.<br><br><strong>Trong bài (Đoạn 3):</strong> \"...by assembling them using a <strong>rounded interior</strong>. This permitted them to move smoothly and easily.\"<br>(Lưu ý: đáp án 'interior' cũng có thể được chấp nhận, tuy nhiên 'rounded interior' mô tả đầy đủ nhất cách hình dạng lõi bên trong giúp khối Rubik di chuyển)."
                     },
                     {
                         id: 5,
                         text: "Each side of the smaller cubes has a different colour, and the aim of the puzzle is to organise the cubes so that the colours on the sides of the large cube are <strong>[5]</strong>.",
                         type: "text",
                         correct: "identical",
-                        explanation: "<strong>Từ khóa:</strong> aim, colours, sides of the large cube.\n\n<strong>Trong bài (Đoạn 3):</strong> \"The object was to twist the layers of small cubes so that each side of the large cube was an <strong>identical</strong> colour.\"\n\nMục tiêu là làm cho các mặt của khối lập phương lớn có màu giống hệt nhau (identical)."
+                        explanation: "<strong>Từ khóa:</strong> aim of the puzzle, colours on the sides of the large cube.<br><br><strong>Trong bài (Đoạn 3):</strong> \"The object was to twist the layers of small cubes so that each side of the large cube was an <strong>identical</strong> colour.\""
                     },
                     {
                         id: 6,
                         text: "The manufacturers of the puzzle changed the name of the Cube to the name of its <strong>[6]</strong>.",
                         type: "text",
                         correct: "inventor",
-                        explanation: "<strong>Từ khóa:</strong> manufacturers, changed the name, name of its.\n\n<strong>Trong bài (Đoạn 4):</strong> \"Ideal Toys renamed the Cube after the toy’s <strong>inventor</strong>...\"\n\nNhà sản xuất (Ideal Toys) đã đổi tên Khối lập phương theo tên của người phát minh (inventor) ra nó."
+                        explanation: "<strong>Từ khóa:</strong> manufacturers, changed the name, to the name of its.<br><br><strong>Trong bài (Đoạn 4):</strong> \"Ideal Toys renamed the Cube after the toy’s <strong>inventor</strong>...\""
                     },
                     {
                         id: 7,
                         text: "It has now sold more than any other <strong>[7]</strong> in the world.",
                         type: "text",
                         correct: "puzzle",
-                        explanation: "<strong>Từ khóa:</strong> sold more than any other, in the world.\n\n<strong>Trong bài (Đoạn 4):</strong> \"Rubik’s Cube is believed to be the world’s best-selling <strong>puzzle</strong>...\"\n\nNó là câu đố (puzzle) bán chạy nhất trên thế giới."
+                        explanation: "<strong>Từ khóa:</strong> sold more than any other, in the world.<br><br><strong>Trong bài (Đoạn 4):</strong> \"Rubik’s Cube is believed to be the world’s best-selling <strong>puzzle</strong>; since its invention, more than 300 million Cubes have been sold worldwide.\""
                     }
                 ]
             }
@@ -148,6 +149,8 @@
             expandedExplanations: {},
             expandedNotes: {},
             showResetConfirm: false,
+            hasCapturedScreenshot: false,
+            showCompletedModal: false,
             // Quản lý format và ghi chú
             notes: {},
             formattedPassage: null,
@@ -178,21 +181,16 @@
 
         // Hàm thực thi format (được gọi từ toolbar)
         window.formatText = (command, value = null) => {
-            document.execCommand(command, false, value);
-            saveFormatting();
-        };
+            // Bật chế độ chỉnh sửa trong tíc tắc để áp dụng màu/format
+            const targets = document.querySelectorAll('.format-target');
+            targets.forEach(t => t.setAttribute('contenteditable', 'true'));
 
-        // Chặn user tự gõ phím vào khu vực text
-        window.preventTyping = (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.target.isContentEditable) {
-                if (!e.ctrlKey && !e.metaKey && e.key.length === 1) {
-                    e.preventDefault();
-                }
-                if (['Backspace', 'Delete', 'Enter'].includes(e.key)) {
-                    e.preventDefault();
-                }
-            }
+            document.execCommand(command, false, value);
+
+            // Tắt ngay lập tức để khóa hoàn toàn khả năng gõ phím
+            targets.forEach(t => t.setAttribute('contenteditable', 'false'));
+
+            saveFormatting();
         };
 
         // Quản lý nhập Note
@@ -201,12 +199,18 @@
         };
 
         window.generateInputHtml = (q, isAnswered, isCorrect, userAnswer) => {
-            let inputClass = `inline-block w-32 md:w-40 px-3 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-base shadow-sm `;
+            let inputClass = `inline-block w-28 md:w-36 px-2 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-[15px] shadow-sm `;
             let feedbackIcon = '';
+
+            const showFeedback = state.isSubmitted && state.hasCapturedScreenshot;
 
             if (!state.isSubmitted) {
                 inputClass += isAnswered ? 'border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200' : 'border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200';
+            } else if (!showFeedback) {
+                // Trạng thái đã nộp nhưng chưa chụp ảnh (chưa xem đáp án)
+                inputClass += 'border-slate-300 bg-slate-100 text-slate-500 cursor-not-allowed';
             } else {
+                // Trạng thái đã xem đáp án
                 if (isCorrect) {
                     inputClass += 'border-green-500 bg-green-50 text-green-700';
                     feedbackIcon = `<i class="fa-solid fa-circle-check text-green-500 text-lg absolute -right-6 top-1/2 mt-0.5 -translate-y-1/2"></i>`;
@@ -297,7 +301,7 @@
                 <!-- Main Body -->
                 <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
                     
-                    ${state.isSubmitted ? `
+                    ${state.isSubmitted && state.hasCapturedScreenshot ? `
                     <div class="flex-none bg-white p-5 md:p-6 rounded-xl border border-green-200 shadow-sm animate-in fade-in duration-500 mb-2">
                         <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
                             <div class="flex items-center gap-4">
@@ -390,18 +394,18 @@
                         <div class="flex-1 flex flex-col md:flex-row min-h-0">
                             ${currentSection.passage ? `
                             <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/50 border-b-[3px] md:border-b-0 md:border-r-[3px] border-slate-200 p-5 md:p-8 shadow-inner custom-scrollbar relative">
-                                <div id="passage-content" class="text-slate-800 leading-relaxed text-[15px] md:text-[17px] text-justify outline-none focus:outline-none" contenteditable="true" onkeydown="preventTyping(event)" onpaste="event.preventDefault()">
+                                <div id="passage-content" class="format-target text-slate-800 leading-relaxed text-[15px] md:text-[17px] text-justify outline-none focus:outline-none" contenteditable="false">
                                     ${passageHtml}
                                 </div>
                             </div>
                             ` : ''}
 
                             <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 bg-white custom-scrollbar">
-                                <div class="max-w-5xl mx-auto space-y-6">
+                                <div class="max-w-5xl mx-auto space-y-4">
                                     ${currentSection.questions.map((q, idx) => renderQuestion(q, idx)).join('')}
 
                                     ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
-                                    <div class="flex justify-center pt-8 pb-8">
+                                    <div class="flex justify-center pt-6 pb-4">
                                         <button id="submit-btn-main" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
                                             <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
                                         </button>
@@ -463,6 +467,91 @@
                     </div>
                 </div>
                 ` : ''}
+
+                <!-- Modal Báo Điểm & Yêu Cầu Chụp Ảnh (Đã cài ID để xoá border khi chụp) -->
+                ${state.showCompletedModal ? `
+                <div class="fixed inset-0 bg-slate-900/70 z-[110] flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+                    
+                    <div id="capture-area" class="bg-white rounded-[24px] w-[380px] max-w-full flex flex-col relative overflow-hidden shrink-0 my-4 mx-auto border border-slate-200 bg-clip-padding">
+                        <!-- Background gradient trang trí giống mẫu -->
+                        <div class="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-indigo-50/80 via-yellow-50/30 to-transparent pointer-events-none"></div>
+
+                        <div class="relative z-10 px-6 pt-8 pb-6 flex flex-col w-full">
+                            <div class="w-full text-center mb-3">
+                                <h1 class="text-[25px] font-black text-[#3730a3] tracking-tight uppercase m-0 p-0 leading-none">HOÀNG TRƯỜNG ENGLISH</h1>
+                            </div>
+                            
+                            <div class="w-full flex justify-center mb-6">
+                                <div id="title-box" class="bg-slate-50 text-slate-700 font-bold py-2 px-4 rounded-xl text-sm border border-slate-200/60 inline-block text-center">
+                                    ${currentSection.title}
+                                </div>
+                            </div>
+
+                            <div class="w-[60px] h-[60px] bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_15px_rgba(134,239,172,0.4)]">
+                                <i class="fa-solid fa-award text-[28px] text-green-600"></i>
+                            </div>
+                            
+                            <h2 class="text-[22px] font-black text-slate-800 mb-6 text-center leading-none">Hoàn thành bài thi!</h2>
+
+                            <div id="stats-box" class="border border-slate-200 rounded-[20px] p-4 bg-white mb-6 space-y-4 shadow-sm">
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-regular fa-calendar-check text-indigo-500 w-5 text-center"></i>
+                                        <span class="ml-2">Ngày giờ nộp:</span>
+                                    </div>
+                                    <div class="value-box text-slate-800 font-bold text-[14px] bg-white px-2.5 py-1 rounded border border-slate-200 inline-block leading-none">
+                                        ${dateStr}
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-stopwatch text-indigo-500 w-5 text-center"></i>
+                                        <span class="ml-2">Thời gian làm bài:</span>
+                                    </div>
+                                    <div class="value-box text-slate-800 font-bold text-[14px] bg-white px-2.5 py-1 rounded border border-slate-200 inline-block leading-none">
+                                        ${timeStr}
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-check-circle text-green-500 w-5 text-center"></i>
+                                        <span class="ml-2">Số câu đúng:</span>
+                                    </div>
+                                    <div class="text-green-600 font-black text-xl leading-none flex items-baseline">
+                                        ${state.score} <span class="text-xs text-slate-400 font-bold ml-1">/ ${totalQuestions}</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center ${state.incorrectIds.length > 0 ? 'pb-3 border-b border-slate-100' : ''} w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-times-circle text-red-500 w-5 text-center"></i>
+                                        <span class="ml-2">Số câu sai/chưa làm:</span>
+                                    </div>
+                                    <div class="text-red-600 font-black text-xl leading-none flex items-baseline">
+                                        ${state.incorrectIds.length} <span class="text-xs text-slate-400 font-bold ml-1">/ ${totalQuestions}</span>
+                                    </div>
+                                </div>
+
+                                ${state.incorrectIds.length > 0
+                        ? `<div id="wrong-answers-box" class="w-full bg-[#fef2f2] rounded-xl p-3 border border-red-100 mt-2">
+                                        <div class="text-[13px] font-bold text-red-800 mb-2 flex items-center">
+                                            <i class="fa-solid fa-caret-right mr-2 text-red-600"></i><span>Sai ở các câu:</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${state.incorrectIds.map(id => `<div class="wrong-q-box bg-white text-red-600 text-[13px] font-bold px-3 py-1.5 rounded-md border border-red-200 leading-none shadow-sm">Câu ${id}</div>`).join('')}
+                                        </div>
+                                       </div>`
+                        : ''
+                    }
+                            </div>
+
+                            <button id="capture-btn" onclick="captureAndReveal()" class="w-full py-[14px] bg-[#4f46e5] hover:bg-indigo-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 text-[15px] border-none outline-none shadow-sm transition-opacity">
+                                <i id="capture-btn-icon" class="fa-solid fa-folder-open text-lg"></i> 
+                                <span id="capture-btn-text">Tải ảnh kết quả & Xem đáp án</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
             `;
 
             app.innerHTML = html;
@@ -479,16 +568,22 @@
             const userAnswer = state.answers[q.id] || '';
             const isAnswered = userAnswer.trim() !== '';
             const showExp = state.expandedExplanations[q.id];
-            const isCorrect = state.isSubmitted && userAnswer.toLowerCase().trim() === q.correct.toLowerCase().trim();
 
-            let containerClass = `relative p-5 rounded-xl border transition-all `;
+            const showFeedback = state.isSubmitted && state.hasCapturedScreenshot;
+            const isCorrect = showFeedback && userAnswer.toLowerCase().trim() === q.correct.toLowerCase().trim();
+
+            let containerClass = `relative p-4 md:p-5 rounded-xl border transition-all `;
             if (state.isSubmitted) {
-                containerClass += isCorrect ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200';
+                if (showFeedback) {
+                    containerClass += isCorrect ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200';
+                } else {
+                    containerClass += 'bg-slate-50 border-slate-200 opacity-80';
+                }
             } else {
                 containerClass += isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300';
             }
 
-            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+            let errorHtml = (showFeedback && !isCorrect) ? `
                 <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/60 p-3.5 rounded-lg border border-red-200">
                     <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
                     <div>
@@ -499,7 +594,7 @@
             ` : '';
 
             let explanationHtml = '';
-            if (state.isSubmitted && q.explanation) {
+            if (showFeedback && q.explanation) {
                 explanationHtml = `
                     <div class="mt-5 border-t border-slate-200/80 pt-4">
                         <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-indigo-600 hover:text-indigo-800'}">
@@ -521,7 +616,7 @@
             const hasNote = state.notes[q.id] && state.notes[q.id].trim() !== '';
 
             let notesHtml = `
-                <div class="absolute top-4 right-4 z-10 flex flex-col items-end">
+                <div class="absolute top-3 right-3 z-10 flex flex-col items-end">
                     <button onclick="toggleNote(${q.id})" class="text-slate-400 hover:text-amber-500 transition-colors p-1.5 rounded-md hover:bg-slate-100 relative" title="Ghi chú của giáo viên">
                         <i class="fa-solid fa-comment-dots text-xl ${hasNote ? 'text-amber-500' : ''}"></i>
                         ${hasNote ? '<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>' : ''}
@@ -547,25 +642,24 @@
             `;
 
             let headingHtml = q.heading ? `
-                <div class="${idx !== 0 ? 'mt-8' : ''} mb-4" contenteditable="true" onkeydown="preventTyping(event)" onpaste="event.preventDefault()">
+                <div class="${idx !== 0 ? 'mt-8' : ''} mb-4 format-target" contenteditable="false">
                     <h3 class="text-[17px] font-bold text-slate-800 border-b-2 border-indigo-100 pb-2 outline-none">${q.heading}</h3>
                 </div>
             ` : '';
 
-            // Nếu câu hỏi đã được format trước đó, ta lấy lại HTML đó.
-            // Nếu chưa, ta bọc wrapper vào vị trí cần đặt thẻ input một cách chính xác theo id
+            // Lồng Wrapper
             let rawText = "";
             if (state.formattedQuestions[q.id]) {
                 rawText = state.formattedQuestions[q.id];
             } else {
                 const regex = new RegExp(`<strong>\\[${q.id}\\]<\\/strong>|\\[${q.id}\\]`);
-                rawText = q.text.replace(regex, `<span id="input-wrap-${q.id}" contenteditable="false" class="relative inline-block align-middle whitespace-nowrap mx-1"></span>`);
+                rawText = q.text.replace(regex, `<span id="input-wrap-${q.id}" class="relative inline-block align-middle whitespace-nowrap" contenteditable="false"></span>`);
             }
 
             let questionTextHtml = `
-                <div class="flex items-start gap-3 pr-10">
+                <div class="flex items-start gap-2.5 md:gap-3 pr-8">
                     <div class="mt-2 w-1.5 h-1.5 rounded-full bg-slate-500 shrink-0 mt-1.5"></div>
-                    <div id="q-text-${q.id}" class="text-slate-800 mb-0 text-[15px] md:text-base leading-relaxed text-justify w-full outline-none focus:outline-none" contenteditable="true" onkeydown="preventTyping(event)" onpaste="event.preventDefault()">
+                    <div id="q-text-${q.id}" class="format-target text-slate-800 mb-0 text-[15px] md:text-base leading-relaxed text-justify w-full outline-none focus:outline-none" contenteditable="false">
                         ${rawText}
                     </div>
                 </div>
@@ -613,7 +707,6 @@
                 }
             }
 
-            // Cập nhật giao diện input và container trực tiếp không cần render lại toàn bộ
             allQuestions.forEach(q => {
                 const btn = document.getElementById(`nav-btn-${q.id}`);
                 const isAnswered = state.answers[q.id] && state.answers[q.id].toString().trim() !== '';
@@ -629,16 +722,16 @@
                     const inputEl = wrapper.querySelector('input');
                     if (inputEl && !state.isSubmitted) {
                         if (isAnswered) {
-                            inputEl.className = "inline-block w-32 md:w-40 px-3 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-base shadow-sm border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200";
+                            inputEl.className = "inline-block w-28 md:w-36 px-2 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-[15px] shadow-sm border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200";
                         } else {
-                            inputEl.className = "inline-block w-32 md:w-40 px-3 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-base shadow-sm border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200";
+                            inputEl.className = "inline-block w-28 md:w-36 px-2 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 text-center text-[15px] shadow-sm border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200";
                         }
                     }
                 }
 
                 const container = document.getElementById(`question-${q.id}`);
                 if (container && !state.isSubmitted) {
-                    container.className = `p-5 rounded-xl border transition-all ${isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`;
+                    container.className = `p-4 md:p-5 rounded-xl border transition-all ${isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`;
                 }
             });
         };
@@ -650,7 +743,7 @@
         };
 
         window.calculateScore = () => {
-            saveFormatting(); // Lưu định dạng trước khi nộp
+            saveFormatting();
             let currentScore = 0;
             let incorrectIds = [];
             quizData.forEach(section => {
@@ -669,7 +762,111 @@
             state.endTime = Date.now();
             state.submitTime = new Date();
             state.isSubmitted = true;
+            state.showCompletedModal = true;
             renderApp();
+        };
+
+        window.captureAndReveal = () => {
+            const captureArea = document.getElementById('capture-area');
+            const btn = document.getElementById('capture-btn');
+            const btnText = document.getElementById('capture-btn-text');
+
+            if (!captureArea || !btn) return;
+
+            // Khoá nút bấm ngay lập tức nhưng CHỈ đổi text để tránh vỡ icon
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            const originalText = btnText.innerText;
+            btnText.innerText = 'Đang xử lý...';
+
+            setTimeout(() => {
+                html2canvas(captureArea, {
+                    scale: 3,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false,
+                    onclone: function (clonedDoc) {
+                        // Trả lại text gốc cho nút trong ảnh chụp
+                        const clonedBtnText = clonedDoc.getElementById('capture-btn-text');
+                        const clonedBtn = clonedDoc.getElementById('capture-btn');
+                        if (clonedBtnText) clonedBtnText.innerText = originalText;
+                        if (clonedBtn) {
+                            clonedBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                            clonedBtn.style.opacity = '1';
+                        }
+
+                        // LOẠI BỎ TOÀN BỘ KHUNG, ĐƯỜNG VIỀN, BÓNG ĐỔ KHỎI HÌNH CHỤP
+
+                        // 1. Viền ngoài cùng của Card
+                        const clonedArea = clonedDoc.getElementById('capture-area');
+                        if (clonedArea) {
+                            clonedArea.style.transform = 'none';
+                            clonedArea.style.boxShadow = 'none';
+                            clonedArea.style.border = 'none';
+                        }
+
+                        // 2. Viền bọc tên bài thi
+                        const clonedTitleBox = clonedDoc.getElementById('title-box');
+                        if (clonedTitleBox) {
+                            clonedTitleBox.style.border = 'none';
+                            clonedTitleBox.style.background = 'transparent';
+                            clonedTitleBox.style.boxShadow = 'none';
+                            clonedTitleBox.style.padding = '0';
+                        }
+
+                        // 3. Viền bọc tất cả các thông số (stats)
+                        const clonedStatsBox = clonedDoc.getElementById('stats-box');
+                        if (clonedStatsBox) {
+                            clonedStatsBox.style.border = 'none';
+                            clonedStatsBox.style.background = 'transparent';
+                            clonedStatsBox.style.boxShadow = 'none';
+                        }
+
+                        // 4. Viền bọc các câu sai
+                        const clonedWrongBox = clonedDoc.getElementById('wrong-answers-box');
+                        if (clonedWrongBox) {
+                            clonedWrongBox.style.border = 'none';
+                            clonedWrongBox.style.background = 'transparent';
+                            clonedWrongBox.style.boxShadow = 'none';
+                        }
+
+                        // 5. Các viền bo vuông nhỏ ở từng chỉ số (Ngày giờ, Thời gian, Câu 1, Câu 2...)
+                        const valueBoxes = clonedDoc.querySelectorAll('.value-box, .wrong-q-box');
+                        valueBoxes.forEach(box => {
+                            box.style.border = 'none';
+                            box.style.background = 'transparent';
+                            box.style.boxShadow = 'none';
+                            // Xóa luôn padding để chữ biến thành văn bản liền mạch (flat text)
+                            box.style.padding = '0';
+                            box.style.margin = '0';
+
+                            // Căn lại khoảng cách sau khi xoá hộp cho tự nhiên
+                            if (box.classList.contains('wrong-q-box')) {
+                                box.style.marginRight = '10px';
+                                box.style.color = '#dc2626'; // Đỏ (đảm bảo không bị mất màu)
+                            } else {
+                                box.style.color = '#1e293b'; // Đen xám
+                            }
+                        });
+                    }
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Ket_qua_IELTS_Reading_${new Date().getTime()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    state.hasCapturedScreenshot = true;
+                    state.showCompletedModal = false;
+                    renderApp();
+
+                }).catch(err => {
+                    console.error("Lỗi khi chụp ảnh:", err);
+                    alert("Có lỗi xảy ra khi lưu ảnh. Bạn có thể xem đáp án ngay.");
+                    state.hasCapturedScreenshot = true;
+                    state.showCompletedModal = false;
+                    renderApp();
+                });
+            }, 50);
         };
 
         window.resetQuiz = () => {
@@ -692,7 +889,9 @@
             state.submitTime = null;
             state.expandedExplanations = {};
             state.showResetConfirm = false;
-            // Xoá luôn các định dạng và ghi chú khi làm lại
+            state.hasCapturedScreenshot = false;
+            state.showCompletedModal = false;
+            // Xoá định dạng & ghi chú
             state.notes = {};
             state.formattedPassage = null;
             state.formattedPassageTrans = null;
@@ -702,7 +901,7 @@
         };
 
         window.togglePassageTranslation = () => {
-            saveFormatting(); // Lưu định dạng bản dịch hiện tại
+            saveFormatting();
             state.showPassageTranslation = !state.showPassageTranslation;
             renderApp();
         };
@@ -727,15 +926,10 @@
                 const containerTop = container.getBoundingClientRect().top;
                 const elTop = el.getBoundingClientRect().top;
                 const currentScroll = container.scrollTop;
-                // Cuộn mượt mà
                 const targetScroll = currentScroll + (elTop - containerTop) - 20;
 
-                container.scrollTo({
-                    top: targetScroll,
-                    behavior: "smooth"
-                });
+                container.scrollTo({ top: targetScroll, behavior: "smooth" });
 
-                // Nháy sáng ô input
                 const wrapper = document.getElementById(`input-wrap-${id}`);
                 if (wrapper) {
                     const inputEl = wrapper.querySelector('input');
@@ -752,7 +946,6 @@
             performScroll(id);
         };
 
-        // Khởi chạy lần đầu
         renderApp();
 
     </script>
