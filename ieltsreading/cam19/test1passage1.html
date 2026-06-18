@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS READING - THE PIRATES OF THE ANCIENT MEDITERRANEAN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            border: 2px solid #f8fafc;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Formatting Styles */
+        #passage-content b,
+        #passage-content strong {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        #passage-content i,
+        #passage-content em {
+            font-style: italic;
+        }
+
+        #passage-content u {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        #passage-content strike,
+        #passage-content s {
+            text-decoration: line-through;
+        }
+
+        ::selection {
+            background: #c7d2fe;
+            color: #1e3a8a;
+        }
+
+        /* Input transition */
+        .answer-input {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .answer-input:focus {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body
+    class="h-screen flex flex-col bg-slate-50 text-slate-800 overflow-hidden selection:bg-indigo-200 selection:text-indigo-900">
+    <div id="app" class="flex flex-col h-full w-full relative max-w-[1600px] mx-auto bg-white shadow-2xl"></div>
+
+    <script>
+        const quizData = {
+            title: "The pirates of the ancient Mediterranean",
+            passage: `
+                <h2 class='text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight'>The pirates of the ancient Mediterranean</h2>
+                <h3 class='text-lg font-medium text-slate-600 mb-6 italic'>In the first and second millennia BCE, pirates sailed around the Mediterranean, attacking ships and avoiding pursuers</h3>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>A</strong>When one mentions pirates, an image springs to most people’s minds of a crew of misfits, daredevils and adventurers in command of a tall sailing ship in the Caribbean Sea. Yet from the first to the third millennium BCE, thousands of years before these swashbucklers began spreading fear across the Caribbean, pirates prowled the Mediterranean, raiding merchant ships and threatening vital trade routes. However, despite all efforts and the might of various ancient states, piracy could not be stopped. The situation remained unchanged for thousands of years. Only when the pirates directly threatened the interests of ancient Rome did the Roman Republic organise a massive fleet to eliminate piracy. Under the command of the Roman general Pompey, Rome eradicated piracy, transforming the Mediterranean into ‘Mare Nostrum’ (Our Sea).</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>B</strong>Although piracy in the Mediterranean is first recorded in ancient Egypt during the reign of Pharaoh Amenhotep III (c 1390–1353 BCE), it is reasonable to assume it predated this powerful civilisation. This is partly due to the great importance the Mediterranean held at this time, and partly due to its geography. While the Mediterranean region is predominantly fertile, some parts are rugged and hilly, even mountainous. In the ancient times, the inhabitants of these areas relied heavily on marine resources, including fish and salt. Most had their own boats, possessed good seafaring skills, and unsurpassed knowledge of the local coastline and sailing routes. Thus, it is not surprising that during hardships, these men turned to piracy. Geography itself further benefited the pirates, with the numerous coves along the coast providing places for them to hide their boats and strike undetected. Before the invention of ocean-going caravels in the 15th century, ships could not easily cross long distances over open water. Thus, in the ancient world most were restricted to a few well-known navigable routes that followed the coastline. Caught in a trap, a slow merchant ship laden with goods had no other option but to surrender. In addition, knowledge of the local area helped the pirates to avoid retaliation once a state fleet arrived.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>C</strong>One should also add that it was not unknown in the first and second millennia BCE for governments to resort to pirates’ services, especially during wartime, employing their skills and numbers against their opponents. A pirate fleet would serve in the first wave of attack, preparing the way for the navy. Some of the regions were known for providing safe harbours to pirates, who, in return, boosted the local economy.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>D</strong>The first known record of a named group of Mediterranean pirates, made during the rule of ancient Egyptian Pharaoh Akhenaten (c 1353–1336 BCE), was in the Amarna Letters. These were extracts of diplomatic correspondence between the pharaoh and his allies, and covered many pressing issues, including piracy. It seems the pharaoh was troubled by two distinct pirate groups, the Lukka and the Sherden. Despite the Egyptian fleet’s best efforts, the pirates continued to cause substantial disruption to regional commerce. In the letters, the king of Alashiya (modern Cyprus) rejected Akhenaten’s claims of a connection with the Lukka (based in modern-day Turkey). The king assured Akhenaten he was prepared to punish any of his subjects involved in piracy.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>E</strong>The ancient Greek world’s experience of piracy was different from that of Egyptian rulers. While Egypt’s power was land-based, the ancient Greeks relied on the Mediterranean in almost all aspects of life, from trade to warfare. Interestingly, in his works the Iliad and the Odyssey, the ancient Greek writer Homer not only condones, but praises the lifestyle and actions of pirates. The opinion remained unchanged in the following centuries. The ancient Greek historian Thucydides, for instance, glorified pirates’ daring attacks on ships or even cities. For Greeks, piracy was a part of everyday life. Even high-ranking members of the state were not beyond engaging in such activities. According to the Greek orator Demosthenes, in 355 BCE, Athenian ambassadors made a detour from their official travel to capture a ship sailing from Egypt, taking the wealth found onboard for themselves! The Greeks’ liberal approach towards piracy does not mean they always tolerated it, but attempts to curtail piracy were hampered by the large number of pirates operating in the Mediterranean.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>F</strong>The rising power of ancient Rome required the Roman Republic to deal with piracy in the Mediterranean. While piracy was a serious issue for the Republic, Rome profited greatly from its existence. Pirate raids provided a steady source of slaves, essential for Rome’s agriculture and mining industries. But this arrangement could work only while the pirates left Roman interests alone. Pirate attacks on grain ships, which were essential to Roman citizens, led to angry voices in the Senate, demanding punishment of the culprits. Rome, however, did nothing, further encouraging piracy. By the 1st century BCE, emboldened pirates kidnapped prominent Roman dignitaries, asking for a large ransom to be paid. Their most famous hostage was none other than Julius Caesar, captured in 75 BCE.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>G</strong>By now, Rome was well aware that pirates had outlived their usefulness. The time had come for concerted action. In 67 BCE, a new law granted Pompey vast funds to combat the Mediterranean menace. Taking personal command, Pompey divided the entire Mediterranean into 13 districts, assigning a fleet and commander to each. After cleansing one district of pirates, the fleet would join another in the next district. The process continued until the entire Mediterranean was free of pirates. Although thousands of pirates died at the hands of Pompey’s troops, as a long-term solution to the problem, many more were offered land in fertile areas located far from the sea. Instead of a maritime menace, Rome got productive farmers that further boosted its economy.</p>
+            `,
+            passageTranslation: `
+                <h2 class='text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight'>Cướp biển ở Địa Trung Hải thời cổ đại</h2>
+                <h3 class='text-lg font-medium text-slate-600 mb-6 italic'>Trong thiên niên kỷ thứ nhất và thứ hai trước Công nguyên, cướp biển đi khắp Địa Trung Hải, tấn công tàu bè và trốn tránh sự truy đuổi</h3>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>A</strong>Khi nhắc đến cướp biển, hình ảnh nảy ra trong tâm trí hầu hết mọi người là một băng nhóm gồm những kẻ lạc loài, liều lĩnh và ưa phiêu lưu chỉ huy một con tàu buồm cao lớn ở Biển Caribe. Tuy nhiên, từ thiên niên kỷ thứ nhất đến thứ ba trước Công nguyên, hàng ngàn năm trước khi những kẻ hung hăng này bắt đầu gieo rắc nỗi sợ hãi khắp Caribe, cướp biển đã rình rập ở Địa Trung Hải, đột kích các tàu buôn và đe dọa các tuyến đường thương mại quan trọng. Bất chấp mọi nỗ lực và sức mạnh của các quốc gia cổ đại, nạn cướp biển vẫn không thể bị ngăn chặn. Tình trạng này không thay đổi trong hàng ngàn năm. Chỉ khi cướp biển trực tiếp đe dọa lợi ích của La Mã cổ đại, Cộng hòa La Mã mới tổ chức một hạm đội khổng lồ để loại bỏ chúng. Dưới sự chỉ huy của vị tướng La Mã Pompey, La Mã đã xóa sổ nạn cướp biển, biến Địa Trung Hải thành 'Mare Nostrum' (Biển của Chúng ta).</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>B</strong>Mặc dù nạn cướp biển ở Địa Trung Hải lần đầu tiên được ghi nhận ở Ai Cập cổ đại dưới triều đại của Pharaoh Amenhotep III (khoảng 1390–1353 TCN), hoàn toàn có cơ sở để cho rằng nó đã có từ trước nền văn minh hùng mạnh này. Một phần vì tầm quan trọng to lớn của Địa Trung Hải vào thời điểm đó, một phần do địa lý của nó. Mặc dù vùng Địa Trung Hải chủ yếu là đất màu mỡ, một số khu vực lại gồ ghề, đồi núi, thậm chí là núi cao. Vào thời cổ đại, cư dân ở những khu vực này phụ thuộc nhiều vào tài nguyên biển, bao gồm cá và muối. Hầu hết đều có thuyền riêng, sở hữu kỹ năng đi biển tốt và kiến thức vượt trội về đường bờ biển địa phương cùng các tuyến đường thuyền. Do đó, không có gì đáng ngạc nhiên khi trong thời kỳ khó khăn, những người đàn ông này chuyển sang làm cướp biển. Bản thân địa lý cũng mang lại lợi ích cho cướp biển, với vô số vịnh nhỏ dọc theo bờ biển cung cấp nơi để chúng giấu tàu và tấn công mà không bị phát hiện. Các tàu thời đó bị hạn chế ở một số tuyến đường đi lại quen thuộc dọc theo bờ biển, khiến một tàu buôn chậm chạp chở đầy hàng hóa không có lựa chọn nào khác ngoài việc đầu hàng khi bị dồn vào bẫy.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>C</strong>Cũng cần nói thêm rằng trong thiên niên kỷ thứ nhất và thứ hai trước Công nguyên, việc các chính phủ nhờ đến dịch vụ của cướp biển, đặc biệt là trong thời chiến, để sử dụng kỹ năng và số lượng của chúng chống lại đối thủ là điều không hiếm. Một số khu vực được biết đến là nơi cung cấp bến cảng an toàn cho cướp biển, đổi lại, cướp biển giúp thúc đẩy nền kinh tế địa phương.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>D</strong>Ghi chép đầu tiên được biết đến về một nhóm cướp biển Địa Trung Hải có tên gọi cụ thể là trong thời kỳ cai trị của Pharaoh Ai Cập cổ đại Akhenaten, nằm trong Thư Amarna. Dường như pharaoh đã gặp rắc rối bởi hai nhóm cướp biển riêng biệt: Lukka và Sherden. Trong các bức thư, vua của Alashiya (Cyprus hiện đại) đã bác bỏ tuyên bố của Akhenaten về việc có liên hệ với người Lukka. Vị vua đảm bảo với Akhenaten rằng ông sẵn sàng trừng phạt bất kỳ thần dân nào của mình dính líu đến nạn cướp biển.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>E</strong>Kinh nghiệm về nạn cướp biển của thế giới Hy Lạp cổ đại khác với kinh nghiệm của các nhà cai trị Ai Cập. Trong khi sức mạnh của Ai Cập dựa trên đất liền, người Hy Lạp cổ đại lại dựa vào Địa Trung Hải trong hầu hết các khía cạnh của cuộc sống. Điều thú vị là, trong các tác phẩm Iliad và Odyssey của mình, nhà văn Hy Lạp cổ đại Homer không chỉ bỏ qua mà còn ca ngợi lối sống và hành động của cướp biển. Đối với người Hy Lạp, cướp biển là một phần của cuộc sống hàng ngày. Thậm chí các thành viên cấp cao của nhà nước cũng không ngại tham gia vào các hoạt động như vậy.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>F</strong>Sức mạnh ngày càng tăng của La Mã cổ đại đòi hỏi Cộng hòa La Mã phải đối phó với nạn cướp biển. Mặc dù là một vấn đề nghiêm trọng, La Mã lại thu được nhiều lợi nhuận từ sự tồn tại của nó, đặc biệt là nguồn cung cấp nô lệ ổn định. Tuy nhiên, các cuộc tấn công của cướp biển vào các tàu chở lúa mì, thứ thiết yếu đối với công dân La Mã, đã dẫn đến những tiếng nói giận dữ trong Thượng viện, yêu cầu trừng phạt thủ phạm. La Mã không làm gì cả, càng khuyến khích nạn cướp biển hơn. Đến thế kỷ 1 TCN, những tên cướp biển táo tợn đã bắt cóc các quan chức nổi tiếng của La Mã, yêu cầu trả một khoản tiền chuộc lớn. Con tin nổi tiếng nhất của họ không ai khác chính là Julius Caesar.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>G</strong>Đến lúc này, La Mã nhận thức rõ rằng cướp biển đã hết giá trị lợi dụng. Năm 67 TCN, một đạo luật mới đã cấp cho Pompey một khoản quỹ khổng lồ để chống lại mối đe dọa Địa Trung Hải này. Đích thân chỉ huy, Pompey chia toàn bộ Địa Trung Hải thành 13 khu vực. Mặc dù hàng ngàn tên cướp biển đã chết dưới tay quân đội của Pompey, nhưng như một giải pháp lâu dài cho vấn đề, nhiều tên cướp biển khác đã được cấp đất ở những khu vực màu mỡ nằm cách xa biển. Thay vì một mối đe dọa trên biển, La Mã có được những người nông dân năng suất, tiếp tục thúc đẩy nền kinh tế của mình.</p>
+            `,
+            sections: [
+                {
+                    type: "matching",
+                    instruction: "Reading Passage has seven paragraphs, A–G. Which paragraph contains the following information?<br>Write the correct letter, <b>A–G</b>, in boxes 14–19.",
+                    questions: [
+                        { id: 14, text: "a reference to a denial of involvement in piracy", correct: "D", explanation: "Đoạn D: 'The king of Alashiya... rejected Akhenaten’s claims of a connection with the Lukka...'" },
+                        { id: 15, text: "details of how a campaign to eradicate piracy was carried out", correct: "G", explanation: "Đoạn G: 'Pompey divided the entire Mediterranean into 13 districts, assigning a fleet... After cleansing one district...'" },
+                        { id: 16, text: "a mention of the circumstances in which states in the ancient world would make use of pirates", correct: "C", explanation: "Đoạn C: '...governments to resort to pirates’ services, especially during wartime...'" },
+                        { id: 17, text: "a reference to how people today commonly view pirates", correct: "A", explanation: "Đoạn A: 'When one mentions pirates, an image springs to most people’s minds of a crew of misfits... in the Caribbean Sea.'" },
+                        { id: 18, text: "an explanation of how some people were encouraged not to return to piracy", correct: "G", explanation: "Đoạn G: '...many more were offered land in fertile areas located far from the sea. Instead of a maritime menace, Rome got productive farmers...'" },
+                        { id: 19, text: "a mention of the need for many sailing vessels to stay relatively close to land", correct: "B", explanation: "Đoạn B: '...restricted to a few well-known navigable routes that followed the coastline.'" }
+                    ]
+                },
+                {
+                    type: "multiple-choice-2",
+                    instruction: "Choose <b>TWO</b> letters, <b>A–E</b>. Write the correct letters in boxes 20 and 21.",
+                    text: "Which TWO of the following statements does the writer make about inhabitants of the Mediterranean region in the ancient world?",
+                    options: [
+                        "A. They often used stolen vessels to carry out pirate attacks.",
+                        "B. They managed to escape capture by the authorities because they knew the area so well.",
+                        "C. They paid for information about the routes merchant ships would take.",
+                        "D. They depended more on the sea for their livelihood than on farming.",
+                        "E. They stored many of the goods taken in pirate attacks in coves along the coastline."
+                    ],
+                    correct: ["B", "D"],
+                    ids: [20, 21],
+                    explanation: "B đúng: Đoạn B nhắc đến 'knowledge of the local area helped the pirates to avoid retaliation'.<br>D đúng: Đoạn B nhắc đến khu vực đồi núi gồ ghề nên 'inhabitants of these areas relied heavily on marine resources'."
+                },
+                {
+                    type: "multiple-choice-2",
+                    instruction: "Choose <b>TWO</b> letters, <b>A–E</b>. Write the correct letters in boxes 22 and 23.",
+                    text: "Which TWO of the following statements does the writer make about piracy and ancient Greece?",
+                    options: [
+                        "A. The state estimated that very few people were involved in piracy.",
+                        "B. Attitudes towards piracy changed shortly after the Iliad and the Odyssey were written.",
+                        "C. Important officials were known to occasionally take part in piracy.",
+                        "D. Every citizen regarded pirate attacks on cities as unacceptable.",
+                        "E. A favourable view of piracy is evident in certain ancient Greek texts."
+                    ],
+                    correct: ["C", "E"],
+                    ids: [22, 23],
+                    explanation: "C đúng: Đoạn E nói 'Even high-ranking members of the state were not beyond engaging in such activities.'<br>E đúng: Đoạn E nói Homer trong các tác phẩm Iliad và Odyssey 'not only condones, but praises the lifestyle and actions of pirates.'"
+                },
+                {
+                    type: "summary",
+                    instruction: "Complete the summary below. Choose <b>ONE WORD ONLY</b> from the passage for each answer.<br>Write your answers in boxes 24–26.",
+                    title: "Ancient Rome and piracy",
+                    text: "Piracy was an issue ancient Rome had to deal with, but it also brought some benefits for Rome. For example, pirates supplied slaves that were important for Rome’s industries. However, attacks on vessels transporting [24] to Rome resulted in calls for [25] for the pirates responsible. Nevertheless, piracy continued, with some pirates demanding a [26] for the return of the Roman officials they captured.",
+                    questions: [
+                        { id: 24, correct: "grain", explanation: "Đoạn F: 'Pirate attacks on grain ships, which were essential to Roman citizens...'" },
+                        { id: 25, correct: "punishment", explanation: "Đoạn F: '...led to angry voices in the Senate, demanding punishment of the culprits.'" },
+                        { id: 26, correct: "ransom", explanation: "Đoạn F: '...emboldened pirates kidnapped prominent Roman dignitaries, asking for a large ransom to be paid.'" }
+                    ]
+                }
+            ]
+        };
+
+        const INITIAL_TIME = 20 * 60; // 20 minutes in seconds
+
+        const state = {
+            answers: {},
+            results: {}, // { id: boolean }
+            isSubmitted: false,
+            score: 0,
+            maxScore: 13, // 6 + 2 + 2 + 3
+            showPassageTranslation: false,
+            formattedPassage: null,
+            formattedPassageTrans: null,
+            timeLeft: INITIAL_TIME,
+            timerInterval: null
+        };
+
+        window.saveFormatting = () => {
+            const passageEl = document.getElementById('passage-content');
+            if (passageEl) {
+                if (state.showPassageTranslation) {
+                    state.formattedPassageTrans = passageEl.innerHTML;
+                } else {
+                    state.formattedPassage = passageEl.innerHTML;
+                }
+            }
+        };
+
+        window.formatText = (command, value = null) => {
+            const target = document.getElementById('passage-content');
+            if (!target) return;
+
+            target.setAttribute('contenteditable', 'true');
+            target.focus();
+
+            if (command === 'hiliteColor') {
+                document.execCommand('backColor', false, value);
+            } else {
+                document.execCommand(command, false, value);
+            }
+
+            target.setAttribute('contenteditable', 'false');
+            saveFormatting();
+
+            if (window.getSelection) {
+                if (window.getSelection().empty) window.getSelection().empty();
+                else if (window.getSelection().removeAllRanges) window.getSelection().removeAllRanges();
+            }
+        };
+
+        window.generateInputHtml = (id, sizeClass = "w-24 md:w-28", placeholder = "") => {
+            let baseClasses = `answer-input inline-block ${sizeClass} px-3 py-1.5 mx-1 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 font-bold text-center text-[15px] shadow-sm uppercase `;
+            let feedbackIcon = '';
+
+            const userAnswer = state.answers[id] || '';
+            const isAnswered = userAnswer.trim() !== '';
+
+            if (!state.isSubmitted) {
+                baseClasses += isAnswered ? 'border-indigo-400 bg-indigo-50 text-indigo-800' : 'border-slate-300 bg-slate-50 text-slate-800';
+            } else {
+                const isCorrect = state.results[id];
+                baseClasses += isCorrect ? 'border-emerald-500 bg-emerald-50 text-emerald-800' : 'border-rose-500 bg-rose-50 text-rose-800';
+                feedbackIcon = isCorrect ?
+                    `<i class="fa-solid fa-circle-check text-emerald-500 ml-1.5 text-lg align-middle"></i>` :
+                    `<i class="fa-solid fa-circle-xmark text-rose-500 ml-1.5 text-lg align-middle"></i>`;
+            }
+
+            return `<span class="font-bold text-indigo-600 mr-1 bg-indigo-100 px-2 py-0.5 rounded text-sm">${id}</span>
+                    <input type="text" 
+                        class="${baseClasses}" 
+                        value="${userAnswer}" 
+                        ${state.isSubmitted ? 'disabled' : ''} 
+                        oninput="handleInputChange(${id}, this.value)" 
+                        placeholder="${placeholder}"
+                        autocomplete="off" 
+                        spellcheck="false">${feedbackIcon}`;
+        };
+
+        window.restoreInputs = () => {
+            // Restore Summary Inputs
+            const summarySec = quizData.sections.find(s => s.type === 'summary');
+            if (summarySec) {
+                summarySec.questions.forEach(q => {
+                    const wrapper = document.getElementById(`input-wrap-${q.id}`);
+                    if (wrapper) {
+                        wrapper.outerHTML = `<span id="input-wrap-${q.id}" class="inline-block whitespace-nowrap align-middle my-1">${window.generateInputHtml(q.id, "w-32 md:w-40")}</span>`;
+                    }
+                });
+            }
+
+            // Other sections are rendered natively with generateInputHtml without needing replace.
+        };
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function startTimer() {
+            if (!state.timerInterval && !state.isSubmitted) {
+                state.timerInterval = setInterval(() => {
+                    if (state.timeLeft > 0) {
+                        state.timeLeft--;
+                        const timerEl = document.getElementById('timer-display');
+                        if (timerEl) {
+                            timerEl.innerText = formatTime(state.timeLeft);
+                            if (state.timeLeft <= 300) { // last 5 minutes warning
+                                timerEl.parentElement.classList.add('bg-rose-100', 'text-rose-700', 'border-rose-300');
+                                timerEl.parentElement.classList.remove('bg-indigo-800', 'text-white', 'border-indigo-700');
+                                document.getElementById('timer-icon').classList.replace('text-indigo-400', 'text-rose-600');
+                            }
+                        }
+                    } else {
+                        calculateScore(); // Auto submit when time is up
+                    }
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            clearInterval(state.timerInterval);
+            state.timerInterval = null;
+        }
+
+        function renderApp() {
+            const app = document.getElementById('app');
+            const passageHtml = state.showPassageTranslation ?
+                (state.formattedPassageTrans || quizData.passageTranslation) :
+                (state.formattedPassage || quizData.passage);
+
+            app.innerHTML = `
+                <!-- Header -->
+                <div class="flex-none bg-indigo-900 text-white p-4 flex flex-col sm:flex-row justify-between items-center z-10 shadow-md">
+                    <div class="flex items-center gap-3 mb-3 sm:mb-0">
+                        <div class="bg-indigo-800 p-2 rounded-lg"><i class="fa-solid fa-book-open text-indigo-300"></i></div>
+                        <div>
+                            <h1 class="text-xl font-bold tracking-wide">IELTS READING PRACTICE</h1>
+                            <p class="text-indigo-300 text-sm font-medium">Cambridge 19 - Test 1 - Passage 1</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="bg-indigo-800 px-4 py-2 rounded-lg font-mono text-lg font-bold flex items-center gap-2 border border-indigo-700 transition-colors duration-300" id="timer-box">
+                            <i id="timer-icon" class="fa-regular fa-clock text-indigo-400"></i>
+                            <span id="timer-display">${formatTime(state.timeLeft)}</span>
+                        </div>
+                        <button onclick="togglePassageTranslation()" class="px-4 py-2 bg-white text-indigo-900 hover:bg-indigo-50 transition-colors rounded-lg text-sm font-bold shadow flex items-center gap-2">
+                            <i class="fa-solid fa-language"></i> ${state.showPassageTranslation ? 'View English' : 'Dịch Việt'}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+                    
+                    <!-- Left Panel: Passage & Toolbar -->
+                    <div class="w-full lg:w-1/2 flex flex-col border-r border-slate-200 bg-white relative">
+                        <!-- Toolbar -->
+                        <div class="bg-slate-100 border-b border-slate-200 p-2 flex gap-2 justify-center shadow-sm z-10">
+                            <button onclick="formatText('bold')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Bold"><i class="fa-solid fa-bold"></i></button>
+                            <button onclick="formatText('italic')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Italic"><i class="fa-solid fa-italic"></i></button>
+                            <button onclick="formatText('underline')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Underline"><i class="fa-solid fa-underline"></i></button>
+                            <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
+                            <button onclick="formatText('hiliteColor', '#fef08a')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-yellow-600 transition" title="Highlight Yellow"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onclick="formatText('hiliteColor', '#bbf7d0')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-green-600 transition" title="Highlight Green"><i class="fa-solid fa-highlighter"></i></button>
+                            <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
+                            <button onclick="formatText('removeFormat')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-500 transition" title="Clear Format"><i class="fa-solid fa-eraser"></i></button>
+                        </div>
+                        
+                        <!-- Passage Container -->
+                        <div id="passage-container" class="flex-1 p-6 lg:p-8 overflow-y-auto custom-scrollbar">
+                            <div id="passage-content" class="format-target outline-none" contenteditable="false">
+                                ${passageHtml}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Questions -->
+                    <div id="questions-container" class="w-full lg:w-1/2 bg-slate-50 flex flex-col relative overflow-hidden">
+                        <div class="flex-1 p-6 lg:p-8 overflow-y-auto custom-scrollbar space-y-8 pb-24">
+                            
+                            <!-- Results Summary -->
+                            ${state.isSubmitted ? `
+                                <div class="bg-white border-2 ${state.score === state.maxScore ? 'border-emerald-400' : 'border-indigo-400'} rounded-2xl p-6 shadow-md text-center animate-[fadeIn_0.5s_ease-out]">
+                                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Results</h2>
+                                    <div class="text-4xl font-black ${state.score === state.maxScore ? 'text-emerald-500' : 'text-indigo-600'} mb-2">
+                                        ${state.score} / ${state.maxScore}
+                                    </div>
+                                    <p class="text-slate-500 font-medium">Time Remaining: ${formatTime(state.timeLeft)}</p>
+                                    <button onclick="resetQuiz()" class="mt-4 px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold transition-colors">Try Again</button>
+                                </div>
+                            ` : ''}
+
+                            <!-- Sections Render -->
+                            ${quizData.sections.map(sec => renderSection(sec)).join('')}
+
+                        </div>
+
+                        <!-- Sticky Bottom Bar for Action -->
+                        ${!state.isSubmitted ? `
+                            <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20 flex justify-end">
+                                <button onclick="calculateScore()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all transform active:scale-95 flex items-center gap-2 text-lg">
+                                    <i class="fa-solid fa-paper-plane"></i> Nộp Bài (Submit)
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            restoreInputs();
+            startTimer();
+        }
+
+        function renderSection(sec) {
+            let content = `
+                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 mb-4 shadow-sm">
+                    <p class="text-indigo-900 font-medium">${sec.instruction}</p>
+                </div>
+            `;
+
+            if (sec.type === 'matching') {
+                content += `<div class="space-y-4">`;
+                sec.questions.forEach(q => {
+                    const isCorrect = state.results[q.id];
+                    content += `
+                        <div class="p-4 border-2 rounded-xl transition-colors ${state.isSubmitted ? (isCorrect ? 'border-emerald-200 bg-emerald-50/30' : 'border-rose-200 bg-rose-50/30') : 'border-slate-200 bg-white hover:border-indigo-200 hover:shadow-md'}">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <div class="flex-1 text-slate-700 font-medium leading-relaxed">${q.text}</div>
+                                <div>${window.generateInputHtml(q.id, 'w-20', 'A-G')}</div>
+                            </div>
+                            ${state.isSubmitted && !isCorrect ? `
+                                <div class="mt-3 text-sm font-bold text-rose-600 flex items-center gap-2"><i class="fa-solid fa-key"></i> Correct Answer: <span class="bg-rose-100 px-2 py-1 rounded text-rose-800">${q.correct}</span></div>
+                            ` : ''}
+                            ${state.isSubmitted && q.explanation ? `
+                                <div class="mt-2 text-sm text-indigo-700 leading-relaxed"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> ${q.explanation}</div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                content += `</div>`;
+            }
+            else if (sec.type === 'multiple-choice-2') {
+                content += `
+                    <div class="p-5 border-2 border-slate-200 bg-white rounded-xl">
+                        <p class="font-bold text-slate-800 mb-4 text-lg">${sec.text}</p>
+                        <div class="space-y-2 mb-5">
+                            ${sec.options.map(opt => `<div class="p-2 bg-slate-50 rounded border border-slate-100 text-slate-700">${opt}</div>`).join('')}
+                        </div>
+                        <div class="flex flex-wrap gap-4 items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
+                            <span class="font-bold text-slate-600 mr-2">Your answers:</span>
+                            ${window.generateInputHtml(sec.ids[0], 'w-20', 'A-E')}
+                            ${window.generateInputHtml(sec.ids[1], 'w-20', 'A-E')}
+                        </div>
+                        
+                        ${state.isSubmitted ? `
+                            <div class="mt-4 p-3 bg-indigo-50 border border-indigo-100 rounded-lg text-sm shadow-sm">
+                                <div class="font-bold text-rose-600 mb-2"><i class="fa-solid fa-key"></i> Correct Answers: <span class="bg-rose-100 px-2 py-1 rounded text-rose-800">${sec.correct.join(', ')}</span></div>
+                                <div class="text-indigo-800 leading-relaxed"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> ${sec.explanation}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            else if (sec.type === 'summary') {
+                const formattedText = sec.text.replace(/\[(\d+)\]/g, `<span id="input-wrap-$1"></span>`);
+                content += `
+                    <div class="p-5 border-2 border-slate-200 bg-white rounded-xl">
+                        ${sec.title ? `<div class="font-bold text-center text-lg mb-4 text-slate-800 uppercase">${sec.title}</div>` : ''}
+                        <div class="text-slate-700 text-[16px] leading-[2.5rem]">
+                            ${formattedText}
+                        </div>
+                        
+                        ${state.isSubmitted ? `
+                            <div class="mt-5 space-y-2">
+                                ${sec.questions.map(q => !state.results[q.id] ? `
+                                    <div class="p-3 bg-rose-50 border border-rose-100 rounded-lg text-sm">
+                                        <div class="font-bold text-rose-600"><span class="bg-white px-1.5 py-0.5 rounded mr-1 shadow-sm border border-rose-200">${q.id}</span> Correct: ${q.correct}</div>
+                                        ${q.explanation ? `<div class="text-rose-800 mt-1 text-xs">${q.explanation}</div>` : ''}
+                                    </div>
+                                ` : `
+                                    <div class="p-3 bg-emerald-50 border border-emerald-100 rounded-lg text-sm flex items-center justify-between">
+                                        <div class="font-bold text-emerald-700"><span class="bg-white px-1.5 py-0.5 rounded mr-1 shadow-sm border border-emerald-200">${q.id}</span> ${q.correct}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            return `<div class="mb-8">${content}</div>`;
+        }
+
+        window.calculateScore = () => {
+            saveFormatting();
+            stopTimer();
+            state.score = 0;
+            state.results = {};
+
+            quizData.sections.forEach(sec => {
+                if (sec.type === 'matching' || sec.type === 'summary') {
+                    sec.questions.forEach(q => {
+                        const isCorrect = (state.answers[q.id] || "").toLowerCase().trim() === q.correct.toLowerCase().trim();
+                        state.results[q.id] = isCorrect;
+                        if (isCorrect) state.score++;
+                    });
+                }
+                else if (sec.type === 'multiple-choice-2') {
+                    const correctArr = sec.correct.map(c => c.toLowerCase());
+                    const ans1 = (state.answers[sec.ids[0]] || "").toLowerCase().trim();
+                    const ans2 = (state.answers[sec.ids[1]] || "").toLowerCase().trim();
+
+                    let remainingCorrect = [...correctArr];
+                    state.results[sec.ids[0]] = false;
+                    state.results[sec.ids[1]] = false;
+
+                    // Check first answer
+                    if (remainingCorrect.includes(ans1)) {
+                        state.results[sec.ids[0]] = true;
+                        remainingCorrect.splice(remainingCorrect.indexOf(ans1), 1);
+                        state.score++;
+                    }
+                    // Check second answer
+                    if (remainingCorrect.includes(ans2)) {
+                        state.results[sec.ids[1]] = true;
+                        remainingCorrect.splice(remainingCorrect.indexOf(ans2), 1);
+                        state.score++;
+                    }
+                }
+            });
+
+            state.isSubmitted = true;
+            renderApp();
+
+            const qContainer = document.getElementById('questions-container');
+            if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.resetQuiz = () => {
+            state.answers = {};
+            state.results = {};
+            state.isSubmitted = false;
+            state.score = 0;
+            state.timeLeft = INITIAL_TIME;
+            renderApp();
+        };
+
+        window.handleInputChange = (qId, val) => {
+            state.answers[qId] = val;
+            const input = document.querySelector(`input[oninput="handleInputChange(${qId}, this.value)"]`);
+            if (input) {
+                if (val.trim() !== '') {
+                    input.classList.remove('bg-slate-50', 'border-slate-300');
+                    input.classList.add('bg-indigo-50', 'border-indigo-400');
+                } else {
+                    input.classList.add('bg-slate-50', 'border-slate-300');
+                    input.classList.remove('bg-indigo-50', 'border-indigo-400');
+                }
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            saveFormatting();
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        // Initialize application
+        renderApp();
+    </script>
+</body>
+
+</html>
