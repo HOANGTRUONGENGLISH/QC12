@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS READING - A GOOD TEACHER?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            border: 2px solid #f8fafc;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Formatting Styles */
+        #passage-content b,
+        #passage-content strong {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        #passage-content i,
+        #passage-content em {
+            font-style: italic;
+        }
+
+        #passage-content u {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        #passage-content strike,
+        #passage-content s {
+            text-decoration: line-through;
+        }
+
+        ::selection {
+            background: #c7d2fe;
+            color: #1e3a8a;
+        }
+
+        /* Dropdown custom style */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234F46E5%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right .7rem top 50%;
+            background-size: .65rem auto;
+            padding-right: 2rem !important;
+        }
+
+        .answer-select {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .answer-select:focus {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body
+    class="h-screen flex flex-col bg-slate-50 text-slate-800 overflow-hidden selection:bg-indigo-200 selection:text-indigo-900">
+    <div id="app" class="flex flex-col h-full w-full relative max-w-[1600px] mx-auto bg-white shadow-2xl"></div>
+
+    <script>
+        const quizData = {
+            title: "A Good Teacher?",
+            passage: `
+                <h2 class='text-2xl md:text-3xl font-bold text-slate-900 mb-6 leading-tight'>A Good Teacher?</h2>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>A</strong>As a teacher for the past 20 years, I have seen many good ones, and some, it’s true, fit the stereotype: graduates with good degrees from so-called ‘good’ universities. A cardinal mistake is to think qualifications make a good teacher. When you’re faced with 30 truculent children after lunch on a Friday afternoon, they don’t count for much. Take Lesley, a high-powered business executive who I mentored as she trained to be a teacher. She had everything: a great degree, excellent organisation skills and good communication skills. Yet she crumbled in the classroom because she was so impatient with her pupils: nothing they did was good enough. Whereas her employees had tolerated her endless nit-picking, her pupils became demotivated and disaffected.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>B</strong>David had a first-class degree. As his mentor, I observed him teach what I felt was a relatively well-behaved class of 12-year-olds. A quarter of an hour in, it was clear that none of the children had the slightest idea what he was talking about; the class began talking, then chucking his elaborate worksheets around the class. Ironically, it was his support teacher, who didn’t have a degree at all, who rescued the lesson by explaining in clear English what was required. If you don’t have the right personality, you’ll suffer in the bear pit of today’s classrooms. In my experience, there are four types of teachers who are effective: the despot, the carer, the charmer, and the rebel.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>C</strong>I’ve come across many despotic teachers in my career. Everyone turns to them when the going gets really tough. They are nearly always very experienced teachers who know not only all the pupils but their parents too, having taught many of them. During my first year of teaching, one of my classes rioted, pushed all the furniture out of my room, and swore at me. I called in the despot of my school, the deputy head, and he blasted them away with a sound telling off. Most manuals don’t advocate this approach to teaching, but I have to admit it can be very effective, even if morally dubious. Despotic teachers often extract fantastic work from their pupils, and rarely have to use their full armoury – their reputations are usually enough. They are often highly organised, making their classrooms into small fortresses and in my experience nearly always achieve above-average results, because they teach the syllabus to the last letter.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>D</strong>The opposite of the despot is the caring teacher. They become surrogate parents for their pupils. Many don’t have degrees, and have been appointed as ‘mentors’ or ‘support teachers’ to help struggling pupils plan out their lives – working out ways in which they can do their work most effectively. Usually, pupils love seeing their mentors, and learn from them the vital skill of ‘taking responsibility for their own learning’ (as it’s known in the jargon). I’ve taught some pupils who were really going off the rails – skipping school, getting into fights – yet when they were taken under the wing of one of these teachers, they transformed and blossomed. Unlike the despot, the caring teacher works with lots of people: parents, other teachers, social workers. What she or he manages to do is make pupils see they can control and shape their own lives. The teachers might mother her charges to death in the process, but the end result is nearly always a happy pupil who has achieved very much against the odds.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>E</strong>The charmer, on the other hand, is quite different from both these previous staples of the teaching profession. They can be a disorganised species, living off adrenaline and wits. They are frequently highly academic, and are in teaching to be mates with their pupils, to understand them and play with them. With this sort of teacher, the classroom becomes one great big, bouncing playground of learning. Take Martin, one of the best teachers I’ve come across, who would prepare his lessons on the hoof after reading the newspaper, and would totally change direction mid-lesson if hit by some new inspiration. He was very disorganised, but did everything with a wink and a smile.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>F</strong>Finally, there’s the most controversial but often most effective kind of teacher: the rebel. These teachers see school as a place that should aim to transform society, and they believe that our children have been brainwashed by our capitalistic society into making certain assumptions about inequality, exploitation, injustice. They see the classroom as the place where these children can be ‘deprogrammed’ – and make amazing teachers because they are so passionate and persuasive. Even if you disagree with their politics, you have to admit they deliver blinding lessons, whatever their subject.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>G</strong>But the crucial point here is that none of these teachers learned their skills by getting a good degree: they learned them on the job. All could improve by watching other good teachers in the classroom and learning from their techniques. However, there are some ‘generic’ traits which should be borne in mind when discussing what’s best for our schools. All the best teachers motivate their pupils to work hard, and assess them very regularly. There is now a great deal of research to suggest it is how you use your assessment of your pupils’ achievements to plan and shape succeeding lessons, not your subject knowledge that is the determining factor of how well they achieve.</p>
+            `,
+            passageTranslation: `
+                <h2 class='text-2xl md:text-3xl font-bold text-slate-900 mb-6 leading-tight'>Một Giáo Viên Tốt?</h2>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>A</strong>Là một giáo viên trong 20 năm qua, tôi đã thấy nhiều giáo viên giỏi, và đúng là một số người phù hợp với khuôn mẫu: sinh viên tốt nghiệp với tấm bằng xuất sắc từ các trường đại học được gọi là 'tốt'. Một sai lầm cơ bản là nghĩ rằng bằng cấp tạo nên một giáo viên giỏi. Khi bạn phải đối mặt với 30 đứa trẻ ngỗ ngược sau bữa trưa vào một chiều thứ Sáu, bằng cấp không có nhiều ý nghĩa. Lấy Lesley làm ví dụ, một giám đốc điều hành kinh doanh cấp cao mà tôi đã hướng dẫn khi cô ấy đào tạo để trở thành giáo viên. Cô ấy có mọi thứ: một tấm bằng tuyệt vời, kỹ năng tổ chức xuất sắc và giao tiếp tốt. Tuy nhiên, cô ấy đã sụp đổ trong lớp học vì quá mất kiên nhẫn với học sinh: không có gì chúng làm là đủ tốt. Trong khi nhân viên của cô ấy đã chịu đựng sự soi mói vô tận của cô, thì học sinh của cô ấy trở nên mất động lực và chán nản.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>B</strong>David có một tấm bằng loại xuất sắc. Với tư cách là người hướng dẫn, tôi đã quan sát cậu ấy dạy một lớp 12 tuổi mà tôi cảm thấy là khá ngoan. Mười lăm phút trôi qua, rõ ràng là không có đứa trẻ nào hiểu cậu ấy đang nói gì; cả lớp bắt đầu nói chuyện, sau đó ném những tờ bài tập được chuẩn bị công phu của cậu ấy khắp lớp. Trớ trêu thay, chính giáo viên hỗ trợ của cậu, người không hề có bằng cấp nào, đã giải cứu bài học bằng cách giải thích rõ ràng bằng tiếng Anh những gì được yêu cầu. Nếu bạn không có một tính cách phù hợp, bạn sẽ phải chịu đựng trong "đấu trường" của các lớp học ngày nay. Theo kinh nghiệm của tôi, có bốn kiểu giáo viên hiệu quả: người độc đoán, người chăm sóc, người cuốn hút và kẻ nổi loạn.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>C</strong>Tôi đã gặp nhiều giáo viên độc đoán trong sự nghiệp của mình. Mọi người đều tìm đến họ khi mọi việc trở nên thực sự khó khăn. Họ gần như luôn là những giáo viên rất giàu kinh nghiệm, những người không chỉ biết tất cả học sinh mà còn cả phụ huynh của các em, vì đã từng dạy nhiều người trong số họ. Trong năm đầu tiên tôi đi dạy, một lớp của tôi đã nổi loạn, đẩy hết đồ đạc ra khỏi phòng và chửi bới tôi. Tôi đã gọi người độc đoán của trường, phó hiệu trưởng, và ông ấy đã dập tắt chúng bằng một trận mắng mỏ. Hầu hết các sách hướng dẫn không ủng hộ cách tiếp cận giảng dạy này, nhưng tôi phải thừa nhận rằng nó có thể rất hiệu quả, ngay cả khi có phần mơ hồ về đạo đức. Các giáo viên độc đoán thường thu được kết quả tuyệt vời từ học sinh, và hiếm khi phải sử dụng toàn bộ uy lực – danh tiếng của họ thường là đủ. Họ thường có tính tổ chức cao, biến lớp học thành pháo đài nhỏ và gần như luôn đạt kết quả trên mức trung bình, vì họ dạy đúng theo giáo trình đến từng chữ.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>D</strong>Ngược lại với người độc đoán là giáo viên biết quan tâm. Họ trở thành cha mẹ thay thế cho học sinh. Nhiều người không có bằng cấp, và được chỉ định làm 'người hướng dẫn' hoặc 'giáo viên hỗ trợ' để giúp học sinh gặp khó khăn lập kế hoạch sống – tìm cách để các em học tập hiệu quả nhất. Thông thường, học sinh rất thích gặp họ và học được kỹ năng sống còn là 'tự chịu trách nhiệm về việc học của mình'. Tôi đã từng dạy một số học sinh trượt dốc – trốn học, đánh nhau – nhưng khi được những giáo viên này che chở, các em đã thay đổi và nở rộ. Không giống như người độc đoán, giáo viên biết quan tâm làm việc với rất nhiều người: phụ huynh, giáo viên khác, nhân viên xã hội. Điều mà họ làm được là khiến học sinh thấy các em có thể kiểm soát và định hình cuộc sống của chính mình. Họ có thể bao bọc học sinh quá mức, nhưng kết quả cuối cùng gần như luôn là một học sinh hạnh phúc đạt được nhiều thứ bất chấp nghịch cảnh.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>E</strong>Mặt khác, người cuốn hút khá khác biệt so với hai kiểu giáo viên trước. Họ có thể là một nhóm vô tổ chức, sống dựa vào adrenaline và sự nhạy bén. Họ thường có tính học thuật cao, và giảng dạy để trở thành bạn bè với học sinh, thấu hiểu và chơi đùa cùng các em. Với kiểu giáo viên này, lớp học trở thành một sân chơi học tập khổng lồ và sôi động. Lấy Martin làm ví dụ, một trong những giáo viên xuất sắc nhất tôi từng gặp, người thường chuẩn bị bài giảng một cách vội vã sau khi đọc báo, và sẽ thay đổi hướng đi hoàn toàn giữa bài học nếu nảy ra cảm hứng mới. Cậu ấy rất vô tổ chức, nhưng đã làm mọi thứ với một cái nháy mắt và một nụ cười.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>F</strong>Cuối cùng, có kiểu giáo viên gây tranh cãi nhất nhưng thường hiệu quả nhất: kẻ nổi loạn. Những giáo viên này xem trường học là nơi nhắm đến việc thay đổi xã hội, và tin rằng con em chúng ta đã bị xã hội tư bản nhồi sọ để đưa ra những giả định về bất bình đẳng, bóc lột, bất công. Họ xem lớp học là nơi những đứa trẻ này có thể được 'giải mã' – và trở thành những giáo viên tuyệt vời vì họ rất đam mê và có sức thuyết phục. Ngay cả khi bạn không đồng ý với quan điểm chính trị của họ, bạn phải thừa nhận rằng họ mang đến những bài học chói lọi, bất kể môn học là gì.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'><strong class='text-xl mr-2 text-indigo-900'>G</strong>Nhưng điểm mấu chốt ở đây là không ai trong số những giáo viên này học được các kỹ năng của họ bằng cách lấy một tấm bằng giỏi: họ học chúng thông qua công việc. Tất cả đều có thể tiến bộ bằng cách quan sát những giáo viên giỏi khác và học hỏi từ kỹ thuật của họ. Tuy nhiên, có một số đặc điểm 'chung' nên được ghi nhớ. Tất cả những giáo viên giỏi nhất đều thúc đẩy học sinh làm việc chăm chỉ, và đánh giá các em rất thường xuyên. Hiện nay có rất nhiều nghiên cứu chỉ ra rằng cách bạn sử dụng đánh giá về thành tích của học sinh để lên kế hoạch và định hình bài học tiếp theo, chứ không phải kiến thức chuyên môn của bạn, mới là yếu tố quyết định mức độ các em đạt được.</p>
+            `,
+            sections: [
+                {
+                    type: "matching",
+                    placeholder: "i-x",
+                    inputWidth: "w-24",
+                    inputType: "dropdown",
+                    options: ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'],
+                    instruction: `
+                        <div class="mb-4 text-slate-800 font-medium leading-relaxed">The Reading Passage has seven paragraphs A-G.<br>Choose the correct heading for each paragraph from the list of headings below.<br>Write the correct numbers <b>i-x</b> in boxes 1-7.</div>
+                        <div class="bg-white p-5 border border-indigo-200 rounded-xl shadow-sm mb-2">
+                            <h4 class="font-bold text-lg text-indigo-900 mb-3 border-b pb-2">List of Headings</h4>
+                            <ul class="list-none space-y-2 text-slate-700 font-medium">
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">i</span> A less systematic style of teaching a class</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">ii</span> The commonest characteristics found in teachers</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">iii</span> A forceful method rarely recommended in teacher training</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">iv</span> The impact of teachers with a radical vision</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">v</span> A series of stages for classifying teachers</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">vi</span> A false assumption about effective teachers</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">vii</span> The attitude of many teachers towards pupils</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">viii</span> A way of bringing about change in individuals</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">ix</span> Getting results through careful consideration of pupil’s needs</li>
+                                <li class="flex"><span class="font-bold w-8 shrink-0 text-indigo-600">x</span> The importance of having a suitable personality</li>
+                            </ul>
+                        </div>
+                    `,
+                    questions: [
+                        { id: 1, text: "Paragraph A", correct: "vi", explanation: "Đoạn A, dòng 2: 'A cardinal mistake is to think qualifications make a good teacher.' - Một giả định sai lầm là bằng cấp tạo nên giáo viên tốt." },
+                        { id: 2, text: "Paragraph B", correct: "x", explanation: "Đoạn B: 'If you don’t have the right personality, you’ll suffer...' - Sự quan trọng của việc có một tính cách phù hợp để quản lý lớp học." },
+                        { id: 3, text: "Paragraph C", correct: "iii", explanation: "Đoạn C: 'Most manuals don’t advocate this approach to teaching, but I have to admit it can be very effective...' - Một phương pháp mạnh mẽ (forceful method) ít được khuyên dùng trong giáo trình." },
+                        { id: 4, text: "Paragraph D", correct: "viii", explanation: "Đoạn D: '...when they were taken under the wing of one of these teachers, they transformed and blossomed.' - Một cách để mang lại sự thay đổi (change in individuals) cho những học sinh cá biệt." },
+                        { id: 5, text: "Paragraph E", correct: "i", explanation: "Đoạn E: 'They can be a disorganised species... He was very disorganised...' - Phong cách dạy học ít mang tính hệ thống (less systematic style)." },
+                        { id: 6, text: "Paragraph F", correct: "iv", explanation: "Đoạn F: '...believe that our children have been brainwashed... these children can be ‘deprogrammed’...' - Tác động của giáo viên có tầm nhìn cấp tiến/nổi loạn (radical vision)." },
+                        { id: 7, text: "Paragraph G", correct: "ii", explanation: "Đoạn G: '...there are some ‘generic’ traits which should be borne in mind...' - Những đặc điểm chung nhất (commonest characteristics) ở mọi giáo viên giỏi." }
+                    ]
+                },
+                {
+                    type: "matching",
+                    placeholder: "Select...",
+                    inputWidth: "w-36", // Wider for YES/NO/NOT GIVEN
+                    inputType: "dropdown",
+                    options: ['YES', 'NO', 'NOT GIVEN'],
+                    instruction: `
+                        <div class="mb-3 text-slate-800 font-medium leading-relaxed">Do the following statements agree with the views of the writer in the Reading Passage?<br>In boxes 8-13, select <b>YES</b>, <b>NO</b>, or <b>NOT GIVEN</b>.</div>
+                        <ul class="list-disc pl-6 space-y-2 text-slate-700 text-sm bg-white p-4 border border-indigo-200 rounded-xl mb-2">
+                            <li><b>YES</b> - if the statement agrees with the views of the writer.</li>
+                            <li><b>NO</b> - if the statement contradicts the views of the writer.</li>
+                            <li><b>NOT GIVEN</b> - if it is impossible to say what the writer thinks about this.</li>
+                        </ul>
+                    `,
+                    questions: [
+                        { id: 8, text: "More difficult behaviour is often seen in pupils towards the end of the school day.", correct: "YES", explanation: "Đoạn A: 'When you’re faced with 30 truculent children after lunch on a Friday afternoon...'. Chiều thứ Sáu, học sinh thường trở nên ngỗ ngược và khó kiểm soát hơn." },
+                        { id: 9, text: "An in-depth understanding of his or her subject is key to enhancing a teacher’s success.", correct: "NO", explanation: "Đoạn G: '...not your subject knowledge that is the determining factor of how well they achieve.' Kiến thức môn học không phải là yếu tố quyết định." },
+                        { id: 10, text: "Getting involved with those who are close to pupils can achieve positive effects.", correct: "NOT GIVEN", explanation: "Bài đọc không đề cập đến việc can thiệp hoặc liên quan đến những người thân thiết của học sinh (người thân/bạn bè) sẽ mang lại kết quả như thế nào." },
+                        { id: 11, text: "Teachers who make friends with their pupils are not generally successful.", correct: "NO", explanation: "Đoạn E: Mô tả giáo viên 'charmer' là những người 'are in teaching to be mates with their pupils'. Và tác giả nhận xét phong cách này rất hiệu quả (the classroom becomes one great big, bouncing playground of learning)." },
+                        { id: 12, text: "Despite failing to conform, certain teachers have an undeniable ability with pupils.", correct: "YES", explanation: "Đoạn F: Nói về nhóm giáo viên 'rebel' (không tuân thủ quy chuẩn): '...make amazing teachers because they are so passionate and persuasive... they deliver blinding lessons...'" },
+                        { id: 13, text: "Good teachers accept that a pupil’s enthusiasm for learning comes from within.", correct: "NOT GIVEN", explanation: "Không có thông tin nào trong bài nói về việc nhiệt huyết học tập của học sinh xuất phát từ bên trong." }
+                    ]
+                }
+            ]
+        };
+
+        const INITIAL_TIME = 20 * 60;
+
+        const state = {
+            answers: {},
+            results: {},
+            isSubmitted: false,
+            score: 0,
+            maxScore: 13,
+            showPassageTranslation: false,
+            formattedPassage: null,
+            formattedPassageTrans: null,
+            timeLeft: INITIAL_TIME,
+            timerInterval: null
+        };
+
+        window.saveFormatting = () => {
+            const passageEl = document.getElementById('passage-content');
+            if (passageEl) {
+                if (state.showPassageTranslation) {
+                    state.formattedPassageTrans = passageEl.innerHTML;
+                } else {
+                    state.formattedPassage = passageEl.innerHTML;
+                }
+            }
+        };
+
+        window.formatText = (command, value = null) => {
+            const target = document.getElementById('passage-content');
+            if (!target) return;
+
+            target.setAttribute('contenteditable', 'true');
+            target.focus();
+
+            if (command === 'hiliteColor') {
+                document.execCommand('backColor', false, value);
+            } else {
+                document.execCommand(command, false, value);
+            }
+
+            target.setAttribute('contenteditable', 'false');
+            saveFormatting();
+
+            if (window.getSelection) {
+                if (window.getSelection().empty) window.getSelection().empty();
+                else if (window.getSelection().removeAllRanges) window.getSelection().removeAllRanges();
+            }
+        };
+
+        window.generateInputHtml = (id, sizeClass = "w-24 md:w-28", placeholder = "", type = "text", options = []) => {
+            let baseClasses = `answer-input inline-block ${sizeClass} px-3 py-1.5 mx-1 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 font-bold text-center text-[15px] shadow-sm uppercase `;
+            let feedbackIcon = '';
+
+            const userAnswer = state.answers[id] || '';
+            const isAnswered = userAnswer.trim() !== '';
+
+            if (!state.isSubmitted) {
+                baseClasses += isAnswered ? 'border-indigo-400 bg-indigo-50 text-indigo-800' : 'border-slate-300 bg-slate-50 text-slate-800';
+            } else {
+                const isCorrect = state.results[id];
+                baseClasses += isCorrect ? 'border-emerald-500 bg-emerald-50 text-emerald-800' : 'border-rose-500 bg-rose-50 text-rose-800';
+                feedbackIcon = isCorrect ?
+                    `<i class="fa-solid fa-circle-check text-emerald-500 ml-1.5 text-lg align-middle"></i>` :
+                    `<i class="fa-solid fa-circle-xmark text-rose-500 ml-1.5 text-lg align-middle"></i>`;
+            }
+
+            let inputElement = '';
+            if (type === 'dropdown') {
+                baseClasses += ' answer-select cursor-pointer text-left pl-3';
+                const opts = options.map(opt => `<option value="${opt}" ${userAnswer === opt ? 'selected' : ''}>${opt}</option>`).join('');
+                inputElement = `
+                    <select class="${baseClasses}" 
+                            ${state.isSubmitted ? 'disabled' : ''} 
+                            onchange="handleInputChange(${id}, this.value)">
+                        <option value="" disabled ${!isAnswered ? 'selected' : ''}>${placeholder}</option>
+                        ${opts}
+                    </select>
+                `;
+            } else {
+                inputElement = `
+                    <input type="text" 
+                        class="${baseClasses}" 
+                        value="${userAnswer}" 
+                        ${state.isSubmitted ? 'disabled' : ''} 
+                        oninput="handleInputChange(${id}, this.value)" 
+                        placeholder="${placeholder}"
+                        autocomplete="off" 
+                        spellcheck="false">
+                `;
+            }
+
+            return `<span class="font-bold text-indigo-600 mr-1 bg-indigo-100 px-2 py-0.5 rounded text-sm shadow-sm">${id}</span>
+                    ${inputElement}${feedbackIcon}`;
+        };
+
+        window.restoreInputs = () => {
+            const summarySec = quizData.sections.find(s => s.type === 'summary');
+            if (summarySec) {
+                summarySec.questions.forEach(q => {
+                    const wrapper = document.getElementById(`input-wrap-${q.id}`);
+                    if (wrapper) {
+                        wrapper.outerHTML = `<span id="input-wrap-${q.id}" class="inline-block whitespace-nowrap align-middle my-1">${window.generateInputHtml(q.id, "w-32 md:w-40")}</span>`;
+                    }
+                });
+            }
+        };
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function startTimer() {
+            if (!state.timerInterval && !state.isSubmitted) {
+                state.timerInterval = setInterval(() => {
+                    if (state.timeLeft > 0) {
+                        state.timeLeft--;
+                        const timerEl = document.getElementById('timer-display');
+                        if (timerEl) {
+                            timerEl.innerText = formatTime(state.timeLeft);
+                            if (state.timeLeft <= 300) {
+                                timerEl.parentElement.classList.add('bg-rose-100', 'text-rose-700', 'border-rose-300');
+                                timerEl.parentElement.classList.remove('bg-indigo-800', 'text-white', 'border-indigo-700');
+                                document.getElementById('timer-icon').classList.replace('text-indigo-400', 'text-rose-600');
+                            }
+                        }
+                    } else {
+                        calculateScore();
+                    }
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            clearInterval(state.timerInterval);
+            state.timerInterval = null;
+        }
+
+        function renderApp() {
+            const app = document.getElementById('app');
+            const passageHtml = state.showPassageTranslation ?
+                (state.formattedPassageTrans || quizData.passageTranslation) :
+                (state.formattedPassage || quizData.passage);
+
+            app.innerHTML = `
+                <!-- Header -->
+                <div class="flex-none bg-indigo-900 text-white p-4 flex flex-col sm:flex-row justify-between items-center z-10 shadow-md">
+                    <div class="flex items-center gap-3 mb-3 sm:mb-0">
+                        <div class="bg-indigo-800 p-2 rounded-lg"><i class="fa-solid fa-book-open text-indigo-300"></i></div>
+                        <div>
+                            <h1 class="text-xl font-bold tracking-wide">IELTS READING PRACTICE</h1>
+                            <p class="text-indigo-300 text-sm font-medium">A Good Teacher?</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="bg-indigo-800 px-4 py-2 rounded-lg font-mono text-lg font-bold flex items-center gap-2 border border-indigo-700 transition-colors duration-300" id="timer-box">
+                            <i id="timer-icon" class="fa-regular fa-clock text-indigo-400"></i>
+                            <span id="timer-display">${formatTime(state.timeLeft)}</span>
+                        </div>
+                        <button onclick="togglePassageTranslation()" class="px-4 py-2 bg-white text-indigo-900 hover:bg-indigo-50 transition-colors rounded-lg text-sm font-bold shadow flex items-center gap-2">
+                            <i class="fa-solid fa-language"></i> ${state.showPassageTranslation ? 'View English' : 'Dịch Việt'}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+                    
+                    <!-- Left Panel: Passage & Toolbar -->
+                    <div class="w-full lg:w-1/2 flex flex-col border-r border-slate-200 bg-white relative">
+                        <!-- Toolbar -->
+                        <div class="bg-slate-100 border-b border-slate-200 p-2 flex gap-2 justify-center shadow-sm z-10">
+                            <button onclick="formatText('bold')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Bold"><i class="fa-solid fa-bold"></i></button>
+                            <button onclick="formatText('italic')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Italic"><i class="fa-solid fa-italic"></i></button>
+                            <button onclick="formatText('underline')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Underline"><i class="fa-solid fa-underline"></i></button>
+                            <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
+                            <button onclick="formatText('hiliteColor', '#fef08a')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-yellow-600 transition" title="Highlight Yellow"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onclick="formatText('hiliteColor', '#bbf7d0')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-green-600 transition" title="Highlight Green"><i class="fa-solid fa-highlighter"></i></button>
+                            <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
+                            <button onclick="formatText('removeFormat')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-500 transition" title="Clear Format"><i class="fa-solid fa-eraser"></i></button>
+                        </div>
+                        
+                        <!-- Passage Container -->
+                        <div id="passage-container" class="flex-1 p-6 lg:p-8 overflow-y-auto custom-scrollbar">
+                            <div id="passage-content" class="format-target outline-none" contenteditable="false">
+                                ${passageHtml}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Questions -->
+                    <div id="questions-container" class="w-full lg:w-1/2 bg-slate-50 flex flex-col relative overflow-hidden">
+                        <div class="flex-1 p-6 lg:p-8 overflow-y-auto custom-scrollbar space-y-8 pb-8">
+                            
+                            <!-- Results Summary -->
+                            ${state.isSubmitted ? `
+                                <div class="bg-white border-2 ${state.score === state.maxScore ? 'border-emerald-400' : 'border-indigo-400'} rounded-2xl p-6 shadow-md text-center animate-[fadeIn_0.5s_ease-out]">
+                                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Results</h2>
+                                    <div class="text-4xl font-black ${state.score === state.maxScore ? 'text-emerald-500' : 'text-indigo-600'} mb-2">
+                                        ${state.score} / ${state.maxScore}
+                                    </div>
+                                    <p class="text-slate-500 font-medium">Time Remaining: ${formatTime(state.timeLeft)}</p>
+                                    <button onclick="resetQuiz()" class="mt-4 px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold transition-colors">Try Again</button>
+                                </div>
+                            ` : ''}
+
+                            <!-- Sections Render -->
+                            ${quizData.sections.map(sec => renderSection(sec)).join('')}
+
+                        </div>
+
+                        <!-- Sticky Bottom Bar for Action -->
+                        ${!state.isSubmitted ? `
+                            <div class="flex-none w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20 flex justify-end">
+                                <button onclick="calculateScore()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all transform active:scale-95 flex items-center gap-2 text-lg">
+                                    <i class="fa-solid fa-paper-plane"></i> Nộp Bài (Submit)
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            restoreInputs();
+            startTimer();
+        }
+
+        function renderSection(sec) {
+            let content = `
+                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-5 mb-4 shadow-sm">
+                    ${sec.instruction}
+                </div>
+            `;
+
+            if (sec.type === 'matching') {
+                content += `<div class="space-y-4">`;
+                sec.questions.forEach(q => {
+                    const isCorrect = state.results[q.id];
+                    content += `
+                        <div class="p-4 border-2 rounded-xl transition-colors ${state.isSubmitted ? (isCorrect ? 'border-emerald-200 bg-emerald-50/30' : 'border-rose-200 bg-rose-50/30') : 'border-slate-200 bg-white hover:border-indigo-200 hover:shadow-md'}">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <div class="flex-1 text-slate-700 font-medium leading-relaxed text-base">${q.text}</div>
+                                <div class="shrink-0 flex items-center justify-end">
+                                    ${window.generateInputHtml(q.id, sec.inputWidth || 'w-24', sec.placeholder || '', sec.inputType || 'text', sec.options || [])}
+                                </div>
+                            </div>
+                            ${state.isSubmitted && !isCorrect ? `
+                                <div class="mt-3 text-sm font-bold text-rose-600 flex items-center gap-2"><i class="fa-solid fa-key"></i> Correct Answer: <span class="bg-rose-100 px-2 py-1 rounded text-rose-800">${q.correct}</span></div>
+                            ` : ''}
+                            ${state.isSubmitted && q.explanation ? `
+                                <div class="mt-2 text-sm text-indigo-700 leading-relaxed bg-indigo-50 p-2 rounded-lg"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> <b>Explanation:</b> ${q.explanation}</div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                content += `</div>`;
+            }
+
+            return `<div class="mb-8">${content}</div>`;
+        }
+
+        window.calculateScore = () => {
+            saveFormatting();
+            stopTimer();
+            state.score = 0;
+            state.results = {};
+
+            quizData.sections.forEach(sec => {
+                if (sec.type === 'matching') {
+                    sec.questions.forEach(q => {
+                        const isCorrect = (state.answers[q.id] || "").toLowerCase().trim() === q.correct.toLowerCase().trim();
+                        state.results[q.id] = isCorrect;
+                        if (isCorrect) state.score++;
+                    });
+                }
+            });
+
+            state.isSubmitted = true;
+            renderApp();
+
+            const qContainer = document.getElementById('questions-container');
+            if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.resetQuiz = () => {
+            state.answers = {};
+            state.results = {};
+            state.isSubmitted = false;
+            state.score = 0;
+            state.timeLeft = INITIAL_TIME;
+            renderApp();
+        };
+
+        window.handleInputChange = (qId, val) => {
+            state.answers[qId] = val;
+
+            const element = document.querySelector(`[onchange="handleInputChange(${qId}, this.value)"], [oninput="handleInputChange(${qId}, this.value)"]`);
+
+            if (element) {
+                if (val.trim() !== '') {
+                    element.classList.remove('bg-slate-50', 'border-slate-300', 'text-slate-800');
+                    element.classList.add('bg-indigo-50', 'border-indigo-400', 'text-indigo-800');
+                } else {
+                    element.classList.add('bg-slate-50', 'border-slate-300', 'text-slate-800');
+                    element.classList.remove('bg-indigo-50', 'border-indigo-400', 'text-indigo-800');
+                }
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            saveFormatting();
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        // Initialize application
+        renderApp();
+    </script>
+</body>
+
+</html>
