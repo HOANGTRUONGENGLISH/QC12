@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRREGULAR VERBS 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #2c2a26;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .chalk-text {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- Nền Lớp Học Sinh Động --- */
+        .classroom-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wall {
+            flex: 2;
+            background-color: #f0ead6;
+            background-image: radial-gradient(#d3cbb8 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: relative;
+            border-bottom: 10px solid #5c3a21;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .wainscoting {
+            flex: 1;
+            background: linear-gradient(to right, #8b5a2b, #a0522d, #8b5a2b);
+            background-size: 100px 100%;
+            box-shadow: inset 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .wainscoting::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(0, 0, 0, 0.2) 48px, rgba(0, 0, 0, 0.2) 50px);
+        }
+
+        /* Đồng hồ lớp học */
+        .clock {
+            position: absolute;
+            top: 40px;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #fff9e6;
+            border: 8px solid #8b5a2b;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clock-center {
+            width: 8px;
+            height: 8px;
+            background: #b91c1c;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hand-hour {
+            position: absolute;
+            width: 5px;
+            height: 22px;
+            background: #4a2f18;
+            bottom: 50%;
+            transform-origin: bottom;
+            transform: rotate(45deg);
+            border-radius: 3px;
+        }
+
+        .hand-min {
+            position: absolute;
+            width: 3px;
+            height: 32px;
+            background: #4a2f18;
+            bottom: 50%;
+            transform-origin: bottom;
+            transform: rotate(320deg);
+            border-radius: 2px;
+        }
+
+        /* Poster cổ động */
+        .poster {
+            position: absolute;
+            top: 60px;
+            left: 8%;
+            width: 100px;
+            height: 140px;
+            background: #fef08a;
+            border: 2px solid #eab308;
+            transform: rotate(-3deg);
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%) rotate(5deg);
+            width: 30px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Bụi Phấn Animation --- */
+        .chalk-dust-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(1px);
+            pointer-events: none;
+            animation: floatDust linear infinite;
+        }
+
+        @keyframes floatDust {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            80% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* --- Bảng Đen --- */
+        .blackboard {
+            background-color: #2b4535;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 30%),
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
+            border: 14px solid #6b4423;
+            border-radius: 12px;
+            box-shadow:
+                inset 0 0 40px rgba(0, 0, 0, 0.9),
+                0 20px 50px rgba(0, 0, 0, 0.6),
+                inset 0 0 0 2px #4a2f18;
+            color: #f8f9fa;
+            position: relative;
+            width: 100%;
+            height: 75vh;
+            min-height: 550px;
+            max-height: 850px;
+        }
+
+        @media (min-width: 640px) {
+            .blackboard {
+                height: 700px;
+                max-height: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .blackboard {
+                height: 750px;
+            }
+        }
+
+        .blackboard::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: -14px;
+            right: -14px;
+            height: 18px;
+            background: #4a2f18;
+            border-radius: 0 0 12px 12px;
+            border-top: 2px solid #2a1a0c;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        /* --- Ô nhập từ Duolingo --- */
+        .chalk-input-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 8px;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1.25rem;
+            text-align: center;
+            width: 100%;
+            max-width: 280px;
+            font-family: Cambria, Georgia, serif;
+            transition: all 0.2s;
+        }
+
+        .chalk-input-box:focus {
+            border-color: #fde047;
+            background: rgba(253, 224, 71, 0.1);
+            outline: none;
+            box-shadow: 0 0 10px rgba(253, 224, 71, 0.4);
+            text-shadow: 0 0 5px rgba(253, 224, 71, 0.5);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .wood-btn {
+            background: linear-gradient(to bottom, #8b5a2b, #6b4423);
+            border: 2px solid #4a2f18;
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.2), 0 4px 6px rgba(0, 0, 0, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            transition: all 0.1s;
+        }
+
+        .wood-btn:active {
+            transform: translateY(2px);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        .chalk-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+        }
+
+        .chalk-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-8 min-h-screen flex flex-col items-center justify-center relative">
+
+    <div class="classroom-bg">
+        <div class="wall">
+            <div class="clock">
+                <div class="hand-hour"></div>
+                <div class="hand-min"></div>
+                <div class="clock-center"></div>
+            </div>
+            <div class="poster">
+                Learn<br>Every Day! 📚
+            </div>
+        </div>
+        <div class="wainscoting"></div>
+        <div id="chalk-dust-container" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
+    </div>
+
+    <!-- Toast Thông báo tiêu đề bài học -->
+    <div id="topic-toast"
+        class="absolute top-8 left-1/2 transform -translate-x-1/2 translate-y-[-250%] bg-[#2b4535] border-2 border-[#6b4423] text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-xl z-50 flex items-center gap-3 chalk-text">
+        <span>🔔</span>
+        <span id="toast-message">IRREGULAR VERBS 2</span>
+    </div>
+
+    <div class="max-w-4xl w-full mx-auto relative z-30">
+
+        <!-- =================== TRANG TỔNG HỢP (WELCOME SCREEN) =================== -->
+        <div id="welcome-screen"
+            class="blackboard p-3 sm:p-8 text-center flex-col h-[80vh] min-h-[550px] max-h-[850px] relative"
+            style="display: flex;">
+            <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 chalk-text tracking-widest drop-shadow-md">
+                IRREGULAR VERBS</h1>
+            <p
+                class="text-yellow-200 chalk-text text-lg sm:text-2xl mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-2 border-dashed border-white/30 font-bold">
+                Master your V0 - V2 - V3 forms (Trang 2)</p>
+
+            <div
+                class="flex-grow overflow-auto custom-scrollbar mb-16 sm:mb-20 border border-white/20 rounded-lg bg-black/20 shadow-inner w-full shrink relative">
+                <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse chalk-text">
+                    <thead class="sticky top-0 bg-[#1e3226] text-yellow-300 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold border-b-2 border-white/50 w-1/4">Meaning</th>
+                            <th class="p-3 sm:p-4 font-bold text-center border-b-2 border-white/50 text-yellow-200">V0
+                                (Infinitive)</th>
+                            <th class="p-3 sm:p-4 font-bold text-center border-b-2 border-white/50 text-orange-200">V2
+                                (Past Simple)</th>
+                            <th class="p-3 sm:p-4 font-bold text-center border-b-2 border-white/50 text-green-200">V3
+                                (Past Participle)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="welcome-table-body" class="divide-y divide-white/20 text-white">
+                        <!-- Chèn tự động bằng JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="absolute bottom-14 left-1/2 transform -translate-x-1/2 w-full px-4 sm:px-8 shrink-0">
+                <button onclick="startStudy()"
+                    class="wood-btn w-full sm:w-2/3 mx-auto py-3 text-white font-black text-xl sm:text-2xl rounded-xl flex items-center justify-center gap-3 uppercase tracking-widest font-sans shadow-xl">
+                    START STUDYING 📖
+                </button>
+            </div>
+
+            <!-- Dòng chữ bản quyền cố định ở chân bảng chào -->
+            <div
+                class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center shrink-0 pointer-events-none">
+                <div
+                    class="px-6 py-1.5 bg-black/30 border border-white/20 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md">
+                    <p
+                        class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                        &copy; Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== PHẦN THIẾT KẾ CARD CHÍNH =================== -->
+        <div id="main-content" class="w-full" style="display: none;">
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center sm:items-end mb-3 sm:mb-4 px-1 sm:px-6 w-full">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="border-2 border-orange-400 text-orange-300 hover:bg-orange-400/20 bg-black/40 flex items-center justify-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl z-20 relative transition-all shadow-lg hover:scale-105 font-bold shrink-0"
+                    style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline font-sans text-sm">Back</span>
+                </button>
+
+                <div class="flex-grow flex flex-col items-center mx-2 sm:mx-4 overflow-hidden">
+                    <div
+                        class="flex items-center gap-2 sm:gap-6 mb-2 sm:mb-3 bg-black/40 px-2 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl border border-white/20 shadow-lg chalk-text text-sm sm:text-xl font-bold max-w-full">
+                        <div class="flex items-center gap-1 sm:gap-2 text-cyan-300 shrink-0">
+                            <span class="text-lg sm:text-2xl drop-shadow-md">⏱️</span>
+                            <span id="timer-display" class="tracking-wider drop-shadow-md">00:00</span>
+                        </div>
+                        <div
+                            class="border-l-2 border-dashed border-white/50 pl-2 sm:pl-6 text-white truncate flex items-center justify-center">
+                            <span id="progress-text"
+                                class="text-amber-400 font-black tracking-wider drop-shadow-md text-base sm:text-2xl">1
+                                / X</span>
+                        </div>
+                    </div>
+                    <div
+                        class="w-full bg-black/50 rounded-full h-2 sm:h-4 overflow-hidden border border-white/30 sm:border-2 shadow-inner">
+                        <div id="progress-bar"
+                            class="bg-gradient-to-r from-green-400 to-emerald-300 h-full transition-all duration-300 shadow-[0_0_12px_#4ade80]"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="chalk-btn flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 text-white rounded-lg sm:rounded-xl bg-black/40 shadow-lg shrink-0">
+                    <span id="music-icon" class="text-lg sm:text-xl">🔇</span>
+                </button>
+            </div>
+
+            <!-- Single Blackboard Flashcard (No Flipping!) -->
+            <div class="blackboard custom-scrollbar p-3 sm:p-8 relative overflow-hidden" id="flashcard">
+
+                <!-- SUCCESS OVERLAY (Duolingo Style Toast/Screen inside Blackboard with explicit Next Button) -->
+                <div id="success-overlay"
+                    class="absolute inset-0 bg-emerald-950/95 rounded-xl z-40 flex flex-col items-center justify-center transition-all duration-300 opacity-0 pointer-events-none">
+                    <div class="scale-90 transform transition-transform duration-300 flex flex-col items-center gap-4 text-center p-4 sm:p-6 w-full max-w-md"
+                        id="success-content">
+                        <div
+                            class="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-500/20 border-2 border-emerald-400 rounded-full flex items-center justify-center text-emerald-400 text-4xl sm:text-5xl animate-bounce">
+                            ✓
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-black text-white chalk-text tracking-widest uppercase">
+                            CHÍNH XÁC! 🎉</h3>
+
+                        <!-- Horizontal Correct words show with Phonetics -->
+                        <div id="success-word-display"
+                            class="flex flex-row flex-wrap gap-2 sm:gap-6 justify-center items-center font-bold text-lg sm:text-2xl bg-black/30 px-3 sm:px-6 py-2 sm:py-3 rounded-xl border border-white/10 shadow-inner w-full">
+                            <!-- Populated in JS dynamically -->
+                        </div>
+
+                        <p id="success-viet-mean" class="text-xl sm:text-2xl text-green-300 font-bold chalk-text"></p>
+
+                        <!-- Nút Tiếp Tục thủ công để chuyển thẻ -->
+                        <button id="success-next-btn" onclick="nextCardDirect()"
+                            class="wood-btn px-10 py-2.5 sm:py-3 mt-2 text-white font-black text-lg sm:text-xl rounded-full flex items-center justify-center gap-2 uppercase tracking-widest font-sans shadow-xl hover:scale-105 active:scale-95 transition-all">
+                            Next ➔
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main front container -->
+                <div
+                    class="flex-grow flex flex-col justify-start items-center text-center w-full relative z-10 pb-24 h-full">
+
+                    <div class="mb-2 sm:mb-4 mt-2">
+                        <h2 class="text-3xl sm:text-5xl font-black text-white chalk-text mb-1 drop-shadow-md"
+                            id="word-mean"></h2>
+                    </div>
+
+                    <!-- Khối 3 ví dụ trực quan -->
+                    <div class="w-full max-w-2xl bg-black/20 rounded-xl p-3 sm:p-4 mb-3 border border-white/10 text-xs sm:text-base"
+                        id="word-ex">
+                        <!-- Điền tự động qua JS -->
+                    </div>
+                    <div id="word-exVi" class="w-full max-w-2xl">
+                        <!-- Bản dịch tương ứng -->
+                    </div>
+
+                    <!-- Box thiết kế nhập liệu V0 - V2 - V3 mượt mà -->
+                    <div class="w-full max-w-md flex flex-col gap-3 my-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <span
+                                class="w-12 text-left font-black text-yellow-300 chalk-text text-lg sm:text-xl">V0:</span>
+                            <input type="text" id="input-v0" class="chalk-input-box text-yellow-100 flex-grow"
+                                placeholder="Type V0 form..." autocomplete="off" autocorrect="off" autocapitalize="none"
+                                spellcheck="false">
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span
+                                class="w-12 text-left font-black text-orange-300 chalk-text text-lg sm:text-xl">V2:</span>
+                            <input type="text" id="input-v2" class="chalk-input-box text-orange-100 flex-grow"
+                                placeholder="Type V2 form..." autocomplete="off" autocorrect="off" autocapitalize="none"
+                                spellcheck="false">
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span
+                                class="w-12 text-left font-black text-green-300 chalk-text text-lg sm:text-xl">V3:</span>
+                            <input type="text" id="input-v3" class="chalk-input-box text-green-100 flex-grow"
+                                placeholder="Type V3 form..." autocomplete="off" autocorrect="off" autocapitalize="none"
+                                spellcheck="false">
+                        </div>
+                    </div>
+
+                    <!-- Nhóm nút hỗ trợ và kiểm tra -->
+                    <div class="flex items-center justify-center gap-2 sm:gap-3 w-full flex-wrap font-sans mt-2">
+                        <button onclick="speakCurrentWord(event)"
+                            class="w-10 h-10 sm:w-12 sm:h-12 border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300/20 rounded-full flex items-center justify-center transition-colors shadow-sm"
+                            title="Nghe phát âm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path
+                                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" />
+                            </svg>
+                        </button>
+                        <button id="hint-btn" onclick="giveHint()"
+                            class="px-5 sm:px-6 h-10 sm:h-12 border-2 border-blue-300 text-blue-200 hover:bg-blue-300/20 font-bold rounded-xl disabled:opacity-50 text-sm sm:text-base transition-colors">Hint
+                            💡</button>
+                        <button onclick="checkAnswer()"
+                            class="wood-btn px-6 sm:px-8 h-10 sm:h-12 text-white font-bold rounded-xl text-sm sm:text-lg flex items-center gap-2">
+                            Check Answer
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Copyright cố định tuyệt đối ở dưới cùng bảng mặt trước -->
+                <div
+                    class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center z-20 pointer-events-none">
+                    <div class="px-6 py-1.5 bg-black/40 border border-white/20 rounded-xl shadow-lg backdrop-blur-md">
+                        <p
+                            class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                            &copy; Copyright by Hoang Truong English</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== BẢNG SUMMARY TỔNG KẾT =================== -->
+        <div id="final-screen"
+            class="blackboard p-3 sm:p-8 text-center max-w-4xl mx-auto w-full flex-col relative z-20 h-[80vh] min-h-[550px] max-h-[850px]"
+            style="display: none;">
+            <h2 class="text-3xl sm:text-5xl font-black text-yellow-300 chalk-text mb-1 shrink-0 drop-shadow-md">LESSON
+                SUMMARY</h2>
+
+            <p id="completion-datetime"
+                class="text-xs sm:text-sm text-gray-300 mb-3 shrink-0 font-sans italic tracking-wide"></p>
+
+            <!-- Bộ chỉ số trực quan ở Summary -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-3 shrink-0 chalk-text">
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Score</p>
+                    <p class="text-xl sm:text-3xl text-yellow-300 font-black mt-0.5" id="score-percent">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Time</p>
+                    <p class="text-lg sm:text-2xl text-cyan-300 font-bold mt-0.5" id="elapsed-time">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Perfect</p>
+                    <p class="text-lg sm:text-2xl text-green-400 font-bold mt-0.5" id="correct-count">-</p>
+                </div>
+                <div class="bg-black/20 border border-white/20 rounded-xl p-1.5 sm:p-3 shadow-inner">
+                    <p class="text-[10px] sm:text-xs text-gray-300 uppercase tracking-widest">Hints</p>
+                    <p class="text-lg sm:text-2xl text-red-400 font-bold mt-0.5" id="hint-count">-</p>
+                </div>
+            </div>
+
+            <!-- Bảng lưu trữ xem lại lỗi sai và đáp án kèm Phiên âm chuẩn -->
+            <div
+                class="flex-grow overflow-auto custom-scrollbar border border-white/30 rounded-xl bg-black/30 w-full mb-16 sm:mb-20 shrink shadow-inner relative">
+                <table class="w-full min-w-[500px] text-left text-sm sm:text-base border-collapse chalk-text">
+                    <thead class="sticky top-0 bg-[#1e3226] text-yellow-300 z-20 shadow-md">
+                        <tr>
+                            <th class="p-3 sm:p-4 font-bold w-1/5 border-b-2 border-white/50">Status</th>
+                            <th class="p-3 sm:p-4 font-bold w-1/2 border-b-2 border-white/50">Word & Phonetic</th>
+                            <th class="p-3 sm:p-4 font-bold border-b-2 border-white/50">Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final-review-table-body" class="divide-y divide-white/20 text-white">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="absolute bottom-14 left-1/2 transform -translate-x-1/2 w-full px-4 sm:px-8 shrink-0">
+                <button onclick="resetQuizToSummary()"
+                    class="wood-btn w-full sm:w-1/2 mx-auto py-2.5 text-white font-bold text-lg sm:text-xl rounded-xl uppercase tracking-wider font-sans shadow-xl">
+                    Study Again 🔄
+                </button>
+            </div>
+
+            <div
+                class="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center shrink-0 pointer-events-none">
+                <div
+                    class="px-6 py-1.5 bg-black/30 border border-white/20 rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.25)] backdrop-blur-md">
+                    <p
+                        class="text-[10px] sm:text-xs text-purple-300 chalk-text tracking-widest uppercase italic m-0 drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+                        &copy; Copyright by Hoang Truong English</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // Dữ liệu 32 động từ bất quy tắc từ vần L đến vần W 
+        const flashcards = [
+            { mean: "Nằm", v0: "lie", v2: "lay", v3: "lain", p0: "/laɪ/", p2: "/leɪ/", p3: "/leɪn/", exV0: "I often _______ down after a long day.", exV2: "She _______ on the sofa watching TV yesterday.", exV3: "He has _______ in bed all morning because he's sick.", exViV0: "Tôi thường nằm nghỉ sau một ngày dài.", exViV2: "Hôm qua cô ấy đã nằm trên sofa xem tivi.", exViV3: "Anh ấy đã nằm trên giường suốt cả sáng nay vì bị ốm." },
+            { mean: "Mất, thua", v0: "lose", v2: "lost", v3: "lost", p0: "/luːz/", p2: "/lɒst/", p3: "/lɒst/", exV0: "Don't _______ your keys again.", exV2: "Our team _______ the final match.", exV3: "I have _______ my wallet somewhere.", exViV0: "Đừng có làm mất chìa khóa của bạn một lần nữa đấy.", exViV2: "Đội của chúng ta đã thua trận chung kết.", exViV3: "Tôi đã đánh mất ví của mình ở đâu đó." },
+            { mean: "Làm, chế tạo", v0: "make", v2: "made", v3: "made", p0: "/meɪk/", p2: "/meɪd/", p3: "/meɪd/", exV0: "I _______ a cup of tea every morning.", exV2: "She _______ a beautiful cake for my birthday.", exV3: "They have _______ many mistakes in this project.", exViV0: "Tôi pha (làm) một tách trà vào mỗi buổi sáng.", exViV2: "Cô ấy đã làm một chiếc bánh thật đẹp cho ngày sinh nhật của tôi.", exViV3: "Họ đã gây ra (làm) rất nhiều lỗi sai trong dự án này." },
+            { mean: "Ý nghĩa, muốn nói", v0: "mean", v2: "meant", v3: "meant", p0: "/miːn/", p2: "/ment/", p3: "/ment/", exV0: "What does this word _______?", exV2: "I didn't know what he _______ by that.", exV3: "It has always _______ a lot to me.", exViV0: "Từ này có ý nghĩa là gì vậy?", exViV2: "Tôi đã không hiểu anh ấy muốn nói gì qua điều đó.", exViV3: "Điều đó luôn luôn có ý nghĩa rất lớn đối với tôi." },
+            { mean: "Gặp, gặp gỡ", v0: "meet", v2: "met", v3: "met", p0: "/miːt/", p2: "/met/", p3: "/met/", exV0: "Let's _______ at the coffee shop.", exV2: "We _______ at a conference last year.", exV3: "Have you ever _______ a famous person?", exViV0: "Hãy gặp nhau ở quán cà phê nhé.", exViV2: "Chúng tôi đã gặp nhau tại một hội nghị năm ngoái.", exViV3: "Bạn đã từng bao giờ gặp một người nổi tiếng chưa?" },
+            { mean: "Đặt, để", v0: "put", v2: "put", v3: "put", p0: "/pʊt/", p2: "/pʊt/", p3: "/pʊt/", exV0: "Please _______ the book on the table.", exV2: "He _______ his keys in his pocket yesterday.", exV3: "She has already _______ the kids to bed.", exViV0: "Làm ơn hãy đặt quyển sách lên bàn.", exViV2: "Hôm qua anh ấy đã đút chìa khóa vào trong túi áo.", exViV3: "Cô ấy vừa mới dỗ (đặt) lũ trẻ đi ngủ xong." },
+            { mean: "Đọc", v0: "read", v2: "read", v3: "read", p0: "/riːd/", p2: "/red/", p3: "/red/", exV0: "I _______ the newspaper daily.", exV2: "She _______ an interesting novel last week.", exV3: "I have _______ this book three times.", exViV0: "Tôi đọc báo mỗi ngày.", exViV2: "Cô ấy đã đọc một cuốn tiểu thuyết thú vị tuần trước.", exViV3: "Tôi đã đọc quyển sách này ba lần rồi." },
+            { mean: "Cưỡi", v0: "ride", v2: "rode", v3: "ridden", p0: "/raɪd/", p2: "/rəʊd/", p3: "/ˈrɪdn/", exV0: "Children love to _______ bicycles.", exV2: "He _______ a horse in the countryside.", exV3: "She has never _______ a motorcycle before.", exViV0: "Trẻ con rất thích cưỡi xe đạp.", exViV2: "Anh ấy đã cưỡi ngựa ở vùng nông thôn.", exViV3: "Cô ấy chưa từng cưỡi xe máy trước đây." },
+            { mean: "Chạy", v0: "run", v2: "ran", v3: "run", p0: "/rʌn/", p2: "/ræn/", p3: "/rʌn/", exV0: "I _______ 5 kilometers every day.", exV2: "He _______ fast to catch the bus.", exV3: "She has _______ a marathon.", exViV0: "Tôi chạy bộ 5 kilomet mỗi ngày.", exViV2: "Anh ấy đã chạy thật nhanh để bắt kịp xe buýt.", exViV3: "Cô ấy đã từng chạy một giải marathon." },
+            { mean: "Nói", v0: "say", v2: "said", v3: "said", p0: "/seɪ/", p2: "/sed/", p3: "/sed/", exV0: "What did you _______?", exV2: "She _______ she was tired.", exV3: "They have _______ nothing about the plan.", exViV0: "Bạn vừa nói gì cơ?", exViV2: "Cô ấy nói rằng cô ấy đang mệt.", exViV3: "Họ chưa từng nói điều gì về kế hoạch đó cả." },
+            { mean: "Nhìn, trông thấy", v0: "see", v2: "saw", v3: "seen", p0: "/siː/", p2: "/sɔː/", p3: "/siːn/", exV0: "I can _______ the mountains from here.", exV2: "We _______ a shooting star last night.", exV3: "Have you _______ my glasses?", exViV0: "Tôi có thể nhìn thấy những ngọn núi từ đây.", exViV2: "Tối qua chúng tôi đã trông thấy một ngôi sao băng.", exViV3: "Bạn có trông thấy chiếc kính của tôi không?" },
+            { mean: "Bán", v0: "sell", v2: "sold", v3: "sold", p0: "/sel/", p2: "/səʊld/", p3: "/səʊld/", exV0: "They _______ fresh fruits at the market.", exV2: "He _______ his old car yesterday.", exV3: "We have already _______ out of tickets.", exViV0: "Họ bán trái cây tươi ngoài chợ.", exViV2: "Hôm qua anh ấy đã bán chiếc xe ô tô cũ của mình.", exViV3: "Chúng tôi đã bán sạch vé rồi." },
+            { mean: "Gửi", v0: "send", v2: "sent", v3: "sent", p0: "/send/", p2: "/sent/", p3: "/sent/", exV0: "I will _______ you an email later.", exV2: "She _______ a package to her friend.", exV3: "They have _______ out the invitations.", exViV0: "Lát nữa tôi sẽ gửi bạn một email.", exViV2: "Cô ấy đã gửi một bưu kiện cho người bạn của mình.", exViV3: "Họ đã gửi các tấm thiệp mời đi rồi." },
+            { mean: "Hát", v0: "sing", v2: "sang", v3: "sung", p0: "/sɪŋ/", p2: "/sæŋ/", p3: "/sʌŋ/", exV0: "Birds _______ beautifully in the morning.", exV2: "She _______ a sweet lullaby for her baby.", exV3: "The choir has _______ that song twice.", exViV0: "Bầy chim hót (hát) líu lo vào buổi sáng.", exViV2: "Cô ấy đã hát một khúc hát ru ngọt ngào cho em bé của mình.", exViV3: "Đoàn hợp xướng đã hát bài đó hai lần rồi." },
+            { mean: "Ngồi", v0: "sit", v2: "sat", v3: "sat", p0: "/sɪt/", p2: "/sæt/", p3: "/sæt/", exV0: "Please _______ down and relax.", exV2: "He _______ on the bench waiting for her.", exV3: "We have _______ here for an hour.", exViV0: "Mời bạn ngồi xuống và thư giãn.", exViV2: "Anh ấy đã ngồi trên chiếc ghế đá để chờ đợi cô ấy.", exViV3: "Chúng tôi đã ngồi chờ ở đây được một tiếng đồng hồ rồi." },
+            { mean: "Ngủ", v0: "sleep", v2: "slept", v3: "slept", p0: "/sliːp/", p2: "/slept/", p3: "/slept/", exV0: "I usually _______ for eight hours.", exV2: "The baby _______ peacefully all night.", exV3: "She hasn't _______ well lately.", exViV0: "Tôi thường ngủ đủ tám tiếng.", exViV2: "Đứa bé đã ngủ thật yên bình suốt cả đêm.", exViV3: "Dạo gần đây cô ấy đã không ngủ ngon giấc." },
+            { mean: "Ngửi", v0: "smell", v2: "smelled", v3: "smelled", p0: "/smel/", p2: "/smeld/", p3: "/smeld/", exV0: "These flowers _______ amazing.", exV2: "The dog _______ the bone hidden in the dirt.", exV3: "I have _______ something burning in the kitchen.", exViV0: "Những bông hoa này có mùi (ngửi) thật tuyệt vời.", exViV2: "Con chó đã ngửi thấy khúc xương bị chôn dưới đất.", exViV3: "Tôi vừa ngửi thấy mùi gì đó đang khét trong bếp." },
+            { mean: "Nói, đọc", v0: "speak", v2: "spoke", v3: "spoken", p0: "/spiːk/", p2: "/spəʊk/", p3: "/ˈspəʊkən/", exV0: "Can you _______ louder, please?", exV2: "The manager _______ to the team yesterday.", exV3: "We haven't _______ since last week.", exViV0: "Bạn có thể nói lớn hơn một chút được không?", exViV2: "Vị quản lý đã nói chuyện với cả đội ngày hôm qua.", exViV3: "Chúng tôi đã không nói chuyện với nhau kể từ tuần trước." },
+            { mean: "Chi tiêu, sử dụng", v0: "spend", v2: "spent", v3: "spent", p0: "/spend/", p2: "/spent/", p3: "/spent/", exV0: "I _______ too much money on clothes.", exV2: "We _______ our holiday in Paris.", exV3: "She has _______ all her savings.", exViV0: "Tôi thường chi tiêu quá nhiều tiền vào quần áo.", exViV2: "Chúng tôi đã sử dụng trọn kỳ nghỉ lễ của mình ở Paris.", exViV3: "Cô ấy đã tiêu sạch số tiền tiết kiệm của mình." },
+            { mean: "Đứng", v0: "stand", v2: "stood", v3: "stood", p0: "/stænd/", p2: "/stʊd/", p3: "/stʊd/", exV0: "Don't _______ in the rain.", exV2: "He _______ waiting at the bus stop.", exV3: "The building has _______ there for centuries.", exViV0: "Đừng có đứng dưới trời mưa đấy.", exViV2: "Anh ấy đã đứng đợi ở trạm xe buýt.", exViV3: "Tòa nhà đó đã đứng ở đó suốt nhiều thế kỷ." },
+            { mean: "Trộm cắp", v0: "steal", v2: "stole", v3: "stolen", p0: "/stiːl/", p2: "/stəʊl/", p3: "/ˈstəʊlən/", exV0: "It is wrong to _______ from others.", exV2: "Someone _______ his bicycle yesterday.", exV3: "The thief has _______ the famous painting.", exViV0: "Hành động ăn trộm từ người khác là rất sai trái.", exViV2: "Ai đó đã trộm mất chiếc xe đạp của anh ấy ngày hôm qua.", exViV3: "Tên trộm đã cuỗm (ăn trộm) bức tranh vô cùng nổi tiếng đó." },
+            { mean: "Bơi", v0: "swim", v2: "swam", v3: "swum", p0: "/swɪm/", p2: "/swæm/", p3: "/swʌm/", exV0: "I love to _______ in the ocean.", exV2: "She _______ across the river yesterday.", exV3: "He has never _______ in a competition.", exViV0: "Tôi thích bơi ngoài đại dương.", exViV2: "Hôm qua cô ấy đã bơi ngang qua một con sông.", exViV3: "Anh ấy chưa từng bơi thi ở một cuộc thi nào cả." },
+            { mean: "Đánh đu", v0: "swing", v2: "swung", v3: "swung", p0: "/swɪŋ/", p2: "/swʌŋ/", p3: "/swʌŋ/", exV0: "Monkeys _______ from tree to tree.", exV2: "The door _______ open in the wind.", exV3: "The pendulum has _______ back and forth.", exViV0: "Những chú khỉ đánh đu từ cái cây này sang cái cây khác.", exViV2: "Cánh cửa đã đong đưa (đánh đu) trong cơn gió.", exViV3: "Quả lắc đồng hồ đã đong đưa (đánh đu) qua lại nãy giờ." },
+            { mean: "Cầm, giữ, lấy, dẫn", v0: "take", v2: "took", v3: "taken", p0: "/teɪk/", p2: "/tʊk/", p3: "/ˈteɪkən/", exV0: "Please _______ your medicine.", exV2: "He _______ his umbrella because it was raining.", exV3: "Someone has _______ my seat.", exViV0: "Làm ơn hãy uống (lấy) thuốc của bạn đi.", exViV2: "Anh ấy đã cầm theo một chiếc ô vì trời đang đổ mưa.", exViV3: "Có ai đó đã lấy mất chỗ ngồi của tôi rồi." },
+            { mean: "Dạy học", v0: "teach", v2: "taught", v3: "taught", p0: "/tiːtʃ/", p2: "/tɔːt/", p3: "/tɔːt/", exV0: "I _______ English to kids.", exV2: "She _______ math at high school last year.", exV3: "He has _______ piano for 10 years.", exViV0: "Tôi dạy tiếng Anh cho trẻ em.", exViV2: "Cô ấy đã dạy môn Toán ở trường cấp ba vào năm ngoái.", exViV3: "Anh ấy đã dạy đàn piano được 10 năm rồi." },
+            { mean: "Kể", v0: "tell", v2: "told", v3: "told", p0: "/tel/", p2: "/təʊld/", p3: "/təʊld/", exV0: "Always _______ the truth.", exV2: "My grandma _______ me a fairy tale.", exV3: "I have _______ you this before.", exViV0: "Hãy luôn kể cho người khác nghe sự thật.", exViV2: "Bà của tôi đã kể cho tôi nghe một câu chuyện cổ tích.", exViV3: "Tôi đã kể cho bạn nghe điều này trước đây rồi." },
+            { mean: "Nghĩ", v0: "think", v2: "thought", v3: "thought", p0: "/θɪŋk/", p2: "/θɔːt/", p3: "/θɔːt/", exV0: "I _______ this is a good idea.", exV2: "She _______ about her future deeply.", exV3: "We have _______ of a new strategy.", exViV0: "Tôi nghĩ rằng đây là một ý tưởng hay.", exViV2: "Cô ấy đã suy nghĩ vô cùng sâu sắc về tương lai của mình.", exViV3: "Chúng tôi đã nghĩ ra được một chiến lược mới." },
+            { mean: "Ném", v0: "throw", v2: "threw", v3: "thrown", p0: "/θrəʊ/", p2: "/θruː/", p3: "/θrəʊn/", exV0: "Don't _______ trash on the street.", exV2: "He _______ the ball to his dog.", exV3: "She has _______ away all the old papers.", exViV0: "Đừng có ném rác ra đường phố đấy nhé.", exViV2: "Anh ấy đã ném trái banh cho chú chó của mình.", exViV3: "Cô ấy đã ném bỏ hết tất cả các tờ giấy cũ." },
+            { mean: "Hiểu ra, nắm ý", v0: "understand", v2: "understood", v3: "understood", p0: "/ˌʌndəˈstænd/", p2: "/ˌʌndəˈstʊd/", p3: "/ˌʌndəˈstʊd/", exV0: "I completely _______ your point.", exV2: "He finally _______ the math problem.", exV3: "They have always _______ each other well.", exViV0: "Tôi hoàn toàn hiểu ý kiến (quan điểm) của bạn.", exViV2: "Anh ấy cuối cùng cũng đã hiểu ra cách giải bài toán.", exViV3: "Họ luôn luôn thấu hiểu lẫn nhau rất tốt." },
+            { mean: "Thắng, thắng cuộc", v0: "win", v2: "won", v3: "won", p0: "/wɪn/", p2: "/wʌn/", p3: "/wʌn/", exV0: "Our team wants to _______ the trophy.", exV2: "She _______ the spelling bee contest.", exV3: "He has _______ many medals in swimming.", exViV0: "Đội của chúng ta đang rất muốn giành chiến thắng để lấy cúp vàng.", exViV2: "Cô ấy đã thắng cuộc thi đánh vần.", exViV3: "Anh ấy đã giành được (thắng) rất nhiều huy chương môn bơi lội." },
+            { mean: "Mặc", v0: "wear", v2: "wore", v3: "worn", p0: "/weə(r)/", p2: "/wɔː(r)/", p3: "/wɔːn/", exV0: "I usually _______ jeans to work.", exV2: "She _______ a beautiful red dress yesterday.", exV3: "This jacket has been _______ out.", exViV0: "Tôi thường mặc quần jeans để đi làm.", exViV2: "Hôm qua cô ấy đã mặc một chiếc váy đỏ vô cùng lộng lẫy.", exViV3: "Chiếc áo khoác này đã bị mặc sờn rách hết cả." },
+            { mean: "Viết", v0: "write", v2: "wrote", v3: "written", p0: "/raɪt/", p2: "/rəʊt/", p3: "/ˈrɪtn/", exV0: "I _______ in my diary every night.", exV2: "Shakespeare _______ Romeo and Juliet.", exV3: "He has _______ three books so far.", exViV0: "Tôi viết nhật ký vào mỗi buổi tối.", exViV2: "Nhà văn Shakespeare đã chắp bút (viết) tác phẩm Romeo và Juliet.", exViV3: "Cho đến thời điểm hiện tại, anh ấy đã viết được ba cuốn sách." },
+            { mean: "Thức dậy", v0: "wake up", v2: "woke up", v3: "woken up", p0: "/weɪk ʌp/", p2: "/wəʊk ʌp/", p3: "/ˈwəʊkən ʌp/", exV0: "I _______ up at 6 AM every day.", exV2: "She _______ up late this morning.", exV3: "The loud noise has _______ me up.", exViV0: "Tôi thức dậy lúc 6 giờ vào mỗi buổi sáng.", exViV2: "Sáng nay cô ấy đã ngủ thức dậy muộn.", exViV3: "Tiếng ồn đinh tai nhức óc đó đã đánh thức tôi dậy." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false;
+
+        let currentAudio = null;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+
+        function createChalkDust() {
+            const container = document.getElementById('chalk-dust-container');
+            for (let i = 0; i < 30; i++) {
+                const dust = document.createElement('div');
+                dust.className = 'chalk-dust-particle';
+                const size = Math.random() * 6 + 2;
+                dust.style.width = `${size}px`;
+                dust.style.height = `${size}px`;
+                dust.style.left = `${Math.random() * 100}vw`;
+                dust.style.top = `${Math.random() * 100}vh`;
+                dust.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                dust.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(dust);
+            }
+        }
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur, delay = 0) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now + delay);
+                if (freq1 !== freq2) {
+                    osc.frequency.exponentialRampToValueAtTime(freq2, now + delay + dur * 0.5);
+                }
+
+                gain.gain.setValueAtTime(0, now + delay);
+                gain.gain.linearRampToValueAtTime(vol, now + delay + dur * 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            if (type === 'start') {
+                playTone('sine', 523.25, 1046.50, 0.1, 0.8);
+            } else if (type === 'success') {
+                playTone('sine', 523.25, 523.25, 0.08, 0.4, 0);
+                playTone('sine', 659.25, 659.25, 0.08, 0.5, 0.15);
+            } else if (type === 'error') {
+                playTone('sine', 300, 250, 0.1, 0.4, 0);
+            } else if (type === 'flip') {
+                playTone('sine', 300, 150, 0.03, 0.15, 0);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map(item => `
+                <tr class="hover:bg-white/10 transition-colors">
+                    <td class="p-3 sm:p-4 font-bold text-white border-b border-white/10">${item.mean}</td>
+                    <td class="p-3 sm:p-4 text-center border-b border-white/10">
+                        <span class="font-bold text-yellow-200">${item.v0}</span>
+                        <div class="text-xs text-yellow-300/65 font-sans">${item.p0}</div>
+                    </td>
+                    <td class="p-3 sm:p-4 text-center border-b border-white/10">
+                        <span class="font-bold text-orange-200">${item.v2}</span>
+                        <div class="text-xs text-orange-300/65 font-sans">${item.p2}</div>
+                    </td>
+                    <td class="p-3 sm:p-4 text-center border-b border-white/10">
+                        <span class="font-bold text-green-200">${item.v3}</span>
+                        <div class="text-xs text-green-300/65 font-sans">${item.p3}</div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+
+            const card = flashcards[currentIndex];
+            const cleanText = `${card.v0}, ${card.v2}, ${card.v3}`;
+            const encodedText = encodeURIComponent(cleanText);
+
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+
+            // Kênh phát chuẩn 1: Google Translate TTS (Mỹ chuẩn nữ)
+            const googleUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodedText}`;
+            currentAudio = new Audio(googleUrl);
+            currentAudio.play().catch(err => {
+                // Kênh phát phụ 2: Youdao (UK Nữ rõ)
+                const youdaoUrl = `https://dict.youdao.com/dictvoice?audio=${encodedText}&type=1`;
+                currentAudio = new Audio(youdaoUrl);
+                currentAudio.play().catch(yErr => {
+                    // Kênh phát phụ 3: Trình đọc SpeechSynthesis của hệ thống
+                    try {
+                        if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                            const utter = new SpeechSynthesisUtterance(`${card.v0} ... ${card.v2} ... ${card.v3}`);
+                            utter.lang = 'en-US';
+                            utter.rate = 0.75;
+
+                            const voices = window.speechSynthesis.getVoices();
+                            const femaleVoice = voices.find(v =>
+                                v.lang.startsWith('en') &&
+                                (v.name.toLowerCase().includes('female') ||
+                                    v.name.toLowerCase().includes('samantha') ||
+                                    v.name.toLowerCase().includes('zira') ||
+                                    v.name.toLowerCase().includes('google us english') ||
+                                    v.name.toLowerCase().includes('hazel') ||
+                                    v.name.toLowerCase().includes('susan'))
+                            );
+                            if (femaleVoice) {
+                                utter.voice = femaleVoice;
+                            }
+                            window.speechSynthesis.speak(utter);
+                        }
+                    } catch (synthErr) {
+                        console.error("Thiết bị không hỗ trợ phát âm nói gốc:", synthErr);
+                    }
+                });
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            // Ẩn bảng thành công nếu có
+            const overlay = document.getElementById('success-overlay');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            overlay.classList.remove('opacity-100');
+            document.getElementById('success-content').classList.add('scale-90');
+            document.getElementById('success-content').classList.remove('scale-100');
+
+            document.getElementById('word-mean').textContent = card.mean;
+
+            // Xóa rỗng các ô nhập
+            document.getElementById('input-v0').value = '';
+            document.getElementById('input-v2').value = '';
+            document.getElementById('input-v3').value = '';
+
+            // Reset style màu sắc lỗi (đỏ) của các ô nhập về mặc định
+            const inputs = ['input-v0', 'input-v2', 'input-v3'];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('border-red-400', 'bg-red-400/15', 'text-red-300');
+                el.classList.add('border-white/35', 'text-white');
+            });
+
+            // Gắn câu ví dụ nét đứt
+            document.getElementById('word-ex').innerHTML = `
+                <div class="text-left space-y-1.5 sm:space-y-2 text-white">
+                    <p class="flex items-start gap-2"><span class="text-yellow-300 font-black min-w-[30px]">V0:</span> <span>${card.exV0.replace('_______', '<span class="border-b-2 border-dashed border-yellow-300 inline-block w-20 mx-1"></span>')}</span></p>
+                    <p class="flex items-start gap-2"><span class="text-orange-300 font-black min-w-[30px]">V2:</span> <span>${card.exV2.replace('_______', '<span class="border-b-2 border-dashed border-orange-300 inline-block w-20 mx-1"></span>')}</span></p>
+                    <p class="flex items-start gap-2"><span class="text-green-300 font-black min-w-[30px]">V3:</span> <span>${card.exV3.replace('_______', '<span class="border-b-2 border-dashed border-green-300 inline-block w-20 mx-1"></span>')}</span></p>
+                </div>
+            `;
+            document.getElementById('word-exVi').innerHTML = `
+                <div class="text-left space-y-1 text-[11px] sm:text-xs mt-2 pt-2 border-t border-white/10 text-pink-300 leading-relaxed">
+                    <p>1. ${card.exViV0}</p>
+                    <p>2. ${card.exViV2}</p>
+                    <p>3. ${card.exViV3}</p>
+                </div>
+            `;
+
+            document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+            document.getElementById('top-prev-btn').style.display = currentIndex === 0 ? 'none' : 'flex';
+
+            // Auto-focus ô nhập đầu tiên
+            setTimeout(() => {
+                document.getElementById('input-v0').focus();
+            }, 100);
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const card = flashcards[currentIndex];
+
+            const v0El = document.getElementById('input-v0');
+            const v2El = document.getElementById('input-v2');
+            const v3El = document.getElementById('input-v3');
+
+            // Điền ký tự đầu tiên của từ hoặc hỗ trợ điền từ rỗng
+            if (!v0El.value.trim()) { v0El.value = card.v0.slice(0, 1) + "..."; }
+            else if (!v2El.value.trim()) { v2El.value = card.v2.slice(0, 1) + "..."; }
+            else if (!v3El.value.trim()) { v3El.value = card.v3.slice(0, 1) + "..."; }
+
+            hintUsedThisCard = true;
+            hintedWords.add(card.v0);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const v0Val = document.getElementById('input-v0').value.trim().toLowerCase();
+            const v2Val = document.getElementById('input-v2').value.trim().toLowerCase();
+            const v3Val = document.getElementById('input-v3').value.trim().toLowerCase();
+
+            const isV0Correct = (v0Val === card.v0.toLowerCase());
+            const isV2Correct = (v2Val === card.v2.toLowerCase());
+            const isV3Correct = (v3Val === card.v3.toLowerCase());
+
+            if (isV0Correct && isV2Correct && isV3Correct) {
+                playSound('success');
+                isTransitioning = true;
+
+                // Điền thông tin từ vựng có kèm phiên âm lên Overlay
+                document.getElementById('success-word-display').innerHTML = `
+                    <div class="text-center flex-1">
+                        <div class="text-[9px] text-yellow-300 uppercase tracking-widest font-black mb-0.5">V0</div>
+                        <span class="text-yellow-200 font-bold text-base sm:text-xl">${card.v0}</span> 
+                        <div class="text-[10px] text-yellow-400/70 font-normal font-sans mt-0.5">${card.p0}</div>
+                    </div>
+                    <div class="text-gray-400 text-sm font-light">➔</div>
+                    <div class="text-center flex-1">
+                        <div class="text-[9px] text-orange-300 uppercase tracking-widest font-black mb-0.5">V2</div>
+                        <span class="text-orange-200 font-bold text-base sm:text-xl">${card.v2}</span> 
+                        <div class="text-[10px] text-orange-400/70 font-normal font-sans mt-0.5">${card.p2}</div>
+                    </div>
+                    <div class="text-gray-400 text-sm font-light">➔</div>
+                    <div class="text-center flex-1">
+                        <div class="text-[9px] text-green-300 uppercase tracking-widest font-black mb-0.5">V3</div>
+                        <span class="text-green-200 font-bold text-base sm:text-xl">${card.v3}</span> 
+                        <div class="text-[10px] text-green-400/70 font-normal font-sans mt-0.5">${card.p3}</div>
+                    </div>
+                `;
+                document.getElementById('success-viet-mean').textContent = card.mean;
+
+                // Phát âm giọng đọc nữ luôn khi làm đúng
+                speakCurrentWord();
+
+                // Hiển thị Overlay mượt mà
+                const overlay = document.getElementById('success-overlay');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100');
+
+                const content = document.getElementById('success-content');
+                content.classList.remove('scale-90');
+                content.classList.add('scale-100');
+
+                // Tự động focus nút Tiếp Tục để người học có thể ấn Enter ngay để chuyển tiếp
+                setTimeout(() => {
+                    document.getElementById('success-next-btn').focus();
+                }, 100);
+
+            } else {
+                playSound('error');
+
+                // Hiệu ứng rung báo sai
+                const container = document.getElementById('flashcard');
+                container.classList.add('shake');
+                setTimeout(() => container.classList.remove('shake'), 400);
+
+                // Tô đỏ những trường bị sai
+                if (!isV0Correct) markInputError('input-v0');
+                if (!isV2Correct) markInputError('input-v2');
+                if (!isV3Correct) markInputError('input-v3');
+            }
+        }
+
+        function markInputError(id) {
+            const el = document.getElementById(id);
+            el.classList.remove('border-white/35', 'text-white');
+            el.classList.add('border-red-400', 'bg-red-400/15', 'text-red-300');
+        }
+
+        function nextCardDirect() {
+            if (!isTransitioning) return; // Tránh lỗi double-click khiến thẻ nhảy 2 lần liên tiếp
+
+            // Tắt overlay thành công trước khi chuyển
+            const overlay = document.getElementById('success-overlay');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            overlay.classList.remove('opacity-100');
+
+            if (currentIndex < flashcards.length - 1) {
+                currentIndex++;
+                renderCard();
+                isTransitioning = false;
+            } else {
+                showFinal();
+                isTransitioning = false;
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            setTimeout(() => {
+                nextCardDirect();
+            }, 100);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            playSound('flip');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 100);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateOptions = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+            const dateString = now.toLocaleDateString('vi-VN', dateOptions);
+            document.getElementById('completion-datetime').textContent = `Hoàn thành lúc: ${timeString} - ${dateString}`;
+
+            document.getElementById('score-percent').textContent = `${scorePercentage}%`;
+            document.getElementById('score-percent').className = `text-2xl sm:text-4xl font-black mt-1 ${scorePercentage >= 80 ? 'text-green-400' : (scorePercentage >= 50 ? 'text-yellow-300' : 'text-red-400')}`;
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.v0);
+                const statusIcon = usedHint
+                    ? '💡 <span class="text-red-300 text-xs sm:text-sm ml-1 font-sans">Hinted</span>'
+                    : '✅ <span class="text-green-300 text-xs sm:text-sm ml-1 font-sans">Perfect</span>';
+                const rowClass = usedHint ? 'bg-red-900/30' : 'hover:bg-white/10';
+
+                return `
+                    <tr class="transition-colors border-b border-dashed border-white/10 ${rowClass}">
+                        <td class="p-3 sm:p-4">${statusIcon}</td>
+                        <td class="p-3 sm:p-4 text-xs sm:text-sm">
+                            <div class="mb-1">
+                                <span class="text-yellow-300 font-bold">${item.v0}</span> <span class="text-yellow-400/60 font-sans">${item.p0}</span> - 
+                                <span class="text-orange-300 font-bold">${item.v2}</span> <span class="text-orange-400/60 font-sans">${item.p2}</span> - 
+                                <span class="text-green-300 font-bold">${item.v3}</span> <span class="text-green-400/60 font-sans">${item.p3}</span>
+                            </div>
+                        </td>
+                        <td class="p-3 sm:p-4 text-gray-200 text-xs sm:text-base font-bold">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0;
+            hintedWords.clear();
+
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+
+            populateWelcomeTable();
+            window.scrollTo(0, 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWelcomeTable();
+            createChalkDust();
+
+            const v0 = document.getElementById('input-v0');
+            const v2 = document.getElementById('input-v2');
+            const v3 = document.getElementById('input-v3');
+
+            // Ngăn lỗi bàn phím ảo của điện thoại nhân bản chữ khi nhảy dòng
+            v0.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation(); // Ngăn tràn sự kiện bấm nút
+                    setTimeout(() => {
+                        v2.focus();
+                    }, 50);
+                }
+            });
+            v2.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation(); // Ngăn tràn sự kiện bấm nút
+                    setTimeout(() => {
+                        v3.focus();
+                    }, 50);
+                }
+            });
+            v3.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation(); // Ngăn tràn sự kiện bấm nút
+                    checkAnswer();
+                }
+            });
+        });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+
+            // XỬ LÝ ENTER KHI BẢNG THÀNH CÔNG ĐANG HIỆN: Chuyển sang thẻ mới thủ công
+            const overlay = document.getElementById('success-overlay');
+            if (overlay && !overlay.classList.contains('pointer-events-none')) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    nextCardDirect();
+                    return;
+                }
+            }
+
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+        });
+    </script>
+</body>
+
+</html>
