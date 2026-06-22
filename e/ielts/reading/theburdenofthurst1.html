@@ -315,7 +315,7 @@
         class="max-w-5xl w-full mx-auto app-container flex flex-col h-[85vh] min-h-[600px] max-h-[850px] relative z-30">
 
         <!-- ================= WELCOME SCREEN ================= -->
-        <div id="welcome-screen" class="flex-1 flex flex-col" style="display: flex;">
+        <div id="welcome-screen" class="flex-1 flex flex-col min-h-0" style="display: flex;">
             <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
 
                 <div class="mb-4 shrink-0 border-b-2 border-[#c78b58] pb-4 text-center">
@@ -323,7 +323,7 @@
                         class="text-[var(--water-deep)] font-bold tracking-widest uppercase mb-1 flex items-center justify-center gap-2">
                         <span>💧</span> IELTS VOCABULARY
                     </p>
-                    <h1 class="text-3xl sm:text-5xl text-[var(--arid-dark)] font-lora font-bold">THE BURDEN OF THIRST 1
+                    <h1 class="text-3xl sm:text-5xl text-[var(--arid-dark)] font-lora font-bold">THE BURDEN OF THIRST
                     </h1>
                 </div>
 
@@ -431,7 +431,8 @@
                                             </svg>
                                         </button>
                                         <button id="hint-btn" onclick="giveHint()"
-                                            class="px-4 sm:px-6 h-12 btn-earth text-sm sm:text-base">HINT 💡</button>
+                                            class="px-4 sm:px-6 h-12 btn-earth text-sm sm:text-base disabled:opacity-50">HINT
+                                            💡</button>
                                         <button onclick="checkAnswer()"
                                             class="btn-water px-8 sm:px-12 h-12 text-lg sm:text-xl">
                                             POUR 💧
@@ -485,7 +486,7 @@
         </div>
 
         <!-- ================= SUMMARY SCREEN ================= -->
-        <div id="final-screen" class="flex-1 flex flex-col relative z-20" style="display: none;">
+        <div id="final-screen" class="flex-1 flex flex-col relative z-20 min-h-0" style="display: none;">
 
             <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0">
                 <div class="text-center mb-6 shrink-0">
@@ -914,7 +915,6 @@
             document.getElementById('final-screen').style.display = 'none';
             document.getElementById('welcome-screen').style.display = 'flex';
             populateWelcomeTable();
-            // scroll top table
             document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
         }
 
