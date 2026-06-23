@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS READING - THE DAVIES SISTERS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            border: 2px solid #f8fafc;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Formatting Styles */
+        #passage-content b,
+        #passage-content strong {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        #passage-content i,
+        #passage-content em {
+            font-style: italic;
+        }
+
+        #passage-content u {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        #passage-content strike,
+        #passage-content s {
+            text-decoration: line-through;
+        }
+
+        ::selection {
+            background: #c7d2fe;
+            color: #1e3a8a;
+        }
+
+        /* Input & Select transitions */
+        .answer-input,
+        .answer-select {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .answer-input:focus,
+        .answer-select:focus {
+            transform: scale(1.02);
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234F46E5%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right .7rem top 50%;
+            background-size: .65rem auto;
+            padding-right: 2rem !important;
+        }
+    </style>
+</head>
+
+<body
+    class="h-screen flex flex-col bg-slate-50 text-slate-800 overflow-hidden selection:bg-indigo-200 selection:text-indigo-900">
+    <div id="app" class="flex flex-col h-full w-full relative max-w-[1600px] mx-auto bg-white shadow-2xl"></div>
+
+    <script>
+        const quizData = {
+            title: "The Davies Sisters",
+            passage: `
+                <h2 class='text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight'>The Davies Sisters</h2>
+                <h3 class='text-lg font-medium text-slate-600 mb-6 italic'>Between 1908 and 1924, Gwendoline and Margaret Davies amassed one of the largest collections of late-nineteenth and early-twentieth-century French paintings in Britain.</h3>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Gwendoline (1882–1951) and Margaret (1884–1963) Davies were the granddaughters of David Davies, a Welshman who amassed a fortune in the shipping and mining industries. In 1907, when Gwendoline came into her inheritance (Margaret would follow in 1909), the sisters were said to be the wealthiest unmarried women in Britain. Their religious upbringing in rural Wales gave them a deep sense of social responsibility and they chose to use their inheritance for cultural and philanthropic purposes.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>While there was no real family history of art collecting, the sisters’ education was rigorously geared toward such pursuits. Their London school focused on cultural rather than academic study, and they travelled extensively with their governess, Jane Blaker, visiting art galleries and making extensive notes on the collections there.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>The sisters began to make regular art purchases from 1908, which roughly coincided with the dates of their inheritance. They took advice from various people, including the art dealer Hugh Blaker (the brother of Jane Blaker) and David Croal Thompson, who was also an art dealer. While it was long assumed that these men were largely responsible for the nature of the sisters’ collection, it has recently been accepted that Gwendoline and Margaret retained a far more active role in the process.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>The sisters’ journals reveal their preference for Old Master paintings. Yet they initially made very few attempts to secure any such works. While the sisters were wealthy in relative terms, their income was nothing compared to the fortunes of American art collectors of this period, such as J. Pierpont Morgan. Quite simply, high quality Old Master works were, if not beyond their means, then beyond what they were willing to pay for them. Instead, their early purchases were of the fashionable, safe variety, and included, for example, paintings by the French artist Jean-Baptiste-Camille Corot.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>However, it was only a few years before their collecting took a new direction and they turned to the work of the French Impressionists. We know that Hugh Blaker, as a champion of contemporary French art had a hand in the decision, and we know also that they would have seen examples on their various trips to Paris. Whatever the precise reason for this change, their first purchases of Impressionist art, made in October 1912, were scenes of Venice by the French artist Claude Monet. Over the next 12 years, the sisters amassed the bulk of their Impressionist collection, including six further works by Monet, two more by Manet, and three by Renoir, including his well-known painting La Parisienne.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>The First World War (1914–1918) played a part in the development of the sisters’ collection. Their initial response to the war effort was to finance the safe passage of artists from occupied Belgium to Wales, as a humanitarian act, but also with the hope of establishing a vibrant artists’ community in the area. Later in the conflict, both sisters decided to volunteer at a canteen for troops at Troyes, in northern France; Gwendoline in 1916, followed by Margaret in 1917.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>It was tedious and distressing work, which would have a permanent effect on Gwendoline’s health. Yet on one of numerous trips to nearby Paris, she visited the Bernheim-Jeune Gallery. Here she acquired two works by Cézanne – Provençal Landscape and The François Zola Dam. The paintings were shipped directly to Bath, England, where they became the first works by Cézanne to go on display in a public gallery in Britain.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Commentators have often described the sisters as unlikely pioneer collectors. Much is made of their isolation in rural Wales and the fact that they didn’t make friends with artists or gallery owners. Yet they didn’t feel obliged to follow fashionable tastes and were free to pursue their own preferences. Although they relied on a trusted circle of advisers, they made frequent trips to London and Paris, and also regularly had paintings sent to their home for consideration.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>By the early 1920s, Gwendoline felt increasingly uncomfortable buying art works when faced with the poverty and social upheaval created by the First World War. Her philanthropic pursuits then became focused almost exclusively on social causes and the development of the sisters’ home at Gregynog Hall into a conference center and venue for the Gregynog Festival of Music and Poetry. Gwendoline made her final art purchase in March 1926. Margaret also stopped collecting around this time, but started again in the 1930s acquiring, on a relatively small scale, work by contemporary British artists.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>The sisters collected French Impressionist paintings at a time when such art was routinely ignored by individuals and institutions alike. The Gwendoline and Margaret Davies collection, donated in 1951 and 1963 respectively to the National Museum Wales, contains major examples of work by leading French Impressionists. In collecting paintings that they loved, the sisters created a lasting and meaningful cultural legacy for the people of Wales and beyond.</p>
+            `,
+            passageTranslation: `
+                <h2 class='text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight'>Chị em nhà Davies</h2>
+                <h3 class='text-lg font-medium text-slate-600 mb-6 italic'>Từ năm 1908 đến 1924, Gwendoline và Margaret Davies đã thu thập được một trong những bộ sưu tập tranh Pháp cuối thế kỷ 19, đầu thế kỷ 20 lớn nhất tại Anh.</h3>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Gwendoline (1882–1951) và Margaret (1884–1963) Davies là cháu gái của David Davies, một người xứ Wales đã tích lũy được khối tài sản khổng lồ trong ngành vận tải biển và khai thác mỏ. Năm 1907, khi Gwendoline nhận thừa kế (Margaret nhận vào năm 1909), hai chị em được cho là những phụ nữ độc thân giàu có nhất nước Anh. Sự nuôi dưỡng tôn giáo ở vùng nông thôn xứ Wales đã mang lại cho họ ý thức sâu sắc về trách nhiệm xã hội, và họ đã chọn sử dụng tài sản thừa kế của mình cho các mục đích văn hóa và từ thiện.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Mặc dù gia đình không thực sự có truyền thống sưu tập nghệ thuật, việc giáo dục hai chị em lại được định hướng mạnh mẽ vào những thú vui này. Trường học ở London của họ tập trung vào nghiên cứu văn hóa thay vì học thuật, và họ thường xuyên đi du lịch cùng gia sư của mình, Jane Blaker, đến thăm các phòng tranh và ghi chép tỉ mỉ về các bộ sưu tập ở đó.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Hai chị em bắt đầu mua nghệ thuật thường xuyên từ năm 1908, trùng với thời điểm họ nhận thừa kế. Họ đã nhận được lời khuyên từ nhiều người, bao gồm nhà buôn nghệ thuật Hugh Blaker (anh trai của Jane Blaker) và David Croal Thompson, cũng là một nhà buôn nghệ thuật. Mặc dù trước đây người ta cho rằng những người đàn ông này chịu trách nhiệm chính về bản chất bộ sưu tập của hai chị em, nhưng gần đây đã được thừa nhận rằng Gwendoline và Margaret giữ một vai trò chủ động hơn nhiều trong quá trình này.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Nhật ký của hai chị em cho thấy họ thích những bức tranh của các Bậc thầy Cổ điển (Old Master). Tuy nhiên, ban đầu họ rất ít nỗ lực để mua bất kỳ tác phẩm nào như vậy. Mặc dù hai chị em tương đối giàu có, nhưng thu nhập của họ không là gì so với tài sản của các nhà sưu tập nghệ thuật người Mỹ thời kỳ này. Đơn giản là những tác phẩm Cổ điển chất lượng cao, nếu không phải là vượt quá khả năng của họ, thì cũng vượt quá mức giá họ sẵn sàng trả. Thay vào đó, những giao dịch đầu tiên của họ là những bức tranh an toàn, hợp thời, bao gồm các tác phẩm của họa sĩ người Pháp Jean-Baptiste-Camille Corot.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Tuy nhiên, chỉ vài năm sau, sở thích sưu tập của họ rẽ sang một hướng mới khi họ chuyển sang các tác phẩm của trường phái Ấn tượng Pháp. Chúng ta biết rằng Hugh Blaker, người ủng hộ nghệ thuật đương đại Pháp, đã có nhúng tay vào quyết định này, và hai chị em hẳn cũng đã thấy các tác phẩm này trong những chuyến đi đến Paris. Bất kể lý do thực sự là gì, lần đầu họ mua nghệ thuật Ấn tượng vào tháng 10/1912 là các bức phong cảnh Venice của họa sĩ người Pháp Claude Monet. Trong 12 năm tiếp theo, họ đã mua được phần lớn bộ sưu tập Ấn tượng của mình.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Chiến tranh Thế giới thứ nhất (1914–1918) đã đóng một vai trò trong sự phát triển bộ sưu tập của hai chị em. Phản ứng ban đầu của họ đối với chiến tranh là tài trợ việc di tản an toàn cho các nghệ sĩ từ Bỉ bị chiếm đóng đến xứ Wales, như một hành động nhân đạo. Sau đó trong cuộc xung đột, cả hai chị em quyết định tình nguyện làm việc tại một căng-tin cho quân đội ở Troyes, miền bắc nước Pháp; Gwendoline vào năm 1916, tiếp theo là Margaret vào năm 1917.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Đó là một công việc tẻ nhạt và đau buồn, để lại ảnh hưởng vĩnh viễn đến sức khỏe của Gwendoline. Tuy nhiên, trong một chuyến đi tới Paris gần đó, cô đã đến thăm Phòng tranh Bernheim-Jeune và mua hai tác phẩm của Cézanne. Các bức tranh được chuyển thẳng đến Bath, Anh, nơi chúng trở thành những tác phẩm đầu tiên của Cézanne được trưng bày trong một phòng tranh công cộng ở Anh.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Các nhà bình luận thường mô tả hai chị em là những nhà sưu tập tiên phong ngoài dự đoán. Người ta hay nhắc đến sự cô lập của họ ở vùng nông thôn xứ Wales và việc họ không kết bạn với các nghệ sĩ hay chủ phòng tranh. Tuy nhiên, họ không cảm thấy bị bắt buộc phải chạy theo thị hiếu thời thượng và được tự do theo đuổi sở thích riêng. Mặc dù dựa vào một nhóm cố vấn đáng tin cậy, họ thường xuyên đến London và Paris, đồng thời cũng thường xuyên gửi tranh về nhà để cân nhắc.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Vào đầu những năm 1920, Gwendoline ngày càng cảm thấy không thoải mái khi mua các tác phẩm nghệ thuật trong khi chứng kiến cảnh nghèo đói và biến động xã hội do Thế chiến thứ nhất gây ra. Các hoạt động từ thiện của bà sau đó gần như chỉ tập trung vào các mục đích xã hội. Gwendoline mua tác phẩm nghệ thuật cuối cùng vào tháng 3 năm 1926. Margaret cũng ngừng sưu tập vào khoảng thời gian này, nhưng bắt đầu lại vào những năm 1930 với quy mô tương đối nhỏ, mua các tác phẩm của các nghệ sĩ đương đại Anh.</p>
+                
+                <p class='mb-5 leading-relaxed text-slate-700 text-lg'>Hai chị em đã sưu tầm các bức tranh theo trường phái Ấn tượng Pháp vào thời điểm nghệ thuật này thường bị phớt lờ. Bằng việc sưu tập những bức tranh mà họ yêu thích, hai chị em đã tạo ra một di sản văn hóa lâu dài và có ý nghĩa cho người dân xứ Wales và xa hơn nữa.</p>
+            `,
+            sections: [
+                {
+                    type: "notes",
+                    instruction: "Complete the notes below. Choose <b>ONE WORD ONLY</b> from the passage for each answer.<br>Write your answers in boxes 1–7.",
+                    title: "Gwendoline and Margaret Davies",
+                    text: `
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-lg mb-3">Family and early life</h4>
+                                <ul class="list-disc pl-6 space-y-3 text-slate-700">
+                                    <li>their grandfather’s wealth came from [1] and transportation businesses</li>
+                                    <li>their upbringing gave them a sense of social responsibility</li>
+                                    <li>their [2] was designed to give them an interest in activities such as collecting art</li>
+                                    <li>their governess took them on trips to art galleries</li>
+                                    <li>they took lengthy [3] about the things they saw in art galleries</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-lg mb-3">The sisters as art collectors</h4>
+                                <ul class="list-disc pl-6 space-y-3 text-slate-700">
+                                    <li>their [4] showed they liked Old Master paintings, but they were expensive to buy</li>
+                                    <li>their early purchases were safe, popular paintings</li>
+                                    <li>the first Impressionist paintings they bought showed places in [5]</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-lg mb-3">Impact of First World War</h4>
+                                <ul class="list-disc pl-6 space-y-3 text-slate-700">
+                                    <li>they helped bring artists from Belgium to Wales</li>
+                                    <li>they worked in a [6] for soldiers in France</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-lg mb-3">Opinions about the sisters as art collectors</h4>
+                                <ul class="list-disc pl-6 space-y-3 text-slate-700">
+                                    <li>were not considered typical collectors – they lived in isolation in the countryside and did not have any [7] who were artists</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `,
+                    questions: [
+                        { id: 1, correct: "mining", explanation: "Paragraph 1: '...amassed a fortune in the shipping and mining industries.'" },
+                        { id: 2, correct: "education", explanation: "Paragraph 2: '...the sisters’ education was rigorously geared toward such pursuits.'" },
+                        { id: 3, correct: "notes", explanation: "Paragraph 2: '...visiting art galleries and making extensive notes on the collections there.'" },
+                        { id: 4, correct: "journals", explanation: "Paragraph 4: 'The sisters’ journals reveal their preference for Old Master paintings.'" },
+                        { id: 5, correct: "Venice", explanation: "Paragraph 5: '...their first purchases of Impressionist art... were scenes of Venice...'" },
+                        { id: 6, correct: "canteen", explanation: "Paragraph 6: '...both sisters decided to volunteer at a canteen for troops at Troyes...'" },
+                        { id: 7, correct: "friends", explanation: "Paragraph 8: '...and the fact that they didn’t make friends with artists or gallery owners.'" }
+                    ]
+                },
+                {
+                    type: "tfng",
+                    instruction: "Do the following statements agree with the information given in Reading Passage 1?<br>In boxes 8–13, select <b>TRUE</b>, <b>FALSE</b>, or <b>NOT GIVEN</b>.",
+                    questions: [
+                        { id: 8, text: "The Davies sisters’ childhood influenced the way they decided to use their wealth.", correct: "TRUE", explanation: "Paragraph 1: 'Their religious upbringing in rural Wales gave them a deep sense of social responsibility and they chose to use their inheritance for cultural and philanthropic purposes.'" },
+                        { id: 9, text: "The Jean-Baptiste-Camille Corot paintings in the Davies sisters’ collection were purchased from a gallery in France.", correct: "NOT GIVEN", explanation: "Paragraph 4 mentions they bought paintings by Corot, nhưng không hề đề cập đến việc họ mua những bức tranh này ở đâu (từ một phòng tranh ở Pháp hay nơi khác)." },
+                        { id: 10, text: "Hugh Blaker opposed the Davies sisters’ decision to buy art by French Impressionists.", correct: "FALSE", explanation: "Paragraph 5: 'We know that Hugh Blaker, as a champion of contemporary French art had a hand in the decision...' - Hugh Blaker có tham gia giúp sức chứ không phản đối (oppose)." },
+                        { id: 11, text: "The exhibition of Cézanne paintings at the Bath gallery was very popular with the public.", correct: "NOT GIVEN", explanation: "Paragraph 7 nói rằng tranh của Cézanne được chuyển tới triển lãm tại Bath, nhưng không đề cập đến việc nó có được công chúng yêu thích (popular with the public) hay không." },
+                        { id: 12, text: "The impact of the First World War encouraged Gwendoline to reconsider her interest in collecting art.", correct: "TRUE", explanation: "Paragraph 9: 'By the early 1920s, Gwendoline felt increasingly uncomfortable buying art works when faced with the poverty and social upheaval created by the First World War.'" },
+                        { id: 13, text: "The Davies sisters bought French Impressionist art during a period when very few people were doing so.", correct: "TRUE", explanation: "Paragraph 10: 'The sisters collected French Impressionist paintings at a time when such art was routinely ignored by individuals and institutions alike.'" }
+                    ]
+                }
+            ]
+        };
+
+        const INITIAL_TIME = 20 * 60; // 20 minutes
+
+        const state = {
+            answers: {},
+            results: {},
+            isSubmitted: false,
+            score: 0,
+            maxScore: 13,
+            showPassageTranslation: false,
+            formattedPassage: null,
+            formattedPassageTrans: null,
+            timeLeft: INITIAL_TIME,
+            timerInterval: null
+        };
+
+        window.saveFormatting = () => {
+            const passageEl = document.getElementById('passage-content');
+            if (passageEl) {
+                if (state.showPassageTranslation) {
+                    state.formattedPassageTrans = passageEl.innerHTML;
+                } else {
+                    state.formattedPassage = passageEl.innerHTML;
+                }
+            }
+        };
+
+        window.formatText = (command, value = null) => {
+            const target = document.getElementById('passage-content');
+            if (!target) return;
+
+            target.setAttribute('contenteditable', 'true');
+            target.focus();
+
+            if (command === 'hiliteColor') {
+                document.execCommand('backColor', false, value);
+            } else {
+                document.execCommand(command, false, value);
+            }
+
+            target.setAttribute('contenteditable', 'false');
+            saveFormatting();
+
+            if (window.getSelection) {
+                if (window.getSelection().empty) window.getSelection().empty();
+                else if (window.getSelection().removeAllRanges) window.getSelection().removeAllRanges();
+            }
+        };
+
+        window.generateInputHtml = (id, sizeClass = "w-28 md:w-32", placeholder = "", type = "text", options = []) => {
+            let baseClasses = `inline-block ${sizeClass} px-3 py-1.5 mx-1 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 font-bold text-center text-[15px] shadow-sm uppercase `;
+            let feedbackIcon = '';
+
+            const userAnswer = state.answers[id] || '';
+            const isAnswered = userAnswer.trim() !== '';
+
+            if (!state.isSubmitted) {
+                baseClasses += isAnswered ? 'border-indigo-400 bg-indigo-50 text-indigo-800' : 'border-slate-300 bg-slate-50 text-slate-800';
+            } else {
+                const isCorrect = state.results[id];
+                baseClasses += isCorrect ? 'border-emerald-500 bg-emerald-50 text-emerald-800' : 'border-rose-500 bg-rose-50 text-rose-800';
+                feedbackIcon = isCorrect ?
+                    `<i class="fa-solid fa-circle-check text-emerald-500 ml-1.5 text-lg align-middle"></i>` :
+                    `<i class="fa-solid fa-circle-xmark text-rose-500 ml-1.5 text-lg align-middle"></i>`;
+            }
+
+            const badge = `<span class="font-bold text-indigo-600 mr-1 bg-indigo-100 px-2 py-0.5 rounded text-sm shadow-sm">${id}</span>`;
+
+            if (type === 'dropdown') {
+                baseClasses += ' answer-select cursor-pointer text-left pl-3';
+                const opts = options.map(opt => `<option value="${opt}" ${userAnswer === opt ? 'selected' : ''}>${opt}</option>`).join('');
+                return `${badge}
+                    <select class="${baseClasses}" 
+                            ${state.isSubmitted ? 'disabled' : ''} 
+                            onchange="handleInputChange(${id}, this.value)">
+                        <option value="" disabled ${!isAnswered ? 'selected' : ''}>${placeholder}</option>
+                        ${opts}
+                    </select>${feedbackIcon}`;
+            } else {
+                baseClasses += ' answer-input';
+                return `${badge}
+                    <input type="text" 
+                        class="${baseClasses}" 
+                        value="${userAnswer}" 
+                        ${state.isSubmitted ? 'disabled' : ''} 
+                        oninput="handleInputChange(${id}, this.value)" 
+                        placeholder="${placeholder}"
+                        autocomplete="off" 
+                        spellcheck="false">${feedbackIcon}`;
+            }
+        };
+
+        window.restoreInputs = () => {
+            const noteSec = quizData.sections.find(s => s.type === 'notes');
+            if (noteSec) {
+                noteSec.questions.forEach(q => {
+                    const wrapper = document.getElementById(`input-wrap-${q.id}`);
+                    if (wrapper) {
+                        wrapper.outerHTML = `<span id="input-wrap-${q.id}" class="inline-block whitespace-nowrap align-middle my-1">${window.generateInputHtml(q.id, "w-32 md:w-40")}</span>`;
+                    }
+                });
+            }
+        };
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function startTimer() {
+            if (!state.timerInterval && !state.isSubmitted) {
+                state.timerInterval = setInterval(() => {
+                    if (state.timeLeft > 0) {
+                        state.timeLeft--;
+                        const timerEl = document.getElementById('timer-display');
+                        if (timerEl) {
+                            timerEl.innerText = formatTime(state.timeLeft);
+                            if (state.timeLeft <= 300) {
+                                timerEl.parentElement.classList.add('bg-rose-100', 'text-rose-700', 'border-rose-300');
+                                timerEl.parentElement.classList.remove('bg-indigo-800', 'text-white', 'border-indigo-700');
+                                document.getElementById('timer-icon').classList.replace('text-indigo-400', 'text-rose-600');
+                            }
+                        }
+                    } else {
+                        calculateScore();
+                    }
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            clearInterval(state.timerInterval);
+            state.timerInterval = null;
+        }
+
+        function renderApp() {
+            const app = document.getElementById('app');
+            const passageHtml = state.showPassageTranslation ?
+                (state.formattedPassageTrans || quizData.passageTranslation) :
+                (state.formattedPassage || quizData.passage);
+
+            app.innerHTML = `
+                <!-- Header -->
+                <div class="flex-none bg-indigo-900 text-white p-4 flex flex-col sm:flex-row justify-between items-center z-10 shadow-md">
+                    <div class="flex items-center gap-3 mb-3 sm:mb-0">
+                        <div class="bg-indigo-800 p-2 rounded-lg"><i class="fa-solid fa-book-open text-indigo-300"></i></div>
+                        <div>
+                            <h1 class="text-xl font-bold tracking-wide">IELTS READING PRACTICE</h1>
+                            <p class="text-indigo-300 text-sm font-medium">Reading Passage 1</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="bg-indigo-800 px-4 py-2 rounded-lg font-mono text-lg font-bold flex items-center gap-2 border border-indigo-700 transition-colors duration-300" id="timer-box">
+                            <i id="timer-icon" class="fa-regular fa-clock text-indigo-400"></i>
+                            <span id="timer-display">${formatTime(state.timeLeft)}</span>
+                        </div>
+                        <button onclick="togglePassageTranslation()" class="px-4 py-2 bg-white text-indigo-900 hover:bg-indigo-50 transition-colors rounded-lg text-sm font-bold shadow flex items-center gap-2">
+                            <i class="fa-solid fa-language"></i> ${state.showPassageTranslation ? 'View English' : 'Dịch Việt'}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+                    
+                    <!-- Left Panel: Passage & Toolbar -->
+                    <div class="w-full lg:w-1/2 flex flex-col border-r border-slate-200 bg-white relative">
+                        <!-- Toolbar -->
+                        <div class="bg-slate-100 border-b border-slate-200 p-2 flex gap-2 justify-center shadow-sm z-10">
+                            <button onclick="formatText('bold')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Bold"><i class="fa-solid fa-bold"></i></button>
+                            <button onclick="formatText('italic')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Italic"><i class="fa-solid fa-italic"></i></button>
+                            <button onclick="formatText('underline')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-700 transition" title="Underline"><i class="fa-solid fa-underline"></i></button>
+                            <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
+                            <button onclick="formatText('hiliteColor', '#fef08a')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-yellow-600 transition" title="Highlight Yellow"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onclick="formatText('hiliteColor', '#bbf7d0')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-green-600 transition" title="Highlight Green"><i class="fa-solid fa-highlighter"></i></button>
+                            <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
+                            <button onclick="formatText('removeFormat')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 text-slate-500 transition" title="Clear Format"><i class="fa-solid fa-eraser"></i></button>
+                        </div>
+                        
+                        <!-- Passage Container -->
+                        <div id="passage-container" class="flex-1 p-6 lg:p-8 overflow-y-auto custom-scrollbar">
+                            <div id="passage-content" class="format-target outline-none" contenteditable="false">
+                                ${passageHtml}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Questions & Footer (Flex Col) -->
+                    <div class="w-full lg:w-1/2 flex flex-col bg-slate-50 relative overflow-hidden">
+                        
+                        <!-- Questions Scrollable Area -->
+                        <div id="questions-container" class="flex-1 p-6 lg:p-8 overflow-y-auto custom-scrollbar space-y-8">
+                            
+                            <!-- Results Summary -->
+                            ${state.isSubmitted ? `
+                                <div class="bg-white border-2 ${state.score === state.maxScore ? 'border-emerald-400' : 'border-indigo-400'} rounded-2xl p-6 shadow-md text-center animate-[fadeIn_0.5s_ease-out]">
+                                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Results</h2>
+                                    <div class="text-4xl font-black ${state.score === state.maxScore ? 'text-emerald-500' : 'text-indigo-600'} mb-2">
+                                        ${state.score} / ${state.maxScore}
+                                    </div>
+                                    <p class="text-slate-500 font-medium">Time Remaining: ${formatTime(state.timeLeft)}</p>
+                                    <button onclick="resetQuiz()" class="mt-4 px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold transition-colors">Try Again</button>
+                                </div>
+                            ` : ''}
+
+                            <!-- Sections Render -->
+                            ${quizData.sections.map(sec => renderSection(sec)).join('')}
+
+                        </div>
+
+                        <!-- Sticky Bottom Bar for Action (Flex-none prevents overlapping) -->
+                        ${!state.isSubmitted ? `
+                            <div class="flex-none w-full bg-white border-t border-slate-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20 flex justify-end">
+                                <button onclick="calculateScore()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all transform active:scale-95 flex items-center gap-2 text-lg">
+                                    <i class="fa-solid fa-paper-plane"></i> Nộp Bài (Submit)
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            restoreInputs();
+            startTimer();
+        }
+
+        function renderSection(sec) {
+            let content = `
+                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-5 mb-4 shadow-sm">
+                    <p class="text-indigo-900 font-medium leading-relaxed">${sec.instruction}</p>
+                </div>
+            `;
+
+            if (sec.type === 'notes') {
+                const formattedText = sec.text.replace(/\[(\d+)\]/g, `<span id="input-wrap-$1"></span>`);
+                content += `
+                    <div class="p-6 border-2 border-slate-200 bg-white rounded-xl shadow-sm">
+                        ${sec.title ? `<div class="font-bold text-center text-xl mb-6 text-slate-800">${sec.title}</div>` : ''}
+                        <div class="text-slate-700 text-[16px] leading-loose">
+                            ${formattedText}
+                        </div>
+                        
+                        ${state.isSubmitted ? `
+                            <div class="mt-6 space-y-2 pt-4 border-t border-slate-100">
+                                ${sec.questions.map(q => !state.results[q.id] ? `
+                                    <div class="p-3 bg-rose-50 border border-rose-100 rounded-lg text-sm">
+                                        <div class="font-bold text-rose-600 flex items-center gap-2"><span class="bg-white px-1.5 py-0.5 rounded shadow-sm border border-rose-200">${q.id}</span> Correct: <span class="bg-rose-100 px-2 rounded">${q.correct}</span></div>
+                                        ${q.explanation ? `<div class="text-rose-800 mt-2 text-xs leading-relaxed"><i class="fa-solid fa-circle-info mr-1"></i> ${q.explanation}</div>` : ''}
+                                    </div>
+                                ` : `
+                                    <div class="p-3 bg-emerald-50 border border-emerald-100 rounded-lg text-sm">
+                                        <div class="font-bold text-emerald-700 flex items-center gap-2"><span class="bg-white px-1.5 py-0.5 rounded shadow-sm border border-emerald-200">${q.id}</span> ${q.correct}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            else if (sec.type === 'tfng') {
+                content += `<div class="space-y-4">`;
+                sec.questions.forEach(q => {
+                    const isCorrect = state.results[q.id];
+                    content += `
+                        <div class="p-5 border-2 rounded-xl transition-colors ${state.isSubmitted ? (isCorrect ? 'border-emerald-200 bg-emerald-50/30' : 'border-rose-200 bg-rose-50/30') : 'border-slate-200 bg-white hover:border-indigo-200 hover:shadow-md'}">
+                            <div class="flex flex-col xl:flex-row xl:items-start gap-4">
+                                <div class="flex-1 text-slate-700 font-medium leading-relaxed text-base pt-1">${q.text}</div>
+                                <div class="shrink-0 flex items-center justify-end">
+                                    ${window.generateInputHtml(q.id, 'w-36', 'Select...', 'dropdown', ['TRUE', 'FALSE', 'NOT GIVEN'])}
+                                </div>
+                            </div>
+                            ${state.isSubmitted && !isCorrect ? `
+                                <div class="mt-3 text-sm font-bold text-rose-600 flex items-center gap-2"><i class="fa-solid fa-key"></i> Correct Answer: <span class="bg-rose-100 px-2 py-1 rounded text-rose-800">${q.correct}</span></div>
+                            ` : ''}
+                            ${state.isSubmitted && q.explanation ? `
+                                <div class="mt-3 text-sm text-indigo-700 leading-relaxed bg-indigo-50/50 p-3 rounded-lg border border-indigo-100"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> <b>Explanation:</b> ${q.explanation}</div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                content += `</div>`;
+            }
+
+            return `<div class="mb-8">${content}</div>`;
+        }
+
+        window.calculateScore = () => {
+            saveFormatting();
+            stopTimer();
+            state.score = 0;
+            state.results = {};
+
+            quizData.sections.forEach(sec => {
+                sec.questions.forEach(q => {
+                    const isCorrect = (state.answers[q.id] || "").toLowerCase().trim() === q.correct.toLowerCase().trim();
+                    state.results[q.id] = isCorrect;
+                    if (isCorrect) state.score++;
+                });
+            });
+
+            state.isSubmitted = true;
+            renderApp();
+
+            const qContainer = document.getElementById('questions-container');
+            if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.resetQuiz = () => {
+            state.answers = {};
+            state.results = {};
+            state.isSubmitted = false;
+            state.score = 0;
+            state.timeLeft = INITIAL_TIME;
+            renderApp();
+        };
+
+        window.handleInputChange = (qId, val) => {
+            state.answers[qId] = val;
+            const element = document.querySelector(`[onchange="handleInputChange(${qId}, this.value)"], [oninput="handleInputChange(${qId}, this.value)"]`);
+            if (element) {
+                if (val.trim() !== '') {
+                    element.classList.remove('bg-slate-50', 'border-slate-300', 'text-slate-800');
+                    element.classList.add('bg-indigo-50', 'border-indigo-400', 'text-indigo-800');
+                } else {
+                    element.classList.add('bg-slate-50', 'border-slate-300', 'text-slate-800');
+                    element.classList.remove('bg-indigo-50', 'border-indigo-400', 'text-indigo-800');
+                }
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            saveFormatting();
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        // Initialize application
+        renderApp();
+    </script>
+</body>
+
+</html>
