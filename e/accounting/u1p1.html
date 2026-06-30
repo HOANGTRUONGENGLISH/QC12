@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCOUNTING - UNIT 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Roboto Slab for a professional, ledger feel; Inter for readability -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Slab:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --acc-green: #15803d;
+            /* Forest Green - Profit/Success */
+            --acc-navy: #0f172a;
+            /* Slate 900 - Corporate/Text */
+            --acc-blue: #1d4ed8;
+            /* Blue 700 - Links/Secondary */
+            --acc-gold: #b45309;
+            /* Amber 700 - Warning/Hint */
+            --acc-red: #b91c1c;
+            /* Red 700 - Loss/Error */
+            --acc-paper: #ffffff;
+            --acc-bg: #f8fafc;
+            --acc-border: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--acc-bg);
+            /* Sổ tay kế toán (Ledger paper background) */
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--acc-navy);
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-serif-acc {
+            font-family: 'Roboto Slab', serif;
+        }
+
+        /* --- Corporate Panel --- */
+        .acc-panel {
+            background-color: var(--acc-paper);
+            border: 2px solid var(--acc-navy);
+            border-radius: 4px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .acc-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--acc-green);
+        }
+
+        /* --- Flip Card Structure --- */
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--acc-paper);
+            border: 1px solid var(--acc-border);
+            border-radius: 4px;
+        }
+
+        .flip-card-back {
+            transform: rotateY(-180deg);
+            background-color: #f0fdf4;
+            /* Very light green tint */
+        }
+
+        .flip-card.flipped .flip-card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .flip-card-back {
+            pointer-events: none;
+        }
+
+        /* --- Tax Form Input Style --- */
+        .tax-input {
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid var(--acc-navy);
+            color: var(--acc-navy);
+            text-align: center;
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 0;
+            margin: 0 1px;
+        }
+
+        .tax-input {
+            width: 24px;
+            height: 36px;
+        }
+
+        @media (min-width: 400px) {
+            .tax-input {
+                width: 28px;
+                height: 40px;
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .tax-input {
+                width: 34px;
+                height: 46px;
+                font-size: 2rem;
+            }
+        }
+
+        .tax-input:focus {
+            outline: none;
+            border-bottom-color: var(--acc-green);
+            background-color: rgba(21, 128, 61, 0.05);
+        }
+
+        .tax-input.hinted {
+            color: var(--acc-gold);
+            border-bottom-color: var(--acc-gold);
+            pointer-events: none;
+        }
+
+        .tax-input.error {
+            color: var(--acc-red);
+            border-bottom-color: var(--acc-red);
+            background-color: rgba(185, 28, 28, 0.05);
+        }
+
+        /* --- Animations --- */
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake-error {
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--acc-bg);
+            border-left: 1px solid var(--acc-border);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Buttons */
+        .btn-corporate {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-corporate:active {
+            transform: scale(0.98);
+        }
+
+        .btn-corporate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background-color: var(--acc-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #166534;
+            box-shadow: 0 4px 6px -1px rgba(21, 128, 61, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--acc-navy);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #1e293b;
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2);
+        }
+
+        .btn-warning {
+            background-color: var(--acc-paper);
+            color: var(--acc-gold);
+            border-color: var(--acc-gold);
+        }
+
+        .btn-warning:hover {
+            background-color: #fefce8;
+        }
+
+        /* Highlighter for text */
+        .highlighter {
+            font-weight: 700;
+            color: var(--acc-green);
+            background-color: #dcfce7;
+            padding: 0 4px;
+            border-radius: 2px;
+            border-bottom: 2px solid var(--acc-green);
+        }
+
+        /* Dấu mộc (AUDITED) */
+        .stamp-audit {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--acc-green);
+            border: 4px solid var(--acc-green);
+            padding: 8px 16px;
+            font-family: 'Roboto Slab', serif;
+            font-weight: 900;
+            font-size: 1.75rem;
+            letter-spacing: 2px;
+            transform: rotate(-10deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            border-radius: 4px;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .flipped .stamp-audit {
+            animation: stampSlam 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation-delay: 0.25s;
+        }
+
+        @keyframes stampSlam {
+            0% {
+                transform: scale(2) rotate(-30deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(-10deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Financial Progress Chart */
+        .fin-progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--acc-border);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .fin-progress-fill {
+            height: 100%;
+            background-color: var(--acc-green);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="acc-panel flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-5 sm:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 border-b border-gray-300 pb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-bold text-gray-500 uppercase tracking-widest font-serif-acc">Doc No.
+                            001-ACC</span>
+                        <span class="text-sm font-bold text-[var(--acc-green)] bg-green-50 px-2 py-1 rounded">APPROVED
+                            FOR TRAINING</span>
+                    </div>
+                    <h1
+                        class="text-3xl sm:text-5xl font-black text-[var(--acc-navy)] font-serif-acc uppercase tracking-tight">
+                        Financial <span class="text-[var(--acc-green)]">Ledger</span></h1>
+                    <p class="text-gray-600 mt-2 font-medium">ACCOUNTING VOCABULARY - UNIT 1 (PART 1)</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 border border-gray-300 rounded">
+                    <table class="w-full min-w-[650px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 font-bold text-[var(--acc-navy)] bg-gray-100 border-b-2 border-gray-300 font-serif-acc">
+                            <tr>
+                                <th class="p-3 w-1/4 border-r border-gray-300">ACCOUNT / TERM</th>
+                                <th class="p-3 w-1/6 text-center border-r border-gray-300">CLASS</th>
+                                <th class="p-3">DESCRIPTION (VN)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-gray-800 divide-y divide-gray-200 bg-white">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()"
+                        class="btn-corporate btn-primary w-full sm:w-1/2 py-3 text-lg mb-4 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        BEGIN AUDIT
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-1">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-corporate btn-secondary px-4 py-2 text-sm"
+                    style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-24"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-4 max-w-md">
+                    <div
+                        class="flex items-center justify-between w-full mb-1 font-serif-acc text-sm font-bold text-[var(--acc-navy)]">
+                        <div>TIME <span id="timer-display" class="font-mono text-[var(--acc-blue)] ml-1">00:00</span>
+                        </div>
+                        <div>RECORD <span id="progress-text" class="text-gray-600 ml-1">1/32</span></div>
+                    </div>
+                    <div class="fin-progress-container">
+                        <div id="progress-bar" class="fin-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn-corporate btn-secondary w-10 h-10 flex items-center justify-center shrink-0 rounded-full">
+                    <span id="music-icon" class="text-sm">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flex-1 min-h-0 w-full max-w-4xl mx-auto pb-2">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <!-- MẶT TRƯỚC -->
+                        <div class="flip-card-front custom-scrollbar acc-panel border-t-0 before:h-0">
+                            <!-- Green top bar applied via pseudo element logic to specific divs if needed, but keeping it clean here -->
+                            <div class="h-2 w-full bg-[var(--acc-navy)] shrink-0"></div>
+
+                            <div class="p-5 sm:p-8 flex flex-col flex-1 h-full">
+
+                                <div class="mb-6 shrink-0 flex items-center gap-4 border-b border-gray-200 pb-4">
+                                    <span
+                                        class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold uppercase tracking-wider border border-gray-300 rounded"
+                                        id="word-type"></span>
+                                    <h2 class="text-xl sm:text-2xl font-bold text-[var(--acc-navy)] uppercase font-serif-acc"
+                                        id="word-mean"></h2>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative overflow-y-auto w-full">
+                                    <div
+                                        class="bg-gray-50 p-5 sm:p-6 border border-gray-200 rounded mb-8 relative shadow-inner">
+                                        <div class="absolute top-2 left-2 text-gray-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                            </svg>
+                                        </div>
+                                        <p class="text-lg sm:text-xl text-[var(--acc-navy)] leading-relaxed pl-6"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto mb-2 shrink-0">
+                                        <p
+                                            class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 font-serif-acc">
+                                            ENTER DATA</p>
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-4 w-full px-1 mb-8">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn-corporate btn-secondary flex items-center justify-center rounded-full"
+                                                title="Pronounce">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn-corporate btn-warning text-sm sm:text-base bg-white">REQUEST
+                                                HINT</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn-corporate btn-primary px-8 sm:px-12 h-12 text-lg">
+                                                VERIFY
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MẶT SAU -->
+                        <div class="flip-card-back custom-scrollbar acc-panel border-t-0 before:h-0 bg-[#f8fafc]">
+                            <div class="h-2 w-full bg-[var(--acc-green)] shrink-0"></div>
+
+                            <div class="p-5 sm:p-8 flex flex-col flex-1 h-full relative">
+                                <div class="stamp-audit" id="result-seal">AUDITED & APPROVED</div>
+
+                                <div class="flex flex-col flex-1 overflow-y-auto">
+                                    <div class="flex flex-wrap items-end gap-3 mb-2">
+                                        <h2 class="text-3xl sm:text-4xl font-black text-[var(--acc-navy)] font-serif-acc"
+                                            id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-gray-400 hover:text-[var(--acc-blue)] transition-colors mb-1"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <p class="text-base sm:text-lg text-gray-600 font-mono mb-6" id="back-phonetic"></p>
+
+                                    <div class="border-l-4 border-[var(--acc-green)] pl-4 mb-8">
+                                        <p class="text-xl sm:text-2xl text-[var(--acc-navy)] font-bold mb-2"
+                                            id="back-mean"></p>
+                                        <p class="text-gray-500 text-sm font-bold uppercase tracking-wider"
+                                            id="back-type"></p>
+                                    </div>
+
+                                    <p class="text-lg sm:text-xl text-gray-800 leading-relaxed" id="back-ex"></p>
+                                </div>
+
+                                <div class="mt-6 flex justify-center w-full shrink-0 pt-4 border-t border-gray-200">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn-corporate btn-primary px-8 py-3 text-lg w-full sm:w-2/3 flex items-center justify-center gap-2 shadow-lg">
+                                        NEXT RECORD
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="acc-panel flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-5 sm:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-gray-300 pb-5">
+                    <h2 class="text-3xl sm:text-4xl text-[var(--acc-navy)] font-black uppercase font-serif-acc">FINAL
+                        AUDIT REPORT</h2>
+                    <p id="completion-datetime" class="text-sm font-bold text-gray-500 mt-2 uppercase tracking-widest">
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-serif-acc">
+                    <div class="bg-gray-50 border border-gray-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">ACCURACY</p>
+                        <p class="text-3xl font-black text-[var(--acc-navy)]" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">TIME TAKEN</p>
+                        <p class="text-2xl font-bold text-gray-800 mt-1" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-green-700 font-bold uppercase tracking-wider mb-1">CLEARED</p>
+                        <p class="text-2xl font-bold text-green-700 mt-1" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-amber-700 font-bold uppercase tracking-wider mb-1">ASSISTANCE</p>
+                        <p class="text-2xl font-bold text-amber-700 mt-1" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-gray-300 w-full mb-5 shrink min-h-0 bg-white rounded">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-gray-100 text-[var(--acc-navy)] border-b-2 border-gray-300 font-serif-acc font-bold">
+                            <tr>
+                                <th class="p-3 w-28 text-center border-r border-gray-300">STATUS</th>
+                                <th class="p-3 w-1/4 border-r border-gray-300">ACCOUNT TERM</th>
+                                <th class="p-3">DESCRIPTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-gray-800 divide-y divide-gray-200">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()"
+                        class="btn-corporate btn-secondary w-full sm:w-1/2 py-3 text-lg mb-3">
+                        START NEW SESSION 🔄
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "accountant", type: "noun", phonetic: "/əˈkaʊntənt/", mean: "kế toán viên", ex: "An _______ checks financial records and helps a company manage its money more effectively." },
+            { word: "bookkeeper", type: "noun", phonetic: "/ˈbʊkkiːpər/", mean: "nhân viên ghi chép sổ sách kế toán", ex: "A _______ records daily payments, sales, and expenses in the company’s accounting system." },
+            { word: "trainee accountant", type: "noun phrase", phonetic: "/ˌtreɪni əˈkaʊntənt/", mean: "kế toán viên tập sự", ex: "A _______ works with experienced colleagues to develop practical accounting skills." },
+            { word: "tax accountant", type: "noun phrase", phonetic: "/tæks əˈkaʊntənt/", mean: "kế toán thuế", ex: "A _______ helps individuals and businesses prepare tax documents correctly and on time." },
+            { word: "financial accountant", type: "noun phrase", phonetic: "/faɪˌnænʃl əˈkaʊntənt/", mean: "kế toán tài chính", ex: "A _______ prepares reports that show the financial position of an organization." },
+            { word: "management accountant", type: "noun phrase", phonetic: "/ˈmænɪdʒmənt əˈkaʊntənt/", mean: "kế toán quản trị", ex: "A _______ provides useful financial information to help managers make business decisions." },
+            { word: "cost accountant", type: "noun phrase", phonetic: "/kɒst əˈkaʊntənt/", mean: "kế toán chi phí", ex: "A _______ examines production expenses and looks for ways to reduce unnecessary costs." },
+            { word: "payroll accountant", type: "noun phrase", phonetic: "/ˈpeɪrəʊl əˈkaʊntənt/", mean: "kế toán tiền lương", ex: "A _______ makes sure that employees receive the correct salary every month." },
+            { word: "internal auditor", type: "noun phrase", phonetic: "/ɪnˌtɜːnl ˈɔːdɪtər/", mean: "kiểm toán viên nội bộ", ex: "An _______ examines company procedures to identify risks and improve financial control." },
+            { word: "external auditor", type: "noun phrase", phonetic: "/ɪkˌstɜːnl ˈɔːdɪtər/", mean: "kiểm toán viên độc lập, bên ngoài", ex: "An _______ independently checks whether a company’s financial reports are accurate." },
+            { word: "forensic accountant", type: "noun phrase", phonetic: "/fəˌrenzɪk əˈkaʊntənt/", mean: "kế toán điều tra", ex: "A _______ investigates financial records when there is possible fraud or illegal activity." },
+            { word: "back-office manager", type: "noun phrase", phonetic: "/ˌbæk ˈɒfɪs ˈmænɪdʒər/", mean: "quản lý bộ phận hậu cần, hành chính nội bộ", ex: "A _______ supervises administrative work that supports the company’s main business activities." },
+            { word: "accounts payable clerk", type: "noun phrase", phonetic: "/əˌkaʊnts ˈpeɪəbl klɜːrk/", mean: "nhân viên kế toán công nợ phải trả", ex: "An _______ checks invoices and arranges payments to suppliers by the correct deadlines." },
+            { word: "accounts receivable clerk", type: "noun phrase", phonetic: "/əˌkaʊnts rɪˈsiːvəbl klɜːrk/", mean: "nhân viên kế toán công nợ phải thu", ex: "An _______ records customer payments and follows up on unpaid bills." },
+            { word: "professional", type: "adjective", phonetic: "/prəˈfeʃənl/", mean: "chuyên nghiệp", ex: "The receptionist remains _______ and polite, even when she has to deal with a difficult customer." },
+            { word: "administrative", type: "adjective", phonetic: "/ədˈmɪnɪstrətɪv/", mean: "thuộc hành chính", ex: "_______ duties include preparing documents, arranging meetings, and answering business emails." },
+            { word: "responsible for", type: "adjective phrase", phonetic: "/rɪˈspɒnsəbl fɔːr/", mean: "chịu trách nhiệm về", ex: "The finance manager is _______ checking the company’s budget and approving major expenses." },
+            { word: "financial activities", type: "noun phrase", phonetic: "/faɪˈnænʃl ækˈtɪvətiz/", mean: "các hoạt động tài chính", ex: "The company carefully records all _______ to ensure that its reports are accurate." },
+            { word: "tax affairs", type: "noun phrase", phonetic: "/tæks əˈfeərz/", mean: "các vấn đề về thuế", ex: "A qualified accountant can help a business manage its _______ and follow legal requirements." },
+            { word: "in charge of", type: "phrase", phonetic: "/ɪn tʃɑːrdʒ əv/", mean: "phụ trách, chịu trách nhiệm về", ex: "Ms. Lan is _______ the accounting team and reports directly to the company director." },
+            { word: "finance department", type: "noun phrase", phonetic: "/ˈfaɪnæns dɪˌpɑːrtmənt/", mean: "phòng tài chính", ex: "The _______ prepares budgets, controls spending, and manages the company’s financial records." },
+            { word: "employee", type: "noun", phonetic: "/ɪmˈplɔɪiː/", mean: "nhân viên, người lao động", ex: "Every _______ must follow the company’s rules and complete assigned tasks by the deadline." },
+            { word: "employer", type: "noun", phonetic: "/ɪmˈplɔɪər/", mean: "người sử dụng lao động, nhà tuyển dụng", ex: "A good _______ provides fair salaries, safe working conditions, and opportunities for professional development." },
+            { word: "firm", type: "noun", phonetic: "/fɜːrm/", mean: "công ty, hãng", ex: "She works for a large accounting _______ that provides financial services to international clients." },
+            { word: "hire", type: "verb", phonetic: "/ˈhaɪər/", mean: "thuê, tuyển dụng", ex: "The company plans to _______ two experienced accountants to support its growing finance department." },
+            { word: "in a moment", type: "phrase", phonetic: "/ɪn ə ˈməʊmənt/", mean: "trong giây lát, ngay sau đây", ex: "Mr. Brown is on another call, but he can speak to you _______." },
+            { word: "a nice flight", type: "noun phrase", phonetic: "/ə naɪs flaɪt/", mean: "một chuyến bay thuận lợi, dễ chịu", ex: "I hope you had _______ and did not experience any serious delays." },
+            { word: "Would you like", type: "question pattern", phonetic: "/wʊd juː laɪk/", mean: "Bạn có muốn… không?", ex: "_______ some coffee while you wait for the manager to finish the meeting?" },
+            { word: "keep you waiting", type: "verb phrase", phonetic: "/kiːp juː ˈweɪtɪŋ/", mean: "khiến bạn phải chờ", ex: "I am sorry to _______, but the accountant is still speaking to another client." },
+            { word: "take a seat", type: "verb phrase", phonetic: "/teɪk ə siːt/", mean: "ngồi xuống, mời ngồi", ex: "Please _______ in the reception area while I contact the finance manager for you." },
+            { word: "phone", type: "verb", phonetic: "/fəʊn/", mean: "gọi điện thoại cho", ex: "You can _______ the accounting department if you need more information about your invoice." },
+            { word: "text", type: "verb", phonetic: "/tekst/", mean: "nhắn tin cho", ex: "Please _______ me when you arrive at the office so that I can meet you downstairs." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Sound Engine (Web Audio API) - Corporate/Mechanical feel
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Light acoustic instrumental suitable for an office
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+
+            if (type === 'start') {
+                // Boot up sound
+                playTone('sine', 400, 800, 0.1, 0.3);
+            } else if (type === 'success') {
+                // Cha-ching / Cash register subtle ding
+                playTone('triangle', 800, 1200, 0.1, 0.1);
+                setTimeout(() => playTone('sine', 1600, 2400, 0.1, 0.3), 50);
+            } else if (type === 'error') {
+                // Dull thud
+                playTone('square', 150, 100, 0.1, 0.2);
+            } else if (type === 'flip') {
+                // Paper turning sound (white noise burst approximation)
+                playTone('sawtooth', 300, 100, 0.05, 0.1);
+            }
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, index) => `
+                <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-green-50 transition-colors">
+                    <td class="p-3 font-bold text-[var(--acc-navy)] uppercase border-r border-gray-200">${item.word}</td>
+                    <td class="p-3 text-center border-r border-gray-200"><span class="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs font-bold rounded shadow-sm uppercase">${item.type}</span></td>
+                    <td class="p-3 text-gray-700 text-sm">${item.mean}</td>
+                </tr>
+            `).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+            // Clean up the word for speech
+            let wordToSpeak = flashcards[currentIndex].word.replace(/[\s-]/g, ' ');
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US'; utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/\s/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 12 ? 'w-24' : (wordLength < 18 ? 'w-32' : 'w-48'));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-2 border-gray-400 mx-1 align-baseline"></span>`;
+
+            let displayEx = card.ex;
+            // Handle if the blank is at the beginning of the sentence
+            if (displayEx.startsWith("_______")) {
+                displayEx = blankHtml + displayEx.substring(7);
+            } else {
+                displayEx = displayEx.replace('_______', blankHtml);
+            }
+
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.word.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-px sm:gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl font-bold text-gray-400 self-center px-1 font-serif-acc';
+                        group.appendChild(dash);
+                    } else if (char === '…') {
+                        // Handle ellipsis if present in word structure
+                        const dots = document.createElement('span');
+                        dots.textContent = '…';
+                        dots.className = 'text-xl font-bold text-gray-400 self-end px-1';
+                        group.appendChild(dots);
+                    }
+                    else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'tax-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-3 sm:w-5'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'block';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].word.replace(/[\s-…]/g, '').toUpperCase();
+            const inputs = document.querySelectorAll('.tax-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+
+            const count = Math.max(1, Math.floor(target.length * 0.35));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        // Normalize string to ignore diacritics during comparison
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = normalizeString(card.word.replace(/[\s-…]/g, ''));
+            const inputs = document.querySelectorAll('.tax-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "WARNING: ASSISTED";
+                    seal.style.color = "var(--acc-gold)";
+                    seal.style.borderColor = "var(--acc-gold)";
+                } else {
+                    seal.textContent = "AUDITED & APPROVED";
+                    seal.style.color = "var(--acc-green)";
+                    seal.style.borderColor = "var(--acc-green)";
+                }
+
+                document.getElementById('back-word').textContent = card.word;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+                document.getElementById('back-type').textContent = card.type;
+
+                let backExStr = card.ex;
+                // Auto capitalize if it was at the beginning of the sentence
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = card.word.charAt(0).toUpperCase() + card.word.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${card.word}</span>`);
+                }
+
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `REPORT GENERATED: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "var(--acc-gold)";
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-700 bg-amber-100 px-2 py-0.5 rounded text-xs font-bold border border-amber-300">ASSISTED</span>'
+                    : '<span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold border border-green-300">CLEARED</span>';
+
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="p-3 text-center border-r border-gray-200">${statusIcon}</td>
+                        <td class="p-3 font-bold text-[var(--acc-navy)] uppercase text-base border-r border-gray-200 font-serif-acc">${item.word}</td>
+                        <td class="p-3 text-gray-700 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
