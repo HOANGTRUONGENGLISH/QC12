@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COM - FAMILY MEMBERS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Caveat for handwritten scrapbook feel, Quicksand for soft, readable body text -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --fam-peach: #ffe5d9;
+            --fam-rose: #e5989b;
+            --fam-brown: #6d6875;
+            --fam-cream: #f8edeb;
+            --fam-dark: #4a4e69;
+            --fam-white: #ffffff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--fam-peach);
+            background-image:
+                radial-gradient(var(--fam-rose) 0.5px, transparent 0.5px),
+                radial-gradient(var(--fam-rose) 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            color: var(--fam-dark);
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-hand {
+            font-family: 'Caveat', cursive;
+            letter-spacing: 1px;
+        }
+
+        /* --- Scrapbook Panel (Main Container) --- */
+        .scrapbook-panel {
+            background-color: var(--fam-cream);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px -10px rgba(74, 78, 105, 0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px dashed #b5838d;
+        }
+
+        /* --- Polaroid Flip Card Structure --- */
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .polaroid-front,
+        .polaroid-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--fam-white);
+            border-radius: 4px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 16px 16px 20px 16px;
+            /* Adjusted padding */
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .polaroid-front,
+        .polaroid-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--fam-white);
+            border-radius: 4px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 16px 16px 40px 16px;
+            /* Polaroid bottom heavy padding */
+        }
+
+        .polaroid-back {
+            transform: rotateY(-180deg);
+            background-color: #fff0f3;
+        }
+
+        .flip-card.flipped .polaroid-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .polaroid-back {
+            pointer-events: none;
+        }
+
+        /* Washi Tape Effect */
+        .washi-tape {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-3deg);
+            width: 140px;
+            height: 35px;
+            background-color: rgba(229, 152, 155, 0.7);
+            /* fam-rose semi-transparent */
+            border-left: 2px dashed rgba(0, 0, 0, 0.1);
+            border-right: 2px dashed rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            backdrop-filter: blur(2px);
+        }
+
+        /* --- Cute Input Style --- */
+        .cute-input {
+            background: transparent;
+            border: 2px solid #ffcdb2;
+            color: var(--fam-dark);
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .cute-input {
+            width: 28px;
+            height: 38px;
+        }
+
+        @media (min-width: 400px) {
+            .cute-input {
+                width: 32px;
+                height: 44px;
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .cute-input {
+                width: 38px;
+                height: 50px;
+                font-size: 2rem;
+            }
+        }
+
+        .cute-input:focus {
+            outline: none;
+            border-color: var(--fam-rose);
+            background-color: #fff0f3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(229, 152, 155, 0.3);
+        }
+
+        .cute-input.hinted {
+            color: #d00000;
+            background-color: #ffe5d9;
+            border-color: #d00000;
+            pointer-events: none;
+        }
+
+        .cute-input.error {
+            color: #d90429;
+            border-color: #d90429;
+            background-color: #ffb3c1;
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        /* --- Animations --- */
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake-error {
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--fam-cream);
+            border-radius: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--fam-rose);
+            border-radius: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #b5838d;
+        }
+
+        /* --- Buttons --- */
+        .btn-cozy {
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-cozy:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-cozy:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background-color: var(--fam-rose);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #b5838d;
+        }
+
+        .btn-secondary {
+            background-color: var(--fam-white);
+            color: var(--fam-dark);
+            border: 2px solid var(--fam-rose);
+        }
+
+        .btn-secondary:hover {
+            background-color: #fff0f3;
+        }
+
+        /* Highlighter */
+        .highlighter {
+            font-weight: 700;
+            color: #9d0208;
+            background-color: #ffcad4;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2em;
+        }
+
+        /* Heart Stamp */
+        .stamp-heart {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #d90429;
+            border: 4px dashed #d90429;
+            padding: 10px 20px;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: 2rem;
+            transform: rotate(15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .flipped .stamp-heart {
+            animation: stampSlam 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes stampSlam {
+            0% {
+                transform: scale(2) rotate(30deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(15deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 13px;
+            color: var(--fam-brown);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Heart Progress Bar */
+        .heart-progress-container {
+            width: 100%;
+            height: 12px;
+            background-color: var(--fam-cream);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #ffcdb2;
+            position: relative;
+        }
+
+        .heart-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffb5a7, #e5989b);
+            border-radius: 12px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .heart-progress-fill::after {
+            content: '❤️';
+            position: absolute;
+            right: -8px;
+            top: -6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="scrapbook-panel flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 text-center pb-4 border-b-2 border-dashed border-[#e5989b]">
+                    <span
+                        class="inline-block px-3 py-1 bg-white border border-[#e5989b] text-[#e5989b] text-sm font-bold rounded-full mb-2">VOCABULARY</span>
+                    <h1 class="text-4xl sm:text-5xl font-hand text-[var(--fam-dark)] tracking-wide">Family Members</h1>
+                    <p class="text-[var(--fam-brown)] mt-1 font-medium text-lg">Communication & Relationships</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white rounded-xl shadow-inner border border-gray-100">
+                    <table class="w-full min-w-[600px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-bold text-[var(--fam-white)] bg-[var(--fam-rose)]">
+                            <tr>
+                                <th class="p-3 w-1/4 rounded-tl-xl">VOCABULARY</th>
+                                <th class="p-3 w-1/6 text-center">TYPE</th>
+                                <th class="p-3 rounded-tr-xl">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-[var(--fam-dark)] divide-y divide-gray-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()"
+                        class="btn-cozy btn-primary w-full sm:w-1/2 py-3 text-xl mb-4 flex items-center justify-center gap-2">
+                        <span>📖</span> OPEN ALBUM
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <!-- Header Tools -->
+            <div class="flex justify-between items-center mb-6 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="btn-cozy btn-secondary px-4 py-2 text-sm flex items-center gap-1" style="display: none;">
+                    ◀ BACK
+                </button>
+                <div id="top-prev-placeholder" class="w-24"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-4 max-w-md">
+                    <div class="flex items-center justify-between w-full mb-2 text-sm font-bold text-[var(--fam-dark)]">
+                        <div class="bg-white px-3 py-1 rounded-full shadow-sm">⏳ <span id="timer-display"
+                                class="ml-1 text-[var(--fam-rose)]">00:00</span></div>
+                        <div class="bg-white px-3 py-1 rounded-full shadow-sm">📸 <span id="progress-text"
+                                class="ml-1 text-[var(--fam-rose)]">1/20</span></div>
+                    </div>
+                    <div class="heart-progress-container shadow-sm">
+                        <div id="progress-bar" class="heart-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn-cozy btn-secondary w-10 h-10 flex items-center justify-center shrink-0 rounded-full shadow-sm">
+                    <span id="music-icon" class="text-lg">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Component -->
+            <div class="flex-1 min-h-[450px] w-full max-w-4xl mx-auto pb-4 px-2 relative">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <!-- MẶT TRƯỚC -->
+                        <div class="polaroid-front custom-scrollbar border-2 border-gray-100">
+                            <div class="washi-tape"></div>
+
+                            <div class="flex flex-col flex-1 h-full mt-6">
+
+                                <div class="mb-4 shrink-0 flex items-center gap-3 justify-center">
+                                    <span
+                                        class="inline-block px-3 py-1 bg-[#fff0f3] text-[var(--fam-rose)] text-xs font-bold uppercase rounded-full border border-[#ffcad4]"
+                                        id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-[var(--fam-dark)] uppercase"
+                                        id="word-mean"></h2>
+                                </div>
+                                <div class="text-center mb-6 shrink-0 h-6">
+                                    <span class="text-sm font-bold text-gray-400 italic" id="word-alt"></span>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative overflow-y-auto w-full justify-center">
+
+                                    <div class="text-center mb-8 px-4">
+                                        <p class="text-lg sm:text-xl text-[var(--fam-dark)] leading-relaxed font-medium"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto mb-2 shrink-0">
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-1 mb-8">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn-cozy btn-secondary flex items-center justify-center rounded-full"
+                                                title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-6 w-6 text-[var(--fam-rose)]" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn-cozy btn-secondary text-sm sm:text-base">ASK
+                                                FOR HELP 💡</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn-cozy btn-primary px-8 sm:px-12 h-12 text-lg">
+                                                SUBMIT
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MẶT SAU -->
+                        <div class="polaroid-back custom-scrollbar border-2 border-[#ffcad4] relative">
+                            <div class="washi-tape"></div>
+
+                            <div class="flex flex-col flex-1 h-full mt-6 relative">
+                                <div class="stamp-heart" id="result-seal">FAMILY TIES!</div>
+
+                                <div class="flex flex-col flex-1 items-center text-center overflow-y-auto pt-6">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <h2 class="text-4xl sm:text-5xl font-hand font-bold text-[var(--fam-rose)]"
+                                            id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-[var(--fam-rose)] hover:text-[#9d0208] transition-colors p-2 bg-white rounded-full shadow-sm"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <p class="text-sm font-bold text-gray-500 mb-2" id="back-alt"></p>
+
+                                    <div class="bg-white px-4 py-1 rounded-full shadow-sm mb-6 border border-gray-100">
+                                        <p class="text-lg text-[var(--fam-brown)] font-bold" id="back-phonetic"></p>
+                                    </div>
+
+                                    <p class="text-2xl sm:text-3xl text-[var(--fam-dark)] font-bold mb-6"
+                                        id="back-mean"></p>
+
+                                    <div
+                                        class="w-full max-w-2xl bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-[#ffe5d9]">
+                                        <p class="text-lg sm:text-xl text-[var(--fam-dark)] leading-relaxed font-medium"
+                                            id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn-cozy btn-primary px-8 py-3 text-lg w-full sm:w-2/3 flex items-center justify-center gap-2">
+                                        NEXT PHOTO 📸
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="scrapbook-panel flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b-2 border-dashed border-[#e5989b] pb-5">
+                    <h2 class="text-4xl sm:text-5xl text-[var(--fam-rose)] font-hand font-bold">Album Completed! 📸</h2>
+                    <p id="completion-datetime"
+                        class="text-sm font-bold text-[var(--fam-brown)] mt-2 uppercase tracking-wider"></p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0">
+                    <div class="bg-white border border-[#ffcad4] p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-[var(--fam-brown)] font-bold uppercase tracking-wider mb-1">SCORE</p>
+                        <p class="text-3xl font-bold text-[var(--fam-dark)]" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-white border border-[#ffcad4] p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-[var(--fam-brown)] font-bold uppercase tracking-wider mb-1">TIME</p>
+                        <p class="text-2xl font-bold text-[var(--fam-dark)] mt-1" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-green-700 font-bold uppercase tracking-wider mb-1">PERFECT</p>
+                        <p class="text-2xl font-bold text-green-700 mt-1" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-orange-700 font-bold uppercase tracking-wider mb-1">HELPED</p>
+                        <p class="text-2xl font-bold text-orange-700 mt-1" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-gray-200 w-full mb-5 shrink min-h-0 bg-white rounded-xl shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-[var(--fam-cream)] text-[var(--fam-dark)] border-b-2 border-[#e5989b]">
+                            <tr>
+                                <th class="p-3 w-28 text-center font-bold">STATUS</th>
+                                <th class="p-3 w-1/4 font-bold">FAMILY MEMBER</th>
+                                <th class="p-3 font-bold">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-gray-800 divide-y divide-gray-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()"
+                        class="btn-cozy btn-primary w-full sm:w-1/2 py-3 text-lg mb-3">
+                        REVIEW ALBUM AGAIN 🔄
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Data Structure adjusted for input clarity (separating main word and alternatives)
+        const flashcards = [
+            { target: "grandfather", alt: "(grandpa / grandad)", type: "noun", phonetic: "/ˈɡrænfɑːðər/", mean: "ông", ex: "My _______ lives in the countryside, and I often visit him during school holidays to hear stories about his childhood." },
+            { target: "grandmother", alt: "(grandma)", type: "noun", phonetic: "/ˈɡrænmʌðər/", mean: "bà", ex: "My _______ is very patient and often teaches me how to cook traditional family dishes at weekends." },
+            { target: "son", alt: "", type: "noun", phonetic: "/sʌn/", mean: "con trai", ex: "Their _______ studies engineering at university and hopes to work for an international company after graduation." },
+            { target: "grandson", alt: "", type: "noun", phonetic: "/ˈɡrænsʌn/", mean: "cháu trai của ông bà", ex: "The old man feels proud of his _______ because he always helps younger children with their homework." },
+            { target: "daughter", alt: "", type: "noun", phonetic: "/ˈdɔːtər/", mean: "con gái", ex: "Their _______ is independent and plans to start her own small business after she finishes university." },
+            { target: "granddaughter", alt: "", type: "noun", phonetic: "/ˈɡrændɔːtər/", mean: "cháu gái của ông bà", ex: "She often takes her _______ to the library, where they choose interesting books and read together." },
+            { target: "father", alt: "(dad)", type: "noun", phonetic: "/ˈfɑːðər/", mean: "cha, bố, ba", ex: "My _______ works long hours, but he always makes time to have dinner with the whole family." },
+            { target: "mother", alt: "(mom / mum)", type: "noun", phonetic: "/ˈmʌðər/", mean: "mẹ, má", ex: "My _______ gives me useful advice whenever I feel worried about school or my future plans." },
+            { target: "aunt", alt: "", type: "noun", phonetic: "/ɑːnt/", mean: "cô, dì, bác gái, thím, mợ", ex: "My _______ lives in another city, but she regularly calls us and visits during important family celebrations." },
+            { target: "uncle", alt: "", type: "noun", phonetic: "/ˈʌŋkl/", mean: "chú, cậu, bác trai, dượng", ex: "My _______ is a mechanic who can repair many different types of cars and motorcycles." },
+            { target: "wife", alt: "", type: "noun", phonetic: "/waɪf/", mean: "vợ", ex: "His _______ works in a hospital and supports him whenever he faces difficulties at work." },
+            { target: "husband", alt: "", type: "noun", phonetic: "/ˈhʌzbənd/", mean: "chồng", ex: "Her _______ usually prepares dinner because she often arrives home later than he does." },
+            { target: "brother", alt: "", type: "noun", phonetic: "/ˈbrʌðər/", mean: "anh trai hoặc em trai", ex: "My _______ and I have different personalities, but we still enjoy spending time together." },
+            { target: "sister", alt: "", type: "noun", phonetic: "/ˈsɪstər/", mean: "chị gái hoặc em gái", ex: "My _______ is the person I talk to when I need honest advice about a difficult decision." },
+            { target: "siblings", alt: "", type: "plural noun", phonetic: "/ˈsɪblɪŋz/", mean: "anh, chị, em ruột", ex: "Good _______ may disagree sometimes, but they usually support one another during difficult periods." },
+            { target: "cousin", alt: "", type: "noun", phonetic: "/ˈkʌzn/", mean: "anh, chị hoặc em họ", ex: "My _______ studies at the same university as I do, so we often travel home together at weekends." },
+            { target: "mother-in-law", alt: "", type: "noun", phonetic: "/ˈmʌðər ɪn lɔː/", mean: "mẹ chồng hoặc mẹ vợ", ex: "My _______ treats me kindly and often shares useful advice about family life." },
+            { target: "father-in-law", alt: "", type: "noun", phonetic: "/ˈfɑːðər ɪn lɔː/", mean: "bố/ba chồng hoặc bố/ba vợ", ex: "My _______ enjoys gardening and gives us fresh vegetables whenever we visit him." },
+            { target: "only child", alt: "", type: "noun phrase", phonetic: "/ˌəʊnli ˈtʃaɪld/", mean: "con một", ex: "As an _______, she sometimes feels lonely, but she also enjoys having a quiet place to study." },
+            { target: "twins", alt: "", type: "plural noun", phonetic: "/twɪnz/", mean: "cặp song sinh, anh chị em sinh đôi", ex: "The _______ look very similar, but their personalities and interests are completely different." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Sound Engine
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+            if (type === 'start') playTone('sine', 400, 600, 0.1, 0.3); // Warm start
+            else if (type === 'success') {
+                playTone('sine', 600, 900, 0.1, 0.1); // Bell chime
+                setTimeout(() => playTone('sine', 900, 1200, 0.1, 0.3), 100);
+            }
+            else if (type === 'error') playTone('sawtooth', 200, 150, 0.05, 0.2); // Thud
+            else if (type === 'flip') playTone('sine', 300, 200, 0.05, 0.15); // Page turn
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+            // CRITICAL: Replace hyphens with spaces to prevent spelling out punctuation ("dash")
+            let wordToSpeak = flashcards[currentIndex].target.replace(/-/g, ' ');
+
+            // Try fallback API first, if fails use SpeechSynthesis
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, index) => {
+                let displayWord = item.target;
+                if (item.alt) displayWord += ` <span class="text-gray-400 font-normal text-sm">${item.alt}</span>`;
+                return `
+                <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-[#fff0f3]'} hover:bg-[#ffe5d9] transition-colors">
+                    <td class="p-3 font-bold text-[var(--fam-rose)] border-r border-gray-100">${displayWord}</td>
+                    <td class="p-3 text-center border-r border-gray-100"><span class="px-2 py-0.5 bg-white border border-gray-200 text-gray-600 text-xs font-bold rounded shadow-sm">${item.type}</span></td>
+                    <td class="p-3 text-[var(--fam-dark)] text-sm font-medium">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            document.getElementById('word-alt').textContent = card.alt || "";
+
+            let wordLength = card.target.replace(/[\s-]/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 10 ? 'w-24' : 'w-32');
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-2 border-gray-400 mx-1 align-baseline"></span>`;
+
+            let displayEx = card.ex;
+            if (displayEx.startsWith("_______")) displayEx = blankHtml + displayEx.substring(7);
+            else displayEx = displayEx.replace('_______', blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const words = card.target.split(' ');
+            words.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-px sm:gap-1';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-xl font-bold text-gray-400 self-center px-1';
+                        group.appendChild(dash);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'cute-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-3 sm:w-5'; container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const target = flashcards[currentIndex].target.replace(/[\s-]/g, '').toUpperCase();
+            const inputs = document.querySelectorAll('.cute-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+
+            if (pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].target);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const target = normalizeString(card.target.replace(/[\s-]/g, ''));
+            const inputs = document.querySelectorAll('.cute-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#f4a261";
+                    seal.style.borderColor = "#f4a261";
+                } else {
+                    seal.textContent = "FAMILY TIES!";
+                    seal.style.color = "#d90429";
+                    seal.style.borderColor = "#d90429";
+                }
+
+                document.getElementById('back-word').textContent = card.target;
+                document.getElementById('back-alt').textContent = card.alt || "";
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                let backExStr = card.ex;
+                let targetDisplay = card.target;
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = targetDisplay.charAt(0).toUpperCase() + targetDisplay.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${targetDisplay}</span>`);
+                }
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                document.getElementById('flashcard').classList.add('flipped');
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `ALBUM CREATED: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.target);
+                const statusIcon = usedHint
+                    ? '<span class="text-orange-700 bg-orange-100 px-2 py-0.5 rounded text-xs font-bold border border-orange-300">HELPED</span>'
+                    : '<span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold border border-green-300">PERFECT</span>';
+
+                let displayWord = item.target;
+                if (item.alt) displayWord += ` <span class="text-gray-400 font-normal text-sm">${item.alt}</span>`;
+
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="p-3 text-center border-r border-gray-100">${statusIcon}</td>
+                        <td class="p-3 font-bold text-[var(--fam-rose)] border-r border-gray-100">${displayWord}</td>
+                        <td class="p-3 text-[var(--fam-dark)] text-sm font-medium">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
