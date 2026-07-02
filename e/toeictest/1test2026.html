@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC READING TEST 1 -HOÀNG TRƯỜNG ENGLISH 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Georgia', 'serif'],
+                    },
+                    colors: {
+                        toeic: {
+                            blue: '#1e3a8a',
+                            light: '#eff6ff',
+                            accent: '#3b82f6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Formattable Text Area Styles */
+        .formattable-text {
+            outline: none;
+            line-height: 1.7;
+            color: #334155;
+            cursor: text;
+        }
+
+        .formattable-text:focus {
+            outline: 2px solid transparent;
+        }
+
+        .formattable-text span[style*="background-color"] {
+            padding: 0.1em 0.2em;
+            border-radius: 0.2em;
+        }
+
+        /* Part 6/7 Blank styling */
+        .blank-space {
+            display: inline-block;
+            border-bottom: 2px solid #94a3b8;
+            padding: 0 10px;
+            margin: 0 5px;
+            font-weight: 600;
+            color: #475569;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* Question Navigation Grid Button */
+        .nav-btn {
+            transition: all 0.2s;
+        }
+
+        .nav-btn.answered {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .nav-btn.active {
+            box-shadow: 0 0 0 2px #93c5fd;
+            border-color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        /* Sticky elements */
+        .sticky-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Split View Layout */
+        .split-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .split-layout {
+                flex-direction: row;
+                height: calc(100vh - 140px);
+                overflow: hidden;
+            }
+
+            .split-left {
+                flex: 1.1;
+                overflow-y: auto;
+                padding-right: 1.5rem;
+                border-right: 1px solid #e2e8f0;
+            }
+
+            .split-right {
+                flex: 0.9;
+                overflow-y: auto;
+                padding-left: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex flex-col h-screen overflow-hidden text-slate-800">
+
+    <header class="bg-toeic-blue text-white shadow-md z-50 shrink-0">
+        <div class="max-w-screen-2xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-graduation-cap text-2xl text-blue-200"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">TOEIC TEST 1</h1>
+                    <p class="text-xs text-blue-200">Bài Thi Thử Reading (Q101 - Q200)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 sm:gap-6">
+                <!-- Anti-cheat Status Badge -->
+                <div
+                    class="bg-red-950/40 px-3 py-1.5 rounded-lg border border-red-500/30 flex items-center gap-2 text-xs sm:text-sm">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                    </span>
+                    <span class="font-semibold text-red-200 hidden md:inline">Giám sát:</span>
+                    <span id="cheat-badge-count" class="font-mono font-bold text-red-300">0 / 3 Vi phạm</span>
+                </div>
+
+                <!-- Timer -->
+                <div
+                    class="bg-blue-900/50 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border border-blue-700 flex items-center gap-2">
+                    <i class="fa-regular fa-clock text-blue-300"></i>
+                    <span id="timer" class="font-mono font-bold text-lg sm:text-xl tracking-wider">75:00</span>
+                </div>
+                <!-- Submit Button -->
+                <button onclick="submitTest()"
+                    class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-1.5 sm:px-6 sm:py-2 rounded-lg font-semibold transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-check"></i> Nộp Bài
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+
+        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 hidden md:flex z-40">
+            <div class="p-4 border-b border-slate-200 bg-slate-50">
+                <h2 class="font-semibold text-slate-700 flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol"></i> Bảng Câu Hỏi
+                </h2>
+                <div class="flex items-center gap-4 mt-2 text-xs text-slate-500">
+                    <div class="flex items-center gap-1"><span
+                            class="w-3 h-3 rounded-full bg-slate-100 border border-slate-300"></span> Chưa làm</div>
+                    <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Đã làm
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4">
+                <div id="nav-grid-part5" class="mb-6">
+                    <h3 class="text-sm font-bold text-slate-400 mb-2 uppercase tracking-wider">Part 5 (101-130)</h3>
+                    <div class="grid grid-cols-5 gap-1.5" id="grid-5"></div>
+                </div>
+                <div id="nav-grid-part6" class="mb-6">
+                    <h3 class="text-sm font-bold text-slate-400 mb-2 uppercase tracking-wider">Part 6 (131-146)</h3>
+                    <div class="grid grid-cols-5 gap-1.5" id="grid-6"></div>
+                </div>
+                <div id="nav-grid-part7" class="mb-2">
+                    <h3 class="text-sm font-bold text-slate-400 mb-2 uppercase tracking-wider">Part 7 (147-200)</h3>
+                    <div class="grid grid-cols-5 gap-1.5" id="grid-7"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col bg-slate-50 overflow-hidden relative" id="main-scroll-area">
+
+            <!-- Global Annotation Toolbar (Sticky) -->
+            <div class="sticky-toolbar border-b border-slate-200 px-6 py-2 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-1">
+                    <span class="text-xs font-semibold text-slate-500 mr-2 uppercase tracking-wide">Công cụ hỗ trợ
+                        đọc:</span>
+                    <button onclick="formatText('backColor', '#fef08a')"
+                        class="w-8 h-8 rounded hover:bg-slate-100 flex items-center justify-center text-slate-600 tooltip"
+                        title="Highlight (Vàng)">
+                        <i class="fa-solid fa-highlighter text-yellow-500"></i>
+                    </button>
+                    <div class="w-px h-5 bg-slate-300 mx-1"></div>
+                    <button onclick="formatText('bold')"
+                        class="w-8 h-8 rounded hover:bg-slate-100 flex items-center justify-center text-slate-600 font-bold"
+                        title="In đậm">B</button>
+                    <button onclick="formatText('italic')"
+                        class="w-8 h-8 rounded hover:bg-slate-100 flex items-center justify-center text-slate-600 italic font-serif"
+                        title="In nghiêng">I</button>
+                    <button onclick="formatText('underline')"
+                        class="w-8 h-8 rounded hover:bg-slate-100 flex items-center justify-center text-slate-600 underline"
+                        title="Gạch chân">U</button>
+                    <button onclick="formatText('strikeThrough')"
+                        class="w-8 h-8 rounded hover:bg-slate-100 flex items-center justify-center text-slate-600 line-through"
+                        title="Gạch bỏ">S</button>
+                    <div class="w-px h-5 bg-slate-300 mx-1"></div>
+                    <button onclick="formatText('removeFormat')"
+                        class="w-8 h-8 rounded hover:bg-slate-100 flex items-center justify-center text-slate-400"
+                        title="Xóa định dạng">
+                        <i class="fa-solid fa-eraser"></i>
+                    </button>
+                </div>
+                <div class="text-xs text-slate-400 hidden sm:block">
+                    * Bôi đen đoạn văn bản để sử dụng công cụ highlight
+                </div>
+            </div>
+
+            <!-- Content Container -->
+            <div class="flex-1 overflow-y-auto scroll-smooth" id="test-container">
+                <div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 space-y-12 pb-32" id="test-content">
+                    <!-- Content will be injected here by JS -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal for Result -->
+    <div id="result-modal"
+        class="fixed inset-0 bg-slate-900/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center transform scale-95 transition-transform duration-300">
+            <div id="result-icon-container"
+                class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+                <i class="fa-solid fa-check-double"></i>
+            </div>
+            <h2 id="result-title" class="text-2xl font-bold text-slate-800 mb-2">Đã nộp bài thành công!</h2>
+            <p id="result-description" class="text-slate-600 mb-6">Bạn đã hoàn thành bài thi TOEIC Reading. Dữ liệu của
+                bạn đã được ghi nhận.</p>
+            <div class="bg-slate-50 rounded-xl p-4 mb-6 text-left border border-slate-100">
+                <p class="text-sm text-slate-500 mb-1">Số câu đã trả lời:</p>
+                <div class="flex items-end gap-2">
+                    <span class="text-3xl font-bold text-toeic-blue" id="answered-count">0</span>
+                    <span class="text-slate-400 mb-1">/ 100</span>
+                </div>
+                <div id="cheat-record-container"
+                    class="mt-3 pt-3 border-t border-slate-200 text-xs text-slate-500 hidden">
+                    <span class="text-red-500 font-semibold"><i class="fa-solid fa-circle-info"></i> Lịch sử giám
+                        sát:</span> Có <span id="final-cheat-count" class="font-bold text-red-600">0</span> lần chuyển
+                    tab trong phòng thi.
+                </div>
+            </div>
+            <button onclick="closeModal()"
+                class="w-full bg-toeic-blue hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">
+                Xem lại bài làm
+            </button>
+        </div>
+    </div>
+
+    <!-- Anti-Cheat Warning Modal -->
+    <div id="cheat-warning-modal"
+        class="fixed inset-0 bg-slate-950/90 z-[110] hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div
+            class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center border-t-8 border-red-600 transform scale-95 transition-transform duration-300">
+            <div
+                class="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl animate-bounce">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">CẢNH BÁO VI PHẠM!</h2>
+            <p class="text-slate-600 mb-6">Hệ thống phát hiện bạn vừa rời khỏi màn hình/tab thi để thực hiện tra cứu bên
+                ngoài. Đây là hành vi vi phạm quy chế!</p>
+            <div class="bg-red-50 rounded-xl p-4 mb-6 border border-red-100">
+                <p class="text-sm text-red-700 font-semibold mb-1">Số lần vi phạm hiện tại:</p>
+                <div class="flex items-end justify-center gap-1">
+                    <span class="text-3xl font-extrabold text-red-600" id="violation-count">0</span>
+                    <span class="text-slate-400 font-semibold mb-1">/ 3</span>
+                </div>
+                <p class="text-xs text-red-500 mt-2 font-medium">* Chú ý: Đạt mức 3 lần vi phạm, hệ thống sẽ tự động NỘP
+                    BÀI ngay lập tức!</p>
+            </div>
+            <button onclick="resumeTest()"
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition shadow-md">
+                Tôi hiểu, cam kết không tái phạm & tiếp tục làm bài
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[150] space-y-2 pointer-events-none"></div>
+
+    <script>
+        const testData = [
+            // PART 5
+            {
+                type: 'directions',
+                part: 'PART 5',
+                text: 'Directions: A word or phrase is missing in each of the sentences below. Four answer choices are given below each sentence. Select the best answer to complete the sentence. Then mark the letter (A), (B), (C), or (D) on your answer sheet.'
+            },
+            { type: 'question', id: 101, text: 'The lecture will take place at 6:00 P.M., ------- which attendees may ask questions.', options: ['(A) across', '(B) after', '(C) inside', '(D) among'] },
+            { type: 'question', id: 102, text: 'The ------- antique shop in Pepper Valley will close down next month.', options: ['(A) last', '(B) lasts', '(C) lasted', '(D) lasting'] },
+            { type: 'question', id: 103, text: 'Merryville residents will receive an online status ------- about the ongoing bridge construction project.', options: ['(A) update', '(B) change', '(C) payment', '(D) request'] },
+            { type: 'question', id: 104, text: 'As a result of ------- many years leading media organizations, Ms. Ayo was selected for the Dowel Journalism Prize.', options: ['(A) she', '(B) her', '(C) hers', '(D) herself'] },
+            { type: 'question', id: 105, text: 'To stop the ------- of computer viruses, do not open suspicious e-mails.', options: ['(A) break', '(B) spread', '(C) balance', '(D) surface'] },
+            { type: 'question', id: 106, text: 'The hiring manager ------- considered each applicant’s résumé and qualifications.', options: ['(A) caring', '(B) careful', '(C) carefully', '(D) carefulness'] },
+            { type: 'question', id: 107, text: 'In October, Mr. Sakamoto will leave for New Zealand ------- will oversee the opening of the new Auckland branch.', options: ['(A) because', '(B) in addition', '(C) and', '(D) prior to'] },
+            { type: 'question', id: 108, text: 'Tarateer Pharmaceuticals is varying its product ------- to include over-the-counter medications.', options: ['(A) to line', '(B) lining', '(C) lined', '(D) line'] },
+            { type: 'question', id: 109, text: 'Dynart, Inc., continuously ------- new ways to reduce its use of plastics.', options: ['(A) seeks', '(B) seeker', '(C) to seek', '(D) seeking'] },
+            { type: 'question', id: 110, text: 'The cash registers at Pirkle Books automatically ------- the remaining inventory of books available.', options: ['(A) calculate', '(B) calculator', '(C) calculating', '(D) calculation'] },
+            { type: 'question', id: 111, text: 'The product team is designing mapping software that can ------- locate underground minerals.', options: ['(A) infinitely', '(B) sincerely', '(C) precisely', '(D) greatly'] },
+            { type: 'question', id: 112, text: 'According to CEO Mayu Yamada, it would not be ------- responsible to expand the warehouse at this time.', options: ['(A) finance', '(B) financials', '(C) financially', '(D) financing'] },
+            { type: 'question', id: 113, text: 'Analysts cannot say with any ------- what the regional demand for electric trucks will be.', options: ['(A) certainty', '(B) justice', '(C) excellence', '(D) denial'] },
+            { type: 'question', id: 114, text: 'As part of its marketing campaign, Elegancia Dishware is ------- soliciting feedback from customers.', options: ['(A) lightly', '(B) loyally', '(C) actively', '(D) cleanly'] },
+            { type: 'question', id: 115, text: 'Rain gardens are intended to ------- water to prevent flooding of local roads.', options: ['(A) engage', '(B) undergo', '(C) absorb', '(D) overwhelm'] },
+            { type: 'question', id: 116, text: 'Theta Industries’ training program aims to increase the ------- of its manufacturing systems.', options: ['(A) producer', '(B) produced', '(C) productive', '(D) productivity'] },
+            { type: 'question', id: 117, text: 'The board of directors has voted to award Mr. Mitrakos a bonus for his role ------- obtaining the international contract.', options: ['(A) in', '(B) at', '(C) except', '(D) apart'] },
+            { type: 'question', id: 118, text: 'The finance director gave his approval ------- the project can move forward.', options: ['(A) along', '(B) furthermore', '(C) cautiously', '(D) so that'] },
+            { type: 'question', id: 119, text: 'The newspaper article describes ways job seekers can ------- for having little workplace experience.', options: ['(A) reply', '(B) capture', '(C) compensate', '(D) accumulate'] },
+            { type: 'question', id: 120, text: 'Mr. Ellis and Ms. Barnes were both highly qualified, but ------- got the job.', options: ['(A) myself', '(B) neither', '(C) anybody', '(D) whoever'] },
+            { type: 'question', id: 121, text: 'Ennis Photography purchased all new lighting equipment ------- the high cost.', options: ['(A) even though', '(B) however', '(C) until', '(D) despite'] },
+            { type: 'question', id: 122, text: 'Marburton residents who wish to ------- a home should contact the award-winning team at Kwan Real Estate.', options: ['(A) seller', '(B) sold', '(C) sell', '(D) selling'] },
+            { type: 'question', id: 123, text: 'Maswa Bistro began a ------- agreement with local farmers to purchase a set amount of produce each week.', options: ['(A) disruptive', '(B) cooperative', '(C) grateful', '(D) concerned'] },
+            { type: 'question', id: 124, text: 'The City of Doyle’s new downtown parking ------- have been met with opposition by residents and visitors.', options: ['(A) restricts', '(B) restricted', '(C) restrictions', '(D) restricting'] },
+            { type: 'question', id: 125, text: 'The plumbing position requires extensive training, even for those who studied ------- in technical school.', options: ['(A) diligently', '(B) scientifically', '(C) objectively', '(D) decidedly'] },
+            { type: 'question', id: 126, text: 'With its fixed-price -------, Omega Cellular guarantees no phone bill increases for three years.', options: ['(A) assurance', '(B) assuredly', '(C) assuring', '(D) assures'] },
+            { type: 'question', id: 127, text: 'As chief analytics officer, Mr. Ko has worked at Lochston Ltd. with great ------- for more than twenty years.', options: ['(A) deduction', '(B) duplication', '(C) declaration', '(D) dedication'] },
+            { type: 'question', id: 128, text: 'Milltown Hospital’s cafeteria serves lunch seven days a week ------- only on weekdays.', options: ['(A) up to', '(B) as though', '(C) each time', '(D) rather than'] },
+            { type: 'question', id: 129, text: 'The store’s entire inventory of lumber comes from a nearby ------- supplier.', options: ['(A) financial', '(B) promotional', '(C) chemical', '(D) commercial'] },
+            { type: 'question', id: 130, text: 'For a $95 ------- fee, our mechanics will determine what repairs are needed.', options: ['(A) diagnosed', '(B) diagnostic', '(C) diagnosable', '(D) diagnoses'] },
+
+            // PART 6
+            {
+                type: 'directions',
+                part: 'PART 6',
+                text: 'Directions: Read the texts that follow. A word, phrase, or sentence is missing in parts of each text. Four answer choices for each question are given below the text. Select the best answer to complete the text. Then mark the letter (A), (B), (C), or (D) on your answer sheet.'
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 131–134 refer to the following flyer.',
+                passage: `<h3 class="text-xl font-bold mb-4 text-center">Look to Riessler Landscaping for your Garden Needs</h3>
+                          <p class="mb-4">Riessler Landscaping has everything you need to create your dream garden. We will listen to your ideas and offer suggestions that match your gardening desires. <span class="blank-space">131</span>.</p>
+                          <p class="mb-4">The nursery here at Riessler Landscaping includes plants of many varieties and sizes that burst with eye-catching colors year-round. You are guaranteed to find something that will add <span class="blank-space">132</span> to your garden.</p>
+                          <p class="mb-4">We are <span class="blank-space">133</span> equipped to construct small ponds or other water features. And as our name suggests, we can take on more ambitious landscaping projects—whatever you need!</p>
+                          <p class="mb-4">With more than 40 years in the landscape-design business, <span class="blank-space">134</span> expertise is unmatched.</p>`,
+                questions: [
+                    { id: 131, options: ['(A) Staff members have written articles for the local newspaper.', '(B) Installing lights can enhance the effect of a well-designed garden.', '(C) Local competitors cannot beat the prices we charge.', '(D) Riessler Landscaping’s goal is to make your vision a reality.'] },
+                    { id: 132, options: ['(A) years', '(B) space', '(C) beauty', '(D) moisture'] },
+                    { id: 133, options: ['(A) also', '(B) rarely', '(C) somehow', '(D) nevertheless'] },
+                    { id: 134, options: ['(A) its', '(B) our', '(C) others', '(D) their'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 135–138 refer to the following letter.',
+                passage: `<p class="mb-2">10 January<br>Cindy Mulligan<br>88 Manchester Road<br>HARROGATE<br>HG82 2MJ</p>
+                          <p class="mb-4">Dear Ms. Mulligan,</p>
+                          <p class="mb-4">We are delighted to celebrate your 30th anniversary with Brandrix Distribution Centre. <span class="blank-space">135</span>.</p>
+                          <p class="mb-4">Your dedication, loyalty, and hard work have contributed greatly to our success over the years. We appreciate your commitment to excellence. Over the years, you <span class="blank-space">136</span> great initiative, creativity, and leadership.</p>
+                          <p class="mb-4">You will <span class="blank-space">137</span> be receiving a commemorative plaque by post. We hope this token of our gratitude reminds you how much you mean to us.</p>
+                          <p class="mb-4">Congratulations on reaching this <span class="blank-space">138</span>. Thank you for being part of our Brandrix family.</p>
+                          <p>Sincerely,<br><br>Lance Powar, Vice President of Human Resources<br>Brandrix Distribution Centre</p>`,
+                questions: [
+                    { id: 135, options: ['(A) We especially value our long-term customers.', '(B) Please join our holiday celebration.', '(C) Our annual report will be released soon.', '(D) You have been a valuable member of our team.'] },
+                    { id: 136, options: ['(A) will show', '(B) must show', '(C) have shown', '(D) are showing'] },
+                    { id: 137, options: ['(A) then', '(B) soon', '(C) instead', '(D) likewise'] },
+                    { id: 138, options: ['(A) milestone', '(B) consensus', '(C) destination', '(D) understanding'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 139–142 refer to the following e-mail.',
+                passage: `<div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                            <strong>To:</strong> Kay Berman &lt;kberman@ymail.com&gt;<br>
+                            <strong>From:</strong> Ali Chaleby &lt;achaleby@ralenciadesign.com&gt;<br>
+                            <strong>Date:</strong> August 21<br>
+                            <strong>Subject:</strong> Plans for living room<br>
+                            <strong>Attachment:</strong> Samples
+                          </div>
+                          <p class="mb-4">Dear Ms. Berman,</p>
+                          <p class="mb-4">My design team is in the process of <span class="blank-space">139</span> the plans for your living room.</p>
+                          <p class="mb-4">Based on our last conversation, I have chosen different paints for the walls and borders. Please review the attached file and decide whether you like those new <span class="blank-space">140</span>. If not, it is not too late to make a change.</p>
+                          <p class="mb-4"><span class="blank-space">141</span>. Your review will help us refine the design before we start.</p>
+                          <p class="mb-4">Please let <span class="blank-space">142</span> know if you have any questions. I look forward to hearing from you.</p>
+                          <p>Kind regards,<br><br>Ali Chaleby, Ralencia Design</p>`,
+                questions: [
+                    { id: 139, options: ['(A) finalizing', '(B) finalize', '(C) finalized', '(D) finalizes'] },
+                    { id: 140, options: ['(A) organizations', '(B) schedules', '(C) colors', '(D) times'] },
+                    { id: 141, options: ['(A) I have already begun drawing up plans for your kitchen.', '(B) We are not planning to begin work for another two weeks.', '(C) Your living room is particularly spacious and airy.', '(D) We have not yet received your current payment.'] },
+                    { id: 142, options: ['(A) them', '(B) ours', '(C) his', '(D) me'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 143–146 refer to the following e-mail.',
+                passage: `<div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                            <strong>To:</strong> Marsha Zalen &lt;mzalen@mansfield.com&gt;<br>
+                            <strong>From:</strong> Kaymar PCP &lt;info@kaymarpcp.com&gt;<br>
+                            <strong>Date:</strong> September 8<br>
+                            <strong>Subject:</strong> Your recent office visit
+                          </div>
+                          <p class="mb-4">Dear Ms. Zalen,</p>
+                          <p class="mb-4">Thank you for your recent visit to Kaymar Primary Care Practice. We hope you found our services <span class="blank-space">143</span>, and we welcome suggestions for improvement.</p>
+                          <p class="mb-4">We have posted a <span class="blank-space">144</span> of your consultation on our portal. Please take a moment to go through it and let us know if you have any questions.</p>
+                          <p class="mb-4">As a reminder, you can log in to the portal for various activities. <span class="blank-space">145</span>, you can make appointments and payments, view your medical history, review lab results, and request medication refills.</p>
+                          <p class="mb-4"><span class="blank-space">146</span>. Rest assured that your personal information is safe and secure.</p>
+                          <p>We thank you for your business and look forward to serving you again.<br><br>Kaymar Primary Care Practice</p>`,
+                questions: [
+                    { id: 143, options: ['(A) satisfied', '(B) satisfaction', '(C) satisfactory', '(D) satisfactorily'] },
+                    { id: 144, options: ['(A) photo', '(B) lecture', '(C) summary', '(D) schedule'] },
+                    { id: 145, options: ['(A) To repeat', '(B) For instance', '(C) Otherwise', '(D) Consequently'] },
+                    { id: 146, options: ['(A) We hope you will use this resource to manage your health-care needs.', '(B) The staff will close the office early on Friday afternoons.', '(C) Please be sure to come to our office fifteen minutes in advance.', '(D) We apologize for any confusion about your appointment time.'] }
+                ]
+            },
+
+            // PART 7
+            {
+                type: 'directions',
+                part: 'PART 7',
+                text: 'Directions: In this part you will read a selection of texts, such as magazine and newspaper articles, e-mails, and instant messages. Each text or set of texts is followed by several questions. Select the best answer for each question and mark the letter (A), (B), (C), or (D) on your answer sheet.'
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 147–148 refer to the following notice.',
+                passage: `<p class="mb-4">Dear High View Apartments Resident,</p>
+                          <p class="mb-4">Riverside Paving Company is coming to High View Apartments on May 3 and 4 to resurface the parking area. All vehicles must be removed by 8 A.M. on May 3 for the work to commence. Residents may use the parking area again starting on May 5 at 8 A.M. We realize that trying to find another place to park is inconvenient, but it is necessary for the job to be completed in the two days scheduled. Note that all parking spaces will be widened, and some spaces could be moved during the work. You will receive an e-mail if your parking space is moved more than 20 meters from your previous one.</p>
+                          <p>Thank you for your cooperation,<br><br>Judith Alvarez, Property Manager</p>`,
+                questions: [
+                    { id: 147, text: 'What is the purpose of the notice?', options: ['(A) To invite residents to a meeting on May 3', '(B) To request feedback about parking facilities', '(C) To inform residents of an upcoming project', '(D) To announce an increase in parking fees'] },
+                    { id: 148, text: 'What is suggested about High View Apartments?', options: ['(A) It charges residents a monthly maintenance fee.', '(B) It recently hired a new property manager.', '(C) It has the parking area repaved every year.', '(D) It assigns tenants specific parking spots.'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 149–150 refer to the following text-message chain.',
+                passage: `<div class="space-y-4 font-sans border border-gray-200 p-4 rounded-lg bg-white shadow-sm">
+                            <div><strong>Carol Barger (10:45 A.M.)</strong><br>Hello, Ms. Seang.</div>
+                            <div class="text-right"><strong>Leakhenna Seang (10:55 A.M.)</strong><br>Good morning!</div>
+                            <div><strong>Carol Barger (11:15 A.M.)</strong><br>We have fifteen participants enrolled in your mosaic workshop tomorrow. That is five more than last summer. Your workshops get more popular every year! Do you have enough materials on hand for that many participants?</div>
+                            <div class="text-right"><strong>Leakhenna Seang (11:23 A.M.)</strong><br>I have plenty to go around. We’ll be creating mosaic designs using bits of sea glass I collected on my vacation last summer. They are pieces of brown, green, and blue bottles that have washed up on the beach. The sand has smoothed all the sharp edges, so they’re perfectly safe for everyone to use.</div>
+                            <div><strong>Carol Barger (11:30 A.M.)</strong><br>Sounds good. See you tomorrow at breakfast.</div>
+                          </div>`,
+                questions: [
+                    { id: 149, text: 'What most likely is Ms. Seang’s job?', options: ['(A) Glassmaker', '(B) Art instructor', '(C) Beach lifeguard', '(D) Program administrator'] },
+                    { id: 150, text: 'At 11:23 A.M., what does Ms. Seang imply when she writes, “I have plenty to go around”?', options: ['(A) She intends to create an extra-large mosaic.', '(B) She has been collecting sea glass for many years.', '(C) She can share her sea glass with all the workshop participants.', '(D) She does not think she will use much of her sea glass.'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 151–152 refer to the following e-mail.',
+                passage: `<div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                            <strong>To:</strong> Sales Team<br>
+                            <strong>From:</strong> Laura Correa<br>
+                            <strong>Date:</strong> 5 October<br>
+                            <strong>Subject:</strong> Updates
+                          </div>
+                          <p class="mb-4">Dear Team,</p>
+                          <p class="mb-4">As announced in the Brighter Sails September newsletter, our performance has been consistently strong this year. This is an accomplishment we can all be proud of. Please take a moment to congratulate each other. We will continue to dream up new and exciting plans for the future!</p>
+                          <p class="mb-4">In other news, Jasen Norton will transfer to our Kingston headquarters next month. We are sad to lose Mr. Norton, but we gratefully acknowledge his excellent work and wish him continued success in his new role.</p>
+                          <p class="mb-4">There will be a farewell luncheon for Mr. Norton on 28 October at 1:00 P.M. in the second-floor conference room. Bring your good cheer and perhaps a story to share. The company will supply lunch, a cake, and decorations. Let me know by 12 October whether you will be able to attend.</p>
+                          <p>Sincerely,<br><br>Laura Correa, Sales Manager<br>Brighter Sails Ltd.</p>`,
+                questions: [
+                    { id: 151, text: 'What is mentioned about Mr. Norton?', options: ['(A) He will be attending a sales conference.', '(B) He sent Ms. Correa an office supply request.', '(C) He wrote an article in the September newsletter.', '(D) He will be moving to another company location.'] },
+                    { id: 152, text: 'What does Ms. Correa ask members of the sales team to do?', options: ['(A) Send her stories for a newsletter', '(B) Give her names of potential new hires', '(C) Inform her of plans to attend an event', '(D) Help her decorate the office'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 153–154 refer to the following article.',
+                passage: `<h3 class="text-xl font-bold mb-4 text-center font-serif">Refurbished Theater Gives Town a Boost</h3>
+                          <p class="mb-4"><strong>BEACHVILLE (February 24)—</strong>Beachville residents and tourists have a good reason to celebrate. The 40-year-old Crown Coastal Theater is scheduled to reopen in June. Many were saddened when the former theater owners decided to close the venue over a year ago, citing the cost of needed renovations. Fortunately, the theater has new owners who have spent the last year updating the interior and the projection system.</p>
+                          <p class="mb-4">Christine Lafferty said that she and her childhood friend Morgan Flanagan spent plenty of time at the theater while growing up. “Going to the movies is the thing to do on a rainy day in a seaside town. We were sorry to see it close.” The friends, who also own the popular Blue Bay Bistro, decided to buy the theater and make the necessary repairs to keep it a thriving business. For more information about the theater and its upcoming events, visit www.crowncoastaltheater.com.</p>`,
+                questions: [
+                    { id: 153, text: 'What is the purpose of the article?', options: ['(A) To report on beach conditions', '(B) To announce a business reopening', '(C) To promote a movie premiere', '(D) To advertise a new restaurant'] },
+                    { id: 154, text: 'Who is Ms. Flanagan?', options: ['(A) A town council member', '(B) An event coordinator', '(C) Ms. Lafferty’s business partner', '(D) The writer of the article'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 155–157 refer to the following e-mail.',
+                passage: `<div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                            <strong>To:</strong> Randi Longfellow &lt;rlongfellow@sapphiremail.com.au&gt;<br>
+                            <strong>From:</strong> Deon Welman &lt;deonwelman@skyviewscopes.com.au&gt;<br>
+                            <strong>Date:</strong> 27 March<br>
+                            <strong>Subject:</strong> Makatasi model METX-33948
+                          </div>
+                          <p class="mb-4">Dear Ms. Longfellow,</p>
+                          <p class="mb-4">Thank you for ordering the Makatasi ETX-Triple Refracting Telescope, model METX-33948. Unfortunately, the item you requested is on back order. <strong>— [1] —</strong>. If you would prefer not to wait, we have a similar telescope made by another manufacturer, Belter Telescopes. Like the Makatasi model you ordered, the Belter BTR-1483 has a 120 mm aperture and a retractable lens hood. <strong>— [2] —</strong>. In addition, all Belter telescopes include a padded carrying case. The Belter BTR-1483 costs $200 less than the Makatasi METX-33948.</p>
+                          <p class="mb-4">If you wish to revise your order, simply reply to this e-mail within 48 hours or go to our Web site to chat with a representative at http://www.skyviewscopes.com.au. We will then change your order, refund $200 to your credit card, and ship your new telescope overnight at no extra charge. <strong>— [3] —</strong>. Otherwise, we will notify you when the Makatasi model METX-33948 is back in stock and provide delivery information at that point. <strong>— [4] —</strong>.</p>
+                          <p>Best regards,<br><br>Deon Welman<br>Sales Representative, Skyview Scopes</p>`,
+                questions: [
+                    { id: 155, text: 'What is the purpose of the e-mail?', options: ['(A) To request payment', '(B) To provide operating instructions', '(C) To advertise a new product', '(D) To offer a substitute item'] },
+                    { id: 156, text: 'What is mentioned about the Belter BTR-1483 telescope?', options: ['(A) It can only be ordered online.', '(B) It will ship directly from the manufacturer.', '(C) It includes a protective case.', '(D) It is the most expensive telescope of its type.'] },
+                    { id: 157, text: 'In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong?<br><br>"You can see a full list of specifications on our Web site."', options: ['(A) [1]', '(B) [2]', '(C) [3]', '(D) [4]'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 158–160 refer to the following e-mail.',
+                passage: `<div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                            <strong>To:</strong> Sun-Hi Myo &lt;shmyo@sunmail.co.nz&gt;<br>
+                            <strong>From:</strong> Jan Delpit &lt;jdelpit@hamerkoptech.co.nz&gt;<br>
+                            <strong>Date:</strong> 8 March<br>
+                            <strong>Subject:</strong> RE: Inquiry about job opening
+                          </div>
+                          <p class="mb-4">Hello,</p>
+                          <p class="mb-4">Thank you for your e-mail. I am currently on holiday and will return to the office on 15 March. I will respond to your message as soon as possible after I return.</p>
+                          <p class="mb-4">If you require general assistance during my absence or have questions about the open position in our sales department, please contact my assistant Sita Viswan at 04 555 0193 or sviswan@hamerkoptech.co.nz. For questions about specific Hamerkoptech software products, contact the customer service department at customerservice@hamerkoptech.co.nz.</p>
+                          <p class="mb-4">Additionally, I am happy to announce that our new graphic design software program will be released on 2 April. You can read more about the program at Hamerkoptech’s newly redesigned Web site, www.hamerkoptech.co.nz. There, you may also sign up to receive our weekly newsletter by following the instructions on the home page.</p>
+                          <p>Sincerely,<br><br>Jan Delpit</p>`,
+                questions: [
+                    { id: 158, text: 'What is one purpose of the e-mail?', options: ['(A) To indicate that Mr. Delpit is out of the office', '(B) To request Ms. Myo’s assistance with a project', '(C) To introduce a new staff member', '(D) To explain how to use a software program'] },
+                    { id: 159, text: 'What will happen on April 2?', options: ['(A) A job opening will be filled.', '(B) A product will be launched.', '(C) A client meeting will take place.', '(D) A Web site redesign will begin.'] },
+                    { id: 160, text: 'How can people subscribe to a newsletter?', options: ['(A) By calling Ms. Viswan', '(B) By replying to Mr. Delpit’s e-mail', '(C) By visiting Hamerkoptech’s Web site', '(D) By contacting the customer service department'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 161–163 refer to the following article.',
+                passage: `<h3 class="text-xl font-bold mb-2 text-center font-serif">Vimalo Brands Enters a New Era</h3>
+                          <p class="text-center italic mb-4">By Yvette Maurer</p>
+                          <p class="mb-4"><strong>VANCOUVER (2 August)—</strong>Vimalo Brands, the large consumer goods company that markets popular nutritional-support and personal-care products, including Powerburst breakfast drinks and Honeysoft soaps and lotions, will soon offer something new for its customers: frozen foods. “Our new Nutridinna line is not just about convenience,” CEO Danitza Martens said during a press conference earlier today. “Frozen foods are not a new concept, but our method of flash-freezing fresh produce and meats ensures that our products retain their texture and flavour as well as their healthy vitamins and minerals. Now our customers can enjoy the convenience of frozen food without sacrificing quality.”</p>
+                          <p class="mb-4">Vimalo Brands has partnered with Vancouver-area farms to obtain produce and meat for the Nutridinna line. “By keeping our operations local, we avoid shipping delays and can flash-freeze freshly harvested vegetables at their peak of ripeness,” Martens said. “Our customers benefit further, since our products can be kept in the freezer for up to six months.” Nutridinna foods will be available in supermarkets beginning in November. Frozen fish and other seafood will be added early next year.</p>`,
+                questions: [
+                    { id: 161, text: 'What is one purpose of the article?', options: ['(A) To discuss a cooking technique', '(B) To report on a corporate merger', '(C) To announce a new product line', '(D) To introduce a recently hired executive'] },
+                    { id: 162, text: 'The word “just” in paragraph 1, line 8, is closest in meaning to', options: ['(A) recently', '(B) exactly', '(C) slightly', '(D) only'] },
+                    { id: 163, text: 'What does Ms. Martens suggest about flash-frozen food?', options: ['(A) It is less expensive than fresh food.', '(B) It is as nutritious as fresh food.', '(C) It is as easy to ship as fresh food.', '(D) It is less flavorful than fresh food.'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 164–167 refer to the following advertisement.',
+                passage: `<div class="border-4 border-double border-gray-400 p-6 bg-white">
+                            <p class="mb-4 text-center italic text-lg">Are you ready to work hard as part of a team of like-minded individuals? Are you willing to put your education, your experience, and your imagination to great use? If so, then we have the job for you. Karning Creative Designs is expanding, and with our success comes your opportunity.</p>
+                            <p class="mb-4">Karning Creative Designs began ten years ago as a two-person operation set up in the home of our current CEO and founder Shirin Navani. Now located in a beautiful loft in downtown Hollinson, our firm currently employs 25 full-time staff members. At Karning, we design paper-based brochures, catalogs, ads, and posters for our clients. We are currently seeking qualified designers and artists who will shine in a fast-paced, collaborative environment.</p>
+                            <p class="font-bold mb-2">The ideal candidate</p>
+                            <ul class="list-disc pl-6 mb-4 space-y-1">
+                                <li>Holds a degree in design, advertising, or graphic art—although several years of direct experience may substitute for a degree</li>
+                                <li>Demonstrates a strong ability to work closely with colleagues</li>
+                                <li>Maintains a critical eye for detail and precision</li>
+                                <li>Consistently meets deadlines and can flourish under pressure</li>
+                                <li>Graphic design or related experience is a plus but not strictly necessary.</li>
+                            </ul>
+                            <p class="mb-4 font-bold text-center">If you are ready to join our team, we want to meet you! Contact Salvador Tomassin at 608-555-0144 for further details. All applications must be received by March 31.</p>
+                          </div>`,
+                questions: [
+                    { id: 164, text: 'According to the advertisement, who most likely is Ms. Navani?', options: ['(A) A Karning Creative Designs client', '(B) A business owner', '(C) A photographer', '(D) A real estate agent'] },
+                    { id: 165, text: 'What is indicated about Karning Creative Designs?', options: ['(A) Its primary focus is Web design.', '(B) It initially employed two people.', '(C) It was founded by Mr. Tomassin.', '(D) Its staff are permitted to work from home.'] },
+                    { id: 166, text: 'What is required of job applicants?', options: ['(A) Skill in working with others', '(B) Previous design experience', '(C) A willingness to work on weekends', '(D) An ability to use certain software applications'] },
+                    { id: 167, text: 'What will happen on March 31?', options: ['(A) A project will begin.', '(B) A deadline will occur.', '(C) A graphic designer will relocate.', '(D) An application form will be made available.'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 168–171 refer to the following article.',
+                passage: `<p class="mb-4"><strong>NEW HAVEN (June 1)—</strong>Marco’s Italian Restaurant on Frontage Road will be reopening in late June. It closed three months ago after a water leak caused extensive damage to the kitchen. A significant amount of work needed to be done in the kitchen and dining areas. <strong>— [1] —</strong>. The restaurant will accommodate larger parties when it reopens.</p>
+                          <p class="mb-4">During the past three months, many of the restaurant’s employees were able to work at Marco’s Italian Market, which is located on the opposite side of the street. <strong>— [2] —</strong>. “The leak happened right before the market’s busy season started,” said Tom Marco, who owns both businesses. “We needed to add staff there temporarily, and I was happy to keep my restaurant crew employed.” Most of those employees have now returned to work in the restaurant. <strong>— [3] —</strong>.</p>
+                          <p class="mb-4">Mr. Marco has planned a grand reopening for June 25. Guests will enjoy live music and a new tasting menu. <strong>— [4] —</strong>. Reservations are required for the day of the celebration and can be made by calling 203-555-0124. “We are excited to be able to prepare our traditional dishes and welcome the community back again,” stated Mr. Marco.</p>`,
+                questions: [
+                    { id: 168, text: 'What does the article mention about Marco’s Italian Restaurant?', options: ['(A) It is the oldest restaurant in New Haven.', '(B) It is looking for a chef who can cook traditional dishes.', '(C) It needed major renovations.', '(D) It opened in a new location.'] },
+                    { id: 169, text: 'What is indicated about Marco’s Italian Market?', options: ['(A) It supplies ingredients to Marco’s Italian Restaurant.', '(B) It occasionally hires temporary workers.', '(C) It is scheduled to close in three months.', '(D) It is located next door to Marco’s Italian Restaurant.'] },
+                    { id: 170, text: 'What will happen during the event on June 25?', options: ['(A) The restaurant will reduce its menu prices.', '(B) The restaurant will offer special menu items.', '(C) Mr. Marco will celebrate his retirement.', '(D) The New Haven business community will honor Mr. Marco.'] },
+                    { id: 171, text: 'In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong?<br><br>"During repairs, some additional dining space was added."', options: ['(A) [1]', '(B) [2]', '(C) [3]', '(D) [4]'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 172–175 refer to the following online chat discussion.',
+                passage: `<div class="space-y-4 font-sans border border-gray-200 p-4 rounded-lg bg-gray-50 shadow-inner">
+                            <div class="bg-blue-100 p-2 rounded max-w-[80%]"><strong>Marlys Barry (10:17 A.M.)</strong><br>This is Ms. Barry from the data analysis department. I have included my colleague, Ms. Choi. We’re contacting you about your data request for the e-mail addresses of all account holders, sorted by age.</div>
+                            <div class="bg-green-100 p-2 rounded max-w-[80%] ml-auto text-right"><strong>Alexander Kubelski (10:17 A.M.)</strong><br>Yes, how soon can you complete the request?</div>
+                            <div class="bg-blue-100 p-2 rounded max-w-[80%]"><strong>Marlys Barry (10:18 A.M.)</strong><br>I have a question for you first. Do you really need the e-mail addresses of all account holders? That would be a huge file. Or do you need the e-mail addresses of account holders only within a certain age-group?</div>
+                            <div class="bg-green-100 p-2 rounded max-w-[80%] ml-auto text-right"><strong>Alexander Kubelski (10:19 A.M.)</strong><br>I see what you mean. I want to e-mail account holders aged 55 to 65 to invite them to meet with a retirement planning expert. Do I have to submit a new project request form?</div>
+                            <div class="bg-purple-100 p-2 rounded max-w-[80%]"><strong>Bora Choi (10:21 A.M.)</strong><br>That’s not necessary, Mr. Kubelski. We can update your current request form for you. You do not want to lose your place in the queue.</div>
+                            <div class="bg-green-100 p-2 rounded max-w-[80%] ml-auto text-right"><strong>Alexander Kubelski (10:21 A.M.)</strong><br>Great, thank you! Is it possible for you to get me that list right away?</div>
+                            <div class="bg-blue-100 p-2 rounded max-w-[80%]"><strong>Marlys Barry (10:22 A.M.)</strong><br>There are several projects ahead of yours.</div>
+                            <div class="bg-green-100 p-2 rounded max-w-[80%] ml-auto text-right"><strong>Alexander Kubelski (10:23 A.M.)</strong><br>I was hoping to send out the e-mail invitations tomorrow.</div>
+                            <div class="bg-blue-100 p-2 rounded max-w-[80%]"><strong>Marlys Barry (10:24 A.M.)</strong><br>We will get to it as soon as we can.</div>
+                          </div>`,
+                questions: [
+                    { id: 172, text: 'Why did Ms. Barry begin an online chat with Mr. Kubelski?', options: ['(A) To refer him to a different department', '(B) To decline an invitation', '(C) To issue an apology', '(D) To ask for clarification about a request'] },
+                    { id: 173, text: 'Who will receive an e-mail from Mr. Kubelski?', options: ['(A) Account holders in one age-group', '(B) Data analysis team members', '(C) Financial planners', '(D) All Mr. Kubelski’s clients'] },
+                    { id: 174, text: 'What does Ms. Choi offer to do?', options: ['(A) Write an e-mail', '(B) Make a change to a form', '(C) Open an account', '(D) Revise a policy'] },
+                    { id: 175, text: 'At 10:22 A.M., what does Ms. Barry most likely mean when she writes, “There are several projects ahead of yours”?', options: ['(A) Ms. Barry will move Mr. Kubelski’s request to the end of the queue.', '(B) Ms. Barry will not be able to send out the invitations for Mr. Kubelski.', '(C) Mr. Kubelski’s request will not be the first job Ms. Barry completes.', '(D) Mr. Kubelski will need to assist with other projects first.'] }
+                ]
+            },
+
+            {
+                type: 'passage-group',
+                info: 'Questions 176–180 refer to the following article and e-mail.',
+                passage: `<div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-lg mb-2 text-toeic-blue">Article</h4>
+                            <p class="font-bold mb-4 font-serif text-slate-800">Tips for designing a Web site for a food-truck business</p>
+                            <p class="mb-4">Owners of food trucks move from place to place, within and between cities, as they carry out their business, so they often rely on word of mouth or social media to attract customers. As a result, they may not build a Web site of their own. But in fact, by the very nature of their business, it is crucial that food truck owners have a fixed place for the public to learn about them, order from them, contact them, etc. Furthermore, market research shows that a Web site can help build a loyal customer base. So, here are some tips for developing a great Web site for your food truck.</p>
+                            <p class="mb-4">The Home page should have bold graphics with your food truck’s name. The text must prominently display key information, such as your truck’s locations and operating hours. Online forms with fields to fill out, such as reservation requests for special events or services, give new visitors too much visual information. They are better incorporated as links or pop-up windows.</p>
+                            <p class="mb-4">The Food Menu page needs attractive, high-definition images along with vivid and precise text that describes each menu item in detail. Remember that your photos should be big enough to look appealing on larger computer monitors.</p>
+                            <p class="mb-4">The About Us page should include some text explaining your food truck’s theme and concept, and some biographical data detailing your background in the food industry.</p>
+                            <p class="mb-4 font-bold text-slate-700">The News page can include text informing visitors about seasonal food items and upcoming promotions or special events such as food festivals.</p>
+                          </div>
+                          <div>
+                            <h4 class="font-bold text-lg mb-2 text-toeic-blue">E-mail</h4>
+                            <div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                                <strong>To:</strong> Doug Abruzzo &lt;dabruzzo@dzacreative.com&gt;<br>
+                                <strong>From:</strong> Ed Vale &lt;evale@saffronmail.com&gt;<br>
+                                <strong>Date:</strong> March 29<br>
+                                <strong>Subject:</strong> Feedback
+                            </div>
+                            <p class="mb-4">Dear Mr. Abruzzo,</p>
+                            <p class="mb-4">Thank you again for creating the prototype Web site for my food-truck business. I just wanted to reiterate that it has gotten positive feedback from customers who have tested it. I am so glad we followed the advice in that article you sent me about Web site design for food trucks!</p>
+                            <p class="mb-4">As we discussed in our phone call yesterday, we will move forward with the prototype Web site and launch it as the official site on April 5. However, I still do not see the information I sent about our new promotion that will begin in mid-April, a free dessert with any sandwich purchase. Please be sure to add this important information before we launch the site.</p>
+                            <p>Regards,<br>Ed</p>
+                          </div>`,
+                questions: [
+                    { id: 176, text: 'According to the article, what is one way that food truck owners traditionally attract customers?', options: ['(A) By word of mouth', '(B) From highway billboards', '(C) Through newspaper advertisements', '(D) From signs at food festivals'] },
+                    { id: 177, text: 'According to the article, what information does not need to appear on the Home page?', options: ['(A) Truck locations', '(B) Hours of operation', '(C) Company name', '(D) Seasonal food items'] },
+                    { id: 178, text: 'In what field does Mr. Abruzzo most likely work?', options: ['(A) Market research', '(B) Catering', '(C) Web design', '(D) Package delivery'] },
+                    { id: 179, text: 'In which section of the Web site will information most likely be added?', options: ['(A) The Home page', '(B) The Food Menu page', '(C) The About Us page', '(D) The News page'] },
+                    { id: 180, text: 'According to the e-mail, when will the Web site launch?', options: ['(A) On March 28', '(B) On March 29', '(C) On April 5', '(D) On April 15'] }
+                ]
+            },
+
+            // PART 7 (Continued)
+            {
+                type: 'passage-group',
+                info: 'Questions 181–185 refer to the following e-mail and press release.',
+                passage: `<div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-lg mb-2">E-mail</h4>
+                            <div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                                <strong>To:</strong> Manny Green &lt;mgreen@rhba.com&gt;<br>
+                                <strong>From:</strong> John LaRose &lt;jlarose@rilamore.edu&gt;<br>
+                                <strong>Date:</strong> May 18<br>
+                                <strong>Subject:</strong> Drilling notice
+                            </div>
+                            <p class="mb-4">Dear Mr. Green:</p>
+                            <p class="mb-4">As a courtesy, I am writing to you at the Red Hills Business Association, asking you to help me get the word out to your membership. It was announced in last month’s Daily Gazette that Rilamore University is moving forward with its Net Zero Initiative. Within three years, we expect to have geothermal wells installed and operational for the heating and cooling of our entire campus. Limiting the institution’s reliance on fossil fuels has long been a goal, and the new system is a significant step toward achieving that goal.</p>
+                            <p class="mb-4">Over the next month, we will conduct test drilling in several campus locations. If all goes according to schedule, the crew will be drilling adjacent to the Red Hills Business District and Oak Street Apartments starting Wednesday, June 5. We want to tell business owners and residents near the campus to expect a higher-than-usual noise level during the two weeks we estimate it will take to complete the work. The work hours for the drilling crew are 10 A.M. to 3 P.M. each day, Monday through Friday.</p>
+                            <p class="mb-4">We apologize in advance for the inconvenience this may cause to our neighbors. Any questions or concerns should be directed to me at 813-555-0123.</p>
+                            <p>John LaRose<br>Community Liaison, Rilamore University Office of Communications</p>
+                          </div>
+                          <div>
+                            <h4 class="font-bold text-lg mb-2">Press release</h4>
+                            <p class="font-bold mb-4">FOR IMMEDIATE RELEASE<br>Contact: Manny Green, mgreen@rhba.com</p>
+                            <p class="mb-4"><strong>RED HILLS (May 25)—</strong>The Red Hills Business Association is shifting the dates of its much-anticipated Lunch Hour Concert Series. Normally presented each Thursday in June, the four free concerts will instead take place each Thursday in July. The lineup of artists remains unchanged—the Jaystone Jazz Trio will open the series on July 4, followed on successive Thursdays by Joss and the Jaybirds, Ray Starform, and the Barklay Bass Quintet.</p>
+                            <p>As usual, all three blocks of Oak Street will be closed to traffic, restaurants will serve lunch at outdoor tables, and local arts-and-crafts vendors will display their work on the lawn of the Cultural Center. It is a beautiful celebration in the heart of a popular Red Hills neighborhood. We hope to see you there!</p>
+                          </div>`,
+                questions: [
+                    { id: 181, text: 'What is indicated about the Net Zero Initiative?', options: ['(A) It is being funded by the Red Hills Business Association.', '(B) It was inspired by similar initiatives in other cities.', '(C) It will use geothermal energy to power a city.', '(D) It will change the way an institution heats its buildings.'] },
+                    { id: 182, text: 'In the e-mail, the word “conduct” in paragraph 2, line 1, is closest in meaning to', options: ['(A) behave', '(B) accompany', '(C) transmit', '(D) carry out'] },
+                    { id: 183, text: 'What can be concluded about the Red Hills Business District?', options: ['(A) It is located near a university campus.', '(B) It hosts an arts festival every July.', '(C) It includes the Oak Street Apartments.', '(D) It is home to the offices of the Daily Gazette.'] },
+                    { id: 184, text: 'Why most likely did the Red Hills Business Association change the dates of its concert series?', options: ['(A) To take advantage of a new power source', '(B) To accommodate students’ schedules', '(C) To avoid noise from nearby construction', '(D) To prevent a conflict with a similar event'] },
+                    { id: 185, text: 'What is mentioned in the press release about the Cultural Center?', options: ['(A) It will provide lunch for musicians.', '(B) It will have artwork for sale on its property.', '(C) It will offer arts-and-crafts workshops.', '(D) It will provide the stage for performers.'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 186–190 refer to the following advertisement, form, and review.',
+                passage: `<div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-xl text-center mb-2 bg-blue-100 p-2">Lawal Home Service: Serving Southern California for over 40 years</h4>
+                            <p class="mb-2">Lawal Home Service provides roofing and solar solutions for Southern California residents in Inglewood and the surrounding areas. In addition to roof replacement, we offer a wide array of services, from attic insulation and gutter restoration to fixing leaks and installing solar panels.</p>
+                            <p>Lawal Home Service prides itself on transparent communication and attention to detail. Our project supervisors are always on-site to answer client questions, provide updates, and ensure a safe and clean worksite. To request a free roofing diagnosis, visit www.lawalhomeservice.com or call our booking agent at 310-555-0108.</p>
+                          </div>
+                          
+                          <div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-lg mb-2 text-center">Lawal Home Service Contact Form</h4>
+                            <p class="mb-4 text-sm text-center">Trust the experts at Lawal Home Service to diagnose your roofing needs promptly and professionally. Please take a few minutes to complete the form with as much detail as possible. Remember, all roofs installed by Lawal have a 25-year warranty.</p>
+                            <table class="w-full border-collapse border border-gray-400 text-sm">
+                                <tr><td class="border border-gray-400 p-2 font-bold bg-gray-100 w-1/3">Name</td><td class="border border-gray-400 p-2">Drew Gerson</td></tr>
+                                <tr><td class="border border-gray-400 p-2 font-bold bg-gray-100">Date</td><td class="border border-gray-400 p-2">December 12</td></tr>
+                                <tr><td class="border border-gray-400 p-2 font-bold bg-gray-100">E-mail</td><td class="border border-gray-400 p-2">dgerson95@onyxmail.com</td></tr>
+                                <tr><td class="border border-gray-400 p-2 font-bold bg-gray-100">Phone</td><td class="border border-gray-400 p-2">310-555-0192</td></tr>
+                                <tr><td class="border border-gray-400 p-2 font-bold bg-gray-100">Address</td><td class="border border-gray-400 p-2">820 North Acacia Street, Inglewood, CA 90301</td></tr>
+                                <tr><td class="border border-gray-400 p-2 font-bold bg-gray-100">How may we help you?</td><td class="border border-gray-400 p-2">During last week’s windstorm, several roof shingles were torn loose and need replacing. I am considering replacing the entire roof as it is over 30 years old, and water has begun to drip through the section over the patio. I would appreciate talking to someone who could tell me my options and provide an estimate.</td></tr>
+                            </table>
+                          </div>
+
+                          <div>
+                            <h4 class="font-bold text-lg mb-2">Neighborhood Reviews: Lawal Home Service</h4>
+                            <p class="text-yellow-500 mb-1">★★★★★</p>
+                            <p class="font-bold italic mb-2">“I was very pleased with the thoroughness of their work.”</p>
+                            <p class="mb-2">I left a description of my problem with Lawal Home Service, and one of the company’s estimators came to inspect my roof the very next day. After I decided to replace the roof, the Lawal Home Service crew was able to get to work the following week. Diana Perez was on-site for the whole job as promised and answered all my questions. Work was started on December 19, and it was finished on December 20. Once the roofing was finished, the crew did a great job cleaning up. They used two magnetic devices resembling lawnmowers and swept over my entire lawn to find any dropped roofing nails. I had never seen anything like that! I was very pleased with the thoroughness of their work.</p>
+                            <p class="text-right italic">— Drew Gerson, Inglewood, CA</p>
+                          </div>`,
+                questions: [
+                    { id: 186, text: 'According to the advertisement, what is one type of work performed by Lawal Home Service?', options: ['(A) Planting trees', '(B) Repairing gutters', '(C) Building home additions', '(D) Replacing heating systems'] },
+                    { id: 187, text: 'What does Mr. Gerson indicate on the form about his roof?', options: ['(A) It has developed a leak.', '(B) It was recently replaced.', '(C) It was not expensive to install.', '(D) It is under warranty for 30 years.'] },
+                    { id: 188, text: 'When did Lawal Home Service inspect Mr. Gerson’s roof?', options: ['(A) On December 12', '(B) On December 13', '(C) On December 19', '(D) On December 20'] },
+                    { id: 189, text: 'Who most likely is Ms. Perez?', options: ['(A) A project supervisor', '(B) A roofing estimator', '(C) An interior decorator', '(D) A booking agent'] },
+                    { id: 190, text: 'According to the review, what surprised Mr. Gerson about the crew from Lawal Home Service?', options: ['(A) The price they charged', '(B) The warranty they offered', '(C) The quality of their materials', '(D) The tools they used for a job'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 191–195 refer to the following e-mails and form.',
+                passage: `<div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-lg mb-2">E-mail 1</h4>
+                            <div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                                <strong>To:</strong> Omar Balaji &lt;obalaji@darbourycompany.com&gt;<br>
+                                <strong>From:</strong> Juanita Pereira &lt;jpereira@bunbunbooks.com&gt;<br>
+                                <strong>Date:</strong> May 10<br>
+                                <strong>Subject:</strong> Notebook inquiry
+                            </div>
+                            <p class="mb-4">Dear Mr. Balaji,</p>
+                            <p class="mb-4">We are expanding our office supply section at Bun Bun Books and would like to offer a selection of blank notebooks with lined pages. We would like your help creating the following cover designs.</p>
+                            <table class="w-full border-collapse border border-gray-400 text-sm mb-4">
+                                <tr class="bg-gray-100 font-bold"><td class="border border-gray-400 p-2">Cover Design Name</td><td class="border border-gray-400 p-2">Central Image</td><td class="border border-gray-400 p-2">Background Color</td></tr>
+                                <tr><td class="border border-gray-400 p-2">Great Thoughts</td><td class="border border-gray-400 p-2">Lightbulb, lightning bolt, and star icons</td><td class="border border-gray-400 p-2">Blue</td></tr>
+                                <tr><td class="border border-gray-400 p-2">World Suitcase</td><td class="border border-gray-400 p-2">Suitcase with country name travel stickers</td><td class="border border-gray-400 p-2">Black</td></tr>
+                                <tr><td class="border border-gray-400 p-2">Lavender Bouquet</td><td class="border border-gray-400 p-2">Large bunch of lavender on tall, pale green stems</td><td class="border border-gray-400 p-2">Yellow</td></tr>
+                                <tr><td class="border border-gray-400 p-2">Sail Away</td><td class="border border-gray-400 p-2">Sun setting in the sky above a sailboat on a lake</td><td class="border border-gray-400 p-2">White</td></tr>
+                            </table>
+                            <p class="mb-4">We need to have notebooks in stock in time for our annual sale starting August 1. After approving the sample covers, when would we need to place our order?</p>
+                            <p>Thank you,<br>Juanita Pereira</p>
+                          </div>
+
+                          <div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-lg mb-2">E-mail 2</h4>
+                            <div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                                <strong>To:</strong> Juanita Pereira &lt;jpereira@bunbunbooks.com&gt;<br>
+                                <strong>From:</strong> Omar Balaji &lt;obalaji@darbourycompany.com&gt;<br>
+                                <strong>Date:</strong> May 25<br>
+                                <strong>Subject:</strong> Re: Notebook inquiry
+                            </div>
+                            <p class="mb-4">Hello, Ms. Pereira,</p>
+                            <p class="mb-4">I have shipped some sample notebook covers for your inspection. Unfortunately, I was not able to include one of the designs for your approval because it needed a late-stage change to the background color. The sticker art did not show up well against the original black background. We are testing a light-beige color, and I will send the updated sample cover to you after it has been approved internally.</p>
+                            <p class="mb-4">I should have the last sample to you by the end of this week. As long as you send your approval of all covers by June 11, we will be able to ship your entire order of bound notebooks before July 20. You will have everything before your sale that begins on August 1. Please contact me if you have any questions.</p>
+                            <p>Best regards,<br>Omar Balaji, Darboury Company</p>
+                          </div>
+
+                          <div>
+                            <h4 class="font-bold text-lg mb-2 text-center">Darboury Company Order Form</h4>
+                            <p class="text-sm mb-2"><strong>Customer:</strong> Bun Bun Books<br><strong>Ship by:</strong> July 15<br><strong>Shipping method:</strong> Standard<br><strong>Requested delivery date:</strong> July 20</p>
+                            <table class="w-full border-collapse border border-gray-400 text-sm">
+                                <tr class="bg-gray-100 font-bold"><td class="border border-gray-400 p-2">Item code</td><td class="border border-gray-400 p-2">Product Description</td><td class="border border-gray-400 p-2">Cover Design</td><td class="border border-gray-400 p-2 text-right">Amount</td></tr>
+                                <tr><td class="border border-gray-400 p-2">N3-GT</td><td class="border border-gray-400 p-2">Standard-size spiral notebook</td><td class="border border-gray-400 p-2">Great Thoughts</td><td class="border border-gray-400 p-2 text-right">200</td></tr>
+                                <tr><td class="border border-gray-400 p-2">N3-WS</td><td class="border border-gray-400 p-2">Standard-size spiral notebook</td><td class="border border-gray-400 p-2">World Suitcase</td><td class="border border-gray-400 p-2 text-right">200</td></tr>
+                                <tr><td class="border border-gray-400 p-2">H3-LB</td><td class="border border-gray-400 p-2">Small hardbound journal notebook</td><td class="border border-gray-400 p-2">Lavender Bouquet</td><td class="border border-gray-400 p-2 text-right">150</td></tr>
+                                <tr><td class="border border-gray-400 p-2">H3-SA</td><td class="border border-gray-400 p-2">Small hardbound journal notebook</td><td class="border border-gray-400 p-2">Sail Away</td><td class="border border-gray-400 p-2 text-right">150</td></tr>
+                                <tr><td class="border border-gray-400 p-2">D1</td><td class="border border-gray-400 p-2">Large metal display rack (holds standard-size spiral notebooks)</td><td class="border border-gray-400 p-2 text-center">—</td><td class="border border-gray-400 p-2 text-right">1</td></tr>
+                            </table>
+                          </div>`,
+                questions: [
+                    { id: 191, text: 'What is one service that Darboury Company most likely provides?', options: ['(A) Travel booking', '(B) Textbook publishing', '(C) Flower delivery', '(D) Graphic design'] },
+                    { id: 192, text: 'What sample was delayed?', options: ['(A) Great Thoughts', '(B) World Suitcase', '(C) Lavender Bouquet', '(D) Sail Away'] },
+                    { id: 193, text: 'When is the deadline for Ms. Pereira to approve samples?', options: ['(A) May 25', '(B) June 11', '(C) July 20', '(D) August 1'] },
+                    { id: 194, text: 'What does the form indicate about the Bun Bun Books order?', options: ['(A) It will include a display stand.', '(B) It will ship overnight.', '(C) It will be paid upon delivery.', '(D) It will arrive late.'] },
+                    { id: 195, text: 'What is the background color on the cover of item N3-GT?', options: ['(A) Blue', '(B) Black', '(C) Yellow', '(D) White'] }
+                ]
+            },
+            {
+                type: 'passage-group',
+                info: 'Questions 196–200 refer to the following e-mail, review, and notice.',
+                passage: `<div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-lg mb-2">E-mail</h4>
+                            <div class="bg-gray-100 p-4 rounded-md mb-4 font-mono text-sm">
+                                <strong>To:</strong> Managers<br>
+                                <strong>From:</strong> Charlotte Black<br>
+                                <strong>Date:</strong> August 16<br>
+                                <strong>Subject:</strong> Employee of the month
+                            </div>
+                            <p class="mb-4">Dear Managers,</p>
+                            <p class="mb-4">It is time to vote for the Wilson Autos Employee of the Month for September. Here are the nominees.</p>
+                            <ul class="list-disc pl-6 mb-4 space-y-2">
+                                <li><strong>Erica Boyd</strong> has been with us for only a few months but has already shown great promise and is eager to learn new things.</li>
+                                <li><strong>Lauren Almahdi</strong> is very proactive. If something needs to be done, she will point it out to a manager and volunteer to take care of it herself.</li>
+                                <li><strong>Nick Salehi</strong> found a glitch in our computer system and stopped us from incorrectly ordering unnecessary inventory (thus saving us money).</li>
+                                <li><strong>Max Rhodes</strong> has been especially helpful with training new hires. He is calm and patient and explains our procedures well.</li>
+                            </ul>
+                            <p class="mb-4">Please respond to this e-mail by Friday with your vote. The winner must receive at least three votes. The winner will be posted at our front desk and on our Web site next Monday.</p>
+                            <p>Thanks,<br>Charlotte Black<br>General Manager, Wilson Autos</p>
+                          </div>
+
+                          <div class="mb-8 border-b-2 border-slate-300 pb-4">
+                            <h4 class="font-bold text-lg mb-2">Review</h4>
+                            <p class="font-bold mb-1">Wilson Autos (Westchester)</p>
+                            <p class="text-yellow-500 mb-2">★★★★★</p>
+                            <p class="mb-2">My wife and I just bought a new Excelera truck at the Wilson Autos Westchester location with the help of Erica Boyd. Even though she was new, she was very knowledgeable about all the trucks on the lot that we wanted to test drive. The few questions she was unable to answer were quickly addressed by her mentor, Max. We were very pleased with the customer service and even more delighted when the general manager agreed to sell us the Excelera for the same price that a competing dealership was advertising. I highly recommend Wilson Autos if you are in the market for a new vehicle!</p>
+                            <p class="text-right italic">—Henry Riggs, August 22</p>
+                          </div>
+
+                          <div class="border-4 border-slate-800 p-6 bg-slate-50 text-center">
+                            <h4 class="font-bold text-2xl mb-4 uppercase tracking-wider">Notice</h4>
+                            <p class="text-xl mb-4 text-toeic-blue font-bold">The employee of the month for September is ERICA BOYD!</p>
+                            <p class="mb-4 text-left">In her three months at Wilson Autos, Erica has picked up new skills quickly and is always trying to learn more. She has become very knowledgeable about our inventory and is able to share her knowledge with customers to complete sales. She has also been instrumental in encouraging satisfied customers to post comments on our social media pages. We received more great reviews in the past month than we did in the four previous months combined!</p>
+                            <p class="text-left font-bold text-emerald-600">Erica has received a $50 gift card to Alonzo’s Restaurant as a thank-you for her excellent work. Congratulations, Erica!</p>
+                          </div>`,
+                questions: [
+                    { id: 196, text: 'What is the purpose of the e-mail?', options: ['(A) To share a list of job candidates', '(B) To ask for opinions from managers', '(C) To summarize a managers’ meeting', '(D) To nominate a manager for an award'] },
+                    { id: 197, text: 'According to the e-mail, who identified a technical problem?', options: ['(A) Mr. Salehi', '(B) Ms. Almahdi', '(C) Mr. Rhodes', '(D) Ms. Black'] },
+                    { id: 198, text: 'What can be concluded about Mr. Riggs?', options: ['(A) His previous vehicle was an Excelera truck.', '(B) He is a neighbor of Ms. Boyd’s.', '(C) He has purchased a vehicle from Wilson Autos in the past.', '(D) He negotiated with Ms. Black for a lower price.'] },
+                    { id: 199, text: 'What is indicated in the notice about Ms. Boyd?', options: ['(A) She eats regularly at Alonzo’s Restaurant.', '(B) She manages social media sites for Wilson Autos.', '(C) She is responsible for an increase in customer feedback.', '(D) She recently completed a sales training course.'] },
+                    { id: 200, text: 'What is most likely true about Ms. Boyd?', options: ['(A) She received votes from at least three managers.', '(B) She was the top salesperson in August.', '(C) She has years of experience in the auto industry.', '(D) She was hired by Wilson Autos in April.'] }
+                ]
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let answers = {};
+        let timeRemaining = 75 * 60; // 75 minutes in seconds
+        let timerInterval;
+
+        // Anti-cheat State Variables
+        let violations = 0;
+        const maxViolations = 3;
+        let isExamSubmitted = false;
+
+        // --- STREAMING_CHUNK: Setting up Application Initializers ---
+
+        function initApp() {
+            renderNavigationGrid();
+            renderTestContent();
+            startTimer();
+            setupAntiCheat();
+        }
+
+        function renderNavigationGrid() {
+            const grid5 = document.getElementById('grid-5');
+            const grid6 = document.getElementById('grid-6');
+            const grid7 = document.getElementById('grid-7');
+
+            grid5.innerHTML = '';
+            grid6.innerHTML = '';
+            grid7.innerHTML = '';
+
+            testData.forEach(block => {
+                if (block.type === 'question') {
+                    createNavButton(block.id, grid5);
+                } else if (block.type === 'passage-group') {
+                    block.questions.forEach(q => {
+                        let target = grid7;
+                        if (q.id >= 101 && q.id <= 130) target = grid5;
+                        else if (q.id >= 131 && q.id <= 146) target = grid6;
+                        createNavButton(q.id, target);
+                    });
+                }
+            });
+        }
+
+        function createNavButton(id, container) {
+            const btn = document.createElement('button');
+            btn.className = `nav-btn w-full py-1 text-xs font-semibold rounded border border-slate-300 text-slate-600 bg-white hover:bg-slate-100 flex items-center justify-center`;
+            btn.innerText = id;
+            btn.id = `nav-btn-${id}`;
+            btn.onclick = () => scrollToQuestion(id);
+            container.appendChild(btn);
+        }
+
+        // --- STREAMING_CHUNK: Dynamic DOM rendering based on Test Data ---
+
+        function renderTestContent() {
+            const container = document.getElementById('test-content');
+            let html = '';
+
+            testData.forEach(block => {
+                if (block.type === 'directions') {
+                    html += `
+                        <div class="bg-blue-50 border-l-4 border-toeic-blue p-4 rounded-r-lg mb-8 shadow-sm">
+                            <h2 class="font-bold text-toeic-blue text-lg mb-1">${block.part}</h2>
+                            <p class="text-slate-700 text-sm leading-relaxed">${block.text}</p>
+                        </div>
+                    `;
+                    if (block.part === 'PART 5') {
+                        html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-12">`;
+                    }
+                } else if (block.type === 'question') {
+                    html += generateQuestionHTML(block);
+                    if (block.id === 130) {
+                        html += `</div>`;
+                    }
+                } else if (block.type === 'passage-group') {
+                    html += `
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-12">
+                            <div class="bg-slate-100 px-6 py-3 border-b border-slate-200">
+                                <span class="font-semibold text-slate-700 text-sm"><i class="fa-solid fa-book-open mr-2"></i> ${block.info}</span>
+                            </div>
+                            <div class="split-layout p-6">
+                                <div class="split-left">
+                                    <div class="formattable-text text-base bg-white" contenteditable="true" spellcheck="false" onkeydown="preventTyping(event)">
+                                        ${block.passage}
+                                    </div>
+                                </div>
+                                <div class="split-right space-y-8">
+                                    ${block.questions.map(q => generateQuestionHTML(q)).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        function generateQuestionHTML(q) {
+            let optionsHtml = q.options.map(opt => {
+                const letter = opt.substring(1, 2);
+                const text = opt.substring(4);
+                return `
+                    <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors group option-label-${q.id}" id="label-${q.id}-${letter}">
+                        <input type="radio" name="q${q.id}" value="${letter}" class="mt-1 w-4 h-4 text-toeic-blue border-slate-300 focus:ring-toeic-blue" onchange="selectAnswer(${q.id}, '${letter}')">
+                        <span class="font-medium text-slate-700 group-hover:text-toeic-blue transition-colors"><strong>${letter}.</strong> ${text}</span>
+                    </label>
+                `;
+            }).join('');
+
+            return `
+                <div class="question-block" id="q-block-${q.id}">
+                    <div class="flex items-start gap-2 mb-3">
+                        <span class="inline-flex items-center justify-center bg-slate-200 text-slate-700 font-bold rounded-full w-8 h-8 shrink-0 text-sm">${q.id}</span>
+                        ${q.text ? `<p class="text-slate-800 font-medium leading-relaxed pt-1">${q.text}</p>` : ''}
+                    </div>
+                    <div class="space-y-2 pl-10">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK: Developing Text Editing and Shortcuts Locking ---
+
+        function preventTyping(e) {
+            const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Shift', 'Control', 'Alt', 'Meta', 'Tab'];
+            if (allowedKeys.includes(e.key)) return;
+            if ((e.ctrlKey || e.metaKey) && ['b', 'i', 'u'].includes(e.key.toLowerCase())) return;
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') return;
+            e.preventDefault();
+        }
+
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            window.getSelection().removeAllRanges();
+        }
+
+        function selectAnswer(qId, letter) {
+            answers[qId] = letter;
+
+            const navBtn = document.getElementById(`nav-btn-${qId}`);
+            if (navBtn) {
+                navBtn.classList.add('answered');
+            }
+
+            const labels = document.querySelectorAll(`.option-label-${qId}`);
+            labels.forEach(l => {
+                l.classList.remove('bg-blue-50', 'border-blue-300');
+            });
+            const selectedLabel = document.getElementById(`label-${qId}-${letter}`);
+            if (selectedLabel) {
+                selectedLabel.classList.add('bg-blue-50', 'border-blue-300');
+            }
+        }
+
+        function scrollToQuestion(id) {
+            const el = document.getElementById(`q-block-${id}`);
+            if (el) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+                const btn = document.getElementById(`nav-btn-${id}`);
+                if (btn) btn.classList.add('active');
+
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                el.style.transition = "background-color 0.5s";
+                el.style.backgroundColor = "#eff6ff";
+                setTimeout(() => {
+                    el.style.backgroundColor = "transparent";
+                }, 1000);
+            }
+        }
+
+        // --- STREAMING_CHUNK: Programming Tab Switching and Copy Protection System ---
+
+        function setupAntiCheat() {
+            // Track tab changes using visibilitychange API
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'hidden' && !isExamSubmitted) {
+                    triggerViolation();
+                }
+            });
+
+            // Warn on window/iframe focus loss
+            window.addEventListener('blur', () => {
+                // Blur triggers when focus shifts to external windows or console tools
+                if (!isExamSubmitted) {
+                    // Added a slight buffer to prevent false alarms on internal UI popups
+                    setTimeout(() => {
+                        if (document.activeElement && document.activeElement.tagName !== 'IFRAME') {
+                            // Only trigger if tab is truly defocused
+                            if (!document.hasFocus() && document.visibilityState === 'hidden') {
+                                triggerViolation();
+                            }
+                        }
+                    }, 200);
+                }
+            });
+
+            // Block context menu (Right-click prevention)
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showToast("Tính năng nhấp chuột phải đã bị khóa để bảo mật phòng thi!");
+            });
+
+            // Block copying texts
+            document.addEventListener('copy', (e) => {
+                e.preventDefault();
+                showToast("Tính năng sao chép (Copy) đã bị vô hiệu hóa!");
+            });
+        }
+
+        function triggerViolation() {
+            if (isExamSubmitted) return;
+            violations++;
+
+            // Sync current violations indicators
+            document.getElementById('violation-count').innerText = violations;
+            document.getElementById('cheat-badge-count').innerText = `${violations} / 3 Vi phạm`;
+
+            if (violations >= maxViolations) {
+                // Instantly lock warning popup
+                document.getElementById('cheat-warning-modal').classList.add('hidden');
+                submitTest(true); // Flag true tells the submission is auto-forced due to cheating
+            } else {
+                // Launch overlay modal warning
+                document.getElementById('cheat-warning-modal').classList.remove('hidden');
+            }
+        }
+
+        function resumeTest() {
+            document.getElementById('cheat-warning-modal').classList.add('hidden');
+            showToast("Đã ghi nhận cam kết. Chúc bạn hoàn thành bài thi tốt!");
+        }
+
+        // --- STREAMING_CHUNK: Toast alert UI system ---
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-slate-800 text-white text-xs sm:text-sm px-4 py-3 rounded-lg shadow-xl flex items-center gap-2 animate-bounce pointer-events-auto border border-slate-700 max-w-sm";
+            toast.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('animate-bounce');
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // --- STREAMING_CHUNK: Timer and Core Submit Logics ---
+
+        function startTimer() {
+            const timerEl = document.getElementById('timer');
+            timerInterval = setInterval(() => {
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerEl.innerText = "00:00";
+                    submitTest();
+                    return;
+                }
+
+                timeRemaining--;
+                let m = Math.floor(timeRemaining / 60);
+                let s = timeRemaining % 60;
+                timerEl.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+
+                if (timeRemaining < 300) {
+                    timerEl.classList.add('text-red-400');
+                    timerEl.parentElement.classList.add('border-red-500', 'bg-red-900/20');
+                    timerEl.parentElement.classList.remove('border-blue-700', 'bg-blue-900/50');
+                }
+            }, 1000);
+        }
+
+        function submitTest(cheatForced = false) {
+            isExamSubmitted = true;
+            clearInterval(timerInterval);
+
+            const count = Object.keys(answers).length;
+            document.getElementById('answered-count').innerText = count;
+
+            const modal = document.getElementById('result-modal');
+            const rTitle = document.getElementById('result-title');
+            const rDesc = document.getElementById('result-description');
+            const rIcon = document.getElementById('result-icon-container');
+
+            if (cheatForced) {
+                // Style UI as warning/failed
+                rIcon.className = "w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl animate-pulse";
+                rIcon.innerHTML = `<i class="fa-solid fa-ban"></i>`;
+                rTitle.innerText = "BÀI THI BỊ KHÓA / ĐÃ NỘP TỰ ĐỘNG!";
+                rTitle.className = "text-2xl font-bold text-red-600 mb-2";
+                rDesc.innerHTML = `<span class="text-red-500 font-semibold">Bài làm của bạn đã bị nộp bắt buộc vì vi phạm quy định chống gian lận (chuyển đổi tab/màn hình quá 3 lần).</span>`;
+            } else {
+                // Normal submit
+                rIcon.className = "w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl";
+                rIcon.innerHTML = `<i class="fa-solid fa-check-double"></i>`;
+                rTitle.innerText = "Đã nộp bài thành công!";
+                rTitle.className = "text-2xl font-bold text-slate-800 mb-2";
+                rDesc.innerText = "Bạn đã hoàn thành bài thi TOEIC Reading. Dữ liệu của bạn đã được ghi nhận.";
+            }
+
+            // Show logs of tab switching at bottom of result card
+            if (violations > 0) {
+                document.getElementById('cheat-record-container').classList.remove('hidden');
+                document.getElementById('final-cheat-count').innerText = violations;
+            } else {
+                document.getElementById('cheat-record-container').classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+
+            // Disable all options
+            const inputs = document.querySelectorAll('input[type="radio"]');
+            inputs.forEach(input => input.disabled = true);
+
+            // Disable text highlighting tool completely
+            const editables = document.querySelectorAll('.formattable-text');
+            editables.forEach(el => el.setAttribute('contenteditable', 'false'));
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+
+        window.onload = initApp;
+
+    </script>
+</body>
+
+</html>
