@@ -1,0 +1,1248 @@
+import React, { useState, useRef, useMemo, useEffect } from 'react';
+import {
+Printer, Plus, Sun, Sunset, Trash2, Bold, Italic, Underline,
+Strikethrough, Highlighter, Eraser, ChevronDown, Lock, Unlock,
+X, Camera, Download, Loader2, Clock, Moon, Users, User,
+ChevronLeft, ChevronRight, Calendar as CalendarIcon,
+Copy, ClipboardPaste, Info, RotateCcw, ChevronUp, Undo2, Redo2,
+Video, Sparkles
+} from 'lucide-react';
+
+const THEMES = [
+{ name: "Jan", fullName: "January", primary: "#2874A6", secondary: "#3498DB", light: "#F4F9FD", border: "rgba(40, 116,
+166, 0.1)", darkPrimary: "#38bdf8", darkSecondary: "#0ea5e9" },
+{ name: "Feb", fullName: "February", primary: "#B03A2E", secondary: "#E74C3C", light: "#FEF9F8", border: "rgba(176, 58,
+46, 0.1)", darkPrimary: "#f87171", darkSecondary: "#ef4444" },
+{ name: "Mar", fullName: "March", primary: "#1E8449", secondary: "#2ECC71", light: "#F7FDF9", border: "rgba(30, 132, 73,
+0.1)", darkPrimary: "#4ade80", darkSecondary: "#22c55e" },
+{ name: "Apr", fullName: "April", primary: "#76448A", secondary: "#9B59B6", light: "#FAF8FB", border: "rgba(118, 68,
+138, 0.1)", darkPrimary: "#c084fc", darkSecondary: "#a855f7" },
+{ name: "May", fullName: "May", primary: "#D68910", secondary: "#F39C12", light: "#FFFBF5", border: "rgba(214, 137, 16,
+0.1)", darkPrimary: "#facc15", darkSecondary: "#eab308" },
+{ name: "Jun", fullName: "June", primary: "#D35400", secondary: "#E67E22", light: "#FEFAF7", border: "rgba(211, 84, 0,
+0.1)", darkPrimary: "#fb923c", darkSecondary: "#f97316" },
+{ name: "Jul", fullName: "July", primary: "#117A65", secondary: "#1ABC9C", light: "#F5FDFB", border: "rgba(17, 122, 101,
+0.1)", darkPrimary: "#2dd4bf", darkSecondary: "#14b8a6" },
+{ name: "Aug", fullName: "August", primary: "#943126", secondary: "#CB4335", light: "#FEF9F9", border: "rgba(148, 49,
+38, 0.1)", darkPrimary: "#fb7185", darkSecondary: "#f43f5e" },
+{ name: "Sep", fullName: "September", primary: "#212F3D", secondary: "#34495E", light: "#F8F9F9", border: "rgba(33, 47,
+61, 0.1)", darkPrimary: "#94a3b8", darkSecondary: "#64748b" },
+{ name: "Oct", fullName: "October", primary: "#BA4A00", secondary: "#DC7633", light: "#FEF9F6", border: "rgba(186, 74,
+0, 0.1)", darkPrimary: "#fbbf24", darkSecondary: "#f59e0b" },
+{ name: "Nov", fullName: "November", primary: "#6E2C00", secondary: "#873600", light: "#FDF9F7", border: "rgba(110, 44,
+0, 0.1)", darkPrimary: "#d97706", darkSecondary: "#b45309" },
+{ name: "Dec", fullName: "December", primary: "#0E6655", secondary: "#16A085", light: "#F5FBF9", border: "rgba(14, 102,
+85, 0.1)", darkPrimary: "#34d399", darkSecondary: "#10b981" }
+];
+
+const DAYS_NAMES = ["Time", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const HIGHLIGHT_COLORS = [
+{ name: 'Red', color: '#FCA5A5' }, { name: 'Orange', color: '#FDBA74' }, { name: 'Amber', color: '#FCD34D' }, { name:
+'Yellow', color: '#FEF08A' },
+{ name: 'Rose', color: '#FDA4AF' }, { name: 'Pink', color: '#F9A8D4' }, { name: 'Fuchsia', color: '#F0ABFC' }, { name:
+'Purple', color: '#D8B4FE' },
+{ name: 'Violet', color: '#C4B5FD' }, { name: 'Indigo', color: '#A5B4FC' }, { name: 'Blue', color: '#93C5FD' }, { name:
+'Sky', color: '#7DD3FC' },
+{ name: 'Cyan', color: '#67E8F9' }, { name: 'Teal', color: '#5EEAD4' }, { name: 'Emerald', color: '#6EE7B7' }, { name:
+'Green', color: '#86EFAC' },
+];
+
+const getMonday = (d) => {
+const dt = new Date(d);
+const day = dt.getDay();
+const diff = dt.getDate() - day + (day === 0 ? -6 : 1);
+return new Date(dt.setDate(diff));
+};
+
+const addDays = (d, days) => {
+const dt = new Date(d);
+dt.setDate(dt.getDate() + days);
+return dt;
+};
+
+const formatDateToKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2,
+'0')}-${String(d.getDate()).padStart(2, '0')}`;
+const formatDisplayDate = (d) => `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
+
+const getEmptyRow = () => [
+"",
+{ text: "", status: "none", type: "none", capacity: "", bgColor: "" },
+{ text: "", status: "none", type: "none", capacity: "", bgColor: "" },
+{ text: "", status: "none", type: "none", capacity: "", bgColor: "" },
+{ text: "", status: "none", type: "none", capacity: "", bgColor: "" },
+{ text: "", status: "none", type: "none", capacity: "", bgColor: "" },
+{ text: "", status: "none", type: "none", capacity: "", bgColor: "" },
+{ text: "", status: "none", type: "none", capacity: "", bgColor: "" }
+];
+
+const generateEmptyWeek = () => ({
+morning: Array(3).fill(null).map(getEmptyRow),
+afternoon: Array(4).fill(null).map(getEmptyRow)
+});
+
+const formatTimeInput = (value) => {
+const numbers = value.replace(/\D/g, '');
+if (numbers.length === 0) return '';
+if (numbers.length <= 2) return numbers; if (numbers.length <=4) return `${numbers.slice(0, 2)}:${numbers.slice(2)}`; if
+    (numbers.length <=6) return `${numbers.slice(0, 2)}:${numbers.slice(2, 4)}-${numbers.slice(4)}`; return
+    `${numbers.slice(0, 2)}:${numbers.slice(2, 4)}-${numbers.slice(4, 6)}:${numbers.slice(6, 8)}`; }; const
+    extractPlainText=(html)=> {
+    if (!html) return "";
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return (tmp.textContent || tmp.innerText || "").trim().toLowerCase();
+    };
+
+    const calculateDuration = (timeStr) => {
+    if (!timeStr) return 0;
+    const match = timeStr.match(/(\d{2}):(\d{2})-(\d{2}):(\d{2})/);
+    if (!match) return 0;
+    const [_, h1, m1, h2, m2] = match;
+    const start = parseInt(h1, 10) * 60 + parseInt(m1, 10);
+    const end = parseInt(h2, 10) * 60 + parseInt(m2, 10);
+    let diff = end - start;
+    if (diff < 0) diff +=24 * 60; return diff / 60; }; const RichTextCell=({ value, onChange, placeholder, className,
+        disabled, isCapturing, hasText, onFocus })=> {
+        const ref = useRef(null);
+        const lastValue = useRef(value);
+
+        useEffect(() => {
+        if (ref.current && value !== ref.current.innerHTML && value !== lastValue.current) {
+        ref.current.innerHTML = value;
+        lastValue.current = value;
+        }
+        }, [value]);
+
+        const handleInput = () => {
+        if (!disabled && ref.current) {
+        const currentHtml = ref.current.innerHTML;
+        if (currentHtml !== lastValue.current) {
+        lastValue.current = currentHtml;
+        onChange(currentHtml);
+        }
+        }
+        };
+
+        useEffect(() => {
+        if (!ref.current || disabled) return;
+        const observer = new MutationObserver(handleInput);
+        observer.observe(ref.current, { childList: true, subtree: true, characterData: true, attributes: true });
+        return () => observer.disconnect();
+        }, [disabled]);
+
+        return (
+        <div ref={ref} contentEditable={!disabled} onInput={handleInput} onBlur={handleInput} onFocus={onFocus}
+            className={`${className} ${disabled ? 'cursor-default' : 'focus:outline-none' }`} data-placeholder={disabled
+            ? "" : placeholder} style={{ whiteSpace: 'pre-wrap' , wordBreak: 'break-word' , lineHeight: '1.2' , padding:
+            hasText ? '0.35rem 0.25rem' : '0.6rem 0' , overflowY: isCapturing ? 'visible' : 'auto' , maxHeight:
+            isCapturing ? 'none' : '100%' }} />
+        );
+        };
+
+        export default function App() {
+        const [isDarkMode, setIsDarkMode] = useState(false);
+        const [teacherName, setTeacherName] = useState("");
+        const [currentViewDate, setCurrentViewDate] = useState(new Date());
+        const [isUnlocked, setIsUnlocked] = useState(false);
+        const [scheduleData, setScheduleData] = useState({});
+        const [clipboard, setClipboard] = useState(null);
+        const [focusedClassText, setFocusedClassText] = useState(null);
+        const [activeCell, setActiveCell] = useState(null);
+        const [showAuthModal, setShowAuthModal] = useState(false);
+        const [showMonthPicker, setShowMonthPicker] = useState(false);
+        const [password, setPassword] = useState("");
+        const [authError, setAuthError] = useState("");
+        const [toastMessage, setToastMessage] = useState("");
+        const [isInputShaking, setIsInputShaking] = useState(false);
+        const [screenshotImg, setScreenshotImg] = useState(null);
+        const [isCapturing, setIsCapturing] = useState(false);
+
+        // --- UNDO / REDO STATE ---
+        const historyRef = useRef([]);
+        const historyIndexRef = useRef(-1);
+        const isUndoingRef = useRef(false);
+        const [canUndo, setCanUndo] = useState(false);
+        const [canRedo, setCanRedo] = useState(false);
+
+        const captureRef = useRef(null);
+
+        const weekDates = useMemo(() => {
+        const monday = getMonday(currentViewDate);
+        return Array.from({length: 7}, (_, i) => addDays(monday, i));
+        }, [currentViewDate]);
+
+        const weekKey = useMemo(() => formatDateToKey(weekDates[0]), [weekDates]);
+        const currentMonthIndex = weekDates[3].getMonth();
+        const currentYear = weekDates[3].getFullYear();
+        const yearStr = currentYear.toString();
+        const currentWeekData = scheduleData[weekKey] || generateEmptyWeek();
+        const isLocked = !isUnlocked;
+
+        // --- UNDO/REDO EFFECT ---
+        useEffect(() => {
+        if (isUndoingRef.current) {
+        isUndoingRef.current = false;
+        return;
+        }
+        const currentHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
+        currentHistory.push(scheduleData);
+
+        if (currentHistory.length > 200) currentHistory.shift();
+
+        historyRef.current = currentHistory;
+        historyIndexRef.current = currentHistory.length - 1;
+
+        setCanUndo(historyIndexRef.current > 0);
+        setCanRedo(historyIndexRef.current < historyRef.current.length - 1); }, [scheduleData]); const handleUndo=()=> {
+            if (isLocked || historyIndexRef.current <= 0) return; isUndoingRef.current=true; historyIndexRef.current
+                -=1; setScheduleData(historyRef.current[historyIndexRef.current]); setCanUndo(historyIndexRef.current>
+                0);
+                setCanRedo(historyIndexRef.current < historyRef.current.length - 1); setActiveCell(null); }; const
+                    handleRedo=()=> {
+                    if (isLocked || historyIndexRef.current >= historyRef.current.length - 1) return;
+                    isUndoingRef.current = true;
+                    historyIndexRef.current += 1;
+                    setScheduleData(historyRef.current[historyIndexRef.current]);
+
+                    setCanUndo(historyIndexRef.current > 0);
+                    setCanRedo(historyIndexRef.current < historyRef.current.length - 1); setActiveCell(null); };
+                        useEffect(()=> {
+                        const handleClickOutside = (e) => {
+                        if (!e.target.closest('.schedule-cell') && !e.target.closest('.highlighter-dropdown') &&
+                        !e.target.closest('.format-toolbar')) {
+                        setActiveCell(null);
+                        }
+                        if (!e.target.closest('.month-picker-container')) {
+                        setShowMonthPicker(false);
+                        }
+                        };
+                        document.addEventListener('mousedown', handleClickOutside);
+                        return () => document.removeEventListener('mousedown', handleClickOutside);
+                        }, []);
+
+                        const updateCurrentWeekData = (updater) => {
+                        setScheduleData(prev => ({ ...prev, [weekKey]: updater(prev[weekKey] || generateEmptyWeek())
+                        }));
+                        };
+
+                        const handleWeeklyNav = (direction) => {
+                        if (direction === 'prev') setCurrentViewDate(addDays(currentViewDate, -7));
+                        else if (direction === 'next') setCurrentViewDate(addDays(currentViewDate, 7));
+                        else setCurrentViewDate(new Date());
+                        setFocusedClassText(null);
+                        setActiveCell(null);
+                        };
+
+                        const handleMonthChange = (index) => {
+                        const newDate = new Date(currentYear, index, 1);
+                        setCurrentViewDate(newDate);
+                        setFocusedClassText(null);
+                        setActiveCell(null);
+                        setShowMonthPicker(false);
+                        };
+
+                        const handleUnlockSubmit = (e) => {
+                        e.preventDefault();
+                        if (password === "hte26") {
+                        setIsUnlocked(true);
+                        setShowAuthModal(false);
+                        setPassword("");
+                        setAuthError("");
+                        } else {
+                        setAuthError("Incorrect password!");
+                        }
+                        };
+
+                        const handleLockToggle = () => {
+                        if (isLocked) {
+                        if (!teacherName.trim()) {
+                        setIsInputShaking(true);
+                        setTimeout(() => setIsInputShaking(false), 600);
+                        return;
+                        }
+                        setShowAuthModal(true);
+                        } else {
+                        setIsUnlocked(false);
+                        setActiveCell(null);
+                        }
+                        };
+
+                        const handleCellChange = (section, rowIndex, colIndex, value) => {
+                        if (isLocked) return;
+                        updateCurrentWeekData(weekData => {
+                        const newData = { ...weekData };
+                        newData[section] = [...newData[section]];
+                        newData[section][rowIndex] = [...newData[section][rowIndex]];
+                        if (colIndex === 0) {
+                        newData[section][rowIndex][colIndex] = formatTimeInput(value);
+                        } else {
+                        const cell = newData[section][rowIndex][colIndex];
+                        newData[section][rowIndex][colIndex] = { ...(typeof cell === 'object' ? cell : {}), text: value
+                        };
+                        }
+                        return newData;
+                        });
+                        };
+
+                        const handleStatusChange = (section, rowIndex, colIndex) => {
+                        if (isLocked) return;
+                        updateCurrentWeekData(weekData => {
+                        const newData = { ...weekData };
+                        const cell = newData[section][rowIndex][colIndex];
+                        newData[section][rowIndex][colIndex] = { ...cell, status: cell.status === 'none' ? 'unpaid' :
+                        cell.status === 'unpaid' ? 'paid' : 'none' };
+                        return newData;
+                        });
+                        };
+
+                        const handleTypeChange = (section, rowIndex, colIndex) => {
+                        if (isLocked) return;
+                        updateCurrentWeekData(weekData => {
+                        const newData = { ...weekData };
+                        const cell = newData[section][rowIndex][colIndex];
+                        newData[section][rowIndex][colIndex] = { ...cell, type: cell.type === 'none' ? 'online' :
+                        cell.type === 'online' ? 'offline' : cell.type === 'offline' ? 'hybrid' : 'none' };
+                        return newData;
+                        });
+                        };
+
+                        const handleCapacityChange = (section, rowIndex, colIndex, value) => {
+                        if (isLocked) return;
+                        updateCurrentWeekData(weekData => {
+                        const newData = { ...weekData };
+                        newData[section][rowIndex][colIndex] = { ...newData[section][rowIndex][colIndex], capacity:
+                        value };
+                        return newData;
+                        });
+                        };
+
+                        const handlePillHighlight = (color) => {
+                        if (isLocked || !activeCell) return;
+                        const { section, rowIndex, colIndex } = activeCell;
+                        updateCurrentWeekData(weekData => {
+                        const newData = { ...weekData };
+                        const cell = newData[section][rowIndex][colIndex];
+                        newData[section][rowIndex][colIndex] = { ...cell, bgColor: color };
+                        return newData;
+                        });
+                        setActiveCell(null);
+                        };
+
+                        const handleClearActiveCell = () => {
+                        if (isLocked || !activeCell) return;
+                        const { section, rowIndex, colIndex } = activeCell;
+                        updateCurrentWeekData(weekData => {
+                        const newData = { ...weekData };
+                        newData[section] = [...newData[section]];
+                        newData[section][rowIndex] = [...newData[section][rowIndex]];
+                        newData[section][rowIndex][colIndex] = { text: "", status: "none", type: "none", capacity: "",
+                        bgColor: "" };
+                        return newData;
+                        });
+                        setToastMessage("Cell cleared.");
+                        setTimeout(() => setToastMessage(""), 2000);
+                        setActiveCell(null);
+                        };
+
+                        const handleCopyCell = (section, rowIndex, colIndex) => {
+                        if (isLocked) return;
+                        const cellData = currentWeekData[section][rowIndex][colIndex];
+                        if (!cellData || !cellData.text) return;
+                        setClipboard({ text: cellData.text, type: cellData.type, capacity: cellData.capacity, bgColor:
+                        cellData.bgColor });
+                        setToastMessage("Class copied!");
+                        setTimeout(() => setToastMessage(""), 2000);
+                        };
+
+                        const handlePasteCell = (section, rowIndex, colIndex) => {
+                        if (isLocked || !clipboard) return;
+                        updateCurrentWeekData(weekData => {
+                        const newData = { ...weekData };
+                        newData[section][rowIndex][colIndex] = {
+                        ...newData[section][rowIndex][colIndex],
+                        text: clipboard.text,
+                        type: clipboard.type,
+                        capacity: clipboard.capacity,
+                        bgColor: clipboard.bgColor,
+                        status: 'none'
+                        };
+                        return newData;
+                        });
+                        setToastMessage("Class pasted!");
+                        setTimeout(() => setToastMessage(""), 2000);
+                        };
+
+                        const handleTakeScreenshot = async () => {
+                        if (isLocked || !captureRef.current) return;
+                        setIsCapturing(true);
+                        setFocusedClassText(null);
+
+                        try {
+                        if (!window.htmlToImage) {
+                        await new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src =
+                        "https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js";
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.body.appendChild(script);
+                        });
+                        }
+                        const captureOnlyEls = captureRef.current.querySelectorAll('.capture-only');
+                        captureOnlyEls.forEach(el => el.style.display = 'block');
+                        const stickyEls = captureRef.current.querySelectorAll('.sticky');
+                        const stickyStyles = [];
+                        stickyEls.forEach(el => {
+                        stickyStyles.push({ el, classList: [...el.classList] });
+                        el.classList.remove('sticky', 'top-0', 'left-0', 'z-10', 'z-20', 'z-30', 'z-40', 'z-50');
+                        });
+                        await new Promise(r => setTimeout(r, 250));
+                        const dataUrl = await window.htmlToImage.toPng(captureRef.current, { backgroundColor: isDarkMode
+                        ? '#070A13' : '#ffffff', pixelRatio: 2.5 });
+                        stickyStyles.forEach(({ el, classList }) => { el.className = classList.join(' '); });
+                        captureOnlyEls.forEach(el => el.style.display = 'none');
+                        setScreenshotImg(dataUrl);
+                        } catch (error) {
+                        console.error("Capture Error:", error);
+                        } finally {
+                        setIsCapturing(false);
+                        }
+                        };
+
+                        const dailyStats = useMemo(() => {
+                        const hours = Array(7).fill(0);
+                        ['morning', 'afternoon'].forEach(section => {
+                        (currentWeekData[section] || []).forEach(row => {
+                        const duration = calculateDuration(row[0]);
+                        for (let i = 1; i <= 7; i++) { const textContent=row[i]?.text?.replace(/<[^>]*>?/gm, '').trim();
+                            if (textContent) hours[i-1] += duration;
+                            }
+                            });
+                            });
+                            return { hours };
+                            }, [currentWeekData]);
+
+                            const currentThemeConfig = THEMES[currentMonthIndex];
+                            const themeStyles = {
+                            '--theme-primary': isDarkMode ? currentThemeConfig.darkPrimary : currentThemeConfig.primary,
+                            '--theme-secondary': isDarkMode ? currentThemeConfig.darkSecondary :
+                            currentThemeConfig.secondary,
+                            '--theme-light': isDarkMode ? `rgba(15, 23, 42, 0.9)` : currentThemeConfig.light,
+                            '--theme-border': isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                            '--theme-glow': isDarkMode ? `${currentThemeConfig.darkPrimary}44` : 'rgba(0,0,0,0.05)',
+                            };
+
+                            const addRow = (section) => {
+                            if (isLocked) return;
+                            updateCurrentWeekData(weekData => ({ ...weekData, [section]: [...weekData[section],
+                            getEmptyRow()] }));
+                            };
+
+                            const insertRow = (section, rowIndex) => {
+                            if (isLocked) return;
+                            updateCurrentWeekData(weekData => {
+                            const newData = { ...weekData };
+                            const newSection = [...newData[section]];
+                            newSection.splice(rowIndex + 1, 0, getEmptyRow());
+                            newData[section] = newSection;
+                            return newData;
+                            });
+                            };
+
+                            const removeRow = (section, rowIndex) => {
+                            if (isLocked) return;
+                            updateCurrentWeekData(weekData => {
+                            if (weekData[section].length <= 1) return weekData; const newData={ ...weekData }; const
+                                newSection=[...newData[section]]; newSection.splice(rowIndex, 1);
+                                newData[section]=newSection; return newData; }); }; return ( <div style={themeStyles}
+                                className={`h-screen flex flex-col transition-colors duration-700 relative
+                                overflow-hidden font-outfit ${isDarkMode ? 'dark bg-[#070A13] text-slate-200'
+                                : 'bg-[#F8FAFF] text-[#2C3E50]' } p-2 md:p-6 print:p-0 print:bg-white`}>
+
+                                <style>
+                                    {
+                                        ` @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+                                        .font-outfit {
+                                            font-family: 'Outfit', sans-serif;
+                                        }
+
+                                        .capture-only {
+                                            display: none;
+                                        }
+
+                                        @keyframes lockedShake {
+
+                                            0%,
+                                            100% {
+                                                transform: translateX(0);
+                                            }
+
+                                            20%,
+                                            60% {
+                                                transform: translateX(-6px) rotate(-1deg);
+                                            }
+
+                                            40%,
+                                            80% {
+                                                transform: translateX(6px) rotate(1deg);
+                                            }
+                                        }
+
+                                        .animate-locked-shake {
+                                            animation: lockedShake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+                                            border-color: #EF4444 !important;
+                                        }
+
+                                        [contenteditable][data-placeholder]:empty:before {
+                                            content: attr(data-placeholder);
+                                            color: #9CA3AF;
+                                            pointer-events: none;
+                                            display: block;
+                                            opacity: 0.5;
+                                        }
+
+                                        ::-webkit-scrollbar {
+                                            width: 4px;
+                                            height: 4px;
+                                        }
+
+                                        ::-webkit-scrollbar-thumb {
+                                            background: var(--theme-primary);
+                                            border-radius: 10px;
+                                        }
+
+                                        .glass-panel {
+                                            background: $ {
+                                                isDarkMode ? 'rgba(15, 23, 42, 0.7)': 'rgba(255, 255, 255, 0.9)'
+                                            }
+
+                                            ;
+                                            backdrop-filter: blur(24px);
+
+                                            border: 1px solid $ {
+                                                isDarkMode ? 'rgba(255,255,255,0.08)': 'rgba(255, 255, 255, 0.5)'
+                                            }
+
+                                            ;
+                                            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+                                        }
+
+                                        .schedule-cell {
+                                            transition: all 0.3s ease;
+                                            border: 1px solid var(--theme-border);
+                                        }
+
+                                        .schedule-cell:hover:not(.sticky) {
+                                            transform: translateY(-2px) scale(1.01);
+
+                                            background: $ {
+                                                isDarkMode ? '#1E293B': '#FFFFFF'
+                                            }
+
+                                            !important;
+                                            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                                            z-index: 20;
+                                        }
+
+                                        .focus-active .schedule-cell.dimmed {
+                                            opacity: 0.2;
+                                            filter: grayscale(50%) blur(1px);
+                                            transform: scale(0.98);
+                                            pointer-events: none;
+                                        }
+
+                                        .focus-active .schedule-cell.highlighted {
+                                            box-shadow: inset 0 0 0 2px var(--theme-primary), 0 12px 24px -6px var(--theme-glow);
+                                            transform: translateY(-4px) scale(1.02);
+                                            z-index: 50;
+
+                                            background: $ {
+                                                isDarkMode ? '#1E293B': '#FFFFFF'
+                                            }
+
+                                            !important;
+                                        }
+
+                                        svg {
+                                            stroke-width: 2px !important;
+                                        }
+
+                                        .color-grid {
+                                            display: grid;
+                                            grid-template-columns: repeat(4, 1fr);
+                                            gap: 8px;
+                                            justify-items: center;
+                                        }
+
+                                        /* Month Picker Menu Style */
+                                        .month-picker-grid {
+                                            display: grid;
+                                            grid-template-columns: repeat(3, 1fr);
+                                            gap: 8px;
+                                            width: 300px;
+                                            padding: 12px;
+                                        }
+
+                                        .month-picker-item {
+                                            padding: 10px;
+                                            border-radius: 12px;
+                                            font-weight: 800;
+                                            font-size: 13px;
+                                            transition: all 0.2s;
+                                            text-align: center;
+                                            cursor: pointer;
+                                        }
+
+                                        .month-picker-item:hover {
+                                            transform: scale(1.05);
+                                            background: var(--theme-light);
+                                            color: var(--theme-primary);
+                                        }
+
+                                        .month-picker-item.active {
+                                            background: var(--theme-primary);
+                                            color: white;
+                                            box-shadow: 0 4px 12px var(--theme-glow);
+                                        }
+
+                                        `
+                                    }
+                                </style>
+
+                                {/* TOAST & MODALS */}
+                                {toastMessage && (
+                                <div
+                                    className="fixed top-10 left-1/2 transform -translate-x-1/2 bg-[var(--theme-primary)] text-white font-bold px-8 py-3 rounded-full shadow-2xl z-[999] flex items-center gap-2 border border-white/20 animate-bounce text-sm">
+                                    <Info size={16} /> {toastMessage}
+                                </div>
+                                )}
+
+                                {screenshotImg && (
+                                <div
+                                    className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-xl transition-opacity">
+                                    <div
+                                        className="bg-white dark:bg-[#0F172A] rounded-[3rem] p-8 flex flex-col max-w-6xl w-full max-h-[90vh] border border-white/10 shadow-2xl">
+                                        <div className="relative flex justify-center items-center mb-6">
+                                            <div className="absolute right-0 flex gap-4">
+                                                <a href={screenshotImg} download={`HTE_Schedule_${weekKey}.png`}
+                                                    className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-[var(--theme-primary)] to-[var(--theme-secondary)] text-white rounded-full transition-transform hover:scale-110 shadow-lg">
+                                                    <Download size={18} />
+                                                </a>
+                                                <button onClick={()=> setScreenshotImg(null)} className="w-10 h-10 flex
+                                                    items-center justify-center bg-slate-100 dark:bg-slate-800
+                                                    text-slate-500 rounded-full transition-transform hover:scale-110">
+                                                    <X size={18} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-950 rounded-[2rem] p-4 flex justify-center">
+                                            <img src={screenshotImg} alt="Preview"
+                                                className="max-w-full h-auto rounded-2xl shadow-xl object-contain" />
+                                        </div>
+                                    </div>
+                                </div>
+                                )}
+
+                                {showAuthModal && (
+                                <div
+                                    className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+                                    <div className="glass-panel rounded-[2.5rem] p-10 w-full max-w-sm border-t-8 shadow-2xl"
+                                        style={{borderColor: 'var(--theme-primary)' }}>
+                                        <div
+                                            className="flex justify-center mb-6 text-[var(--theme-primary)] bg-[var(--theme-light)] w-24 h-24 mx-auto rounded-full items-center">
+                                            <Lock size={32} />
+                                        </div>
+                                        <h2 className="text-2xl font-bold text-center mb-6 tracking-tight">Access Secure
+                                        </h2>
+                                        <form onSubmit={handleUnlockSubmit}>
+                                            <input type="password" value={password} onChange={e=> {
+                                            setPassword(e.target.value); setAuthError(""); }} placeholder="••••••"
+                                            autoFocus autoComplete="new-password" className={`w-full bg-slate-50
+                                            dark:bg-[#0F172A] border-2 rounded-2xl px-6 py-4 focus:outline-none
+                                            transition-all mb-4 text-center text-xl tracking-[0.5em] font-bold
+                                            ${authError ? 'border-red-400' : 'border-slate-200 dark:border-slate-700
+                                            focus:border-[var(--theme-primary)]'}`} />
+                                            {authError && <p
+                                                className="text-red-500 text-xs text-center font-bold mb-4">{authError}
+                                            </p>}
+                                            <div className="flex gap-4">
+                                                <button type="button" onClick={()=> setShowAuthModal(false)}
+                                                    className="flex-1 px-6 py-4 bg-slate-100 dark:bg-slate-800 font-bold
+                                                    rounded-2xl active:scale-95 transition-transform
+                                                    text-sm">Cancel</button>
+                                                <button type="submit"
+                                                    className="flex-1 px-6 py-4 bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-secondary)] text-white font-bold rounded-2xl active:scale-95 shadow-lg text-sm text-center">Access</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                )}
+
+                                {/* --- FROZEN TOP AREA --- */}
+                                <header className="flex-shrink-0 mb-6 mt-2 text-center">
+                                    <h1
+                                        className="text-5xl font-extrabold text-[var(--theme-primary)] uppercase tracking-widest">
+                                        Hoàng Trường English</h1>
+                                    <h2 className="text-lg font-medium tracking-[0.4em] mt-2 opacity-50 uppercase">
+                                        Teaching Schedule 2026</h2>
+                                </header>
+
+                                {/* MAIN TOOLBAR (FROZEN) */}
+                                <div
+                                    className="flex-shrink-0 glass-panel rounded-3xl p-4 mb-6 print:hidden transition-all duration-700 relative z-50">
+                                    <div className="flex items-center justify-between gap-4 w-full px-2">
+
+                                        <div className="flex items-center gap-4 shrink-0">
+                                            {/* Teacher Input */}
+                                            <input type="text" value={teacherName} onChange={(e)=>
+                                            setTeacherName(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' &&
+                                            !e.nativeEvent.isComposing) { e.preventDefault(); handleLockToggle(); } }}
+                                            placeholder="Teacher Name..." className={`bg-slate-50 dark:bg-slate-900
+                                            border border-transparent rounded-2xl px-5 py-3 focus:outline-none
+                                            transition-all duration-300 w-[220px] font-bold text-lg ${isInputShaking ?
+                                            'animate-locked-shake' : 'focus:border-[var(--theme-primary)]'}`} />
+
+                                            {/* Week Navigation */}
+                                            <div
+                                                className="flex items-center bg-slate-50 dark:bg-slate-900 rounded-2xl p-1 shadow-inner">
+                                                <button onClick={()=> handleWeeklyNav('prev')} className="p-2.5
+                                                    text-slate-400 hover:text-[var(--theme-primary)] transition-colors">
+                                                    <ChevronLeft size={22} />
+                                                </button>
+                                                <button onClick={()=> handleWeeklyNav('today')} className="px-5 py-2.5
+                                                    font-bold text-base
+                                                    text-[var(--theme-primary)]"><span>{formatDisplayDate(weekDates[0])}
+                                                        — {formatDisplayDate(weekDates[6])}</span></button>
+                                                <button onClick={()=> handleWeeklyNav('next')} className="p-2.5
+                                                    text-slate-400 hover:text-[var(--theme-primary)] transition-colors">
+                                                    <ChevronRight size={22} />
+                                                </button>
+                                            </div>
+
+                                            {/* MONTH PICKER BUTTON */}
+                                            <div className="relative month-picker-container">
+                                                <button onClick={()=> setShowMonthPicker(!showMonthPicker)}
+                                                    className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black
+                                                    text-base shadow-sm transition-all border ${showMonthPicker ?
+                                                    'bg-[var(--theme-primary)] text-white border-[var(--theme-primary)]'
+                                                    : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800
+                                                    text-[var(--theme-primary)]'}`}
+                                                    >
+                                                    <CalendarIcon size={18} />
+                                                    <span>{THEMES[currentMonthIndex].name}</span>
+                                                    {showMonthPicker ?
+                                                    <ChevronUp size={16} /> :
+                                                    <ChevronDown size={16} />}
+                                                </button>
+
+                                                {/* FLOATING MONTH PICKER GRID */}
+                                                {showMonthPicker && (
+                                                <div
+                                                    className="absolute top-full left-0 mt-2 z-[100] glass-panel rounded-3xl shadow-2xl border border-white/20 animate-in fade-in zoom-in-95 duration-200">
+                                                    <div className="month-picker-grid">
+                                                        {THEMES.map((theme, idx) => (
+                                                        <div key={idx} onClick={()=> handleMonthChange(idx)}
+                                                            className={`month-picker-item ${currentMonthIndex === idx ?
+                                                            'active' : ''}`}
+                                                            >
+                                                            {theme.fullName.slice(0, 3)}
+                                                        </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Settings & Actions */}
+                                        <div className="flex items-center gap-3 shrink-0">
+                                            <button onClick={()=> setIsDarkMode(!isDarkMode)} className="p-3 rounded-2xl
+                                                glass-panel text-slate-400 dark:text-[#fbbf24] hover:scale-110
+                                                transition-transform">
+                                                <Moon size={20} />
+                                            </button>
+                                            <button onClick={handleTakeScreenshot} disabled={isLocked || isCapturing}
+                                                className={`flex items-center gap-2 px-5 py-3 rounded-2xl font-bold
+                                                glass-panel transition-all ${isLocked ? 'opacity-40 cursor-not-allowed'
+                                                : 'hover:text-[var(--theme-primary)] hover:scale-105' }
+                                                text-sm`}>{isCapturing ?
+                                                <Loader2 size={18}
+                                                    className="animate-spin text-[var(--theme-primary)]" /> :
+                                                <Camera size={18} />} <span>Capture</span>
+                                            </button>
+                                            <button onClick={()=> window.print()} disabled={isLocked} className={`flex
+                                                items-center gap-2 px-5 py-3 rounded-2xl font-bold glass-panel
+                                                transition-all ${isLocked ? 'opacity-40 cursor-not-allowed' :
+                                                'hover:text-[var(--theme-primary)] hover:scale-105'} text-sm`}>
+                                                <Printer size={18} /> <span>Print</span>
+                                            </button>
+                                            <button onClick={handleLockToggle}
+                                                className="flex items-center gap-2 px-7 py-3 rounded-2xl font-extrabold text-white bg-gradient-to-br from-[var(--theme-primary)] to-[var(--theme-secondary)] shadow-lg hover:scale-105 active:scale-95 transition-all text-sm">{isLocked
+                                                ? <>
+                                                    <Lock size={18} /> Locked
+                                                </> : <>
+                                                    <Unlock size={18} /> Unlocked
+                                                </>}</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* --- SCROLLABLE AREA --- */}
+                                <div
+                                    className="flex-1 glass-panel rounded-[3rem] overflow-hidden print:overflow-visible relative flex flex-col min-h-0 mb-2">
+                                    {isLocked && <div
+                                        className="absolute inset-0 bg-white/5 dark:bg-black/5 z-[15] pointer-events-none print:hidden backdrop-blur-[2px]">
+                                    </div>}
+
+                                    {/* SECONDARY TOOLBAR */}
+                                    <div
+                                        className="flex-shrink-0 bg-gradient-to-r from-[var(--theme-light)] to-transparent p-4 px-8 flex items-center justify-between gap-6 border-b border-slate-100 dark:border-slate-900 print:hidden z-[60]">
+                                        <div
+                                            className="flex items-center gap-5 px-6 py-3 bg-white/60 dark:bg-slate-900/60 rounded-2xl border border-white/50 text-[11px] font-black uppercase tracking-wider shadow-sm shrink-0">
+                                            <span className="flex items-center gap-2">
+                                                <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]"></div> Paid
+                                            </span>
+                                            <span className="flex items-center gap-2">
+                                                <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></div> Unpaid
+                                            </span>
+                                            <div className="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+                                            <span className="flex items-center gap-1.5">🌐 Online</span><span
+                                                className="flex items-center gap-1.5">🏫 Offline</span><span
+                                                className="flex items-center gap-1.5">🔀 Hybrid</span>
+                                        </div>
+
+                                        <div className="flex items-center gap-3 shrink-0">
+                                            {!isLocked && (
+                                            <>
+                                                <div
+                                                    className="flex items-center gap-1 bg-white/80 dark:bg-slate-900/80 rounded-2xl px-2 py-1.5 border border-slate-100 dark:border-slate-800 shadow-sm format-toolbar">
+
+                                                    {/* UNDO / REDO BUTTONS */}
+                                                    <button onClick={handleUndo} disabled={!canUndo} className={`p-2
+                                                        rounded-xl transition-colors ${!canUndo
+                                                        ? 'opacity-30 cursor-not-allowed text-slate-400'
+                                                        : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-[var(--theme-primary)]'
+                                                        }`} title="Undo">
+                                                        <Undo2 size={18} />
+                                                    </button>
+                                                    <button onClick={handleRedo} disabled={!canRedo} className={`p-2
+                                                        rounded-xl transition-colors ${!canRedo
+                                                        ? 'opacity-30 cursor-not-allowed text-slate-400'
+                                                        : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-[var(--theme-primary)]'
+                                                        }`} title="Redo">
+                                                        <Redo2 size={18} />
+                                                    </button>
+
+                                                    <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                                                    <button onMouseDown={(e)=> { e.preventDefault();
+                                                        document.execCommand('bold'); }} className="p-2
+                                                        hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl
+                                                        transition-colors text-slate-600 dark:text-slate-300"
+                                                        title="Bold">
+                                                        <Bold size={18} />
+                                                    </button>
+                                                    <button onMouseDown={(e)=> { e.preventDefault();
+                                                        document.execCommand('italic'); }} className="p-2
+                                                        hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl
+                                                        transition-colors text-slate-600 dark:text-slate-300"
+                                                        title="Italic">
+                                                        <Italic size={18} />
+                                                    </button>
+                                                    <button onMouseDown={(e)=> { e.preventDefault();
+                                                        document.execCommand('underline'); }} className="p-2
+                                                        hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl
+                                                        transition-colors text-slate-600 dark:text-slate-300"
+                                                        title="Underline">
+                                                        <Underline size={18} />
+                                                    </button>
+                                                    <button onMouseDown={(e)=> { e.preventDefault();
+                                                        document.execCommand('strikeThrough'); }} className="p-2
+                                                        hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl
+                                                        transition-colors text-slate-600 dark:text-slate-300"
+                                                        title="Strikethrough">
+                                                        <Strikethrough size={18} />
+                                                    </button>
+
+                                                    <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                                                    {/* MULTI-COLOR HIGHLIGHTER PALETTE */}
+                                                    <div
+                                                        className="relative group p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl cursor-pointer highlighter-dropdown text-slate-600 dark:text-slate-300">
+                                                        <div className="flex items-center gap-1">
+                                                            <Highlighter size={18} />
+                                                            <ChevronDown size={14} className="opacity-30" />
+                                                        </div>
+                                                        <div
+                                                            className="absolute top-full right-0 pt-4 hidden group-hover:block z-[9999]">
+                                                            <div
+                                                                className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-5 shadow-2xl w-max">
+                                                                <div
+                                                                    className="text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest text-center">
+                                                                    Warm Colors</div>
+                                                                <div className="color-grid mb-4">
+                                                                    {HIGHLIGHT_COLORS.slice(0, 8).map(({ name, color })
+                                                                    => (
+                                                                    <button key={name} onClick={()=>
+                                                                        handlePillHighlight(color)} className="w-7 h-7
+                                                                        rounded-full border border-black/5
+                                                                        hover:scale-125 transition-transform shadow-sm"
+                                                                        style={{ backgroundColor: color }}
+                                                                        title={name}></button>
+                                                                    ))}
+                                                                </div>
+                                                                <div
+                                                                    className="text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest text-center">
+                                                                    Cool Colors</div>
+                                                                <div className="color-grid mb-4">
+                                                                    {HIGHLIGHT_COLORS.slice(8, 16).map(({ name, color })
+                                                                    => (
+                                                                    <button key={name} onClick={()=>
+                                                                        handlePillHighlight(color)} className="w-7 h-7
+                                                                        rounded-full border border-black/5
+                                                                        hover:scale-125 transition-transform shadow-sm"
+                                                                        style={{ backgroundColor: color }}
+                                                                        title={name}></button>
+                                                                    ))}
+                                                                </div>
+                                                                <button onClick={()=> handlePillHighlight('')}
+                                                                    className="w-full mt-2 flex items-center
+                                                                    justify-center gap-2 bg-slate-50 dark:bg-slate-800
+                                                                    py-2 rounded-xl text-[10px] font-bold
+                                                                    hover:bg-red-50 hover:text-red-500 text-slate-600
+                                                                    dark:text-slate-300 transition-colors border
+                                                                    border-slate-100 dark:border-slate-700">
+                                                                    <Eraser size={14} /> Reset Color
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+                                                    <button onClick={handleClearActiveCell}
+                                                        className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 rounded-xl transition-all"
+                                                        title="Clear All Info in Selected Cell">
+                                                        <RotateCcw size={18} />
+                                                    </button>
+                                                </div>
+
+                                                <div className="flex gap-2">
+                                                    <button onClick={()=> window.open('https://meet.google.com/new',
+                                                        '_blank')} className="flex items-center gap-2 text-sm
+                                                        font-extrabold text-[var(--theme-primary)] glass-panel px-6
+                                                        py-2.5 rounded-2xl hover:bg-[var(--theme-primary)]
+                                                        hover:text-white transition-all shadow-sm" title="Create New
+                                                        Google Meet"><Video size={18} /> GG Meet</button>
+                                                    <button onClick={()=> window.open('https://chatgpt.com/', '_blank')}
+                                                        className="flex items-center gap-2 text-sm font-extrabold
+                                                        text-[var(--theme-primary)] glass-panel px-6 py-2.5 rounded-2xl
+                                                        hover:bg-[var(--theme-primary)] hover:text-white transition-all
+                                                        shadow-sm" title="AI-Generated Homework / Quiz / Test /
+                                                        Flashcard">
+                                                        <Sparkles size={18} /> AI Tools
+                                                    </button>
+                                                </div>
+                                            </>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* SCROLLABLE GRID */}
+                                    <div className={`flex-1 overflow-auto relative scrollbar-thin ${focusedClassText
+                                        ? 'focus-active' : '' }`}>
+                                        <div ref={captureRef}
+                                            className="min-w-[1100px] print:min-w-full relative bg-transparent"
+                                            style={themeStyles}>
+
+                                            {/* CAPTURE HEADER */}
+                                            <div className="capture-only text-center py-10 bg-white dark:bg-[#070A13]">
+                                                <h1
+                                                    className="text-3xl font-extrabold text-[var(--theme-primary)] uppercase tracking-[0.2em] mb-2">
+                                                    Hoàng Trường English</h1>
+                                                <h2
+                                                    className="text-sm font-bold tracking-[0.5em] text-slate-400 uppercase mb-6">
+                                                    Teaching Schedule 2026</h2>
+                                                <div className="flex justify-center items-center gap-8 mt-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <User size={18}
+                                                            className="text-[var(--theme-primary)] opacity-80" />
+                                                        <div
+                                                            className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                                                            {teacherName || "...................."}</div>
+                                                    </div>
+                                                    <div className="h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+                                                    <div className="flex items-center gap-2">
+                                                        <CalendarIcon size={18}
+                                                            className="text-[var(--theme-primary)] opacity-80" />
+                                                        <div
+                                                            className="text-lg font-black text-slate-900 dark:text-white tracking-tighter">
+                                                            {formatDisplayDate(weekDates[0])} —
+                                                            {formatDisplayDate(weekDates[6])}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <table className="w-full border-collapse table-fixed">
+                                                <thead
+                                                    className="sticky top-0 z-40 bg-white/95 dark:bg-[#070A13]/95 backdrop-blur-xl">
+                                                    <tr>
+                                                        {DAYS_NAMES.map((dayName, idx) => (
+                                                        <th key={idx} className={`py-6 px-4 text-center text-[12px]
+                                                            font-black uppercase tracking-[0.2em] transition-all
+                                                            duration-700 ${idx===0
+                                                            ? 'bg-gradient-to-b from-[var(--theme-primary)] to-[var(--theme-secondary)] text-white w-28 sticky left-0 z-50 shadow-xl'
+                                                            : 'bg-[var(--theme-light)] dark:bg-slate-900 text-[var(--theme-primary)] dark:text-slate-300 border-l border-white/50 dark:border-slate-800 w-[14.28%]'
+                                                            }`}>
+                                                            <div
+                                                                className="flex flex-col items-center justify-center gap-1.5">
+                                                                <span>{dayName}</span>{idx !== 0 && <div
+                                                                    className="text-[11px] font-bold tracking-normal opacity-80 bg-white/40 dark:bg-slate-800 px-3 py-1 rounded-full">
+                                                                    {formatDisplayDate(weekDates[idx - 1])}</div>}</div>
+                                                        </th>
+                                                        ))}
+                                                        {!isLocked && <th
+                                                            className="w-10 print:hidden bg-[var(--theme-light)] dark:bg-slate-900 border-l border-white/50 dark:border-slate-800">
+                                                        </th>}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {['morning', 'afternoon'].map((section, sIdx) => (
+                                                    <React.Fragment key={section}>
+                                                        {sIdx === 1 && (
+                                                        <tr className="h-20 select-none">
+                                                            <td
+                                                                className="sticky left-0 z-30 bg-slate-100 dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800">
+                                                            </td>
+                                                            <td colSpan={7}
+                                                                className="border-y border-slate-50 dark:border-slate-900">
+                                                                <div
+                                                                    className="flex items-center justify-center gap-6 text-[10px] font-black tracking-[0.5em] text-slate-300 dark:text-slate-700 uppercase">
+                                                                    <div
+                                                                        className="h-px w-20 bg-slate-100 dark:bg-slate-900">
+                                                                    </div>LUNCH BREAK<div
+                                                                        className="h-px w-20 bg-slate-100 dark:bg-slate-900">
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            {!isLocked && <td className="print:hidden"></td>}
+                                                        </tr>
+                                                        )}
+                                                        {currentWeekData[section].map((row, rowIndex) => (
+                                                        <tr key={`${section}-${rowIndex}`} className="group">
+                                                            {row.map((cellObj, colIndex) => {
+                                                            const isTime = colIndex === 0;
+                                                            const safeCell = typeof cellObj === 'object' && cellObj !==
+                                                            null ? cellObj : { text: "", status: "none", type: "none",
+                                                            capacity: "", bgColor: "" };
+                                                            const textValue = isTime ? (typeof cellObj === 'string' ?
+                                                            cellObj : "") : safeCell.text;
+                                                            const rawText = !isTime ? extractPlainText(textValue) : "";
+                                                            const hasContent = rawText.length > 0;
+                                                            const currentBgColor = safeCell.bgColor || '';
+                                                            const isActive = activeCell && activeCell.section ===
+                                                            section && activeCell.rowIndex === rowIndex &&
+                                                            activeCell.colIndex === colIndex;
+
+                                                            let cellFocus = "";
+                                                            if (!isTime && focusedClassText && rawText) {
+                                                            cellFocus = rawText === focusedClassText ? "highlighted" :
+                                                            "dimmed";
+                                                            } else if (!isTime && focusedClassText) { cellFocus =
+                                                            "dimmed"; }
+
+                                                            return (
+                                                            <td key={colIndex} className={`schedule-cell relative h-32
+                                                                align-middle ${cellFocus} ${isTime
+                                                                ? 'sticky left-0 z-30 bg-[#FBFDFF] dark:bg-[#070A13] font-bold text-[var(--theme-primary)] text-center shadow-2xl border-r border-slate-100 dark:border-slate-800'
+                                                                : 'bg-transparent overflow-hidden' }`}
+                                                                onMouseEnter={()=> { if(!isTime && !isLocked &&
+                                                                !isCapturing && rawText) setFocusedClassText(rawText);
+                                                                }}
+                                                                onMouseLeave={() => { if(!isTime)
+                                                                setFocusedClassText(null); }}
+                                                                >
+                                                                {isTime ? (
+                                                                <input type="text" disabled={isLocked} value={textValue}
+                                                                    onChange={(e)=> handleCellChange(section, rowIndex,
+                                                                colIndex, e.target.value)} placeholder="00:00"
+                                                                className="w-full text-center bg-transparent
+                                                                focus:outline-none text-base font-bold tracking-tight"
+                                                                />
+                                                                ) : (
+                                                                <div className="relative w-full h-full flex flex-col justify-center items-center px-3"
+                                                                    onClick={()=> !isLocked && setActiveCell({section,
+                                                                    rowIndex, colIndex})}>
+                                                                    {!isLocked && !isCapturing && (
+                                                                    <>
+                                                                        <button onClick={(e)=> { e.stopPropagation();
+                                                                            handleStatusChange(section, rowIndex,
+                                                                            colIndex); }} className={`absolute top-2
+                                                                            left-2 w-2.5 h-2.5 rounded-full
+                                                                            transition-all duration-300 z-10
+                                                                            ${safeCell.status === 'none' ? 'opacity-0
+                                                                            group-hover:opacity-40 bg-slate-300' :
+                                                                            'opacity-100 bg-' + (safeCell.status ===
+                                                                            'paid' ? '[#22c55e]' : '[#ef4444]')}`} />
+                                                                            <div className={`absolute bottom-2 left-2
+                                                                                flex items-center gap-1
+                                                                                transition-opacity z-10
+                                                                                ${safeCell.capacity ? 'opacity-100'
+                                                                                : 'opacity-0 group-hover:opacity-40 focus-within:opacity-100'
+                                                                                }`}>
+                                                                                <div
+                                                                                    className="flex items-center gap-1 px-1.5 py-0.5 bg-white/90 dark:bg-slate-800 rounded shadow-sm border border-black/5">
+                                                                                    <Users size={9}
+                                                                                        className="text-slate-400" />
+                                                                                    <input type="text"
+                                                                                        value={safeCell.capacity}
+                                                                                        onChange={(e)=>
+                                                                                    handleCapacityChange(section,
+                                                                                    rowIndex, colIndex, e.target.value)}
+                                                                                    placeholder="0" className="w-4
+                                                                                    bg-transparent outline-none
+                                                                                    text-[8px] font-black text-slate-500
+                                                                                    text-center" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                className="absolute top-2 right-2 flex gap-1 transition-opacity opacity-0 group-hover:opacity-100 z-10">
+                                                                                {clipboard && <button onClick={(e)=> {
+                                                                                    e.stopPropagation();
+                                                                                    handlePasteCell(section, rowIndex,
+                                                                                    colIndex); }} className="p-1
+                                                                                    bg-[var(--theme-secondary)]
+                                                                                    text-white rounded shadow
+                                                                                    hover:scale-110
+                                                                                    transition-transform">
+                                                                                    <ClipboardPaste size={11} />
+                                                                                </button>}
+                                                                                <button onClick={(e)=> {
+                                                                                    e.stopPropagation();
+                                                                                    handleCopyCell(section, rowIndex,
+                                                                                    colIndex); }} className="p-1
+                                                                                    bg-white dark:bg-slate-800
+                                                                                    text-slate-400 rounded shadow
+                                                                                    hover:text-[var(--theme-primary)]
+                                                                                    hover:scale-110
+                                                                                    transition-transform">
+                                                                                    <Copy size={11} />
+                                                                                </button>
+                                                                            </div>
+                                                                            <button onClick={(e)=> {
+                                                                                e.stopPropagation();
+                                                                                handleTypeChange(section, rowIndex,
+                                                                                colIndex); }} className={`absolute
+                                                                                bottom-2 right-2 p-1 transition-all z-10
+                                                                                ${safeCell.type === 'none' ? 'opacity-0
+                                                                                group-hover:opacity-40' : 'opacity-100
+                                                                                hover:scale-110'}`}><span
+                                                                                    className="text-sm">{safeCell.type
+                                                                                    === 'online' ? '🌐' : safeCell.type
+                                                                                    === 'offline' ? '🏫' : safeCell.type
+                                                                                    === 'hybrid' ? '🔀' :
+                                                                                    '🏷️'}</span></button>
+                                                                    </>
+                                                                    )}
+                                                                    {(isLocked || isCapturing) && (
+                                                                    <>
+                                                                        {safeCell.status !== 'none' &&
+                                                                        <div className={`absolute top-2 left-2 w-2 h-2
+                                                                            rounded-full ${safeCell.status==='paid'
+                                                                            ? 'bg-[#22c55e]' : 'bg-[#ef4444]' }`} />}
+                                                                        {safeCell.capacity && <div
+                                                                            className="absolute bottom-2 left-2 flex items-center gap-1 text-[8px] font-black text-slate-300">
+                                                                            <Users size={9} />{safeCell.capacity}
+                                                                        </div>}
+                                                                        {safeCell.type !== 'none' && <div
+                                                                            className="absolute bottom-2 right-2 text-[11px]">
+                                                                            {safeCell.type === 'online' ? '🌐' :
+                                                                            safeCell.type === 'offline' ? '🏫' : '🔀'}
+                                                                        </div>}
+                                                                    </>
+                                                                    )}
+                                                                    <div className={`w-full max-w-[85%] transition-all
+                                                                        duration-300 rounded-lg shadow-sm border
+                                                                        ${isActive
+                                                                        ? 'border-[var(--theme-primary)] shadow-md bg-white/20'
+                                                                        : (currentBgColor ? 'border-black/5' :
+                                                                        (hasContent
+                                                                        ? 'bg-white dark:bg-slate-800/80 border-slate-100 dark:border-slate-700'
+                                                                        : 'border-transparent' ))}`} style={{
+                                                                        backgroundColor: currentBgColor }}>
+                                                                        <RichTextCell disabled={isLocked}
+                                                                            isCapturing={isCapturing} value={textValue}
+                                                                            hasText={hasContent} onFocus={()=>
+                                                                            setActiveCell({section, rowIndex,
+                                                                            colIndex})} onChange={(val) =>
+                                                                            handleCellChange(section, rowIndex,
+                                                                            colIndex, val)} className={`w-full
+                                                                            text-center text-[13px] font-bold
+                                                                            tracking-tight transition-colors
+                                                                            ${hasContent ? (currentBgColor ?
+                                                                            'text-slate-900' : (isDarkMode ?
+                                                                            'text-slate-100' : 'text-slate-900')) :
+                                                                            'text-slate-400/40'}`} />
+                                                                    </div>
+                                                                </div>
+                                                                )}
+                                                            </td>
+                                                            );
+                                                            })}
+                                                            {!isLocked && (
+                                                            <td className="print:hidden w-10 relative overflow-visible">
+                                                                <div
+                                                                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all z-50">
+                                                                    <button onClick={()=> insertRow(section, rowIndex)}
+                                                                        className="p-1.5 bg-white dark:bg-slate-800
+                                                                        text-[var(--theme-primary)] rounded-lg shadow-md
+                                                                        hover:scale-110 hover:bg-[var(--theme-primary)]
+                                                                        hover:text-white transition-all border
+                                                                        border-black/5 dark:border-white/5"
+                                                                        title="Insert row below">
+                                                                        <Plus size={14} />
+                                                                    </button>
+                                                                    <button onClick={()=> removeRow(section, rowIndex)}
+                                                                        className="p-1.5 bg-white dark:bg-slate-800
+                                                                        text-red-500 rounded-lg shadow-md
+                                                                        hover:scale-110 hover:bg-red-500
+                                                                        hover:text-white transition-all border
+                                                                        border-black/5 dark:border-white/5"
+                                                                        title="Delete row">
+                                                                        <Trash2 size={14} />
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                            )}
+                                                        </tr>
+                                                        ))}
+                                                    </React.Fragment>
+                                                    ))}
+                                                    <tr
+                                                        className="bg-slate-50 dark:bg-[#070A13] border-t-2 border-[var(--theme-primary)]/30 h-16">
+                                                        <td
+                                                            className="sticky left-0 z-30 bg-slate-100 dark:bg-slate-900 text-center font-black text-[10px] uppercase tracking-widest border-r border-slate-100 dark:border-slate-800">
+                                                            Total Hours</td>
+                                                        {dailyStats.hours.map((hrs, idx) => (
+                                                        <td key={idx}
+                                                            className="text-center font-black text-[10px] text-[var(--theme-primary)]/80">
+                                                            {hrs > 0 ? hrs : <span className="opacity-10">—</span>}</td>
+                                                        ))}
+                                                        {!isLocked && <td className="print:hidden"></td>}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div
+                                                className="capture-only mt-12 text-center text-sm font-bold italic text-slate-400/60 pb-12 bg-white dark:bg-[#070A13] tracking-tight">
+                                                © Copyright {yearStr} by Hoang Truong English</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <footer
+                                    className="flex-shrink-0 mt-4 pb-2 text-center text-sm font-bold italic text-slate-400 dark:text-slate-700 tracking-tight">
+                                    © Copyright {yearStr} by Hoang Truong English</footer>
+                                </div>
+                                );
+                                }
