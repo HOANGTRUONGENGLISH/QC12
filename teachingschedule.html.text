@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+<!-- import React, { useState, useRef, useMemo, useEffect } from 'react';
 import {
 Printer, Plus, Sun, Sunset, Trash2, Bold, Italic, Underline,
 Strikethrough, Highlighter, Eraser, ChevronDown, Lock, Unlock,
@@ -1245,4 +1245,4 @@ if (numbers.length <= 2) return numbers; if (numbers.length <=4) return `${numbe
                                     © Copyright {yearStr} by Hoang Truong English</footer>
                                 </div>
                                 );
-                                }
+                                } -->
