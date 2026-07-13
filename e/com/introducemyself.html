@@ -696,23 +696,34 @@
         window.speakWord = function (text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
+
+                // Khắc phục lỗi trình duyệt đọc sai từ "I" (Tôi) khi đứng một mình
+                let spokenText = text;
+                if (spokenText.trim() === 'I') {
+                    spokenText = 'eye'; // Dùng từ đồng âm để ép phát âm chuẩn "aɪ"
+                }
+
+                const utterance = new SpeechSynthesisUtterance(spokenText);
 
                 let selectedVoice = null;
                 const enVoices = availableVoices.filter(v => v.lang.startsWith('en'));
 
                 if (enVoices.length > 0) {
-                    selectedVoice = enVoices.find(v => v.name.includes('Google') || v.name.includes('Natural'))
-                        || enVoices.find(v => v.lang.includes('US') || v.lang.includes('GB'))
-                        || enVoices[0];
+                    // Ưu tiên tìm các giọng nữ US nổi tiếng (Samantha trên Mac, Zira trên Windows, Google US trên Chrome)
+                    selectedVoice = enVoices.find(v => v.name.includes('Samantha')) ||
+                        enVoices.find(v => v.name.includes('Zira')) ||
+                        enVoices.find(v => v.name.includes('Google US English')) ||
+                        enVoices.find(v => v.lang === 'en-US' && v.name.includes('Female')) ||
+                        enVoices.find(v => v.lang === 'en-US') ||
+                        enVoices[0];
                 }
 
                 if (selectedVoice) utterance.voice = selectedVoice;
 
                 utterance.lang = selectedVoice ? selectedVoice.lang : 'en-US';
-                utterance.rate = 0.9;
-                utterance.pitch = 1.0;
-                utterance.volume = 1;
+                utterance.rate = 0.85; // Đọc chậm lại một xíu để phát âm to, rõ ràng hơn
+                utterance.pitch = 1.1; // Đẩy tone lên cao một chút cho ra chất giọng nữ sáng
+                utterance.volume = 1;  // Âm lượng tối đa
 
                 try { window.speechSynthesis.speak(utterance); } catch (e) { console.error("TTS Error:", e); }
             }
