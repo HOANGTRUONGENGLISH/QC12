@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS VOCAB - FEELINGS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Nunito cho tiêu đề mềm mại, Inter cho văn bản -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --mood-rose: #fb7185;
+            --mood-blue: #38bdf8;
+            --mood-yellow: #fbbf24;
+            --mood-bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #1e293b;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .font-mood {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Khung hiển thị giao diện Glassmorphism mềm mại */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 480px;
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Bounce effect */
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 20px;
+            border: 2px solid rgba(251, 113, 133, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            color: #1e293b;
+        }
+
+        .card-back {
+            transform: rotateY(-180deg);
+            border: 4px solid var(--mood-blue);
+            background: linear-gradient(145deg, #ffffff 0%, #f0f9ff 100%);
+        }
+
+        .flip-card.flipped .card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .card-back {
+            pointer-events: none;
+        }
+
+        .mood-input {
+            background: #fff1f2;
+            border: 2px solid #ffe4e6;
+            border-bottom: 4px solid #fda4af;
+            color: #1e293b;
+            text-align: center;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Thay đổi kích thước dựa trên breakpoint để vừa các cụm từ dài */
+        .mood-input {
+            width: 24px;
+            height: 34px;
+            font-size: 1.2rem;
+        }
+
+        @media (min-width: 400px) {
+            .mood-input {
+                width: 28px;
+                height: 38px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .mood-input {
+                width: 34px;
+                height: 44px;
+                font-size: 1.75rem;
+            }
+        }
+
+        .mood-input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: var(--mood-rose);
+            border-bottom-color: var(--mood-rose);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(251, 113, 133, 0.2);
+        }
+
+        .mood-input.hinted {
+            color: #ffffff;
+            border-bottom-color: var(--mood-yellow);
+            background: var(--mood-yellow);
+            pointer-events: none;
+        }
+
+        .mood-input.error {
+            color: #ffffff;
+            border-bottom-color: #ef4444;
+            background: #ef4444;
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake-error {
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .btn-mood {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 9999px;
+            /* Rounded full */
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-mood:active {
+            transform: scale(0.96);
+        }
+
+        .btn-mood:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
+            /* Rose */
+            color: white;
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            box-shadow: 0 8px 25px rgba(244, 63, 94, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #0ea5e9;
+            border: 2px solid #bae6fd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f0f9ff;
+            border-color: #7dd3fc;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+        }
+
+        .highlighter {
+            font-weight: 800;
+            color: var(--mood-rose);
+            background-color: #ffe4e6;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border-bottom: 2px solid #fda4af;
+        }
+
+        .stamp-mood {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #10b981;
+            /* Emerald */
+            border: 4px solid #10b981;
+            padding: 8px 16px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            transform: rotate(15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            border-radius: 12px;
+            text-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2), inset 0 0 10px rgba(16, 185, 129, 0.1);
+        }
+
+        .flipped .stamp-mood {
+            animation: stampSlam 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes stampSlam {
+            0% {
+                transform: scale(2) rotate(30deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(15deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: #475569;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 text-center pb-4 border-b border-slate-200/50">
+                    <div class="flex items-center justify-center gap-2 mb-3">
+                        <span class="text-2xl drop-shadow-sm">✨</span>
+                        <span
+                            class="inline-block px-3 py-1 bg-white border-2 border-pink-200 text-pink-500 text-xs font-bold rounded-full font-mood tracking-widest shadow-sm">MOOD
+                            JOURNAL</span>
+                        <span class="text-2xl drop-shadow-sm">✨</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl font-mood text-slate-800 tracking-tight font-black">FEELINGS &
+                        EMOTIONS</h1>
+                    <p class="text-slate-500 mt-2 font-medium text-sm sm:text-base">Explore words and phrases to express
+                        your psychological states.</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white/60 rounded-xl border border-white relative shadow-inner">
+                    <table class="w-full min-w-[650px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 font-mood text-base text-slate-700 bg-slate-100/90 border-b-2 border-pink-200 backdrop-blur-sm">
+                            <tr>
+                                <th class="p-3 w-1/4 rounded-tl-xl tracking-wide">EXPRESSION</th>
+                                <th class="p-3 w-1/6 text-center tracking-wide">WORD TYPE</th>
+                                <th class="p-3 rounded-tr-xl tracking-wide">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-700 divide-y divide-slate-100 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()"
+                        class="btn-mood btn-primary w-full sm:w-1/2 py-3.5 text-xl mb-4 flex items-center justify-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        START THE JOURNEY
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <!-- Header (Timer & Progress) -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-1">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="btn-mood btn-secondary px-4 py-2 text-sm flex items-center gap-1 shadow-sm"
+                    style="display: none;">
+                    ◀ BACK
+                </button>
+                <div id="top-prev-placeholder" class="w-20"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div
+                        class="flex items-center justify-between w-full mb-1.5 text-xs font-bold text-slate-600 font-mood uppercase tracking-wide">
+                        <div class="flex items-center gap-1">⏱ <span id="timer-display"
+                                class="text-rose-500">00:00</span></div>
+                        <div class="flex items-center gap-1">📖 <span id="progress-text"
+                                class="text-blue-500">1/33</span></div>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div
+                        class="w-full h-3 bg-white rounded-full overflow-visible relative border border-slate-200 shadow-inner">
+                        <div id="progress-bar"
+                            class="h-full bg-gradient-to-r from-rose-300 via-purple-300 to-blue-400 rounded-full transition-all duration-500 relative"
+                            style="width: 0%;">
+                            <span
+                                class="absolute -top-3.5 -right-3 text-2xl drop-shadow-md z-10 transition-transform hover:scale-110">🎨</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn-mood btn-secondary w-10 h-10 flex items-center justify-center shrink-0 rounded-full shadow-sm text-lg">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-4xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <!-- MẶT TRƯỚC (Điền từ) -->
+                        <div class="card-front">
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+
+                                <div class="mb-5 shrink-0 flex flex-col items-center text-center">
+                                    <span
+                                        class="inline-block px-4 py-1 bg-rose-50 text-rose-500 border border-rose-100 text-xs font-mood font-bold tracking-widest uppercase mb-4 rounded-full"
+                                        id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-4xl font-black text-slate-800 leading-tight font-mood"
+                                        id="word-mean"></h2>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
+                                    <div class="text-center mb-8 px-2 sm:px-6">
+                                        <p class="text-lg sm:text-2xl text-slate-600 leading-relaxed font-medium"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <!-- Vùng chứa các ô input linh hoạt -->
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-2.5 sm:gap-y-3 w-full px-1 mb-8">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn-mood btn-secondary flex items-center justify-center rounded-full"
+                                                title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn-mood btn-secondary text-lg">HINT
+                                                💡</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn-mood btn-primary px-8 sm:px-12 h-12 text-xl tracking-wider">
+                                                EXPRESS
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MẶT SAU (Kết quả) -->
+                        <div class="card-back">
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                <div class="stamp-mood" id="result-seal">EMOTION UNLOCKED</div>
+
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center justify-center gap-3 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-5xl font-mood font-black text-blue-500 tracking-tight"
+                                            id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-blue-500 hover:text-blue-400 transition-colors p-2 bg-blue-50 rounded-full border border-blue-200 shadow-sm"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-100 border border-slate-200 text-slate-500 px-4 py-1.5 rounded-full mb-6 font-mood font-bold text-base tracking-widest shadow-sm">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+
+                                    <p class="text-xl sm:text-2xl text-slate-800 font-bold mb-6" id="back-mean"></p>
+
+                                    <div
+                                        class="w-full max-w-3xl bg-blue-50/50 p-5 sm:p-6 rounded-2xl border border-blue-100 text-left shadow-sm">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium"
+                                            id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-4 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn-mood btn-primary px-8 py-3.5 text-xl w-full sm:w-2/3 flex items-center justify-center gap-2">
+                                        NEXT MOOD ⏩
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-slate-200/50 pb-5">
+                    <h2 class="text-4xl sm:text-5xl text-rose-500 font-mood font-black uppercase tracking-wide">JOURNAL
+                        COMPLETED</h2>
+                    <p id="completion-datetime"
+                        class="text-sm font-mood font-bold text-slate-500 mt-2 uppercase tracking-widest"></p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-mood text-lg">
+                    <div class="bg-white/80 border border-white p-4 text-center rounded-2xl shadow-sm">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">ACCURACY</p>
+                        <p class="text-3xl text-slate-800 font-black" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-white/80 border border-white p-4 text-center rounded-2xl shadow-sm">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">TIME_ELAPSED</p>
+                        <p class="text-3xl text-slate-800 font-black" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-100 p-4 text-center rounded-2xl shadow-sm">
+                        <p class="text-xs text-emerald-500 font-bold uppercase tracking-widest mb-1">UNLOCKED</p>
+                        <p class="text-3xl text-emerald-500 font-black" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-100 p-4 text-center rounded-2xl shadow-sm">
+                        <p class="text-xs text-amber-500 font-bold uppercase tracking-widest mb-1">ASSISTED</p>
+                        <p class="text-3xl text-amber-500 font-black" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-white w-full mb-5 shrink min-h-0 bg-white/60 rounded-xl shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-slate-100/90 text-slate-700 border-b-2 border-rose-200 font-mood text-base tracking-wider backdrop-blur-sm">
+                            <tr>
+                                <th class="p-3 w-28 text-center rounded-tl-xl">STATUS</th>
+                                <th class="p-3 w-1/3">EXPRESSION</th>
+                                <th class="p-3 rounded-tr-xl">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body"
+                            class="text-slate-600 divide-y divide-slate-200/50 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()"
+                        class="btn-mood btn-primary w-full sm:w-1/2 py-3.5 text-xl mb-3 tracking-wider">
+                        NEW ENTRY 🔄
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "go out for drinks", type: "verb phrase", phonetic: "/ɡəʊ aʊt fə drɪŋks/", mean: "đi uống, đi nhậu", ex: "Many adults like to _______ with their friends after a long week at work." },
+            { word: "get drunk", type: "verb phrase", phonetic: "/ɡet drʌŋk/", mean: "say rượu", ex: "People should not _______ if they need to drive home or work early the next morning." },
+            { word: "tell a lie", type: "verb phrase", phonetic: "/tel ə laɪ/", mean: "nói dối", ex: "It is better to tell the truth than to _______ and lose other people’s trust." },
+            { word: "frightened of", type: "adjective phrase", phonetic: "/ˈfraɪtənd əv/", mean: "sợ, hoảng sợ về", ex: "Some students are _______ difficult exams because they worry about making too many mistakes." },
+            { word: "speak in front of a large crowd", type: "verb phrase", phonetic: "/spiːk ɪn frʌnt əv ə lɑːrdʒ kraʊd/", mean: "nói trước một đám đông lớn", ex: "Many people feel nervous when they have to _______ for the first time." },
+            { word: "get lost", type: "verb phrase", phonetic: "/ɡet lɒst/", mean: "bị lạc", ex: "Tourists can _______ in a new city if they do not use a map or ask for directions." },
+            { word: "hungry for", type: "adjective phrase", phonetic: "/ˈhʌŋɡri fə/", mean: "đói; khao khát", ex: "Young learners are often _______ new knowledge when the lesson is interesting and useful." },
+            { word: "bored with", type: "adjective phrase", phonetic: "/bɔːd wɪð/", mean: "chán với", ex: "Students may become _______ a lesson if they only listen and never take part in activities." },
+            { word: "do the same thing every day", type: "verb phrase", phonetic: "/duː ðə seɪm θɪŋ ˈevri deɪ/", mean: "làm cùng một việc mỗi ngày", ex: "Some people feel unhappy when they have to _______ without any change." },
+            { word: "eat the same food every day", type: "verb phrase", phonetic: "/iːt ðə seɪm fuːd ˈevri deɪ/", mean: "ăn cùng một món mỗi ngày", ex: "Children may get bored if they have to _______ at school." },
+            { word: "happy about", type: "adjective phrase", phonetic: "/ˈhæpi əˈbaʊt/", mean: "vui về, hài lòng về", ex: "She is _______ her progress because she can speak English more confidently now." },
+            { word: "get a new job", type: "verb phrase", phonetic: "/ɡet ə njuː dʒɒb/", mean: "có công việc mới", ex: "Many graduates hope to _______ soon after they finish their university studies." },
+            { word: "pass a driving test", type: "verb phrase", phonetic: "/pɑːs ə ˈdraɪvɪŋ test/", mean: "đậu bài thi lái xe", ex: "You need to practise regularly if you want to _______ on the first try." },
+            { word: "meet old friends again", type: "verb phrase", phonetic: "/miːt əʊld frendz əˈɡen/", mean: "gặp lại bạn cũ", ex: "It is always exciting to _______ after a long time apart." },
+            { word: "tired of", type: "adjective phrase", phonetic: "/ˈtaɪəd əv/", mean: "mệt mỏi, chán ngán với", ex: "Many workers feel _______ long meetings that do not lead to clear decisions." },
+            { word: "mop the floor", type: "verb phrase", phonetic: "/mɒp ðə flɔːr/", mean: "lau sàn nhà", ex: "Students should help to _______ after a class party to keep the room clean." },
+            { word: "sweep the floor", type: "verb phrase", phonetic: "/swiːp ðə flɔːr/", mean: "quét sàn nhà", ex: "My brother needs to _______ before guests arrive for dinner." },
+            { word: "do the same work every day", type: "verb phrase", phonetic: "/duː ðə seɪm wɜːk ˈevri deɪ/", mean: "làm cùng một công việc mỗi ngày", ex: "Some employees lose motivation when they have to _______ for many years." },
+            { word: "worried about", type: "adjective phrase", phonetic: "/ˈwʌrid əˈbaʊt/", mean: "lo lắng về", ex: "Parents are often _______ their children’s safety when they travel alone." },
+            { word: "lose a job", type: "verb phrase", phonetic: "/luːz ə dʒɒb/", mean: "mất việc", ex: "People may _______ when a company closes or reduces the number of workers." },
+            { word: "peer pressure", type: "noun phrase", phonetic: "/pɪə ˈpreʃər/", mean: "áp lực từ bạn bè đồng trang lứa", ex: "Teenagers sometimes face _______ when their friends want them to do something risky." },
+            { word: "stressed about", type: "adjective phrase", phonetic: "/strest əˈbaʊt/", mean: "căng thẳng về", ex: "Many students feel _______ final exams because they have many subjects to review." },
+            { word: "the upcoming presentation", type: "noun phrase", phonetic: "/ði ˌʌpˈkʌmɪŋ ˌprezənˈteɪʃən/", mean: "bài thuyết trình sắp tới", ex: "_______ is important, so our team needs to prepare carefully this week." },
+            { word: "thirsty", type: "adjective", phonetic: "/ˈθɜːsti/", mean: "khát nước", ex: "After playing football for an hour, the children are _______ and need some cold water." },
+            { word: "sad about", type: "adjective phrase", phonetic: "/sæd əˈbaʊt/", mean: "buồn về", ex: "He is _______ the result because he works hard but does not get the score he wants." },
+            { word: "at the end of", type: "phrase", phonetic: "/ət ði end əv/", mean: "vào cuối, ở phần cuối của", ex: "_______ the lesson, the teacher gives students a short speaking task to review vocabulary." },
+            { word: "say goodbye to", type: "verb phrase", phonetic: "/seɪ ˌɡʊdˈbaɪ tuː/", mean: "nói lời tạm biệt với", ex: "It is difficult to _______ close friends when they move to another city." },
+            { word: "cold", type: "adjective", phonetic: "/kəʊld/", mean: "lạnh", ex: "The classroom is _______ in the morning, so students often wear jackets during the first lesson." },
+            { word: "walk in the rain", type: "verb phrase", phonetic: "/wɔːk ɪn ðə reɪn/", mean: "đi bộ dưới mưa", ex: "You should take an umbrella if you need to _______ after school." },
+            { word: "walk in the sun", type: "verb phrase", phonetic: "/wɔːk ɪn ðə sʌn/", mean: "đi bộ dưới nắng", ex: "People should wear a hat when they _______ for a long time." },
+            { word: "hot", type: "adjective", phonetic: "/hɒt/", mean: "nóng", ex: "The weather is _______ today, so many people prefer to stay indoors during the afternoon." },
+            { word: "turn on", type: "phrasal verb", phonetic: "/tɜːn ɒn/", mean: "bật", ex: "Please _______ the fan because the room feels hot and uncomfortable." },
+            { word: "turn off", type: "phrasal verb", phonetic: "/tɜːn ɒf/", mean: "tắt", ex: "Students should _______ the lights before they leave the classroom." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+            if (type === 'start') playTone('sine', 400, 600, 0.1, 0.4);
+            else if (type === 'success') {
+                playTone('sine', 600, 800, 0.05, 0.1);
+                setTimeout(() => playTone('triangle', 900, 1200, 0.05, 0.2), 100);
+            }
+            else if (type === 'error') playTone('sawtooth', 200, 150, 0.1, 0.3);
+            else if (type === 'flip') playTone('sine', 300, 200, 0.05, 0.1);
+        }
+
+        // Tích hợp Giọng Nữ US & Xử lý Ký tự đặc biệt
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+
+            // Xử lý chuỗi mượt mà: Xóa gạch nối, nháy đơn để đọc trôi chảy
+            let rawWord = flashcards[currentIndex].word;
+            let wordToSpeak = rawWord.replace(/[-/()’']/g, ' ').replace(/\s+/g, ' ').trim();
+
+            // Gọi API Youdao giọng Nữ Mỹ (type=2)
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                // Dự phòng: Web Speech API (Giọng Nữ Mỹ)
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira')));
+                if (femaleUS) utter.voice = femaleUS;
+
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item) => {
+                return `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-3 font-mood font-bold text-blue-500 border-r border-slate-100 text-lg">${item.word}</td>
+                    <td class="p-3 text-center border-r border-slate-100"><span class="px-2 py-0.5 bg-rose-50 border border-rose-100 text-rose-500 text-xs font-bold rounded-full uppercase tracking-widest">${item.type}</span></td>
+                    <td class="p-3 text-slate-600 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { };
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            // Render ví dụ có chỗ trống
+            let wordLength = card.word.replace(/[\s-()’']/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 12 ? 'w-24' : (wordLength < 20 ? 'w-36' : 'w-48'));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-[3px] border-rose-300 mx-1 align-baseline shadow-sm rounded-sm bg-rose-50/30"></span>`;
+
+            let displayEx = card.ex;
+            if (displayEx.startsWith("_______")) displayEx = blankHtml + displayEx.substring(7);
+            else displayEx = displayEx.replace('_______', blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            // Xử lý tạo Input Fields thông minh (Bỏ qua ký tự đặc biệt)
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const wordsArray = card.word.split(' ');
+
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                w.split('').forEach((char, i) => {
+                    // Xử lý Gạch nối và Nháy đơn thành Text tĩnh
+                    if (char === '-' || char === "'" || char === "’") {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'text-2xl font-bold text-rose-400 self-center px-0.5 font-mood';
+                        group.appendChild(symbol);
+                    } else if (char === '(' || char === ')') {
+                        // Bỏ qua hiển thị ngoặc
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'mood-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div');
+                    space.className = 'w-2 sm:w-4';
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            // Tẩy sạch ký tự để so sánh độ dài với input
+            const target = rawWord.replace(/[\s-()’']/g, '').toUpperCase();
+
+            const inputs = document.querySelectorAll('.mood-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) {
+                if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+            }
+
+            if (pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+
+            // Xóa khoảng trắng, gạch nối, ngoặc, nháy đơn để kiểm tra đáp án
+            const target = normalizeString(rawWord.replace(/[\s-()’']/g, ''));
+            const inputs = document.querySelectorAll('.mood-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#f59e0b"; // Amber
+                    seal.style.borderColor = "#f59e0b";
+                } else {
+                    seal.textContent = "EMOTION UNLOCKED";
+                    seal.style.color = "#10b981"; // Emerald
+                    seal.style.borderColor = "#10b981";
+                }
+
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                let backExStr = card.ex;
+                let targetDisplay = rawWord;
+
+                // Thuật toán viết hoa tự động
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = targetDisplay.charAt(0).toUpperCase() + targetDisplay.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${targetDisplay}</span>`);
+                }
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // TỰ ĐỘNG PHÁT ÂM THANH (AUTO-PLAY AUDIO)
+                setTimeout(() => {
+                    speakCurrentWord();
+                }, 400);
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `SAVED ON: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#f43f5e"; // Rose
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-500 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full text-xs font-bold font-mood shadow-sm">ASSISTED</span>'
+                    : '<span class="text-emerald-500 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-xs font-bold font-mood shadow-sm">UNLOCKED</span>';
+
+                return `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-3 text-center border-r border-slate-100">${statusIcon}</td>
+                        <td class="p-3 font-bold font-mood text-blue-500 border-r border-slate-100 text-lg">${item.word}</td>
+                        <td class="p-3 text-slate-600 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
