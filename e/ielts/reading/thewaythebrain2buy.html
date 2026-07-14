@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS VOCAB - THE WAY THE BRAIN BUYS 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Rajdhani cho tiêu đề công nghệ số, Inter cho văn bản -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --heatmap-dark: #0f172a;
+            /* Slate 900 */
+            --heatmap-purple: #8b5cf6;
+            /* Violet 500 */
+            --heatmap-orange: #f97316;
+            /* Orange 500 */
+            --heatmap-cyan: #06b6d4;
+            /* Cyan 500 */
+            --heatmap-panel: #1e293b;
+            /* Slate 800 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--heatmap-dark);
+            /* Nền mô phỏng lưới dữ liệu và các vệt sáng Heatmap */
+            background-image:
+                radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.15), transparent 30%),
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15), transparent 30%),
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+            color: white;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-tech {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Khung hiển thị giao diện Glassmorphism */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-top: 4px solid var(--heatmap-orange);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(139, 92, 246, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 480px;
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(145deg, var(--heatmap-panel) 0%, #111827 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: #f8fafc;
+        }
+
+        .card-back {
+            transform: rotateY(-180deg);
+            border: 2px solid var(--heatmap-purple);
+            background: linear-gradient(145deg, #1e1b4b 0%, #0f172a 100%);
+        }
+
+        .flip-card.flipped .card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .card-back {
+            pointer-events: none;
+        }
+
+        .heatmap-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #334155;
+            border-bottom: 3px solid var(--heatmap-cyan);
+            color: #f8fafc;
+            text-align: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 6px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .heatmap-input {
+            width: 28px;
+            height: 38px;
+        }
+
+        @media (min-width: 400px) {
+            .heatmap-input {
+                width: 32px;
+                height: 42px;
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .heatmap-input {
+                width: 38px;
+                height: 48px;
+                font-size: 2rem;
+            }
+        }
+
+        .heatmap-input:focus {
+            outline: none;
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--heatmap-orange);
+            border-bottom-color: var(--heatmap-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+        }
+
+        .heatmap-input.hinted {
+            color: #0f172a;
+            border-bottom-color: var(--heatmap-orange);
+            background: var(--heatmap-orange);
+            pointer-events: none;
+        }
+
+        .heatmap-input.error {
+            color: #ef4444;
+            border-bottom-color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake-error {
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--heatmap-orange);
+        }
+
+        .btn-neuro {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-neuro:active {
+            transform: scale(0.96);
+        }
+
+        .btn-neuro:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--heatmap-orange) 0%, #ea580c 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #fb923c 0%, #c2410c 100%);
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--heatmap-cyan);
+            border: 2px solid var(--heatmap-cyan);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(6, 182, 212, 0.15);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .highlighter {
+            font-weight: 700;
+            color: #0f172a;
+            background-color: var(--heatmap-orange);
+            padding: 2px 6px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+        }
+
+        .stamp-purchased {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--heatmap-orange);
+            border: 4px solid var(--heatmap-orange);
+            padding: 8px 16px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            transform: rotate(15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            border-radius: 8px;
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.3), inset 0 0 10px rgba(249, 115, 22, 0.2);
+        }
+
+        .flipped .stamp-purchased {
+            animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes stampSlam {
+            0% {
+                transform: scale(2) rotate(30deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(15deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 text-center pb-4 border-b border-slate-700">
+                    <div class="flex items-center justify-center gap-2 mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span
+                            class="inline-block px-3 py-1 bg-slate-900 border border-orange-500 text-orange-400 text-xs font-bold rounded font-tech tracking-widest shadow-[0_0_10px_rgba(249,115,22,0.3)]">NEUROMARKETING
+                            HEATMAP v2.0</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl font-tech text-white tracking-wide uppercase font-bold text-shadow">
+                        The Way The Brain Buys 2</h1>
+                    <p class="text-slate-400 mt-2 font-medium text-sm sm:text-base">Analyze advanced retail psychology
+                        and customer behavior patterns.</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-slate-900/50 rounded-lg border border-slate-700 relative">
+                    <table class="w-full min-w-[650px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 font-tech text-base text-white bg-slate-800 border-b-2 border-orange-500 shadow-md">
+                            <tr>
+                                <th class="p-3 w-1/4 rounded-tl-lg tracking-wider">BEHAVIOR_NODE</th>
+                                <th class="p-3 w-1/6 text-center tracking-wider">TYPE</th>
+                                <th class="p-3 rounded-tr-lg tracking-wider">DEFINITION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-300 divide-y divide-slate-800/50 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()"
+                        class="btn-neuro btn-primary w-full sm:w-1/2 py-3 text-2xl mb-4 flex items-center justify-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                        START ANALYSIS
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <!-- Header (Timer & Progress) -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-1">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="btn-neuro btn-secondary px-3 py-1.5 text-sm flex items-center gap-1 bg-slate-900/80"
+                    style="display: none;">
+                    ◀ BACK
+                </button>
+                <div id="top-prev-placeholder" class="w-20"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div
+                        class="flex items-center justify-between w-full mb-1 text-xs font-bold text-slate-400 font-tech">
+                        <div>SESSION_TIME <span id="timer-display" class="ml-1 text-cyan-400">00:00</span></div>
+                        <div>DATA_NODE <span id="progress-text" class="ml-1 text-orange-400">1/28</span></div>
+                    </div>
+                    <!-- Progress Heatmap -->
+                    <div class="w-full h-2 bg-slate-800 rounded-full overflow-visible relative border border-slate-700">
+                        <div id="progress-bar"
+                            class="h-full bg-gradient-to-r from-purple-500 to-orange-500 rounded-full transition-all duration-500 relative shadow-[0_0_10px_rgba(249,115,22,0.6)]"
+                            style="width: 0%;">
+                            <span class="absolute -top-3.5 -right-3 text-xl drop-shadow-md z-10">👁️‍🗨️</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn-neuro btn-secondary w-10 h-10 flex items-center justify-center shrink-0 rounded-full bg-slate-900/80">
+                    <span id="music-icon" class="text-lg">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-4xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <!-- MẶT TRƯỚC (Điền từ) -->
+                        <div class="card-front">
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+
+                                <div class="mb-5 shrink-0 flex flex-col items-center text-center">
+                                    <span
+                                        class="inline-block px-3 py-1 bg-slate-800 border border-slate-600 text-slate-300 text-xs font-tech font-bold tracking-widest uppercase mb-3 rounded-full shadow-inner"
+                                        id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl font-bold text-white leading-tight" id="word-mean">
+                                    </h2>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
+                                    <div class="text-center mb-8 px-2 sm:px-6">
+                                        <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-medium"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <!-- Vùng chứa các ô input linh hoạt -->
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-1 mb-8">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn-neuro border-2 border-slate-500 text-slate-300 hover:bg-slate-700 hover:text-white flex items-center justify-center rounded-full"
+                                                title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn-neuro btn-secondary text-lg">HINT
+                                                💡</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn-neuro btn-primary px-8 sm:px-12 h-12 text-xl tracking-wider">
+                                                CHECKOUT
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MẶT SAU (Kết quả) -->
+                        <div class="card-back">
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                <div class="stamp-purchased" id="result-seal">TARGET ACQUIRED</div>
+
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <h2 class="text-3xl sm:text-5xl font-tech font-bold text-orange-400 tracking-tight text-shadow"
+                                            style="text-shadow: 0 0 15px rgba(249,115,22,0.3);" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-orange-400 hover:text-orange-300 transition-colors p-2 bg-orange-900/30 rounded-full border border-orange-500/50"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-900 border border-slate-700 text-cyan-400 px-4 py-1.5 rounded mb-6 font-tech text-base tracking-widest shadow-inner">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+
+                                    <p class="text-xl sm:text-2xl text-white font-bold mb-6" id="back-mean"></p>
+
+                                    <div
+                                        class="w-full max-w-2xl bg-slate-800/80 p-4 sm:p-6 rounded-lg border-l-4 border-purple-500 text-left shadow-lg">
+                                        <p class="text-lg sm:text-xl text-slate-200 leading-relaxed font-medium"
+                                            id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-4 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn-neuro btn-primary px-8 py-3 text-xl w-full sm:w-2/3 flex items-center justify-center gap-2">
+                                        NEXT DATA NODE ⏩
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-slate-700 pb-5">
+                    <h2 class="text-4xl sm:text-5xl text-orange-500 font-tech font-bold uppercase tracking-wide">
+                        ANALYSIS COMPLETE</h2>
+                    <p id="completion-datetime" class="text-sm font-tech text-slate-400 mt-2 uppercase tracking-widest">
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-tech text-lg">
+                    <div class="bg-slate-800/80 border border-slate-600 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">ACCURACY</p>
+                        <p class="text-3xl text-white font-bold" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-600 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">TIME_ELAPSED</p>
+                        <p class="text-3xl text-white font-bold" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-emerald-900/30 border border-emerald-500/50 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-emerald-400 uppercase tracking-widest mb-1">ACQUIRED</p>
+                        <p class="text-3xl text-emerald-400 font-bold" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-orange-900/30 border border-orange-500/50 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-orange-400 uppercase tracking-widest mb-1">ASSISTED</p>
+                        <p class="text-3xl text-orange-400 font-bold" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-slate-700 w-full mb-5 shrink min-h-0 bg-slate-900/80 rounded-lg shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-slate-800 text-white border-b-2 border-purple-500 font-tech text-base tracking-wider shadow-md">
+                            <tr>
+                                <th class="p-3 w-28 text-center">STATUS</th>
+                                <th class="p-3 w-1/3">BEHAVIOR_NODE</th>
+                                <th class="p-3">DEFINITION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-slate-300 divide-y divide-slate-800/50">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()"
+                        class="btn-neuro btn-primary w-full sm:w-1/2 py-3 text-xl mb-3 tracking-wider">
+                        NEW SESSION 🔄
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "butcher", type: "noun", phonetic: "/ˈbʊtʃər/", mean: "người bán thịt, cửa hàng thịt", ex: "A _______ can give customers advice about different kinds of meat and how to cook them properly." },
+            { word: "in-store bakery", type: "noun phrase", phonetic: "/ˌɪn stɔːr ˈbeɪkəri/", mean: "tiệm bánh bên trong cửa hàng/siêu thị", ex: "An _______ can attract shoppers because the smell of fresh bread makes the supermarket feel warmer." },
+            { word: "frozen", type: "adjective", phonetic: "/ˈfrəʊzən/", mean: "đông lạnh", ex: "_______ vegetables are convenient for busy families because they can stay fresh for a long time." },
+            { word: "previously", type: "adverb", phonetic: "/ˈpriːviəsli/", mean: "trước đây", ex: "This area was _______ a small shop, but now it is a modern supermarket with many sections." },
+            { word: "efficient", type: "adjective", phonetic: "/ɪˈfɪʃənt/", mean: "hiệu quả, năng suất", ex: "An _______ store layout helps customers find products quickly and spend less time walking around." },
+            { word: "arouse people’s appetites", type: "verb phrase", phonetic: "/əˈraʊz ˈpiːplz ˈæpɪtaɪts/", mean: "kích thích cảm giác thèm ăn của mọi người", ex: "The smell of fresh bread can _______ and encourage them to buy more food." },
+            { word: "encourage", type: "verb", phonetic: "/ɪnˈkʌrɪdʒ/", mean: "khuyến khích, thúc đẩy", ex: "Special offers near the entrance can _______ customers to look at products they do not plan to buy." },
+            { word: "purchase", type: "verb/noun", phonetic: "/ˈpɜːrtʃəs/", mean: "mua; sự mua hàng", ex: "Customers may _______ more items when products are placed in convenient and attractive positions." },
+            { word: "arrange", type: "verb", phonetic: "/əˈreɪndʒ/", mean: "sắp xếp, bố trí", ex: "Staff should _______ fresh fruit carefully so that the display looks colorful and attractive." },
+            { word: "eye-level", type: "adjective", phonetic: "/ˈaɪ levl/", mean: "ngang tầm mắt", ex: "_______ shelves are valuable because customers can notice products there more easily." },
+            { word: "fiercely", type: "adverb", phonetic: "/ˈfɪrsli/", mean: "một cách gay gắt, quyết liệt", ex: "Supermarkets compete _______ to attract customers and increase their sales during holiday seasons." },
+            { word: "goods", type: "plural noun", phonetic: "/ɡʊdz/", mean: "hàng hóa", ex: "Many stores place popular _______ near the back so customers walk past other products first." },
+            { word: "manipulate", type: "verb", phonetic: "/məˈnɪpjuleɪt/", mean: "điều khiển, tác động một cách khéo léo", ex: "Some retailers try to _______ shopping habits by using music, lighting, and product placement." },
+            { word: "reckon", type: "verb", phonetic: "/ˈrekən/", mean: "nghĩ rằng, cho rằng", ex: "I _______ many shoppers spend more money when they feel relaxed and comfortable in a store." },
+            { word: "display", type: "noun/verb", phonetic: "/dɪˈspleɪ/", mean: "sự trưng bày; trưng bày", ex: "A clear _______ near the checkout can make small items more visible and attractive to customers." },
+            { word: "visibility", type: "noun", phonetic: "/ˌvɪzəˈbɪləti/", mean: "khả năng được nhìn thấy, độ nổi bật", ex: "Good lighting improves product _______ and helps shoppers notice special offers more quickly." },
+            { word: "drift rightwards", type: "verb phrase", phonetic: "/drɪft ˈraɪtwədz/", mean: "di chuyển dần sang bên phải", ex: "In many stores, shoppers naturally _______ after they enter through the main door." },
+            { word: "reserve", type: "verb", phonetic: "/rɪˈzɜːrv/", mean: "dành riêng, giữ lại", ex: "Stores can _______ the best shelf space for products that bring higher profits." },
+            { word: "observe", type: "verb", phonetic: "/əbˈzɜːrv/", mean: "quan sát", ex: "Managers can _______ customer behavior to understand which areas of the store are most popular." },
+            { word: "empty-handed", type: "adjective/adverb", phonetic: "/ˌempti ˈhændɪd/", mean: "tay không, không mua gì", ex: "Some customers leave the shop _______ when they cannot find the product they need." },
+            { word: "fitting rooms", type: "plural noun", phonetic: "/ˈfɪtɪŋ ruːmz/", mean: "phòng thử đồ", ex: "Clean and comfortable _______ can make customers feel more confident about buying clothes." },
+            { word: "at a rate of", type: "phrase", phonetic: "/ət ə reɪt əv/", mean: "với tốc độ/tỷ lệ là", ex: "Online sales continue to grow _______ about ten percent per year in many markets." },
+            { word: "compared with", type: "phrase", phonetic: "/kəmˈpeəd wɪð/", mean: "so với", ex: "_______ small local shops, large supermarkets often offer a wider range of products." },
+            { word: "struggle to", type: "verb phrase", phonetic: "/ˈstrʌɡl tuː/", mean: "gặp khó khăn để làm gì", ex: "New customers may _______ find certain products if the store layout is confusing." },
+            { word: "end up", type: "phrasal verb", phonetic: "/end ʌp/", mean: "cuối cùng thì, kết cục là", ex: "Shoppers can _______ buying more than they need when they see too many attractive offers." },
+            { word: "decoy items", type: "noun phrase", phonetic: "/ˈdiːkɔɪ ˈaɪtəmz/", mean: "sản phẩm “mồi”, món hàng dùng để dẫn dụ lựa chọn", ex: "_______ can make another product look like a better deal and influence customer decisions." },
+            { word: "pleasurable", type: "adjective", phonetic: "/ˈpleʒərəbl/", mean: "dễ chịu, thú vị", ex: "Soft music and good lighting can create a _______ shopping experience for customers." },
+            { word: "be likely to", type: "verb phrase", phonetic: "/bi ˈlaɪkli tuː/", mean: "có khả năng, có xu hướng", ex: "Customers _______ spend more time in a store when the atmosphere is pleasant and relaxing." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+            if (type === 'start') playTone('sine', 400, 600, 0.1, 0.4);
+            else if (type === 'success') {
+                playTone('sine', 800, 800, 0.05, 0.1); // Scanner beep
+                setTimeout(() => playTone('triangle', 1200, 1600, 0.05, 0.15), 100);
+            }
+            else if (type === 'error') playTone('sawtooth', 200, 150, 0.1, 0.3);
+            else if (type === 'flip') playTone('sine', 300, 200, 0.05, 0.1);
+        }
+
+        // Tích hợp Giọng Nữ US & Xử lý Ký tự đặc biệt
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+
+            // Xử lý chuỗi mượt mà: Xóa gạch nối, nháy đơn để đọc trôi chảy
+            let rawWord = flashcards[currentIndex].word;
+            let wordToSpeak = rawWord.replace(/[-/()’']/g, ' ').replace(/\s+/g, ' ').trim();
+
+            // Gọi API Youdao giọng Nữ Mỹ (type=2)
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                // Dự phòng: Web Speech API (Giọng Nữ Mỹ)
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira')));
+                if (femaleUS) utter.voice = femaleUS;
+
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item) => {
+                return `
+                <tr class="hover:bg-slate-800 transition-colors">
+                    <td class="p-3 font-tech font-bold text-orange-400 border-r border-slate-700/50">${item.word}</td>
+                    <td class="p-3 text-center border-r border-slate-700/50"><span class="px-2 py-0.5 bg-slate-900 border border-slate-600 text-slate-300 text-xs font-bold rounded uppercase tracking-widest">${item.type}</span></td>
+                    <td class="p-3 text-slate-300 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+
+            // Nạp trước danh sách giọng đọc
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { };
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            // Render ví dụ có chỗ trống
+            let wordLength = card.word.replace(/[\s-()’']/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 12 ? 'w-24' : 'w-36');
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-2 border-orange-500 mx-1 align-baseline shadow-[0_4px_10px_rgba(249,115,22,0.3)]"></span>`;
+
+            let displayEx = card.ex;
+            if (displayEx.startsWith("_______")) displayEx = blankHtml + displayEx.substring(7);
+            else displayEx = displayEx.replace('_______', blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            // Xử lý tạo Input Fields thông minh (Bỏ qua ký tự đặc biệt)
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const wordsArray = card.word.split(' ');
+
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1 sm:gap-1.5';
+
+                w.split('').forEach((char, i) => {
+                    // Xử lý Gạch nối và Nháy đơn thành Text tĩnh
+                    if (char === '-' || char === "'" || char === "’") {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'text-2xl font-bold text-orange-400 self-center px-1 font-tech';
+                        group.appendChild(symbol);
+                    } else if (char === '(' || char === ')') {
+                        // Bỏ qua hiển thị ngoặc
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'heatmap-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div');
+                    space.className = 'w-3 sm:w-5';
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            // Tẩy sạch ký tự để so sánh độ dài với input
+            const target = rawWord.replace(/[\s-()’']/g, '').toUpperCase();
+
+            const inputs = document.querySelectorAll('.heatmap-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) {
+                if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+            }
+
+            if (pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+
+            // Xóa khoảng trắng, gạch nối, ngoặc, nháy đơn để kiểm tra đáp án
+            const target = normalizeString(rawWord.replace(/[\s-()’']/g, ''));
+            const inputs = document.querySelectorAll('.heatmap-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#d97706"; // Amber 600
+                    seal.style.borderColor = "#d97706";
+                } else {
+                    seal.textContent = "TARGET ACQUIRED";
+                    seal.style.color = "#f97316"; // Orange 500
+                    seal.style.borderColor = "#f97316";
+                }
+
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                let backExStr = card.ex;
+                let targetDisplay = rawWord;
+
+                // Thuật toán viết hoa tự động
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = targetDisplay.charAt(0).toUpperCase() + targetDisplay.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${targetDisplay}</span>`);
+                }
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // TỰ ĐỘNG PHÁT ÂM THANH (AUTO-PLAY AUDIO)
+                setTimeout(() => {
+                    speakCurrentWord();
+                }, 400);
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `REPORT GENERATED: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#fb923c"; // Orange 400
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-400 bg-amber-900/50 px-2 py-0.5 rounded text-xs font-bold border border-amber-700 font-tech shadow-inner">ASSISTED</span>'
+                    : '<span class="text-emerald-400 bg-emerald-900/50 px-2 py-0.5 rounded text-xs font-bold border border-emerald-700 font-tech shadow-inner">ACQUIRED</span>';
+
+                return `
+                    <tr class="hover:bg-slate-800 transition-colors">
+                        <td class="p-3 text-center border-r border-slate-700/50">${statusIcon}</td>
+                        <td class="p-3 font-bold font-tech text-orange-400 border-r border-slate-700/50 text-lg">${item.word}</td>
+                        <td class="p-3 text-slate-300 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
