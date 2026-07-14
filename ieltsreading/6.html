@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS READING - THE WAY THE BRAIN BUYS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2canvas cho tính năng chụp màn hình -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* CSS cho thanh cuộn */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        #passage-container::-webkit-scrollbar,
+        #questions-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #passage-container::-webkit-scrollbar-track,
+        #questions-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #passage-container::-webkit-scrollbar-thumb,
+        #questions-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+            border: 2px solid white;
+        }
+
+        /* Đảm bảo các thẻ định dạng văn bản hoạt động tốt cùng Tailwind */
+        #app b,
+        #app strong {
+            font-weight: bolder;
+        }
+
+        #app i,
+        #app em {
+            font-style: italic;
+        }
+
+        #app u {
+            text-decoration: underline;
+        }
+
+        #app strike,
+        #app s {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+
+    <div id="app" class="flex flex-col h-full w-full relative"></div>
+
+    <script>
+        const quizData = [
+            {
+                title: "IELTS READING - THE WAY THE BRAIN BUYS",
+                instruction: "Do the following statements agree with the information given in the reading passage? Write <strong>TRUE</strong>, <strong>FALSE</strong>, or <strong>NOT GIVEN</strong>. <em>(Choose T, F, or NG)</em>",
+                passage: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-2'>The way the brain buys</h2><p class='mb-4 font-medium text-slate-700 italic'>Supermarkets take great care over the way the goods they sell are arranged. This is because they know a lot about how to persuade people to buy things.</p><p class='mb-4'><strong>1</strong> When you enter a supermarket, it takes some time for the mind to get into a shopping mode. This is why the area immediately inside the entrance of a supermarket is known as the ‘decompression zone’. People need to slow down and take stock of the surroundings, even if they are regulars. Supermarkets do not expect to sell much here, so it tends to be used more for promotion. So the large items piled up here are designed to suggest that there are bargains further inside the store, and shoppers are not necessarily expected to buy them. Walmart, the world’s biggest retailer, famously employs greeters at the entrance to its stores. A friendly welcome is said to cut shoplifting. It is harder to steal from nice people.</p><p class='mb-4'><strong>2</strong> Immediately to the left in many supermarkets is a ‘chill zone’, where customers can enjoy browsing magazines, books and DVDs. This is intended to tempt unplanned purchases and slow customers down. But people who just want to do their shopping quickly will keep walking ahead, and the first thing they come to is the fresh fruit and vegetables section. However, for shoppers, this makes no sense. Fruit and vegetables can be easily damaged, so they should be bought at the end, not the beginning, of a shopping trip. But psychology is at work here: selecting these items makes people feel good, so they feel less guilty about reaching for less healthy food later on.</p><p class='mb-4'><strong>3</strong> Shoppers already know that everyday items, like milk, are invariably placed towards the back of a store to provide more opportunity to tempt customers to buy things which are not on their shopping list. This is why pharmacies are also generally at the back. But supermarkets know shoppers know this, so they use other tricks, like placing popular items halfway along a section so that people have to walk all along the aisle looking for them. The idea is to boost ‘dwell time’: the length of time people spend in a store.</p><p class='mb-4'><strong>4</strong> Having walked to the end of the fruit-and-vegetable aisle, shoppers arrive at counters of prepared food, the fishmonger, the butcher and the deli. Then there is the in-store bakery, which can be smelt before it is seen. Even small supermarkets now use in-store bakeries. Mostly these bake pre-prepared items and frozen ingredients which have been delivered to the supermarket previously, and their numbers have increased, even though central bakeries that deliver to a number of stores are much more efficient. They do it for the smell of freshly baked bread, which arouses people’s appetites and thus encourages them to purchase not just bread but also other food, including ready meals.</p><p class='mb-4'><strong>5</strong> Retailers and producers talk a lot about the ‘moment of truth’. This is not a philosophical idea, but the point when people standing in the aisle decide to buy something and reach to get it. At the instant coffee section, for example, branded products from the big producers are arranged at eye level while cheaper ones are lower down, along with the supermarket’s own-label products.</p><p class='mb-4'><strong>6</strong> But shelf positioning is fiercely fought over, not just by those trying to sell goods, but also by those arguing over how best to manipulate shoppers. While many stores reckon eye level is the top spot, some think a little higher is better. Others think goods displayed at the end of aisles sell the most because they have the greatest visibility. To be on the right-hand side of an eye-level selection is often considered the very best place, because most people are right-handed and most people’s eyes drift rightwards. Some supermarkets reserve that for their most expensive own-label goods.</p><p class='mb-4'><strong>7</strong> Scott Bearse, a retail expert with Deloitte Consulting in Boston, Massachusetts, has led projects observing and questioning tens of thousands of customers about how they feel about shopping. People say they leave shops empty-handed more often because they are ‘unable to decide’ than because prices are too high, says Mr Bearse. Getting customers to try something is one of the best ways of getting them to buy, adds Mr Bearse. Deloitte found that customers who use fitting rooms in order to try on clothes buy the product they are considering at a rate of 85% compared with 58% for those that do not do so.</p><p class='mb-4'><strong>8</strong> Often a customer struggling to decide which of two items is best ends up not buying either. In order to avoid a situation where a customer decides not to buy either product, a third ‘decoy’ item, which is not quite as good as the other two, is placed beside them to make the choice easier and more pleasurable. Happier customers are more likely to buy.</p>",
+                passageTranslation: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-2'>Cách bộ não mua sắm</h2><p class='mb-4 font-medium text-slate-700 italic'>Các siêu thị rất cẩn thận về cách họ sắp xếp hàng hóa bày bán. Đó là vì họ biết rất nhiều về cách thuyết phục mọi người mua đồ.</p><p class='mb-4'><strong>1</strong> Khi bạn bước vào một siêu thị, tâm trí cần một khoảng thời gian để chuyển sang chế độ mua sắm. Đây là lý do tại sao khu vực ngay bên trong lối vào của siêu thị được gọi là ‘khu vực giảm áp’. Mọi người cần đi chậm lại và quan sát môi trường xung quanh, ngay cả khi họ là khách quen. Các siêu thị không kỳ vọng bán được nhiều ở đây, vì vậy nó thường được dùng nhiều hơn cho việc quảng cáo. Các mặt hàng lớn chất đống ở đây được thiết kế để ám chỉ rằng có những món hời ở sâu hơn bên trong cửa hàng, và người mua không nhất thiết phải mua chúng. Walmart, nhà bán lẻ lớn nhất thế giới, nổi tiếng với việc thuê người chào đón ở lối vào các cửa hàng của mình. Một sự chào đón thân thiện được cho là sẽ làm giảm tình trạng ăn cắp vặt. Rất khó để ăn cắp từ những người tử tế.</p><p class='mb-4'><strong>2</strong> Ngay bên trái ở nhiều siêu thị là một ‘khu vực thư giãn’, nơi khách hàng có thể thích thú xem qua các tạp chí, sách và DVD. Điều này nhằm mục đích cám dỗ những giao dịch mua ngoài kế hoạch và làm khách hàng chậm lại. Nhưng những người chỉ muốn mua sắm nhanh chóng sẽ tiếp tục đi thẳng, và thứ đầu tiên họ đến là khu vực trái cây và rau quả tươi. Tuy nhiên, đối với người mua sắm, điều này hoàn toàn vô lý. Trái cây và rau quả rất dễ bị dập nát, vì vậy chúng nên được mua ở cuối, chứ không phải đầu chuyến mua sắm. Nhưng tâm lý học đang phát huy tác dụng ở đây: việc chọn những mặt hàng này khiến mọi người cảm thấy vui vẻ, vì vậy họ sẽ cảm thấy bớt tội lỗi hơn khi với tay lấy những thực phẩm kém lành mạnh hơn sau đó.</p><p class='mb-4'><strong>3</strong> Người mua sắm đều biết rằng các mặt hàng thiết yếu hàng ngày, như sữa, luôn được đặt ở phía cuối cửa hàng để tạo thêm cơ hội cám dỗ khách hàng mua những thứ không có trong danh sách của họ. Đây cũng là lý do tại sao các hiệu thuốc thường nằm ở phía sau. Nhưng các siêu thị biết rằng người mua sắm biết điều này, nên họ sử dụng các mánh khóe khác, như đặt các mặt hàng phổ biến ở giữa một khu vực để mọi người phải đi dọc theo toàn bộ lối đi để tìm kiếm chúng. Ý tưởng là tăng ‘thời gian lưu lại’: khoảng thời gian mọi người dành ra trong một cửa hàng.</p><p class='mb-4'><strong>4</strong> Sau khi đi đến cuối lối đi trái cây và rau quả, người mua sắm đến các quầy thực phẩm chế biến sẵn, quầy cá, quầy thịt và cửa hàng đồ nguội. Sau đó là tiệm bánh trong cửa hàng, nơi có thể ngửi thấy mùi trước khi nhìn thấy. Thậm chí các siêu thị nhỏ hiện nay cũng sử dụng tiệm bánh bên trong. Hầu hết những nơi này nướng các mặt hàng sơ chế và nguyên liệu đông lạnh đã được giao đến siêu thị từ trước, và số lượng của chúng đã tăng lên, mặc dù các tiệm bánh trung tâm giao hàng cho nhiều cửa hàng thì hiệu quả hơn nhiều. Họ làm điều đó vì mùi bánh mì nướng mới ra lò, thứ kích thích sự thèm ăn của mọi người và do đó khuyến khích họ mua không chỉ bánh mì mà còn cả thực phẩm khác, bao gồm cả các bữa ăn sẵn.</p><p class='mb-4'><strong>5</strong> Các nhà bán lẻ và nhà sản xuất nói rất nhiều về ‘khoảnh khắc sự thật’. Đây không phải là một ý tưởng triết học, mà là thời điểm khi mọi người đứng ở lối đi quyết định mua một thứ gì đó và với tay lấy nó. Ví dụ, tại khu vực cà phê hòa tan, các sản phẩm có thương hiệu từ các nhà sản xuất lớn được sắp xếp ở ngang tầm mắt trong khi những sản phẩm rẻ hơn thì ở dưới thấp, cùng với các sản phẩm mang nhãn hiệu riêng của siêu thị.</p><p class='mb-4'><strong>6</strong> Nhưng vị trí trên kệ hàng là một cuộc chiến khốc liệt, không chỉ giữa những người cố gắng bán hàng, mà còn giữa những người tranh luận về cách tốt nhất để thao túng người mua sắm. Trong khi nhiều cửa hàng cho rằng ngang tầm mắt là vị trí hàng đầu, một số lại cho rằng cao hơn một chút thì tốt hơn. Những người khác nghĩ rằng hàng hóa trưng bày ở cuối lối đi bán chạy nhất vì chúng có khả năng hiển thị lớn nhất. Nằm ở phía bên phải của lựa chọn ngang tầm mắt thường được coi là nơi tốt nhất, vì hầu hết mọi người đều thuận tay phải và mắt của đa số mọi người thường trôi về phía bên phải. Một số siêu thị dành riêng vị trí đó cho các mặt hàng nhãn hiệu riêng đắt tiền nhất của họ.</p><p class='mb-4'><strong>7</strong> Scott Bearse, một chuyên gia bán lẻ của Deloitte Consulting ở Boston, Massachusetts, đã chỉ đạo các dự án quan sát và đặt câu hỏi cho hàng chục ngàn khách hàng về cảm nhận của họ khi mua sắm. Mọi người nói rằng họ thường xuyên rời khỏi cửa hàng tay không vì họ ‘không thể quyết định’ hơn là vì giá quá cao, ông Bearse nói. Việc để khách hàng dùng thử một thứ gì đó là một trong những cách tốt nhất để khiến họ mua hàng, ông Bearse nói thêm. Deloitte phát hiện ra rằng những khách hàng sử dụng phòng thử đồ để mặc thử quần áo sẽ mua sản phẩm họ đang cân nhắc với tỷ lệ 85% so với 58% đối với những người không làm như vậy.</p><p class='mb-4'><strong>8</strong> Thường thì một khách hàng đang chật vật quyết định xem mặt hàng nào trong hai mặt hàng là tốt nhất cuối cùng sẽ không mua cái nào cả. Để tránh tình huống khách hàng quyết định không mua sản phẩm nào, một mặt hàng ‘mồi nhử’ thứ ba, không tốt bằng hai mặt hàng kia, được đặt bên cạnh chúng để làm cho việc lựa chọn trở nên dễ dàng và thú vị hơn. Những khách hàng vui vẻ hơn thì có nhiều khả năng sẽ mua hàng hơn.</p>",
+                questions: [
+                    {
+                        id: 5,
+                        text: "<strong>[5]</strong> The ‘greeters’ at Walmart increase sales.",
+                        type: "text",
+                        correct: "NOT GIVEN",
+                        explanation: "<strong>Từ khóa:</strong> greeters, Walmart, increase sales.<br><br><strong>Trong bài (Đoạn 1):</strong> \"Walmart, the world’s biggest retailer, famously employs greeters at the entrance to its stores. A friendly welcome is said to cut shoplifting.\"<br><br><strong>Giải thích:</strong> Bài đọc chỉ đề cập rằng việc có người chào đón (greeters) giúp 'giảm thiểu nạn trộm cắp' (cut shoplifting). Không có thông tin nào nói về việc họ làm 'tăng doanh số' (increase sales). Do đó đáp án là NOT GIVEN."
+                    },
+                    {
+                        id: 6,
+                        text: "<strong>[6]</strong> People feel better about their shopping if they buy fruit and vegetables before they buy other food.",
+                        type: "text",
+                        correct: "TRUE",
+                        explanation: "<strong>Từ khóa:</strong> feel better, buy fruit and vegetables before, other food.<br><br><strong>Trong bài (Đoạn 2):</strong> \"...selecting these items [fruit and vegetables] makes people feel good, so they feel less guilty about reaching for less healthy food later on.\"<br><br><strong>Giải thích:</strong> Bài đọc nói rằng việc chọn mua trái cây và rau quả đầu tiên khiến mọi người 'cảm thấy vui vẻ' (feel good) và 'bớt cảm giác tội lỗi hơn' (feel less guilty) khi mua đồ ăn kém lành mạnh sau đó. Điều này hoàn toàn khớp với nhận định của câu hỏi. Đáp án là TRUE."
+                    },
+                    {
+                        id: 7,
+                        text: "<strong>[7]</strong> In-store bakeries produce a wider range of products than central bakeries.",
+                        type: "text",
+                        correct: "NOT GIVEN",
+                        explanation: "<strong>Từ khóa:</strong> In-store bakeries, produce, wider range of products, central bakeries.<br><br><strong>Trong bài (Đoạn 4):</strong> \"Mostly these bake pre-prepared items and frozen ingredients... even though central bakeries that deliver to a number of stores are much more efficient.\"<br><br><strong>Giải thích:</strong> Bài đọc so sánh về tính 'hiệu quả' (efficient) giữa in-store bakeries và central bakeries, nhưng KHÔNG hề so sánh về 'sự đa dạng của sản phẩm' (wider range of products) được làm ra giữa hai nơi này. Đáp án là NOT GIVEN."
+                    },
+                    {
+                        id: 8,
+                        text: "<strong>[8]</strong> Supermarkets find right-handed people easier to persuade than left-handed people.",
+                        type: "text",
+                        correct: "NOT GIVEN",
+                        explanation: "<strong>Từ khóa:</strong> right-handed people, easier to persuade, left-handed.<br><br><strong>Trong bài (Đoạn 6):</strong> \"To be on the right-hand side of an eye-level selection is often considered the very best place, because most people are right-handed and most people’s eyes drift rightwards.\"<br><br><strong>Giải thích:</strong> Bài đọc nói rằng các mặt hàng thường được đặt bên phải vì phần lớn mọi người thuận tay phải và mắt hay hướng sang phải. Không có thông tin nào khẳng định người thuận tay phải 'dễ bị thuyết phục hơn' người thuận tay trái. Đáp án là NOT GIVEN."
+                    },
+                    {
+                        id: 9,
+                        text: "<strong>[9]</strong> The most frequent reason for leaving shops without buying something is price.",
+                        type: "text",
+                        correct: "FALSE",
+                        explanation: "<strong>Từ khóa:</strong> most frequent reason, leaving shops without buying, price.<br><br><strong>Trong bài (Đoạn 7):</strong> \"People say they leave shops empty-handed more often because they are ‘unable to decide’ than because prices are too high...\"<br><br><strong>Giải thích:</strong> Câu hỏi nhận định lý do phổ biến nhất là 'giá cả'. Tuy nhiên bài đọc khẳng định mọi người thường rời đi vì 'không thể quyết định' (unable to decide) nhiều HƠN LÀ vì giá cao. Do đó thông tin bị sai lệch. Đáp án là FALSE."
+                    },
+                    {
+                        id: 10,
+                        text: "<strong>[10]</strong> ‘Decoy’ items are products which the store expects customers to choose.",
+                        type: "text",
+                        correct: "FALSE",
+                        explanation: "<strong>Từ khóa:</strong> Decoy items, store expects customers to choose.<br><br><strong>Trong bài (Đoạn 8):</strong> \"In order to avoid a situation where a customer decides not to buy either product, a third ‘decoy’ item, which is not quite as good as the other two, is placed beside them to make the choice easier...\"<br><br><strong>Giải thích:</strong> Cửa hàng đặt món đồ 'mồi nhử' (kém chất lượng hơn hai món kia) chỉ để giúp khách hàng dễ dàng đưa ra lựa chọn giữa 2 món đồ TỐT hơn, chứ không kỳ vọng họ sẽ chọn mua món mồi nhử đó. Vì vậy, thông tin là FALSE."
+                    }
+                ]
+            }
+        ];
+
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            incorrectIds: [],
+            startTime: Date.now(),
+            endTime: null,
+            submitTime: null,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {},
+            expandedNotes: {},
+            showResetConfirm: false,
+            hasCapturedScreenshot: false,
+            showCompletedModal: false,
+            notes: {},
+            formattedPassage: null,
+            formattedPassageTrans: null,
+            formattedQuestions: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        // Chuẩn hoá đáp án T/F/NG
+        window.normalizeAnswer = (ans) => {
+            if (!ans) return "";
+            let a = ans.toString().toLowerCase().trim().replace(/\s+/g, '');
+            if (a === 't' || a === 'true') return 'true';
+            if (a === 'f' || a === 'false') return 'false';
+            if (a === 'ng' || a === 'notgiven') return 'notgiven';
+            return a;
+        };
+
+        // Lưu lại format HTML trước khi re-render
+        window.saveFormatting = () => {
+            const passageEl = document.getElementById('passage-content');
+            if (passageEl) {
+                if (state.showPassageTranslation) {
+                    state.formattedPassageTrans = passageEl.innerHTML;
+                } else {
+                    state.formattedPassage = passageEl.innerHTML;
+                }
+            }
+            allQuestions.forEach(q => {
+                const qEl = document.getElementById(`q-text-${q.id}`);
+                if (qEl) {
+                    state.formattedQuestions[q.id] = qEl.innerHTML;
+                }
+            });
+        };
+
+        // Hàm thực thi format (được gọi từ toolbar)
+        window.formatText = (command, value = null) => {
+            const targets = document.querySelectorAll('.format-target');
+            targets.forEach(t => t.setAttribute('contenteditable', 'true'));
+
+            document.execCommand(command, false, value);
+
+            targets.forEach(t => t.setAttribute('contenteditable', 'false'));
+            saveFormatting();
+        };
+
+        window.handleNoteChange = (qId, val) => {
+            state.notes[qId] = val;
+        };
+
+        window.generateInputHtml = (q, isAnswered, isCorrect, userAnswer) => {
+            let inputClass = `inline-block w-[115px] md:w-[130px] px-1 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 cursor-pointer text-[13px] md:text-[14px] shadow-sm `;
+            let feedbackIcon = '';
+
+            const showFeedback = state.isSubmitted && state.hasCapturedScreenshot;
+
+            if (!state.isSubmitted) {
+                inputClass += isAnswered ? 'border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200' : 'border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200';
+            } else if (!showFeedback) {
+                inputClass += 'border-slate-300 bg-slate-100 text-slate-500 cursor-not-allowed';
+            } else {
+                if (isCorrect) {
+                    inputClass += 'border-green-500 bg-green-50 text-green-700';
+                    feedbackIcon = `<i class="fa-solid fa-circle-check text-green-500 text-lg absolute -right-6 top-1/2 mt-0.5 -translate-y-1/2"></i>`;
+                } else {
+                    inputClass += 'border-red-500 bg-red-50 text-red-700';
+                    feedbackIcon = `<i class="fa-solid fa-circle-xmark text-red-500 text-lg absolute -right-6 top-1/2 mt-0.5 -translate-y-1/2"></i>`;
+                }
+            }
+
+            // Chuẩn hoá giá trị cũ (nếu có) để match với option
+            let normalizedUserAns = userAnswer.trim().toUpperCase();
+            if (normalizedUserAns === 'T') normalizedUserAns = 'TRUE';
+            if (normalizedUserAns === 'F') normalizedUserAns = 'FALSE';
+            if (normalizedUserAns === 'NG') normalizedUserAns = 'NOT GIVEN';
+
+            const options = [
+                { value: "", label: "-- Chọn --" },
+                { value: "TRUE", label: "TRUE" },
+                { value: "FALSE", label: "FALSE" },
+                { value: "NOT GIVEN", label: "NOT GIVEN" }
+            ];
+
+            const optionsHtml = options.map(opt =>
+                `<option value="${opt.value}" ${normalizedUserAns === opt.value ? 'selected' : ''}>${opt.label}</option>`
+            ).join('');
+
+            return `
+                <span class="font-bold text-indigo-700 mr-1 hidden">[${q.id}]</span>
+                <select 
+                    class="${inputClass}" 
+                    style="text-align-last: center;"
+                    ${state.isSubmitted ? 'disabled' : ''}
+                    onchange="handleInputChange(${q.id}, this.value)"
+                >
+                    ${optionsHtml}
+                </select>
+                ${feedbackIcon}
+            `;
+        };
+
+        window.restoreInputs = () => {
+            allQuestions.forEach(q => {
+                const wrapper = document.getElementById(`input-wrap-${q.id}`);
+                if (wrapper) {
+                    const userAnswer = state.answers[q.id] || '';
+                    const isAnswered = userAnswer.trim() !== '';
+                    const isCorrect = state.isSubmitted && window.normalizeAnswer(userAnswer) === window.normalizeAnswer(q.correct);
+                    wrapper.innerHTML = window.generateInputHtml(q, isAnswered, isCorrect, userAnswer);
+                }
+            });
+        };
+
+        function renderApp() {
+            const app = document.getElementById('app');
+            const answeredCount = Object.keys(state.answers).filter(k => state.answers[k].toString().trim() !== '').length;
+            const currentSection = quizData[state.currentPartIndex];
+
+            const qContainer = document.getElementById('questions-container');
+            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+            let timeStr = "";
+            let dateStr = "";
+            if (state.isSubmitted && state.submitTime) {
+                const totalSeconds = Math.floor((state.endTime - state.startTime) / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timeStr = `${minutes} phút ${seconds} giây`;
+
+                const d = state.submitTime;
+                const hours = String(d.getHours()).padStart(2, '0');
+                const mins = String(d.getMinutes()).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const year = d.getFullYear();
+                dateStr = `${hours}:${mins} - ${day}/${month}/${year}`;
+            }
+
+            let passageHtml = state.showPassageTranslation
+                ? (state.formattedPassageTrans || currentSection.passageTranslation)
+                : (state.formattedPassage || currentSection.passage);
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-indigo-700 flex items-center gap-2">
+                            <i class="fa-brands fa-discourse text-indigo-600"></i>
+                            IELTS READING PRACTICE
+                        </h1>
+                        <p class="text-sm text-slate-500">Mô phỏng đề thi IELTS Reading</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div id="progress-text-container" class="text-sm font-medium bg-indigo-50 text-indigo-800 px-3 py-1 rounded-full border border-indigo-200 hidden md:block">
+                        <span id="progress-text">Đã làm: ${answeredCount} / ${totalQuestions}</span>
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted && state.hasCapturedScreenshot ? `
+                    <div class="flex-none bg-white p-5 md:p-6 rounded-xl border border-green-200 shadow-sm animate-in fade-in duration-500 mb-2">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-circle-check text-green-500 text-4xl md:text-5xl"></i>
+                                <div>
+                                    <h2 class="text-xl md:text-2xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
+                                    <p class="text-slate-600 mt-1">Tuyệt vời, bạn đã hoàn thành bài tập. Hãy xem kết quả chi tiết bên dưới.</p>
+                                </div>
+                            </div>
+                            <button onclick="resetQuiz()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow font-medium whitespace-nowrap">
+                                <i class="fa-solid fa-rotate-right mr-2"></i>Làm lại bài thi
+                            </button>
+                        </div>
+                        
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-regular fa-clock text-indigo-500 mr-2"></i>Giờ, ngày nộp:</span>
+                                    <span class="font-bold text-slate-800">${dateStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-solid fa-stopwatch text-indigo-500 mr-2"></i>Tổng thời gian làm:</span>
+                                    <span class="font-bold text-slate-800">${timeStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center bg-green-50/50">
+                                    <span class="text-green-700 font-medium"><i class="fa-solid fa-check text-green-600 mr-2"></i>Số câu đúng:</span>
+                                    <span class="font-bold text-green-700 text-lg">${state.score} / ${totalQuestions}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center ${state.incorrectIds.length > 0 ? 'bg-red-50/50' : 'bg-slate-50'}">
+                                    <span class="${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-600'} font-medium"><i class="fa-solid fa-xmark text-red-500 mr-2"></i>Số câu sai/chưa làm:</span>
+                                    <span class="font-bold ${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-800'} text-lg">${state.incorrectIds.length} / ${totalQuestions}</span>
+                                </div>
+                            </div>
+                            ${state.incorrectIds.length > 0 ? `
+                            <div class="p-4 border-t border-slate-200 bg-white">
+                                <span class="text-slate-600 font-medium block mb-3"><i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>Các câu sai hoặc chưa trả lời:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    ${state.incorrectIds.map(id => `<button onclick="scrollToQuestion(${id})" class="px-4 py-1.5 bg-red-50 text-red-700 font-bold rounded-md border border-red-200 hover:bg-red-100 transition shadow-sm">Câu ${id}</button>`).join('')}
+                                </div>
+                            </div>
+                            ` : `
+                            <div class="p-4 border-t border-slate-200 bg-white text-center">
+                                <span class="text-green-600 font-bold"><i class="fa-solid fa-star text-yellow-400 mr-1"></i> Xuất sắc! Bạn đã trả lời đúng tất cả các câu hỏi.</span>
+                            </div>
+                            `}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-2.5 md:px-4 md:py-3 border-b border-slate-200 flex justify-between items-center">
+                            <div class="flex-1 pr-4">
+                                <h2 class="text-sm md:text-base font-bold text-indigo-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-xs md:text-sm text-slate-700 mt-1 font-medium bg-yellow-50 border-l-4 border-yellow-400 pl-3 py-1">${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <div class="flex-none flex items-center gap-3">
+                                <button onclick="togglePassageTranslation()" class="text-xs font-bold px-3 py-1.5 rounded-md shadow-sm transition-colors ${state.showPassageTranslation ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-white text-slate-600 border border-slate-300 hover:bg-slate-50'}">
+                                    <i class="fa-solid fa-language mr-1"></i> ${state.showPassageTranslation ? 'Đang bật dịch' : 'Bật dịch VN'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Formatting Toolbar -->
+                        <div class="flex-none bg-white border-b border-slate-200 px-3 py-1.5 flex items-center gap-1 md:gap-2 z-40 text-sm overflow-x-auto custom-scrollbar shadow-sm">
+                            <span class="text-slate-500 font-bold px-2 whitespace-nowrap text-[11px] uppercase tracking-wide"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Bút đánh dấu</span>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('bold')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="In đậm (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('italic')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="In nghiêng (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('underline')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="Gạch chân (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('strikeThrough')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="Gạch bỏ"><i class="fa-solid fa-strikethrough"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fef08a')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-yellow-50 transition text-yellow-500" title="Highlight Vàng"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#bbf7d0')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-green-50 transition text-green-500" title="Highlight Xanh lá"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fecaca')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-red-50 transition text-red-500" title="Highlight Đỏ"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#bae6fd')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-blue-50 transition text-blue-500" title="Highlight Xanh lam"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#e9d5ff')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-purple-50 transition text-purple-500" title="Highlight Tím"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fed7aa')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-orange-50 transition text-orange-500" title="Highlight Cam"><i class="fa-solid fa-highlighter"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#ef4444')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-red-50 transition text-red-500" title="Chữ Đỏ"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#3b82f6')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-blue-50 transition text-blue-500" title="Chữ Xanh dương"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#16a34a')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-green-50 transition text-green-600" title="Chữ Xanh lá"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#a855f7')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-purple-50 transition text-purple-500" title="Chữ Tím"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#f97316')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-orange-50 transition text-orange-500" title="Chữ Cam"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#000000')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-200 transition text-black" title="Chữ Đen"><i class="fa-solid fa-font"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('removeFormat')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 transition text-slate-500" title="Xóa định dạng"><i class="fa-solid fa-eraser"></i></button>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC TẠI ĐÂY -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/50 border-b-[3px] md:border-b-0 md:border-r-[3px] border-slate-200 p-5 md:p-8 shadow-inner custom-scrollbar relative">
+                                <div id="passage-content" class="format-target text-slate-800 leading-relaxed text-[15px] md:text-[17px] text-justify outline-none focus:outline-none" contenteditable="false">
+                                    ${passageHtml}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 bg-white custom-scrollbar">
+                                <div class="max-w-5xl mx-auto space-y-4">
+                                    ${currentSection.questions.map((q, idx) => renderQuestion(q, idx)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-6 pb-4">
+                                        <button id="submit-btn-main" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Danh sách câu hỏi</span>
+                            ${!state.isSubmitted ? `
+                            <button id="submit-btn-nav" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                const userAnswer = state.answers[q.id] || '';
+                const isAnswered = userAnswer.trim() !== '';
+                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+
+                if (!state.isSubmitted) {
+                    btnClass += isAnswered
+                        ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                } else {
+                    const isCorrect = window.normalizeAnswer(userAnswer) === window.normalizeAnswer(q.correct);
+                    btnClass += isCorrect
+                        ? "bg-green-500 text-white border-green-500 shadow-sm"
+                        : "bg-red-500 text-white border-red-500 shadow-sm";
+                }
+
+                return `<button id="nav-btn-${q.id}" onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+            }).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Confirmation Modal -->
+                ${state.showResetConfirm ? `
+                <div class="fixed inset-0 bg-slate-900/40 z-[100] flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-[pulse_0.2s_ease-in-out]">
+                        <div class="flex items-center gap-3 text-red-600 mb-4">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                            <h3 class="text-xl font-bold">Làm lại bài thi?</h3>
+                        </div>
+                        <p class="text-slate-600 mb-6 leading-relaxed">Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án, định dạng và kết quả hiện tại của bạn sẽ bị xoá.</p>
+                        <div class="flex justify-end gap-3">
+                            <button onclick="cancelReset()" class="px-5 py-2 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg font-bold transition-colors">Hủy</button>
+                            <button onclick="confirmReset()" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors shadow-sm">Đồng ý xoá</button>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Modal Báo Điểm & Yêu Cầu Chụp Ảnh -->
+                ${state.showCompletedModal ? `
+                <div class="fixed inset-0 bg-slate-900/70 z-[110] flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+                    
+                    <div id="capture-area" class="bg-white rounded-[24px] w-[380px] max-w-full flex flex-col relative overflow-hidden shrink-0 my-4 mx-auto border border-slate-200 bg-clip-padding">
+                        <div class="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-indigo-50/80 via-yellow-50/30 to-transparent pointer-events-none"></div>
+
+                        <div class="relative z-10 px-6 pt-8 pb-6 flex flex-col w-full">
+                            <div class="w-full text-center mb-3">
+                                <h1 class="text-[25px] font-black text-[#3730a3] tracking-tight uppercase m-0 p-0 leading-none">HOÀNG TRƯỜNG ENGLISH</h1>
+                            </div>
+                            
+                            <div class="w-full flex justify-center mb-6">
+                                <div id="title-box" class="bg-slate-50 text-slate-700 font-bold py-2 px-4 rounded-xl text-sm border border-slate-200/60 inline-block text-center">
+                                    ${currentSection.title}
+                                </div>
+                            </div>
+
+                            <div class="w-[60px] h-[60px] bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_15px_rgba(134,239,172,0.4)]">
+                                <i class="fa-solid fa-award text-[28px] text-green-600"></i>
+                            </div>
+                            
+                            <h2 class="text-[22px] font-black text-slate-800 mb-6 text-center leading-none">Hoàn thành bài thi!</h2>
+
+                            <div id="stats-box" class="border border-slate-200 rounded-[20px] p-4 bg-white mb-6 space-y-4 shadow-sm">
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-regular fa-calendar-check text-indigo-500 w-5 text-center"></i>
+                                        <span class="ml-2">Ngày giờ nộp:</span>
+                                    </div>
+                                    <div class="value-box text-slate-800 font-bold text-[14px] bg-white px-2.5 py-1 rounded border border-slate-200 inline-block leading-none">
+                                        ${dateStr}
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-stopwatch text-indigo-500 w-5 text-center"></i>
+                                        <span class="ml-2">Thời gian làm bài:</span>
+                                    </div>
+                                    <div class="value-box text-slate-800 font-bold text-[14px] bg-white px-2.5 py-1 rounded border border-slate-200 inline-block leading-none">
+                                        ${timeStr}
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-check-circle text-green-500 w-5 text-center"></i>
+                                        <span class="ml-2">Số câu đúng:</span>
+                                    </div>
+                                    <div class="text-green-600 font-black text-xl leading-none flex items-baseline">
+                                        ${state.score} <span class="text-xs text-slate-400 font-bold ml-1">/ ${totalQuestions}</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center ${state.incorrectIds.length > 0 ? 'pb-3 border-b border-slate-100' : ''} w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-times-circle text-red-500 w-5 text-center"></i>
+                                        <span class="ml-2">Số câu sai/chưa làm:</span>
+                                    </div>
+                                    <div class="text-red-600 font-black text-xl leading-none flex items-baseline">
+                                        ${state.incorrectIds.length} <span class="text-xs text-slate-400 font-bold ml-1">/ ${totalQuestions}</span>
+                                    </div>
+                                </div>
+
+                                ${state.incorrectIds.length > 0
+                        ? `<div id="wrong-answers-box" class="w-full bg-[#fef2f2] rounded-xl p-3 border border-red-100 mt-2">
+                                        <div class="text-[13px] font-bold text-red-800 mb-2 flex items-center">
+                                            <i class="fa-solid fa-caret-right mr-2 text-red-600"></i><span>Sai ở các câu:</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${state.incorrectIds.map(id => `<div class="wrong-q-box bg-white text-red-600 text-[13px] font-bold px-3 py-1.5 rounded-md border border-red-200 leading-none shadow-sm">Câu ${id}</div>`).join('')}
+                                        </div>
+                                       </div>`
+                        : ''
+                    }
+                            </div>
+
+                            <button id="capture-btn" onclick="captureAndReveal()" class="w-full py-[14px] bg-[#4f46e5] hover:bg-indigo-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 text-[15px] border-none outline-none shadow-sm transition-opacity">
+                                <i id="capture-btn-icon" class="fa-solid fa-folder-open text-lg"></i> 
+                                <span id="capture-btn-text">Tải ảnh kết quả & Xem đáp án</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            app.innerHTML = html;
+
+            restoreInputs();
+
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = scrollPos;
+        }
+
+        function renderQuestion(q, idx) {
+            const userAnswer = state.answers[q.id] || '';
+            const isAnswered = userAnswer.trim() !== '';
+            const showExp = state.expandedExplanations[q.id];
+
+            const showFeedback = state.isSubmitted && state.hasCapturedScreenshot;
+            const isCorrect = showFeedback && window.normalizeAnswer(userAnswer) === window.normalizeAnswer(q.correct);
+
+            let containerClass = `relative p-4 md:p-5 rounded-xl border transition-all `;
+            if (state.isSubmitted) {
+                if (showFeedback) {
+                    containerClass += isCorrect ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200';
+                } else {
+                    containerClass += 'bg-slate-50 border-slate-200 opacity-80';
+                }
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            let errorHtml = (showFeedback && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/60 p-3.5 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <div>
+                        <p class="mb-1">Bạn đã trả lời sai hoặc để trống.</p>
+                        <p>Đáp án đúng là: <strong class="text-base uppercase text-red-800 tracking-wider">${q.correct}</strong></p>
+                    </div>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (showFeedback && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/80 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-indigo-600 hover:text-indigo-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            const showNote = state.expandedNotes[q.id];
+            const hasNote = state.notes[q.id] && state.notes[q.id].trim() !== '';
+
+            let notesHtml = `
+                <div class="absolute top-3 right-3 z-10 flex flex-col items-end">
+                    <button onclick="toggleNote(${q.id})" class="text-slate-400 hover:text-amber-500 transition-colors p-1.5 rounded-md hover:bg-slate-100 relative" title="Ghi chú của giáo viên">
+                        <i class="fa-solid fa-comment-dots text-xl ${hasNote ? 'text-amber-500' : ''}"></i>
+                        ${hasNote ? '<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>' : ''}
+                    </button>
+                    
+                    ${showNote ? `
+                    <div class="mt-2 bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-xl w-64 md:w-80 relative animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                        <div class="absolute -top-2 right-3 w-4 h-4 bg-amber-50 border-t border-l border-amber-200 transform rotate-45"></div>
+                        <div class="relative z-10">
+                            <div class="text-xs font-bold text-amber-800 mb-2 flex items-center justify-between uppercase tracking-wider">
+                                <span><i class="fa-solid fa-pen-clip mr-1"></i> Ghi chú riêng</span>
+                                <button onclick="toggleNote(${q.id})" class="text-amber-600 hover:text-amber-800 bg-amber-100 hover:bg-amber-200 rounded-full w-5 h-5 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <textarea 
+                                class="w-full bg-white border border-amber-300 rounded p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-[90px] custom-scrollbar text-slate-700 transition-all shadow-inner" 
+                                placeholder="Nhập ghi chú, phân tích câu hỏi tại đây..."
+                                oninput="handleNoteChange(${q.id}, this.value)"
+                            >${state.notes[q.id] || ''}</textarea>
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            let headingHtml = q.heading ? `
+                <div class="${idx !== 0 ? 'mt-8' : ''} mb-4 format-target" contenteditable="false">
+                    <h3 class="text-[17px] font-bold text-slate-800 border-b-2 border-indigo-100 pb-2 outline-none">${q.heading}</h3>
+                </div>
+            ` : '';
+
+            // Lồng Wrapper
+            let rawText = "";
+            if (state.formattedQuestions[q.id]) {
+                rawText = state.formattedQuestions[q.id];
+            } else {
+                const regex = new RegExp(`<strong>\\[${q.id}\\]<\\/strong>|\\[${q.id}\\]`);
+                rawText = q.text.replace(regex, `<span id="input-wrap-${q.id}" class="relative inline-block align-middle whitespace-nowrap" contenteditable="false"></span>`);
+            }
+
+            let questionTextHtml = `
+                <div class="flex items-start gap-2.5 md:gap-3 pr-8">
+                    <div id="q-text-${q.id}" class="format-target text-slate-800 mb-0 text-[15px] md:text-base leading-relaxed text-justify w-full outline-none focus:outline-none" contenteditable="false">
+                        ${rawText}
+                    </div>
+                </div>
+            `;
+
+            return `
+                ${headingHtml}
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        ${questionTextHtml}
+                        ${errorHtml}
+                        ${explanationHtml}
+                        ${notesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        window.updateProgress = () => {
+            const answeredCount = Object.keys(state.answers).filter(k => state.answers[k].toString().trim() !== '').length;
+
+            const progressText = document.getElementById('progress-text');
+            if (progressText) progressText.innerText = `Đã làm: ${answeredCount} / ${totalQuestions}`;
+
+            const submitBtnMain = document.getElementById('submit-btn-main');
+            const submitBtnNav = document.getElementById('submit-btn-nav');
+
+            if (answeredCount > 0) {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = false;
+                    submitBtnMain.className = "px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = false;
+                    submitBtnNav.className = "px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors";
+                }
+            } else {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = true;
+                    submitBtnMain.className = "opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = true;
+                    submitBtnNav.className = "opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed";
+                }
+            }
+
+            allQuestions.forEach(q => {
+                const btn = document.getElementById(`nav-btn-${q.id}`);
+                const isAnswered = state.answers[q.id] && state.answers[q.id].toString().trim() !== '';
+
+                if (btn && !state.isSubmitted) {
+                    btn.className = isAnswered
+                        ? "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                }
+
+                const wrapper = document.getElementById(`input-wrap-${q.id}`);
+                if (wrapper) {
+                    const inputEl = wrapper.querySelector('select');
+                    if (inputEl && !state.isSubmitted) {
+                        if (isAnswered) {
+                            inputEl.className = "inline-block w-[115px] md:w-[130px] px-1 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 cursor-pointer text-[13px] md:text-[14px] shadow-sm border-indigo-500 bg-indigo-50 text-indigo-700 focus:ring-indigo-200";
+                        } else {
+                            inputEl.className = "inline-block w-[115px] md:w-[130px] px-1 py-1 mx-1 border-2 rounded-md focus:outline-none focus:ring-2 transition-all font-bold text-slate-800 cursor-pointer text-[13px] md:text-[14px] shadow-sm border-slate-300 bg-white focus:border-indigo-500 focus:ring-indigo-200";
+                        }
+                    }
+                }
+
+                const container = document.getElementById(`question-${q.id}`);
+                if (container && !state.isSubmitted) {
+                    container.className = `p-4 md:p-5 rounded-xl border transition-all ${isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`;
+                }
+            });
+        };
+
+        window.handleInputChange = (qId, val) => {
+            if (state.isSubmitted) return;
+            state.answers[qId] = val;
+            updateProgress();
+        };
+
+        window.calculateScore = () => {
+            saveFormatting();
+            let currentScore = 0;
+            let incorrectIds = [];
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    const userAnswer = state.answers[q.id] || "";
+                    const userNorm = window.normalizeAnswer(userAnswer);
+                    const correctNorm = window.normalizeAnswer(q.correct);
+
+                    if (userNorm === correctNorm) {
+                        currentScore += 1;
+                    } else {
+                        incorrectIds.push(q.id);
+                    }
+                });
+            });
+            state.score = currentScore;
+            state.incorrectIds = incorrectIds;
+            state.endTime = Date.now();
+            state.submitTime = new Date();
+            state.isSubmitted = true;
+            state.showCompletedModal = true;
+            renderApp();
+        };
+
+        window.captureAndReveal = () => {
+            const captureArea = document.getElementById('capture-area');
+            const btn = document.getElementById('capture-btn');
+            const btnText = document.getElementById('capture-btn-text');
+
+            if (!captureArea || !btn) return;
+
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            const originalText = btnText.innerText;
+            btnText.innerText = 'Đang xử lý...';
+
+            setTimeout(() => {
+                html2canvas(captureArea, {
+                    scale: 3,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false,
+                    onclone: function (clonedDoc) {
+                        const clonedBtnText = clonedDoc.getElementById('capture-btn-text');
+                        const clonedBtn = clonedDoc.getElementById('capture-btn');
+                        if (clonedBtnText) clonedBtnText.innerText = originalText;
+                        if (clonedBtn) {
+                            clonedBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                            clonedBtn.style.opacity = '1';
+                        }
+
+                        const clonedArea = clonedDoc.getElementById('capture-area');
+                        if (clonedArea) {
+                            clonedArea.style.transform = 'none';
+                            clonedArea.style.boxShadow = 'none';
+                            clonedArea.style.border = 'none';
+                        }
+
+                        const clonedTitleBox = clonedDoc.getElementById('title-box');
+                        if (clonedTitleBox) {
+                            clonedTitleBox.style.border = 'none';
+                            clonedTitleBox.style.background = 'transparent';
+                            clonedTitleBox.style.boxShadow = 'none';
+                            clonedTitleBox.style.padding = '0';
+                        }
+
+                        const clonedStatsBox = clonedDoc.getElementById('stats-box');
+                        if (clonedStatsBox) {
+                            clonedStatsBox.style.border = 'none';
+                            clonedStatsBox.style.background = 'transparent';
+                            clonedStatsBox.style.boxShadow = 'none';
+                        }
+
+                        const clonedWrongBox = clonedDoc.getElementById('wrong-answers-box');
+                        if (clonedWrongBox) {
+                            clonedWrongBox.style.border = 'none';
+                            clonedWrongBox.style.background = 'transparent';
+                            clonedWrongBox.style.boxShadow = 'none';
+                        }
+
+                        const valueBoxes = clonedDoc.querySelectorAll('.value-box, .wrong-q-box');
+                        valueBoxes.forEach(box => {
+                            box.style.border = 'none';
+                            box.style.background = 'transparent';
+                            box.style.boxShadow = 'none';
+                            box.style.padding = '0';
+                            box.style.margin = '0';
+
+                            if (box.classList.contains('wrong-q-box')) {
+                                box.style.marginRight = '10px';
+                                box.style.color = '#dc2626';
+                            } else {
+                                box.style.color = '#1e293b';
+                            }
+                        });
+                    }
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Ket_qua_IELTS_Reading_${new Date().getTime()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    state.hasCapturedScreenshot = true;
+                    state.showCompletedModal = false;
+                    renderApp();
+
+                }).catch(err => {
+                    console.error("Lỗi khi chụp ảnh:", err);
+                    alert("Có lỗi xảy ra khi lưu ảnh. Bạn có thể xem đáp án ngay.");
+                    state.hasCapturedScreenshot = true;
+                    state.showCompletedModal = false;
+                    renderApp();
+                });
+            }, 50);
+        };
+
+        window.resetQuiz = () => {
+            state.showResetConfirm = true;
+            renderApp();
+        };
+
+        window.cancelReset = () => {
+            state.showResetConfirm = false;
+            renderApp();
+        };
+
+        window.confirmReset = () => {
+            state.answers = {};
+            state.isSubmitted = false;
+            state.score = 0;
+            state.incorrectIds = [];
+            state.startTime = Date.now();
+            state.endTime = null;
+            state.submitTime = null;
+            state.expandedExplanations = {};
+            state.showResetConfirm = false;
+            state.hasCapturedScreenshot = false;
+            state.showCompletedModal = false;
+            state.notes = {};
+            state.formattedPassage = null;
+            state.formattedPassageTrans = null;
+            state.formattedQuestions = {};
+
+            renderApp();
+        };
+
+        window.togglePassageTranslation = () => {
+            saveFormatting();
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            saveFormatting();
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.toggleNote = (qId) => {
+            saveFormatting();
+            state.expandedNotes[qId] = !state.expandedNotes[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                const targetScroll = currentScroll + (elTop - containerTop) - 20;
+
+                container.scrollTo({ top: targetScroll, behavior: "smooth" });
+
+                const wrapper = document.getElementById(`input-wrap-${id}`);
+                if (wrapper) {
+                    const inputEl = wrapper.querySelector('select');
+                    if (inputEl) {
+                        inputEl.focus();
+                        inputEl.classList.add('bg-indigo-100', 'border-indigo-500');
+                        setTimeout(() => inputEl.classList.remove('bg-indigo-100', 'border-indigo-500'), 1000);
+                    }
+                }
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            performScroll(id);
+        };
+
+        renderApp();
+
+    </script>
+</body>
+
+</html>
