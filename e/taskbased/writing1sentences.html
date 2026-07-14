@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORD ORDER - WRITING SENTENCES 1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Crystal Clear Word Chip */
+        .crystal-word {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.15) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            border-left: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.05);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: #1a202c;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            user-select: none;
+            position: relative;
+        }
+
+        .crystal-word:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 6px 12px rgba(0, 0, 0, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 0.9);
+        }
+
+        .crystal-word:active {
+            transform: scale(0.92);
+        }
+
+        /* Empty Slot styling */
+        .word-slot {
+            min-width: 50px;
+            height: 38px;
+            border: 2px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 640px) {
+            .word-slot {
+                min-width: 70px;
+                height: 46px;
+            }
+        }
+
+        /* Animations */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+        }
+
+        .shake-error {
+            animation: shake 0.4s ease-in-out;
+            border-color: #ef4444 !important;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+                background: rgba(34, 197, 94, 0.3);
+                border-color: #4ade80;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success-pop {
+            animation: pop 0.6s ease-out;
+        }
+    </style>
+</head>
+
+<body class="p-4 sm:p-8 flex flex-col items-center">
+
+    <!-- Header -->
+    <header class="text-center mb-6 sm:mb-8 mt-2 sm:mt-4">
+        <h1 class="text-2xl sm:text-4xl font-bold mb-2 flex items-center justify-center gap-2 sm:gap-3 drop-shadow-md">
+            <i class="ph-fill ph-magic-wand text-yellow-300"></i>
+            Sentence Builder
+        </h1>
+        <p class="text-sm sm:text-base text-white/80 font-medium tracking-wide">Nhấn vào các từ để sắp xếp thành câu
+            hoàn chỉnh</p>
+
+        <!-- Progress Bar -->
+        <div class="w-full max-w-md mx-auto mt-4 sm:mt-6 bg-black/20 h-2 rounded-full overflow-hidden">
+            <div id="progress-bar"
+                class="bg-gradient-to-r from-blue-400 to-emerald-400 h-full w-0 transition-all duration-500 rounded-full">
+            </div>
+        </div>
+        <p class="text-xs sm:text-sm text-white/60 mt-2" id="progress-text">0 / 33</p>
+    </header>
+
+    <!-- Main Game Area -->
+    <main class="w-full max-w-4xl flex flex-col gap-4 sm:gap-6 relative">
+
+        <!-- Source Area (Word Pool) -->
+        <section class="w-full">
+            <h2 class="text-base sm:text-lg font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-white/90">
+                <i class="ph ph-puzzle-piece text-lg sm:text-xl text-blue-300"></i> Word Pool
+            </h2>
+            <div class="glass-panel rounded-2xl p-3 sm:p-6 flex flex-col gap-4 sm:gap-5 relative overflow-hidden">
+
+                <!-- Decorative element -->
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mt-10 -mr-10 pointer-events-none">
+                </div>
+
+                <!-- Translation Hint Box -->
+                <div
+                    class="bg-black/25 p-2 sm:p-3 rounded-xl border border-white/10 text-center shadow-inner flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 z-10">
+                    <i class="ph ph-translate text-lg sm:text-xl text-emerald-300"></i>
+                    <span id="translation-text"
+                        class="text-sm sm:text-base text-white/95 font-medium tracking-wide"></span>
+                </div>
+
+                <!-- Word Pool Container -->
+                <div id="word-pool"
+                    class="min-h-[100px] sm:min-h-[120px] flex flex-wrap content-start items-center justify-center gap-2 sm:gap-3 rounded-xl transition-colors p-1 sm:p-2 z-10">
+                    <!-- Words injected here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Target Area (Sentence Board) -->
+        <section class="w-full mt-1 sm:mt-2">
+            <h2 class="text-base sm:text-lg font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-white/90">
+                <i class="ph ph-text-align-left text-lg sm:text-xl text-yellow-300"></i> Your Sentence
+            </h2>
+            <div id="sentence-board"
+                class="glass-panel rounded-2xl p-3 sm:p-6 min-h-[100px] sm:min-h-[120px] flex flex-wrap content-start items-center justify-center gap-2 sm:gap-3 border-2 border-white/20 relative">
+                <!-- Slots injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Feedback Message Area -->
+        <div id="feedback-message"
+            class="text-center min-h-[30px] font-semibold text-base sm:text-lg opacity-0 transition-opacity duration-300 px-2">
+        </div>
+
+        <!-- Controls (Check & Next) -->
+        <div class="flex flex-wrap justify-center gap-3 sm:gap-4 my-2 mb-8 sm:mb-10">
+            <button id="btn-check"
+                class="glass-panel hover:bg-white/20 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center gap-2 transition-all transform active:scale-95 shadow-lg border-white/40 group">
+                <i class="ph-bold ph-check-circle group-hover:text-green-300 transition-colors"></i> Check Answer
+            </button>
+            <button id="btn-hint"
+                class="glass-panel hover:bg-yellow-500/30 hover:bg-yellow-500/50 px-4 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center justify-center transition-all transform active:scale-95 shadow-lg border-white/40 group"
+                title="Gợi ý đáp án">
+                <i class="ph-fill ph-lightbulb text-yellow-300 group-hover:scale-110 transition-transform"></i>
+            </button>
+            <button id="btn-replay"
+                class="glass-panel bg-blue-500/30 hover:bg-blue-500/50 px-4 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center justify-center transition-all transform active:scale-95 shadow-lg border-white/40 hidden group"
+                title="Nghe lại">
+                <i class="ph-fill ph-speaker-high text-blue-100 group-hover:scale-110 transition-transform"></i>
+            </button>
+            <button id="btn-next"
+                class="glass-panel bg-emerald-500/30 hover:bg-emerald-500/50 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center gap-2 transition-all transform active:scale-95 shadow-lg border-white/40 hidden group">
+                Next <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto w-full text-center py-6 text-white/70 text-sm font-medium tracking-wide">
+        Copyright &copy; Hoàng Trường English
+    </footer>
+
+    <!-- Modal for Completion -->
+    <div id="completion-modal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-500">
+        <div class="glass-panel p-10 rounded-3xl text-center max-w-md mx-4 transform scale-90 transition-transform duration-500 border-white/30"
+            id="modal-content">
+            <div
+                class="w-24 h-24 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full mx-auto flex items-center justify-center mb-6 shadow-lg shadow-yellow-500/30">
+                <i class="ph-fill ph-trophy text-5xl text-white"></i>
+            </div>
+            <h2 class="text-3xl font-bold mb-4">Hoàn Thành!</h2>
+            <p class="text-lg text-white/80 mb-8">Bạn đã xuất sắc vượt qua tất cả các câu hỏi.</p>
+            <button onclick="restartGame()"
+                class="bg-white text-[#1e3c72] hover:bg-gray-100 px-8 py-3 rounded-full font-bold text-lg transition-colors shadow-lg w-full">
+                Chơi Lại
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const sentencesData = [
+            { en: "This company only has some workers.", vn: "Công ty này chỉ có một vài công nhân." },
+            { en: "My girlfriend likes iPhone Xmas.", vn: "Bạn gái tôi thích iPhone Xmas." },
+            { en: "Many people criticise the government.", vn: "Nhiều người chỉ trích chính phủ." },
+            { en: "He revealed that piece of information.", vn: "Anh ấy đã tiết lộ mẩu thông tin đó." },
+            { en: "My living room is very small.", vn: "Phòng khách của tôi rất nhỏ." },
+            { en: "All schools have literature teachers.", vn: "Tất cả các trường đều có giáo viên dạy văn." },
+            { en: "Some doctors earn a lot of money.", vn: "Một số bác sĩ kiếm được rất nhiều tiền." },
+            { en: "Many people work very hard.", vn: "Nhiều người làm việc rất chăm chỉ." },
+            { en: "Failure is a part of success.", vn: "Thất bại là một phần của thành công." },
+            { en: "My father wakes up very early in the morning.", vn: "Bố tôi thức dậy rất sớm vào buổi sáng." },
+            { en: "Patience decides your success.", vn: "Sự kiên nhẫn quyết định thành công của bạn." },
+            { en: "Sadness is a part of life.", vn: "Nỗi buồn là một phần của cuộc sống." },
+            { en: "A person's success results from his or her effort.", vn: "Thành công của một người bắt nguồn từ nỗ lực của họ." },
+            { en: "He usually gives me advice.", vn: "Anh ấy thường cho tôi lời khuyên." },
+            { en: "I will be a good doctor in the near future.", vn: "Tôi sẽ trở thành một bác sĩ giỏi trong tương lai gần." },
+            { en: "Streets are very dangerous in this city.", vn: "Đường phố rất nguy hiểm ở thành phố này." },
+            { en: "He was a famous athlete in Vietnam in the 19th century.", vn: "Ông ấy là một vận động viên nổi tiếng ở Việt Nam vào thế kỷ 19." },
+            { en: "Bikes are a healthy means of transport.", vn: "Xe đạp là một phương tiện giao thông lành mạnh." },
+            { en: "Rules are necessary to ensure security.", vn: "Các quy tắc là cần thiết để đảm bảo an ninh." },
+            { en: "At first, air conditioners were very big and expensive.", vn: "Ban đầu, máy điều hòa rất to và đắt tiền." },
+            { en: "This building is very attractive and different from other buildings.", vn: "Tòa nhà này rất thu hút và khác biệt so với các tòa nhà khác." },
+            { en: "My parents were very disappointed about my failure.", vn: "Bố mẹ tôi đã rất thất vọng về sự thất bại của tôi." },
+            { en: "At present tourists can book their holiday in peak seasons.", vn: "Hiện tại du khách có thể đặt kỳ nghỉ của họ vào những mùa cao điểm." },
+            { en: "Computers are able to perform millions of calculations every second.", vn: "Máy tính có khả năng thực hiện hàng triệu phép tính mỗi giây." },
+            { en: "I can never achieve success without my husband's help.", vn: "Tôi không bao giờ có thể đạt được thành công nếu không có sự giúp đỡ của chồng." },
+            { en: "We will not be able to sell these products to customers.", vn: "Chúng ta sẽ không thể bán những sản phẩm này cho khách hàng." },
+            { en: "This food product can cause health problems for you.", vn: "Sản phẩm thực phẩm này có thể gây ra các vấn đề về sức khỏe cho bạn." },
+            { en: "Garlic can help you recover from flu and increase your immunity.", vn: "Tỏi có thể giúp bạn phục hồi sau cúm và tăng cường khả năng miễn dịch." },
+            { en: "There may be some conclusive evidence of her offence.", vn: "Có thể có một số bằng chứng thuyết phục về hành vi phạm tội của cô ấy." },
+            { en: "I may enrol in a training course next year.", vn: "Tôi có thể đăng ký một khóa đào tạo vào năm tới." },
+            { en: "This object might damage your hearing.", vn: "Vật thể này có thể làm hỏng thính giác của bạn." },
+            { en: "Temperatures in Vietnam may not be higher than in other countries.", vn: "Nhiệt độ ở Việt Nam có thể không cao hơn ở các quốc gia khác." },
+            { en: "My family may relocate to another city next month.", vn: "Gia đình tôi có thể chuyển đến một thành phố khác vào tháng tới." }
+        ];
+
+        let sentenceQueue = [...sentencesData];
+        let currentSentenceIndex = 0;
+        let hintUsed = false;
+        let isAnimating = false;
+
+        const wordPool = document.getElementById('word-pool');
+        const sentenceBoard = document.getElementById('sentence-board');
+        const translationText = document.getElementById('translation-text');
+        const btnCheck = document.getElementById('btn-check');
+        const btnHint = document.getElementById('btn-hint');
+        const btnReplay = document.getElementById('btn-replay');
+        const btnNext = document.getElementById('btn-next');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+
+        function initGame() {
+            hintUsed = false;
+            updateProgress();
+            const currentData = sentenceQueue[currentSentenceIndex];
+            translationText.textContent = currentData.vn;
+            let words = currentData.en.replace(/[?.]/g, '').split(' ');
+            let scrambledWords = shuffleArray([...words]);
+            wordPool.innerHTML = '';
+            sentenceBoard.innerHTML = '';
+            sentenceBoard.classList.remove('success-pop', 'shake-error');
+            feedbackMessage.style.opacity = '0';
+            btnNext.classList.add('hidden');
+            btnReplay.classList.add('hidden');
+            btnHint.classList.remove('hidden');
+            btnCheck.classList.remove('hidden');
+            words.forEach(() => {
+                const slot = document.createElement('div');
+                slot.className = 'word-slot';
+                sentenceBoard.appendChild(slot);
+            });
+            scrambledWords.forEach((word, index) => {
+                const wordEl = document.createElement('div');
+                wordEl.classList.add('crystal-word', 'px-4', 'py-1.5', 'sm:px-5', 'sm:py-2', 'rounded-full', 'font-semibold', 'text-base', 'sm:text-lg');
+                wordEl.textContent = word;
+                wordEl.id = `word-${index}`;
+                wordEl.addEventListener('click', () => handleWordClick(wordEl));
+                wordPool.appendChild(wordEl);
+            });
+        }
+
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function handleWordClick(wordEl) {
+            if (wordEl.classList.contains('pointer-events-none') || isAnimating) return;
+            const isInPool = wordEl.parentElement.id === 'word-pool';
+            let targetContainer;
+            if (isInPool) {
+                const slots = Array.from(sentenceBoard.querySelectorAll('.word-slot'));
+                targetContainer = slots.find(slot => slot.children.length === 0);
+                if (!targetContainer) {
+                    sentenceBoard.classList.add('shake-error');
+                    setTimeout(() => sentenceBoard.classList.remove('shake-error'), 400);
+                    return;
+                }
+            } else {
+                targetContainer = wordPool;
+            }
+            animateGhostFlight(wordEl, targetContainer);
+        }
+
+        function animateGhostFlight(element, target) {
+            isAnimating = true;
+            const startRect = element.getBoundingClientRect();
+            element.style.opacity = '0';
+            element.style.transform = 'scale(0.5)';
+            element.classList.add('pointer-events-none');
+            target.appendChild(element);
+            const endRect = element.getBoundingClientRect();
+            const deltaX = endRect.left - startRect.left;
+            const deltaY = endRect.top - startRect.top;
+            const ghost = element.cloneNode(true);
+            ghost.style.position = 'fixed';
+            ghost.style.left = `${startRect.left}px`;
+            ghost.style.top = `${startRect.top}px`;
+            ghost.style.width = `${startRect.width}px`;
+            ghost.style.height = `${startRect.height}px`;
+            ghost.style.margin = '0';
+            ghost.style.zIndex = '9999';
+            ghost.style.opacity = '0.9';
+            ghost.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease-out, filter 0.5s ease-out';
+            document.body.appendChild(ghost);
+            requestAnimationFrame(() => {
+                ghost.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.8)`;
+                ghost.style.opacity = '0.1';
+                ghost.style.filter = 'blur(6px) drop-shadow(0 0 20px rgba(255, 255, 255, 1))';
+            });
+            ghost.addEventListener('transitionend', () => {
+                ghost.remove();
+                element.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease';
+                void element.offsetWidth;
+                element.style.opacity = '1';
+                element.style.transform = 'scale(1)';
+                setTimeout(() => {
+                    element.classList.remove('pointer-events-none');
+                    element.style.transition = '';
+                    element.style.transform = '';
+                    isAnimating = false;
+                }, 400);
+            }, { once: true });
+        }
+
+        btnCheck.addEventListener('click', () => {
+            const currentSentence = sentenceQueue[currentSentenceIndex].en.replace(/[?.]/g, '');
+            const wordsInBoard = [...sentenceBoard.querySelectorAll('.crystal-word')];
+            const wordsInPool = [...wordPool.querySelectorAll('.crystal-word')];
+            if (wordsInPool.length > 0) {
+                showMessage('Vui lòng sử dụng tất cả các từ!', 'text-yellow-300');
+                sentenceBoard.classList.add('shake-error');
+                setTimeout(() => sentenceBoard.classList.remove('shake-error'), 400);
+                return;
+            }
+            const formedSentence = wordsInBoard.map(el => el.textContent).join(' ');
+            if (formedSentence === currentSentence) {
+                sentenceBoard.classList.add('success-pop');
+                showMessage('Tuyệt vời! Câu trả lời chính xác.', 'text-green-300');
+                speakSentence(sentenceQueue[currentSentenceIndex].en);
+                wordsInBoard.forEach(w => w.classList.add('pointer-events-none'));
+                btnCheck.classList.add('hidden');
+                btnHint.classList.add('hidden');
+                btnReplay.classList.remove('hidden');
+                btnNext.classList.remove('hidden');
+            } else {
+                sentenceBoard.classList.add('shake-error');
+                showMessage('Chưa chính xác. Hãy thử đổi vị trí xem sao!', 'text-red-300');
+                setTimeout(() => sentenceBoard.classList.remove('shake-error'), 400);
+            }
+        });
+
+        btnHint.addEventListener('click', () => {
+            hintUsed = true;
+            const currentSentence = sentenceQueue[currentSentenceIndex].en;
+            const correctWords = currentSentence.replace(/[?.]/g, '').split(' ');
+            wordPool.innerHTML = '';
+            sentenceBoard.innerHTML = '';
+            correctWords.forEach((word) => {
+                const slot = document.createElement('div');
+                slot.className = 'word-slot';
+                const wordEl = document.createElement('div');
+                wordEl.className = 'crystal-word px-4 py-1.5 sm:px-5 sm:py-2 rounded-full font-semibold text-base sm:text-lg pointer-events-none';
+                wordEl.textContent = word;
+                slot.appendChild(wordEl);
+                sentenceBoard.appendChild(slot);
+            });
+            sentenceBoard.classList.add('success-pop');
+            showMessage('Đây là đáp án đúng. Bạn sẽ phải làm lại câu này ở cuối!', 'text-yellow-300');
+            speakSentence(currentSentence);
+            btnCheck.classList.add('hidden');
+            btnHint.classList.add('hidden');
+            btnReplay.classList.remove('hidden');
+            btnNext.classList.remove('hidden');
+        });
+
+        btnNext.addEventListener('click', () => {
+            if (hintUsed) sentenceQueue.push(sentenceQueue[currentSentenceIndex]);
+            currentSentenceIndex++;
+            if (currentSentenceIndex >= sentenceQueue.length) {
+                showCompletionModal();
+                updateProgress();
+            } else {
+                initGame();
+            }
+        });
+
+        btnReplay.addEventListener('click', () => speakSentence(sentenceQueue[currentSentenceIndex].en));
+
+        function showMessage(text, colorClass) {
+            feedbackMessage.textContent = text;
+            feedbackMessage.className = `text-center min-h-[30px] font-semibold text-lg transition-opacity duration-300 ${colorClass}`;
+            feedbackMessage.style.opacity = '1';
+        }
+
+        function updateProgress() {
+            const progress = (currentSentenceIndex / sentenceQueue.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${currentSentenceIndex} / ${sentenceQueue.length}`;
+        }
+
+        function showCompletionModal() {
+            const modal = document.getElementById('completion-modal');
+            const modalContent = document.getElementById('modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-90', 'opacity-0');
+            }, 10);
+        }
+
+        function restartGame() {
+            const modal = document.getElementById('completion-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                sentenceQueue = [...sentencesData];
+                currentSentenceIndex = 0;
+                initGame();
+            }, 500);
+        }
+
+        function speakSentence(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.2;
+                utterance.volume = 1.0;
+                const voices = window.speechSynthesis.getVoices();
+                const femaleVoice = voices.find(voice =>
+                    voice.lang.includes('en') &&
+                    (voice.name.includes('Female') || voice.name.includes('Google US English') || voice.name.includes('Zira') || voice.name.includes('Samantha') || voice.name.includes('Victoria'))
+                );
+                if (femaleVoice) utterance.voice = femaleVoice;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        initGame();
+    </script>
+</body>
+
+</html>
