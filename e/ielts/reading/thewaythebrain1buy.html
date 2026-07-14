@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS VOCAB - THE WAY THE BRAIN BUYS 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Outfit cho giao diện hiện đại, Space Mono cho phong cách mã vạch/biên lai -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --retail-purple: #4c1d95;
+            /* Violet 900 */
+            --retail-dark: #0f172a;
+            /* Slate 900 */
+            --retail-cyan: #06b6d4;
+            /* Cyan 500 */
+            --retail-yellow: #facc15;
+            /* Yellow 400 */
+            --retail-receipt: #f8fafc;
+            /* Slate 50 */
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--retail-dark);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.4), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.2), transparent 25%);
+            color: white;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--retail-cyan);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- CẤU TRÚC THẺ LẬP CHỐNG GIẬT (SỬA LỖI 100%) --- */
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 480px;
+            /* Khóa cứng chiều cao tối thiểu */
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(-180deg);
+        }
+
+        /* Khóa chặt mặt trước và sau vào cùng 1 khung */
+        .card-front,
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--retail-receipt);
+            border-radius: 12px;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.05), 0 10px 30px rgba(0, 0, 0, 0.3);
+            color: #0f172a;
+            /* Slate 900 */
+            overflow: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(-180deg);
+            border: 2px solid var(--retail-cyan);
+            background-color: #f0fdfa;
+            /* Teal 50 */
+        }
+
+        .flip-card.flipped .card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .card-back {
+            pointer-events: none;
+        }
+
+        /* Hiệu ứng nếp gấp biên lai siêu thị ở trên và dưới thẻ */
+        .receipt-edge {
+            height: 12px;
+            background-image: radial-gradient(circle, transparent 4px, var(--retail-receipt) 5px);
+            background-size: 16px 16px;
+            background-position: -8px -8px;
+            width: 100%;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .receipt-edge.top {
+            top: -6px;
+        }
+
+        .receipt-edge.bottom {
+            bottom: -6px;
+            transform: rotate(180deg);
+        }
+
+        .card-back .receipt-edge {
+            background-image: radial-gradient(circle, transparent 4px, #f0fdfa 5px);
+        }
+
+        /* Nền dải sọc mã vạch mờ */
+        .barcode-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 2px, transparent 2px, transparent 6px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Ô nhập liệu (Checkout Display) --- */
+        .retail-input {
+            background: #e2e8f0;
+            /* Slate 200 */
+            border: 2px solid #cbd5e1;
+            border-bottom: 4px solid var(--retail-purple);
+            color: #0f172a;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 4px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .retail-input {
+            width: 28px;
+            height: 38px;
+        }
+
+        @media (min-width: 400px) {
+            .retail-input {
+                width: 32px;
+                height: 42px;
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .retail-input {
+                width: 38px;
+                height: 48px;
+                font-size: 2rem;
+            }
+        }
+
+        .retail-input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: var(--retail-cyan);
+            border-bottom-color: var(--retail-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .retail-input.hinted {
+            color: #b45309;
+            /* Amber 700 */
+            border-bottom-color: var(--retail-yellow);
+            background: #fef08a;
+            /* Yellow 200 */
+            pointer-events: none;
+        }
+
+        .retail-input.error {
+            color: #ef4444;
+            border-bottom-color: #ef4444;
+            background: #fee2e2;
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake-error {
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--retail-purple);
+        }
+
+        /* Buttons */
+        .btn-retail {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-retail:active {
+            transform: scale(0.96);
+        }
+
+        .btn-retail:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--retail-cyan) 0%, #0284c7 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #22d3ee 0%, #0369a1 100%);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--retail-cyan);
+            border: 2px solid var(--retail-cyan);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(6, 182, 212, 0.1);
+        }
+
+        /* Vệt sáng từ vựng trên biên lai */
+        .highlighter {
+            font-weight: 800;
+            color: var(--retail-purple);
+            background-color: var(--retail-yellow);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Con dấu Thanh Toán (Purchased) */
+        .stamp-purchased {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #10b981;
+            /* Emerald 500 */
+            border: 4px solid #10b981;
+            padding: 8px 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            transform: rotate(15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            border-radius: 8px;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3), inset 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .flipped .stamp-purchased {
+            animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes stampSlam {
+            0% {
+                transform: scale(2) rotate(30deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(15deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 text-center pb-4 border-b border-slate-600">
+                    <span
+                        class="inline-block px-3 py-1 bg-slate-800 border border-cyan-400 text-cyan-400 text-xs font-bold rounded mb-3 font-mono tracking-widest shadow-[0_0_10px_rgba(6,182,212,0.3)]">RETAIL
+                        PSYCHOLOGY SCANNER</span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-wide uppercase">The Way The Brain
+                        Buys</h1>
+                    <p class="text-slate-300 mt-2 font-medium text-sm sm:text-base">Understand customer behavior and
+                        retail vocabulary.</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-slate-800/50 rounded-lg border border-slate-600 relative">
+                    <table class="w-full min-w-[650px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-mono text-sm text-slate-900 bg-cyan-400 shadow-md">
+                            <tr>
+                                <th class="p-3 w-1/4 rounded-tl-lg">ITEM_NAME</th>
+                                <th class="p-3 w-1/6 text-center">CATEGORY</th>
+                                <th class="p-3 rounded-tr-lg">DESCRIPTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-200 divide-y divide-slate-700">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()"
+                        class="btn-retail btn-primary w-full sm:w-1/2 py-3 text-2xl mb-4 flex items-center justify-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        START SHOPPING
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <!-- Header (Timer & Progress) -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-1">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="btn-retail btn-secondary px-3 py-1.5 text-sm flex items-center gap-1 bg-slate-800/80"
+                    style="display: none;">
+                    ◀ BACK
+                </button>
+                <div id="top-prev-placeholder" class="w-20"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div
+                        class="flex items-center justify-between w-full mb-1 text-xs font-bold text-slate-300 font-mono">
+                        <div>CART_TIME <span id="timer-display" class="ml-1 text-cyan-400">00:00</span></div>
+                        <div>AISLE <span id="progress-text" class="ml-1 text-yellow-400">1/31</span></div>
+                    </div>
+                    <!-- Progress Cart -->
+                    <div class="w-full h-2 bg-slate-700 rounded-full overflow-visible relative border border-slate-600">
+                        <div id="progress-bar"
+                            class="h-full bg-cyan-400 rounded-full transition-all duration-500 relative shadow-[0_0_8px_rgba(6,182,212,0.6)]"
+                            style="width: 0%;">
+                            <span class="absolute -top-3.5 -right-3 text-xl drop-shadow-md z-10">🛒</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn-retail btn-secondary w-10 h-10 flex items-center justify-center shrink-0 rounded-full bg-slate-800/80">
+                    <span id="music-icon" class="text-lg">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-4xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <!-- MẶT TRƯỚC (Điền từ) -->
+                        <div class="card-front">
+                            <div class="receipt-edge top"></div>
+                            <div class="receipt-edge bottom"></div>
+                            <div class="barcode-bg"></div>
+
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+
+                                <div class="mb-4 shrink-0 flex flex-col items-center text-center">
+                                    <span
+                                        class="inline-block px-3 py-1 border-2 border-slate-800 text-slate-800 text-xs font-mono font-bold tracking-widest uppercase mb-2"
+                                        id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900" id="word-mean"></h2>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
+                                    <div class="text-center mb-8 px-2 sm:px-6">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-1 mb-8">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn-retail border-2 border-slate-300 text-slate-600 hover:bg-slate-200 flex items-center justify-center rounded-full"
+                                                title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn-retail border-2 border-amber-500 text-amber-600 hover:bg-amber-50 text-lg">HINT
+                                                💡</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn-retail btn-primary px-8 sm:px-12 h-12 text-xl">
+                                                CHECKOUT
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MẶT SAU (Kết quả) -->
+                        <div class="card-back">
+                            <div class="receipt-edge top"></div>
+                            <div class="receipt-edge bottom"></div>
+                            <div class="barcode-bg"></div>
+
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                <div class="stamp-purchased" id="result-seal">PURCHASED</div>
+
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <h2 class="text-3xl sm:text-5xl font-mono font-bold text-cyan-600 tracking-tight"
+                                            id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-cyan-600 hover:text-cyan-800 transition-colors p-2 bg-cyan-100 rounded-full border border-cyan-200"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-800 text-yellow-400 px-4 py-1 rounded-sm mb-5 font-mono text-sm tracking-widest shadow-inner">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+
+                                    <p class="text-xl sm:text-2xl text-slate-800 font-bold mb-6" id="back-mean"></p>
+
+                                    <div
+                                        class="w-full max-w-2xl bg-white p-4 sm:p-6 rounded-lg border-l-4 border-cyan-500 text-left shadow-sm">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium"
+                                            id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-4 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn-retail btn-primary px-8 py-3 text-xl w-full sm:w-2/3 flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(6,182,212,0.4)]">
+                                        NEXT AISLE ⏩
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-slate-600 pb-5">
+                    <h2 class="text-4xl sm:text-5xl text-cyan-400 font-extrabold uppercase tracking-wide">SHOPPING
+                        COMPLETED</h2>
+                    <p id="completion-datetime" class="text-sm font-mono text-slate-400 mt-2 uppercase tracking-widest">
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-mono text-lg">
+                    <div class="bg-slate-800/80 border border-slate-600 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">ACCURACY</p>
+                        <p class="text-3xl text-white font-bold" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-600 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">TIME_SPENT</p>
+                        <p class="text-3xl text-white font-bold" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-emerald-900/40 border border-emerald-700/50 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-emerald-400 uppercase tracking-widest mb-1">PURCHASED</p>
+                        <p class="text-3xl text-emerald-400 font-bold" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-amber-900/40 border border-amber-700/50 p-4 text-center rounded-lg shadow-inner">
+                        <p class="text-xs text-amber-400 uppercase tracking-widest mb-1">ASSISTED</p>
+                        <p class="text-3xl text-amber-400 font-bold" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-slate-600 w-full mb-5 shrink min-h-0 bg-slate-900/80 rounded-lg shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-slate-800 text-white border-b-2 border-cyan-500 font-mono text-sm tracking-wider shadow-md">
+                            <tr>
+                                <th class="p-3 w-28 text-center">RECEIPT</th>
+                                <th class="p-3 w-1/3">ITEM_NAME</th>
+                                <th class="p-3">DESCRIPTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-slate-300 divide-y divide-slate-700">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()"
+                        class="btn-retail btn-primary w-full sm:w-1/2 py-3 text-xl mb-3">
+                        NEW SHOPPING TRIP 🔄
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "counter", type: "noun", phonetic: "/ˈkaʊntər/", mean: "quầy bán hàng, quầy phục vụ", ex: "Customers can pay for their groceries at the _______ near the front door of the shop." },
+            { word: "be situated in", type: "verb phrase", phonetic: "/bi ˈsɪtʃueɪtɪd ɪn/", mean: "nằm ở, tọa lạc ở", ex: "The pharmacy can _______ the middle of the shopping center for easy access." },
+            { word: "aisle", type: "noun", phonetic: "/aɪl/", mean: "lối đi giữa các kệ hàng", ex: "Shoppers often walk slowly along each _______ to look for special offers and new products." },
+            { word: "halfway", type: "adverb", phonetic: "/ˌhɑːfˈweɪ/", mean: "ở giữa đường, nửa chừng", ex: "The fruit section is _______ down the main aisle, next to the prepared food area." },
+            { word: "take stock of", type: "phrase", phonetic: "/teɪk stɒk əv/", mean: "xem xét, đánh giá tình hình", ex: "Store managers need to _______ customer habits before they change the layout of the shop." },
+            { word: "regulars", type: "plural noun", phonetic: "/ˈreɡjələrz/", mean: "khách quen", ex: "The café has many _______ who come every morning for coffee and a quick breakfast." },
+            { word: "promotion", type: "noun", phonetic: "/prəˈməʊʃən/", mean: "sự quảng bá, chiến dịch quảng bá", ex: "A good _______ can attract new customers and make them interested in a new product." },
+            { word: "browse", type: "verb", phonetic: "/braʊz/", mean: "xem lướt, nhìn quanh để mua sắm", ex: "Many customers like to _______ in a bookstore before they decide which book to buy." },
+            { word: "persuade", type: "verb", phonetic: "/pəˈsweɪd/", mean: "thuyết phục", ex: "Bright signs and friendly staff can _______ customers to try products they do not plan to buy." },
+            { word: "immediately", type: "adverb", phonetic: "/ɪˈmiːdiətli/", mean: "ngay lập tức", ex: "Customers often notice fresh fruit _______ when it is placed near the entrance." },
+            { word: "pile up", type: "phrasal verb", phonetic: "/paɪl ʌp/", mean: "chất đống, chồng lên", ex: "Workers should not _______ too many boxes in the aisle because customers need space to move." },
+            { word: "bargain", type: "noun", phonetic: "/ˈbɑːɡən/", mean: "món hời, hàng giá tốt", ex: "Many shoppers feel happy when they find a real _______ during a weekend sale." },
+            { word: "retailer", type: "noun", phonetic: "/ˈriːteɪlər/", mean: "nhà bán lẻ, cửa hàng bán lẻ", ex: "A successful _______ understands customer behavior and uses clever displays to increase sales." },
+            { word: "employ", type: "verb", phonetic: "/ɪmˈplɔɪ/", mean: "thuê, tuyển dụng", ex: "Large supermarkets often _______ extra staff during holidays because the number of customers increases." },
+            { word: "greeter", type: "noun", phonetic: "/ˈɡriːtər/", mean: "người chào đón khách", ex: "A _______ welcomes customers at the entrance and helps them feel comfortable in the store." },
+            { word: "be intended to", type: "verb phrase", phonetic: "/bi ɪnˈtendɪd tuː/", mean: "được dự định để, nhằm mục đích", ex: "The new store design is _______ make shopping easier and more enjoyable for customers." },
+            { word: "tempt", type: "verb", phonetic: "/tempt/", mean: "cám dỗ, thu hút ai làm gì", ex: "Beautiful displays near the checkout can _______ shoppers to buy snacks at the last minute." },
+            { word: "section", type: "noun", phonetic: "/ˈsekʃən/", mean: "khu vực, gian hàng", ex: "The bakery _______ smells delicious and often attracts customers from other parts of the shop." },
+            { word: "make sense", type: "phrase", phonetic: "/meɪk sens/", mean: "hợp lý, có ý nghĩa", ex: "It can _______ to put popular items at the back so customers walk past more products." },
+            { word: "psychology", type: "noun", phonetic: "/saɪˈkɒlədʒi/", mean: "tâm lý học", ex: "Retail _______ helps businesses understand why people buy certain products in certain situations." },
+            { word: "select", type: "verb", phonetic: "/sɪˈlekt/", mean: "chọn lựa", ex: "Customers can _______ fresh vegetables from different shelves before they go to the checkout counter." },
+            { word: "guilty", type: "adjective", phonetic: "/ˈɡɪlti/", mean: "có lỗi, cảm thấy tội lỗi", ex: "Some shoppers feel _______ when they buy expensive items that are not on their shopping list." },
+            { word: "invariably", type: "adverb", phonetic: "/ɪnˈveəriəbli/", mean: "lúc nào cũng, hầu như luôn luôn", ex: "Shoppers _______ spend more time in stores when the displays are attractive and easy to follow." },
+            { word: "opportunity", type: "noun", phonetic: "/ˌɒpəˈtjuːnəti/", mean: "cơ hội", ex: "A special discount gives customers an _______ to try a product at a lower price." },
+            { word: "shopping list", type: "noun phrase", phonetic: "/ˈʃɒpɪŋ lɪst/", mean: "danh sách mua sắm", ex: "A clear _______ helps people avoid unnecessary purchases when they visit a supermarket." },
+            { word: "pharmacy", type: "noun", phonetic: "/ˈfɑːməsi/", mean: "hiệu thuốc, nhà thuốc", ex: "The _______ sells medicine, health products, and basic items for personal care." },
+            { word: "trick", type: "noun", phonetic: "/trɪk/", mean: "mẹo, thủ thuật", ex: "One common shopping _______ is to place sweets near the checkout to attract children." },
+            { word: "boost", type: "verb", phonetic: "/buːst/", mean: "thúc đẩy, tăng lên", ex: "Attractive packaging can _______ sales because it makes a product look more interesting." },
+            { word: "the length of time", type: "noun phrase", phonetic: "/ðə leŋθ əv taɪm/", mean: "khoảng thời gian", ex: "_______ customers spend in a store can affect how much money they spend." },
+            { word: "prepared food", type: "noun phrase", phonetic: "/prɪˈpeəd fuːd/", mean: "đồ ăn chế biến sẵn", ex: "_______ is useful for busy people who do not have enough time to cook at home." },
+            { word: "fishmonger", type: "noun", phonetic: "/ˈfɪʃmʌŋɡər/", mean: "người bán cá, cửa hàng bán cá", ex: "A _______ can give advice about fresh seafood and how to prepare it for dinner." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+            if (type === 'start') playTone('sine', 400, 600, 0.1, 0.4);
+            else if (type === 'success') {
+                playTone('sine', 800, 800, 0.05, 0.1); // Scanner beep
+                setTimeout(() => playTone('triangle', 1200, 1600, 0.05, 0.15), 100); // Cha-ching accent
+            }
+            else if (type === 'error') playTone('sawtooth', 200, 150, 0.1, 0.3);
+            else if (type === 'flip') playTone('sine', 300, 200, 0.05, 0.1);
+        }
+
+        // Tích hợp Giọng Nữ US (Ưu tiên API, dự phòng Browser Speech)
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+
+            // Xử lý chuỗi để đọc mượt mà các cụm từ (loại bỏ gạch nối, ngoặc)
+            let rawWord = flashcards[currentIndex].word;
+            let wordToSpeak = rawWord.replace(/[-/()]/g, ' ').replace(/\s+/g, ' ').trim();
+
+            // Gọi API Youdao giọng Nữ Mỹ (type=2)
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                // Dự phòng: Web Speech API (Cố gắng tìm giọng Nữ Mỹ)
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira')));
+                if (femaleUS) utter.voice = femaleUS;
+
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, index) => {
+                return `
+                <tr class="hover:bg-slate-700 transition-colors">
+                    <td class="p-3 font-mono font-bold text-cyan-400 border-r border-slate-700">${item.word}</td>
+                    <td class="p-3 text-center border-r border-slate-700"><span class="px-2 py-0.5 bg-slate-900 border border-slate-600 text-slate-300 text-xs font-bold rounded uppercase tracking-widest">${item.type}</span></td>
+                    <td class="p-3 text-slate-300 text-sm font-medium">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+
+            // Nạp trước danh sách giọng đọc nếu cần cho hàm dự phòng
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { };
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            // Xử lý hiển thị câu ví dụ có gạch chân
+            let wordLength = card.word.replace(/[\s-()]/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 12 ? 'w-24' : 'w-36');
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-2 border-slate-400 mx-1 align-baseline"></span>`;
+
+            let displayEx = card.ex;
+            if (displayEx.startsWith("_______")) displayEx = blankHtml + displayEx.substring(7);
+            else displayEx = displayEx.replace('_______', blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            // Xử lý tạo Input Fields thông minh (chia theo cụm từ)
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            // Tách từ gốc theo dấu cách
+            const wordsArray = card.word.split(' ');
+
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-1 sm:gap-1.5';
+
+                w.split('').forEach((char, i) => {
+                    if (char === '-') {
+                        const dash = document.createElement('span');
+                        dash.textContent = '-';
+                        dash.className = 'text-2xl font-bold text-slate-500 self-center px-1 font-mono';
+                        group.appendChild(dash);
+                    } else if (char === '(' || char === ')') {
+                        // Bỏ qua hiển thị ngoặc tròn trong input
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'retail-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                // Tạo khoảng trống giữa các từ trong cụm
+                if (wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div');
+                    space.className = 'w-3 sm:w-5';
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            // Xóa ngoặc, dấu cách, gạch nối để lấy chuỗi ký tự tinh gọn
+            const rawWord = flashcards[currentIndex].word;
+            const target = rawWord.replace(/[\s-()]/g, '').toUpperCase();
+
+            const inputs = document.querySelectorAll('.retail-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) {
+                if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+            }
+
+            if (pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+            // Chỉ lấy chữ cái liên tiếp để so sánh
+            const target = normalizeString(rawWord.replace(/[\s-()]/g, ''));
+            const inputs = document.querySelectorAll('.retail-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#d97706"; // Amber 600
+                    seal.style.borderColor = "#d97706";
+                } else {
+                    seal.textContent = "PURCHASED";
+                    seal.style.color = "#10b981"; // Emerald 500
+                    seal.style.borderColor = "#10b981";
+                }
+
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                let backExStr = card.ex;
+                let targetDisplay = rawWord;
+
+                // Thuật toán viết hoa tự động nếu từ điền nằm ở đầu câu ví dụ
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = targetDisplay.charAt(0).toUpperCase() + targetDisplay.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${targetDisplay}</span>`);
+                }
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // Tự động phát âm thanh từ vựng khi lật sang mặt sau (đợi 400ms để khớp hiệu ứng lật thẻ)
+                setTimeout(() => {
+                    speakCurrentWord();
+                }, 400);
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `RECEIPT GENERATED: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#facc15"; // Yellow
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-400 bg-amber-900/50 px-2 py-0.5 rounded text-xs font-bold border border-amber-700 font-mono shadow-inner">ASSISTED</span>'
+                    : '<span class="text-emerald-400 bg-emerald-900/50 px-2 py-0.5 rounded text-xs font-bold border border-emerald-700 font-mono shadow-inner">PURCHASED</span>';
+
+                return `
+                    <tr class="hover:bg-slate-700 transition-colors">
+                        <td class="p-3 text-center border-r border-slate-700">${statusIcon}</td>
+                        <td class="p-3 font-bold font-mono text-cyan-400 border-r border-slate-700">${item.word}</td>
+                        <td class="p-3 text-slate-300 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
