@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC VOCAB - DESCRIBE A PICTURE 4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Playfair Display for Elegant Menu headers, Lato for readable text -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --dine-wine: #831843;
+            /* Fuchsia 900 - Wine Red */
+            --dine-wine-light: #fce7f3;
+            --dine-gold: #b45309;
+            /* Amber 700 */
+            --dine-gold-light: #fef3c7;
+            --dine-cream: #fffbeb;
+            /* Amber 50 - Menu Paper */
+            --dine-dark: #1c1917;
+            /* Stone 900 */
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--dine-dark);
+            /* Elegant subtle pattern */
+            background-image: radial-gradient(#44403c 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #333;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-elegant {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Khung hiển thị giao diện Menu nhà hàng */
+        .menu-board {
+            background: var(--dine-cream);
+            border: 2px solid var(--dine-gold);
+            outline: 6px solid var(--dine-cream);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(180, 83, 9, 0.1);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .flip-card {
+            perspective: 2500px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 480px;
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            border: 3px solid var(--dine-wine);
+            background: linear-gradient(135deg, #ffffff 0%, var(--dine-wine-light) 100%);
+        }
+
+        .flip-card.flipped .card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .card-back {
+            pointer-events: none;
+        }
+
+        .student-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #a8a29e;
+            /* stone-400 */
+            color: var(--dine-wine);
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            padding: 0 0 2px 0;
+            border-radius: 0;
+        }
+
+        @media (max-width: 639px) {
+            .student-input {
+                width: 20px;
+                height: 32px;
+                font-size: 1.1rem;
+                border-bottom-width: 2px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .student-input {
+                width: 26px;
+                height: 38px;
+                font-size: 1.5rem;
+            }
+        }
+
+        .student-input:focus {
+            outline: none;
+            border-bottom-color: var(--dine-wine);
+            background: rgba(131, 24, 67, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .student-input.hinted {
+            color: #ffffff;
+            background: var(--dine-gold);
+            border-bottom-color: var(--dine-gold);
+            pointer-events: none;
+        }
+
+        .student-input.error {
+            color: white;
+            background: #b91c1c;
+            border-bottom-color: #7f1d1d;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake-error {
+            animation: shake 0.4s;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6d3d1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
+        }
+
+        .btn {
+            font-family: 'Lato', sans-serif;
+            font-weight: 900;
+            letter-spacing: 2px;
+            border-radius: 2px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: var(--dine-wine);
+            color: white;
+            border: 2px solid var(--dine-wine);
+            box-shadow: 0 4px 10px rgba(131, 24, 67, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #9f1239;
+            /* Rose 800 */
+            border-color: #9f1239;
+            box-shadow: 0 6px 15px rgba(131, 24, 67, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--dine-wine);
+            border: 2px solid var(--dine-wine);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--dine-wine-light);
+        }
+
+        .highlighter {
+            font-weight: 700;
+            color: var(--dine-wine);
+            background-color: var(--dine-gold-light);
+            padding: 2px 6px;
+            border-radius: 2px;
+            border-bottom: 2px solid var(--dine-gold);
+        }
+
+        .stamp {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--dine-gold);
+            border: 3px solid var(--dine-gold);
+            padding: 6px 16px;
+            transform: rotate(12deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            letter-spacing: 2px;
+            border-radius: 4px;
+        }
+
+        .flipped .stamp {
+            animation: stampIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes stampIn {
+            0% {
+                transform: scale(2) rotate(25deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) rotate(12deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 12px;
+            color: #78716c;
+            /* Stone 500 */
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="menu-board flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 text-center pb-6 border-b border-stone-300">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-1.5 bg-stone-100 border border-stone-300 mb-4 rounded-sm">
+                        <span class="text-stone-700 text-xs font-lato font-bold tracking-[0.2em] uppercase">DINING &
+                            SOCIALIZING</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-elegant text-wine-900 tracking-tight font-black"
+                        style="color: var(--dine-wine);">PICTURE ANALYSIS IV</h1>
+                    <p class="text-stone-600 mt-3 text-sm sm:text-base font-medium font-lato">Explore vocabulary for
+                        cozy meals, elegant settings, and lively conversations.</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white/50 border border-stone-200 relative">
+                    <table class="w-full min-w-[650px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 font-lato text-xs font-bold text-stone-500 bg-stone-100 border-b border-stone-300 uppercase tracking-widest">
+                            <tr>
+                                <th class="p-4 w-1/4">MENU ITEM</th>
+                                <th class="p-4 w-1/6 text-center">TYPE</th>
+                                <th class="p-4">DESCRIPTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-stone-800 divide-y divide-stone-200 bg-white">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn btn-primary w-full sm:w-1/2 py-4 text-lg mb-4 gap-2">
+                        <span>OPEN MENU</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn btn-secondary px-4 py-2 text-xs bg-white"
+                    style="display: none;">
+                    ◀ BACK
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-4 max-w-md">
+                    <div
+                        class="flex items-center justify-between w-full mb-2 text-xs font-bold font-lato tracking-widest text-stone-300">
+                        <div>TIME: <span id="timer-display" class="text-white">00:00</span></div>
+                        <div>COURSE: <span id="progress-text" class="text-white">1/13</span></div>
+                    </div>
+                    <!-- Elegant Progress Bar -->
+                    <div class="w-full h-1.5 bg-stone-700 relative rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full transition-all duration-500"
+                            style="width: 0%; background-color: var(--dine-gold);"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn btn-secondary w-9 h-9 rounded-full text-base shrink-0 p-0 bg-white/10 text-white border-white/20 hover:bg-white/20">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-4xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <div class="card-front">
+                            <div
+                                class="p-4 sm:p-6 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+
+                                <div class="mb-6 shrink-0 flex flex-col items-center text-center mt-2">
+                                    <span
+                                        class="inline-block px-3 py-1 bg-stone-100 text-stone-500 border border-stone-200 text-xs font-lato font-bold tracking-widest uppercase mb-4 shadow-sm"
+                                        id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-elegant text-wine-900 leading-tight"
+                                        style="color: var(--dine-wine);" id="word-mean"></h2>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
+                                    <div class="text-center mb-10 px-1 sm:px-6">
+                                        <p class="text-lg sm:text-xl text-stone-700 leading-relaxed font-medium font-lato"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <!-- Dynamic Inputs Container - Flex wrap for long phrases -->
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-0 sm:px-1 mb-8">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn btn-secondary rounded-full p-0 flex items-center justify-center bg-white shadow-sm"
+                                                title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    style="color: var(--dine-wine);" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn btn-secondary text-sm bg-white shadow-sm">HINT</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn btn-primary px-8 sm:px-12 h-12 text-base shadow-md">
+                                                SERVE
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-back">
+                            <div
+                                class="p-4 sm:p-6 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                <div class="stamp" id="result-seal">EXCELLENT</div>
+
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-elegant font-black tracking-tight"
+                                            style="color: var(--dine-wine);" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-amber-600 hover:text-amber-700 transition-colors p-2 bg-amber-50 rounded-full border border-amber-200 shadow-sm"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div
+                                        class="text-stone-600 mb-8 font-lato text-sm tracking-widest border border-stone-300 px-4 py-1.5 bg-white rounded-sm shadow-sm">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+
+                                    <p class="text-xl sm:text-2xl text-stone-800 font-elegant mb-8 font-bold"
+                                        id="back-mean"></p>
+
+                                    <div class="w-full max-w-3xl bg-white p-6 sm:p-8 border border-stone-200 shadow-sm text-center rounded-sm border-t-4"
+                                        style="border-top-color: var(--dine-gold);">
+                                        <p class="text-lg sm:text-xl text-stone-700 leading-relaxed font-lato"
+                                            id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn btn-primary px-8 py-4 text-base w-full sm:w-2/3 gap-2 shadow-md">
+                                        NEXT COURSE ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text" style="color: #a8a29e;">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="menu-board flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-8 shrink-0 border-b border-stone-300 pb-6">
+                    <h2 class="text-3xl sm:text-4xl font-elegant font-black tracking-widest uppercase"
+                        style="color: var(--dine-wine);">DINING RECEIPT</h2>
+                    <p id="completion-datetime" class="text-xs font-lato text-stone-500 mt-2 tracking-widest"></p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 shrink-0 font-lato text-lg">
+                    <div class="bg-stone-50 border border-stone-200 p-4 text-center rounded-sm">
+                        <p class="text-xs text-stone-500 font-bold tracking-widest mb-1">SCORE</p>
+                        <p class="text-2xl sm:text-3xl text-stone-900 font-elegant font-bold" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-stone-50 border border-stone-200 p-4 text-center rounded-sm">
+                        <p class="text-xs text-stone-500 font-bold tracking-widest mb-1">TIME</p>
+                        <p class="text-2xl sm:text-3xl text-stone-900 font-elegant font-bold" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-4 text-center rounded-sm">
+                        <p class="text-xs text-amber-700 font-bold tracking-widest mb-1">SERVED</p>
+                        <p class="text-2xl sm:text-3xl text-amber-700 font-elegant font-bold" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-stone-100 border border-stone-300 p-4 text-center rounded-sm">
+                        <p class="text-xs text-stone-600 font-bold tracking-widest mb-1">ASSISTED</p>
+                        <p class="text-2xl sm:text-3xl text-stone-600 font-elegant font-bold" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-stone-200 w-full mb-6 shrink min-h-0 bg-white">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-stone-100 text-stone-600 border-b border-stone-300 font-lato tracking-wider text-xs uppercase">
+                            <tr>
+                                <th class="p-4 w-28 text-center">STATUS</th>
+                                <th class="p-4 w-1/3">VOCABULARY</th>
+                                <th class="p-4">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-stone-700 divide-y divide-stone-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()"
+                        class="btn btn-primary w-full sm:w-1/2 py-4 text-base tracking-widest shadow-md">
+                        NEW RESERVATION ↺
+                    </button>
+                    <div class="copyright-text mt-4">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "a group of friends", type: "noun phrase", phonetic: "/ə ɡruːp əv frendz/", mean: "một nhóm bạn", ex: "_______ sit around a large table and enjoy a relaxing dinner after a busy week at work." },
+            { word: "a lavish meal", type: "noun phrase", phonetic: "/ə ˈlævɪʃ miːl/", mean: "một bữa ăn thịnh soạn, sang trọng", ex: "The family prepares _______ with many different dishes to celebrate their grandmother’s birthday." },
+            { word: "a beautiful color scheme of", type: "noun phrase", phonetic: "/ə ˈbjuːtɪfəl ˈkʌlər skiːm əv/", mean: "tông màu/phối màu đẹp gồm", ex: "The restaurant has _______ red and gold, which makes the room feel warm and elegant." },
+            { word: "flavors", type: "plural noun", phonetic: "/ˈfleɪvərz/", mean: "hương vị", ex: "The dishes offer many different _______, from sweet and mild to spicy and rich." },
+            { word: "ingredient", type: "noun", phonetic: "/ɪnˈɡriːdiənt/", mean: "nguyên liệu, thành phần", ex: "Fresh garlic is an important _______ in this dish because it gives the food a stronger taste." },
+            { word: "a cozy atmosphere", type: "noun phrase", phonetic: "/ə ˈkəʊzi ˈætməsfɪər/", mean: "bầu không khí ấm cúng", ex: "Soft lights, warm colors, and quiet music create _______ for people to relax and talk." },
+            { word: "of many races", type: "phrase", phonetic: "/əv ˈmeni ˈreɪsɪz/", mean: "thuộc nhiều chủng tộc khác nhau", ex: "The festival welcomes people _______ and gives them a chance to share food, music, and traditions." },
+            { word: "a lively conversation", type: "noun phrase", phonetic: "/ə ˈlaɪvli ˌkɒnvəˈseɪʃən/", mean: "một cuộc trò chuyện sôi nổi", ex: "During dinner, the guests have _______ about travel, food, and interesting experiences." },
+            { word: "altogether", type: "adverb", phonetic: "/ˌɔːltəˈɡeðər/", mean: "nhìn chung; tổng cộng; hoàn toàn", ex: "_______, the evening is enjoyable because the food is delicious and everyone feels comfortable." },
+            { word: "a friendly setting", type: "noun phrase", phonetic: "/ə ˈfrendli ˈsetɪŋ/", mean: "một bối cảnh/môi trường thân thiện", ex: "_______ helps new students feel less nervous when they meet their classmates for the first time." },
+            { word: "people of different backgrounds", type: "noun phrase", phonetic: "/ˈpiːpl əv ˈdɪfrənt ˈbækɡraʊndz/", mean: "những người có hoàn cảnh/nền tảng khác nhau", ex: "_______ can learn from one another when they share stories and opinions openly." },
+            { word: "have a good time", type: "verb phrase", phonetic: "/hæv ə ɡʊd taɪm/", mean: "có khoảng thời gian vui vẻ", ex: "Friends can _______ together when they enjoy good food and talk in a relaxed atmosphere." },
+            { word: "consolidate their relationship", type: "verb phrase", phonetic: "/kənˈsɒlɪdeɪt ðer rɪˈleɪʃənʃɪp/", mean: "củng cố mối quan hệ của họ", ex: "Shared meals and honest conversations can help people _______ over time." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Elegant Jazz/Restaurant background music
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2021/11/25/audio_91b3cbcefc.mp3?filename=jazz-lounge-113063.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+            if (type === 'start') playTone('sine', 500, 700, 0.05, 0.3);
+            else if (type === 'success') { playTone('sine', 700, 1000, 0.05, 0.1); setTimeout(() => playTone('sine', 1200, 1500, 0.05, 0.2), 100); }
+            else if (type === 'error') playTone('sawtooth', 250, 150, 0.05, 0.3);
+            else if (type === 'flip') playTone('triangle', 300, 250, 0.03, 0.15);
+        }
+
+        // Tự động đọc bằng giọng Nữ Mỹ (US Female), xử lý dọn dẹp ký tự đặc biệt
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+
+            let rawWord = flashcards[currentIndex].word;
+            // Clean string: remove punctuation, keep spaces, trim to read smoothly
+            let wordToSpeak = rawWord.replace(/[-/()’'\.]/g, ' ').replace(/\s+/g, ' ').trim();
+
+            // Primary: Youdao API (Type 2 = US Female)
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                // Fallback: Web Speech API (US Female filter)
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                if (femaleUS) utter.voice = femaleUS;
+
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item) => {
+                return `
+                <tr class="hover:bg-stone-50 transition-colors">
+                    <td class="p-4 font-elegant font-bold text-wine-900 text-lg" style="color: var(--dine-wine);">${item.word}</td>
+                    <td class="p-4 text-center"><span class="px-2 py-1 bg-stone-200 text-stone-700 text-xs font-bold uppercase tracking-wider rounded-sm">${item.type}</span></td>
+                    <td class="p-4 text-stone-700 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { };
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/[\s-()’'\.]/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 12 ? 'w-24' : (wordLength < 20 ? 'w-36' : 'w-48'));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-2 border-amber-600 mx-1 align-baseline bg-amber-50/50"></span>`;
+
+            let displayEx = card.ex;
+            if (displayEx.startsWith("_______")) displayEx = blankHtml + displayEx.substring(7);
+            else displayEx = displayEx.replace('_______', blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const wordsArray = card.word.split(' ');
+
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                w.split('').forEach((char) => {
+                    // Handle special static characters
+                    if (char === '-' || char === "'" || char === "’" || char === ".") {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'text-xl font-bold text-stone-400 self-center font-elegant px-0.5';
+                        group.appendChild(symbol);
+                    } else if (char === '(' || char === ')') {
+                        // ignore rendering parenthesis in input
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'student-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                // Spacer between words
+                if (wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-4';
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            const target = rawWord.replace(/[\s-()’'\.]/g, '').toUpperCase();
+
+            const inputs = document.querySelectorAll('.student-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) {
+                if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+            }
+
+            if (pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+
+            const target = normalizeString(rawWord.replace(/[\s-()’'\.]/g, ''));
+            const inputs = document.querySelectorAll('.student-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#44403c"; // Stone 700
+                    seal.style.borderColor = "#44403c";
+                } else {
+                    seal.textContent = "EXCELLENT";
+                    seal.style.color = "#b45309"; // Amber 700
+                    seal.style.borderColor = "#b45309";
+                }
+
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                let backExStr = card.ex;
+                let targetDisplay = rawWord;
+
+                // Auto Capitalize if the word is at the start of the sentence
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = targetDisplay.charAt(0).toUpperCase() + targetDisplay.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${targetDisplay}</span>`);
+                }
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                // Flip the card
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // CRITICAL REQUIREMENT: Auto-play Audio when flipped
+                setTimeout(() => {
+                    speakCurrentWord();
+                }, 400); // Wait for flip animation to visually complete
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 700);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `DATE: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#831843"; // Wine Red
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-stone-500 font-bold font-lato">ASSISTED</span>'
+                    : '<span class="text-amber-700 font-bold font-lato">SERVED</span>';
+
+                return `
+                    <tr class="hover:bg-stone-50 border-b border-stone-100">
+                        <td class="p-4 text-center">${statusIcon}</td>
+                        <td class="p-4 font-bold font-elegant text-stone-900 text-lg">${item.word}</td>
+                        <td class="p-4 text-stone-700 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
