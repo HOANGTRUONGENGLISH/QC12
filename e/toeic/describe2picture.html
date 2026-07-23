@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC VOCAB - DESCRIBE A PICTURE 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Playfair Display for chic fashion look, Inter for readable text -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --chic-rose: #be123c;
+            /* Rose 700 */
+            --chic-rose-light: #ffe4e6;
+            /* Rose 100 */
+            --chic-gold: #b45309;
+            /* Amber 700 */
+            --chic-gold-light: #fef3c7;
+            /* Amber 100 */
+            --chic-dark: #1c1917;
+            /* Stone 900 */
+            --chic-bg: #fafaf9;
+            /* Stone 50 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--chic-bg);
+            /* Subtle marble/elegant background */
+            background-image: radial-gradient(#e7e5e4 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--chic-dark);
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-chic {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass-panel {
+            background: #ffffff;
+            border: 1px solid #e7e5e4;
+            border-radius: 4px;
+            /* Less rounded for a sharper, high-end look */
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Elegant corner accents */
+        .glass-panel::before,
+        .glass-panel::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            pointer-events: none;
+        }
+
+        .glass-panel::before {
+            top: -1px;
+            left: -1px;
+            border-top: 3px solid var(--chic-gold);
+            border-left: 3px solid var(--chic-gold);
+        }
+
+        .glass-panel::after {
+            bottom: -1px;
+            right: -1px;
+            border-bottom: 3px solid var(--chic-gold);
+            border-right: 3px solid var(--chic-gold);
+        }
+
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 480px;
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 2px;
+            border: 1px solid #d6d3d1;
+            box-shadow: inset 0 0 0 6px #f5f5f4;
+            /* Inner border like a frame */
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            border: 1px solid var(--chic-gold);
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+            box-shadow: inset 0 0 0 6px #fef3c7;
+        }
+
+        .flip-card.flipped .card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .card-back {
+            pointer-events: none;
+        }
+
+        .boutique-input {
+            background: #f5f5f4;
+            border: none;
+            border-bottom: 3px solid #a8a29e;
+            color: var(--chic-dark);
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 0;
+            /* Square edges */
+        }
+
+        @media (max-width: 639px) {
+            .boutique-input {
+                width: 22px;
+                height: 34px;
+                font-size: 1.25rem;
+                border-bottom-width: 2px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .boutique-input {
+                width: 30px;
+                height: 42px;
+                font-size: 1.75rem;
+            }
+        }
+
+        .boutique-input:focus {
+            outline: none;
+            background: #ffffff;
+            border-bottom-color: var(--chic-gold);
+            color: var(--chic-dark);
+            transform: translateY(-2px);
+        }
+
+        .boutique-input.hinted {
+            color: var(--chic-gold);
+            background: var(--chic-gold-light);
+            border-bottom-color: var(--chic-gold);
+            pointer-events: none;
+        }
+
+        .boutique-input.error {
+            color: white;
+            background: var(--chic-rose);
+            border-bottom-color: #9f1239;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake-error {
+            animation: shake 0.4s;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6d3d1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
+        }
+
+        .btn {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            /* Wide spacing for fashion feel */
+            border-radius: 2px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: var(--chic-dark);
+            color: white;
+            border: 1px solid var(--chic-dark);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #292524;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--chic-dark);
+            border: 1px solid #d6d3d1;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #f5f5f4;
+            border-color: #a8a29e;
+        }
+
+        .highlighter {
+            font-weight: 700;
+            color: var(--chic-rose);
+            background-color: transparent;
+            padding: 0 2px;
+            border-bottom: 2px solid var(--chic-rose);
+        }
+
+        .stamp {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            font-weight: 800;
+            border: 2px solid;
+            padding: 4px 16px;
+            transform: rotate(10deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            letter-spacing: 1px;
+        }
+
+        .flipped .stamp {
+            animation: stampIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes stampIn {
+            0% {
+                transform: scale(2) rotate(20deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) rotate(10deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: #78716c;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 text-center pb-6 border-b border-stone-200">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 bg-amber-50 border border-amber-200 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-700" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span class="text-amber-800 text-xs font-inter font-bold tracking-widest uppercase">PICTURE
+                            ANALYSIS II</span>
+                    </div>
+                    <h1
+                        class="text-3xl sm:text-4xl lg:text-5xl font-chic text-stone-900 tracking-tight font-black italic">
+                        CLOTHING STORE & RETAIL</h1>
+                    <p class="text-stone-500 mt-3 text-sm sm:text-base font-medium">Focus on boutique settings, shopping
+                        behavior, and visual displays.</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-stone-50 border border-stone-200 relative">
+                    <table class="w-full min-w-[650px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 font-inter text-xs font-bold text-stone-500 bg-stone-100 border-b border-stone-300 uppercase tracking-widest">
+                            <tr>
+                                <th class="p-4 w-1/4">TARGET VOCAB</th>
+                                <th class="p-4 w-1/6 text-center">TYPE</th>
+                                <th class="p-4">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-stone-700 divide-y divide-stone-200">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn btn-primary w-full sm:w-1/2 py-4 text-lg mb-4 gap-2">
+                        <span>OPEN DOORS</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm11 1H6v8l4-2 4 2V6z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <!-- Header (Timer & Progress) -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn btn-secondary px-4 py-2 text-xs bg-white"
+                    style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-4 max-w-md">
+                    <div
+                        class="flex items-center justify-between w-full mb-2 text-xs font-bold font-inter tracking-widest text-stone-500">
+                        <div>TIME: <span id="timer-display" class="text-stone-900">00:00</span></div>
+                        <div>ITEM: <span id="progress-text" class="text-stone-900">1/15</span></div>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="w-full h-1 bg-stone-200 relative">
+                        <div id="progress-bar" class="h-full bg-stone-800 transition-all duration-500"
+                            style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn btn-secondary w-9 h-9 rounded-full text-base shrink-0 p-0 bg-white">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-4xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <!-- FRONT (Fill in the blanks) -->
+                        <div class="card-front">
+                            <div
+                                class="p-4 sm:p-6 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+
+                                <div class="mb-8 shrink-0 flex flex-col items-center text-center">
+                                    <span
+                                        class="inline-block px-3 py-1 text-stone-500 border border-stone-300 text-xs font-inter font-bold tracking-widest uppercase mb-4"
+                                        id="word-type"></span>
+                                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-chic text-stone-900 leading-tight italic"
+                                        id="word-mean"></h2>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
+                                    <div class="text-center mb-10 px-2 sm:px-8">
+                                        <p class="text-lg sm:text-xl text-stone-600 leading-relaxed font-medium"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <!-- Dynamic Inputs -->
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-1 mb-10">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn btn-secondary rounded-full p-0 flex items-center justify-center bg-white"
+                                                title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-stone-700"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn btn-secondary text-sm bg-white">HINT</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn btn-primary px-8 sm:px-12 h-12 text-base">
+                                                VERIFY
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BACK (Result) -->
+                        <div class="card-back">
+                            <div
+                                class="p-4 sm:p-6 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                <div class="stamp" id="result-seal">FITTED</div>
+
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-chic font-black text-stone-900 tracking-tight"
+                                            id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-amber-700 hover:text-amber-600 transition-colors p-2 bg-amber-50 rounded-full border border-amber-200"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div
+                                        class="text-stone-500 mb-8 font-inter text-sm tracking-widest border border-stone-200 px-4 py-1.5 bg-white">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+
+                                    <p class="text-2xl sm:text-3xl text-stone-800 font-chic italic mb-8" id="back-mean">
+                                    </p>
+
+                                    <div
+                                        class="w-full max-w-3xl bg-stone-50 p-6 sm:p-8 border-t border-b border-stone-200 text-center">
+                                        <p class="text-lg text-stone-700 leading-relaxed font-inter" id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn btn-primary px-8 py-4 text-base w-full sm:w-2/3 gap-2">
+                                        NEXT ITEM ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-8 shrink-0 border-b border-stone-200 pb-6">
+                    <h2 class="text-3xl sm:text-4xl text-stone-900 font-chic font-black tracking-widest uppercase">
+                        SHOPPING RECEIPT</h2>
+                    <p id="completion-datetime" class="text-xs font-inter text-stone-500 mt-2 tracking-widest"></p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 shrink-0 font-inter text-lg">
+                    <div class="bg-stone-50 border border-stone-200 p-4 text-center">
+                        <p class="text-xs text-stone-500 font-bold tracking-widest mb-1">ACCURACY</p>
+                        <p class="text-2xl sm:text-3xl text-stone-900 font-chic font-bold" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-stone-50 border border-stone-200 p-4 text-center">
+                        <p class="text-xs text-stone-500 font-bold tracking-widest mb-1">DURATION</p>
+                        <p class="text-2xl sm:text-3xl text-stone-900 font-chic font-bold" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-4 text-center">
+                        <p class="text-xs text-green-700 font-bold tracking-widest mb-1">FITTED</p>
+                        <p class="text-2xl sm:text-3xl text-green-700 font-chic font-bold" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-4 text-center">
+                        <p class="text-xs text-amber-700 font-bold tracking-widest mb-1">ASSISTED</p>
+                        <p class="text-2xl sm:text-3xl text-amber-700 font-chic font-bold" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-stone-200 w-full mb-6 shrink min-h-0 bg-white">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-stone-100 text-stone-600 border-b border-stone-300 font-inter tracking-wider text-xs uppercase">
+                            <tr>
+                                <th class="p-4 w-28 text-center">STATUS</th>
+                                <th class="p-4 w-1/3">VOCABULARY</th>
+                                <th class="p-4">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-stone-600 divide-y divide-stone-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()"
+                        class="btn btn-primary w-full sm:w-1/2 py-4 text-base tracking-widest">
+                        NEW SESSION ↺
+                    </button>
+                    <div class="copyright-text mt-4">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "the earlier stores", type: "noun phrase", phonetic: "/ði ˈɜːrli stɔːrz/", mean: "những cửa hàng trước đó", ex: "_______ on this street were smaller and less modern than the new shopping center nearby." },
+            { word: "numerous", type: "adjective", phonetic: "/ˈnjuːmərəs/", mean: "nhiều, rất nhiều", ex: "The shopping mall has _______ restaurants, fashion shops, and entertainment areas for visitors of different ages." },
+            { word: "place", type: "verb", phonetic: "/pleɪs/", mean: "đặt, bố trí", ex: "Store workers can _______ popular products near the entrance to attract customers more quickly." },
+            { word: "bright paper bags", type: "noun phrase", phonetic: "/braɪt ˈpeɪpər bæɡz/", mean: "túi giấy màu sáng, nổi bật", ex: "Many customers carry _______ after they buy clothes, shoes, and gifts from different stores." },
+            { word: "enter", type: "verb", phonetic: "/ˈentər/", mean: "bước vào, đi vào", ex: "Customers usually _______ the store slowly when they want to look around before they buy anything." },
+            { word: "purchase", type: "verb/noun", phonetic: "/ˈpɜːrtʃəs/", mean: "mua; sự mua hàng", ex: "Shoppers may _______ more items when the products are attractive and the prices are reasonable." },
+            { word: "items", type: "plural noun", phonetic: "/ˈaɪtəmz/", mean: "món hàng, vật phẩm", ex: "Small _______ near the counter can encourage customers to buy something extra before they leave." },
+            { word: "pass by", type: "phrasal verb", phonetic: "/pɑːs baɪ/", mean: "đi ngang qua", ex: "Many people _______ the window display and stop for a moment when they see beautiful clothes." },
+            { word: "a clothing store", type: "noun phrase", phonetic: "/ə ˈkləʊðɪŋ stɔːr/", mean: "cửa hàng quần áo", ex: "_______ often uses lights, mirrors, and music to create a pleasant shopping experience." },
+            { word: "cheerfully", type: "adverb", phonetic: "/ˈtʃɪəfəli/", mean: "một cách vui vẻ", ex: "The shop assistant greets customers _______ and helps them find the right size and color." },
+            { word: "point at", type: "phrasal verb", phonetic: "/pɔɪnt æt/", mean: "chỉ vào", ex: "Customers often _______ the clothes in the window when they want to ask about the price." },
+            { word: "mannequin", type: "noun", phonetic: "/ˈmænɪkɪn/", mean: "ma-nơ-canh", ex: "The _______ near the entrance wears a stylish jacket that attracts many young shoppers." },
+            { word: "look in one’s direction", type: "verb phrase", phonetic: "/lʊk ɪn wʌnz dəˈrekʃən/", mean: "nhìn về phía ai đó", ex: "The assistant can _______ to show that she is ready to help." },
+            { word: "smile brightly", type: "verb phrase", phonetic: "/smaɪl ˈbraɪtli/", mean: "cười rạng rỡ", ex: "Shop assistants should _______ when they welcome customers into a busy clothing store." },
+            { word: "walk into the shop", type: "verb phrase", phonetic: "/wɔːk ˈɪntuː ðə ʃɒp/", mean: "bước vào cửa hàng", ex: "Shoppers often _______ after they notice an attractive display near the entrance." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        // Soft, elegant background music (Bossa nova / Lounge)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_a16d5be9b1.mp3?filename=bossa-in-my-heart-13187.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.1;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+            if (type === 'start') playTone('sine', 500, 700, 0.05, 0.3);
+            else if (type === 'success') { playTone('sine', 800, 800, 0.05, 0.1); setTimeout(() => playTone('sine', 1200, 1200, 0.05, 0.2), 100); }
+            else if (type === 'error') playTone('sawtooth', 250, 150, 0.05, 0.3);
+            else if (type === 'flip') playTone('triangle', 400, 300, 0.03, 0.1);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+
+            let rawWord = flashcards[currentIndex].word;
+            // Clean string: remove punctuation, keep spaces, trim. E.g. "one's" -> "one s" -> read smoothly
+            let wordToSpeak = rawWord.replace(/[-/()’']/g, ' ').replace(/\s+/g, ' ').trim();
+
+            // Primary: Youdao API (Type 2 = US Female)
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                // Fallback: Web Speech API (US Female filter)
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                if (femaleUS) utter.voice = femaleUS;
+
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item) => {
+                return `
+                <tr class="hover:bg-stone-100 transition-colors">
+                    <td class="p-4 font-chic font-bold text-stone-900 text-lg">${item.word}</td>
+                    <td class="p-4 text-center"><span class="px-2 py-1 bg-stone-200 text-stone-600 text-xs font-bold uppercase tracking-wider">${item.type}</span></td>
+                    <td class="p-4 text-stone-600 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { };
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/[\s-()’']/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 12 ? 'w-24' : (wordLength < 20 ? 'w-36' : 'w-48'));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-4 border-b-2 border-stone-400 mx-1 align-baseline bg-stone-100"></span>`;
+
+            let displayEx = card.ex;
+            if (displayEx.startsWith("_______")) displayEx = blankHtml + displayEx.substring(7);
+            else displayEx = displayEx.replace('_______', blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const wordsArray = card.word.split(' ');
+
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                w.split('').forEach((char) => {
+                    if (char === '-' || char === "'" || char === "’") {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'text-xl font-bold text-stone-400 self-center font-chic px-0.5';
+                        group.appendChild(symbol);
+                    } else if (char === '(' || char === ')') {
+                        // ignore rendering parenthesis in input
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'boutique-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-4';
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            const target = rawWord.replace(/[\s-()’']/g, '').toUpperCase();
+
+            const inputs = document.querySelectorAll('.boutique-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) {
+                if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+            }
+
+            if (pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+
+            const target = normalizeString(rawWord.replace(/[\s-()’']/g, ''));
+            const inputs = document.querySelectorAll('.boutique-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#b45309";
+                    seal.style.borderColor = "#b45309";
+                } else {
+                    seal.textContent = "FITTED";
+                    seal.style.color = "#15803d";
+                    seal.style.borderColor = "#15803d";
+                }
+
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                let backExStr = card.ex;
+                let targetDisplay = rawWord;
+
+                // Auto Capitalize if at start of sentence
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = targetDisplay.charAt(0).toUpperCase() + targetDisplay.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${targetDisplay}</span>`);
+                }
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // CRITICAL: AUTO-PLAY AUDIO WHEN FLIPPED
+                setTimeout(() => {
+                    speakCurrentWord();
+                }, 400); // 400ms delay to sync with the CSS flip animation
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `ISSUED: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#be123c"; // Rose
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-700 font-bold font-inter">ASSISTED</span>'
+                    : '<span class="text-green-700 font-bold font-inter">FITTED</span>';
+
+                return `
+                    <tr class="hover:bg-stone-50 border-b border-stone-100">
+                        <td class="p-4 text-center">${statusIcon}</td>
+                        <td class="p-4 font-bold font-chic text-stone-900 text-lg italic">${item.word}</td>
+                        <td class="p-4 text-stone-600 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
