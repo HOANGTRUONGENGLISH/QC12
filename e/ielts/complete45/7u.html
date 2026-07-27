@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS VOCAB: COMPLETE 4-5 - UNIT 7</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Merriweather for academic headings, Inter for clean body text -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --uni-navy: #002147;
+            /* Oxford Blue */
+            --uni-gold: #F2A900;
+            /* Academic Gold */
+            --uni-gold-light: #fef0c7;
+            --uni-paper: #f8fafc;
+            /* Slate 50 / Paper */
+            --uni-accent: #3b82f6;
+            /* Blue 500 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0;
+            background-image:
+                radial-gradient(circle at 100% 150%, #002147 24%, white 24%, white 28%, #002147 28%, #002147 36%, white 36%, white 40%, transparent 40%, transparent),
+                radial-gradient(circle at 0 150%, #002147 24%, white 24%, white 28%, #002147 28%, #002147 36%, white 36%, white 40%, transparent 40%, transparent),
+                radial-gradient(circle at 50% 100%, white 10%, #002147 10%, #002147 23%, white 23%, white 30%, #002147 30%, #002147 43%, white 43%, white 50%, #002147 50%, #002147 63%, white 63%, white 71%, transparent 71%, transparent),
+                radial-gradient(circle at 100% 50%, white 5%, #002147 5%, #002147 15%, white 15%, white 20%, #002147 20%, #002147 29%, white 29%, white 34%, transparent 34%, transparent),
+                radial-gradient(circle at 0 50%, white 5%, #002147 5%, #002147 15%, white 15%, white 20%, #002147 20%, #002147 29%, white 29%, white 34%, transparent 34%, transparent);
+            background-size: 100px 50px;
+            background-blend-mode: overlay;
+            color: #1e293b;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-academic {
+            font-family: 'Merriweather', serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid #cbd5e1;
+            border-top: 6px solid var(--uni-navy);
+            border-bottom: 2px solid var(--uni-gold);
+            border-radius: 8px;
+            box-shadow: 0 20px 40px -10px rgba(0, 33, 71, 0.25), 0 0 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 480px;
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateX(-180deg);
+        }
+
+        /* CRITICAL FIX: Absolute positioning for both faces to prevent jumping */
+        .card-front,
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+        }
+
+        .card-back {
+            transform: rotateX(-180deg);
+            border: 2px solid var(--uni-accent);
+            background: #ffffff;
+            /* Subtle watermark pattern for certificates */
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(59, 130, 246, 0.02) 10px, rgba(59, 130, 246, 0.02) 20px);
+        }
+
+        .flip-card.flipped .card-front {
+            pointer-events: none;
+        }
+
+        .flip-card:not(.flipped) .card-back {
+            pointer-events: none;
+        }
+
+        .uni-input {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-bottom: 3px solid #94a3b8;
+            color: var(--uni-navy);
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 4px;
+        }
+
+        .uni-input {
+            width: 22px;
+            height: 34px;
+            font-size: 1.1rem;
+        }
+
+        @media (min-width: 400px) {
+            .uni-input {
+                width: 26px;
+                height: 38px;
+                font-size: 1.25rem;
+                border-bottom-width: 4px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .uni-input {
+                width: 32px;
+                height: 42px;
+                font-size: 1.5rem;
+            }
+        }
+
+        .uni-input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: var(--uni-gold);
+            border-bottom-color: var(--uni-gold);
+            color: var(--uni-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(242, 169, 0, 0.1);
+        }
+
+        .uni-input.hinted {
+            color: #ffffff;
+            border-color: var(--uni-gold);
+            border-bottom-color: #d97706;
+            /* Darker amber */
+            background: var(--uni-gold);
+            pointer-events: none;
+        }
+
+        .uni-input.error {
+            color: #ffffff;
+            border-color: #ef4444;
+            border-bottom-color: #dc2626;
+            background: #ef4444;
+            animation: shakeError 0.3s ease-in-out;
+        }
+
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-4px) rotate(-2deg);
+            }
+
+            75% {
+                transform: translateX(4px) rotate(2deg);
+            }
+        }
+
+        .shake-error {
+            animation: shakeError 0.3s ease-in-out;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--uni-navy);
+        }
+
+        .btn-uni {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .btn-uni:active {
+            transform: scale(0.97);
+        }
+
+        .btn-uni:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: var(--uni-navy);
+            color: white;
+            box-shadow: 0 4px 0px #020617;
+            /* Slate 950 */
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1e3a8a;
+            /* Blue 900 */
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px #020617;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--uni-navy);
+            border: 2px solid #cbd5e1;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #f1f5f9;
+            border-color: var(--uni-accent);
+            color: var(--uni-accent);
+        }
+
+        .highlighter {
+            font-weight: 700;
+            color: var(--uni-navy);
+            background-color: var(--uni-gold-light);
+            padding: 2px 6px;
+            border-bottom: 2px solid var(--uni-gold);
+            border-radius: 2px;
+        }
+
+        .stamp-uni {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            color: var(--uni-accent);
+            border: 3px solid var(--uni-accent);
+            padding: 8px 16px;
+            font-family: 'Merriweather', serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            transform: rotate(-15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .flipped .stamp-uni {
+            animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes stampSlam {
+            0% {
+                transform: scale(1.5) rotate(-25deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) rotate(-15deg);
+                opacity: 1;
+            }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <!-- Main Container -->
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[90vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+
+                <div class="mb-5 shrink-0 text-center pb-5 border-b border-slate-200">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-800 text-xs font-bold font-inter tracking-widest border border-blue-200 mb-3 uppercase rounded shadow-sm">
+                        <span>🎓</span> ACADEMIC PORTAL
+                    </div>
+                    <h1
+                        class="text-3xl sm:text-4xl lg:text-5xl font-academic text-slate-900 tracking-tight font-black uppercase">
+                        Complete 4-5 <br class="sm:hidden" /><span class="text-amber-500">Unit 7</span></h1>
+                    <p class="text-slate-500 mt-2 font-medium text-sm sm:text-base font-academic italic">Education,
+                        University Life, and Academic Skills.</p>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white border border-slate-200 relative rounded shadow-inner">
+                    <table class="w-full min-w-[650px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 font-inter text-sm text-white bg-[#002147] border-b-2 border-amber-500">
+                            <tr>
+                                <th class="p-3 w-1/4 uppercase tracking-wider">VOCABULARY</th>
+                                <th class="p-3 w-1/6 text-center uppercase tracking-wider">TYPE</th>
+                                <th class="p-3 uppercase tracking-wider">DEFINITION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-700 divide-y divide-slate-100">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()"
+                        class="btn-uni btn-primary w-full sm:w-1/2 py-4 text-xl mb-3 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        ENTER LECTURE HALL
+                    </button>
+                    <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()"
+                    class="btn-uni btn-secondary px-4 py-2 text-xs bg-white shadow-sm" style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div
+                        class="flex items-center justify-between w-full mb-1 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                        <div>TIME: <span id="timer-display" class="text-blue-700">00:00</span></div>
+                        <div>PROGRESS: <span id="progress-text" class="text-amber-500">1/30</span></div>
+                    </div>
+                    <div
+                        class="w-full h-2.5 bg-slate-200 relative rounded-full overflow-hidden shadow-inner border border-slate-300">
+                        <div id="progress-bar" class="h-full bg-[#002147] transition-all duration-500 relative"
+                            style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()"
+                    class="btn-uni btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 bg-white shadow-sm text-lg rounded-full">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-4xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+
+                        <!-- CARD FRONT -->
+                        <div class="card-front">
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+
+                                <div class="mb-5 shrink-0 flex flex-col items-center text-center">
+                                    <span
+                                        class="inline-block px-3 py-1 bg-slate-100 text-slate-600 border border-slate-300 text-xs font-inter font-bold tracking-widest uppercase mb-4 rounded shadow-sm"
+                                        id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-[#002147] leading-tight font-academic"
+                                        id="word-mean"></h2>
+                                </div>
+
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
+                                    <div class="text-center mb-8 px-1 sm:px-6">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium"
+                                            id="word-ex"></p>
+                                    </div>
+
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <div id="letter-inputs-container"
+                                            class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-3 w-full px-0 sm:px-1 mb-8">
+                                        </div>
+
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)"
+                                                class="w-12 h-12 btn-uni btn-secondary flex items-center justify-center bg-white rounded-full"
+                                                title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                                </svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()"
+                                                class="px-5 sm:px-6 h-12 btn-uni btn-secondary text-sm">REQUEST
+                                                HINT</button>
+                                            <button onclick="checkAnswer()"
+                                                class="btn-uni btn-primary px-8 sm:px-12 h-12 text-lg tracking-wider">
+                                                SUBMIT ASSIGNMENT
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CARD BACK -->
+                        <div class="card-back">
+                            <div
+                                class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-8">
+                                <div class="stamp-uni" id="result-seal">CREDIT EARNED</div>
+
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-academic font-black text-blue-700"
+                                            id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)"
+                                            class="text-blue-600 hover:text-blue-800 transition-colors p-2 bg-blue-50 border border-blue-200 rounded-full shadow-sm"
+                                            title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div
+                                        class="text-slate-600 mb-6 font-inter font-bold text-sm tracking-widest border border-slate-300 px-4 py-1.5 bg-slate-50 rounded shadow-sm">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+
+                                    <p class="text-xl sm:text-2xl text-slate-900 font-bold mb-6 font-academic"
+                                        id="back-mean"></p>
+
+                                    <div
+                                        class="w-full max-w-3xl bg-blue-50/70 border-l-4 border-amber-500 p-5 text-left rounded-r shadow-sm">
+                                        <p class="text-lg sm:text-xl text-slate-800 leading-relaxed font-medium"
+                                            id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn"
+                                        class="btn-uni btn-primary px-8 py-4 text-lg w-full sm:w-2/3">
+                                        NEXT TOPIC ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shrink-0 text-center pt-2">
+                <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+            </div>
+        </div>
+
+        <!-- ================= SUMMARY SCREEN ================= -->
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-slate-200 pb-5">
+                    <h2 class="text-3xl sm:text-4xl text-[#002147] font-academic font-black uppercase">COURSE COMPLETED
+                    </h2>
+                    <p id="completion-datetime"
+                        class="text-xs font-inter text-slate-500 mt-2 tracking-widest uppercase"></p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-inter text-lg">
+                    <div class="bg-white border border-slate-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold tracking-widest mb-1">SCORE</p>
+                        <p class="text-3xl text-slate-800 font-bold" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold tracking-widest mb-1">TIME</p>
+                        <p class="text-3xl text-slate-800 font-bold" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-blue-700 font-bold tracking-widest mb-1">PASSED</p>
+                        <p class="text-3xl text-blue-800 font-bold" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-4 text-center rounded shadow-sm">
+                        <p class="text-xs text-amber-700 font-bold tracking-widest mb-1">ASSISTED</p>
+                        <p class="text-3xl text-amber-700 font-bold" id="hint-count">-</p>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow overflow-auto custom-scrollbar border border-slate-300 w-full mb-5 shrink min-h-0 bg-white rounded shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead
+                            class="sticky top-0 z-20 bg-[#002147] text-white font-inter text-sm tracking-wider uppercase border-b border-amber-500">
+                            <tr>
+                                <th class="p-3 w-28 text-center">STATUS</th>
+                                <th class="p-3 w-1/3">VOCABULARY</th>
+                                <th class="p-3">DEFINITION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body"
+                            class="text-slate-700 divide-y divide-slate-100 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()" class="btn-uni btn-primary w-full sm:w-1/2 py-4 text-lg">
+                        NEW SEMESTER ↺
+                    </button>
+                    <div class="copyright-text mt-3">Copyright &copy; 2026 Hoàng Trường English</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Data populated with manual blanks to ensure accurate example rendering.
+        const flashcards = [
+            { word: "assignment", type: "noun", phonetic: "/əˈsaɪnmənt/", mean: "bài tập, nhiệm vụ được giao", ex: "Each student needs to complete one written _______ before the end of the course." },
+            { word: "attend a lecture", type: "verb phrase", phonetic: "/əˈtend ə ˈlektʃər/", mean: "tham dự một bài giảng", ex: "University students often _______ to learn important ideas from a subject expert." },
+            { word: "engaged in", type: "phrase", phonetic: "/bi ɪnˈɡeɪdʒd ɪn ˈsʌmθɪŋ/", mean: "rất hứng thú và tập trung vào việc gì", ex: "Learners can be _______ group work when the task is interesting and useful for real life." },
+            { word: "brochure", type: "noun", phonetic: "/ˈbrəʊʃər/", mean: "tờ rơi, sách mỏng quảng cáo/thông tin", ex: "The language center gives students a _______ with information about courses, prices, and schedules." },
+            { word: "concentrate", type: "verb", phonetic: "/ˈkɒnsntreɪt/", mean: "tập trung", ex: "Students should _______ on the main points when they listen to a long lecture." },
+            { word: "decrease", type: "verb", phonetic: "/dɪˈkriːs/", mean: "giảm xuống, làm giảm", ex: "Schools can _______ stress by giving students clear instructions and enough time for assignments." },
+            { word: "dramatically", type: "adverb", phonetic: "/drəˈmætɪkli/", mean: "một cách đáng kể, đột ngột", ex: "The number of online learners can change _______ when schools offer more flexible courses." },
+            { word: "ebook", type: "noun", phonetic: "/ˈiːbʊk/", mean: "sách điện tử", ex: "An _______ is convenient because students can read it on a phone, tablet, or computer." },
+            { word: "effectively", type: "adverb", phonetic: "/ɪˈfektɪvli/", mean: "một cách hiệu quả", ex: "Students can learn vocabulary more _______ when they review words regularly and use them in sentences." },
+            { word: "enrol", type: "verb", phonetic: "/ɪnˈrəʊl/", mean: "đăng ký học, ghi danh", ex: "Students need to _______ early if they want to join a popular course with limited places." },
+            { word: "enrolment", type: "noun", phonetic: "/ɪnˈrəʊlmənt/", mean: "sự đăng ký học, việc ghi danh", ex: "The school’s _______ increases because many parents trust its teaching quality." },
+            { word: "essential", type: "adjective", phonetic: "/ɪˈsenʃl/", mean: "cần thiết, thiết yếu", ex: "Clear communication is _______ in group projects because everyone needs to understand their own role." },
+            { word: "expectations", type: "plural noun", phonetic: "/ˌekspekˈteɪʃənz/", mean: "sự kỳ vọng, mong đợi", ex: "Teachers should explain their _______ clearly so that students know how to succeed in class." },
+            { word: "fall down", type: "phrasal verb", phonetic: "/fɔːl daʊn/", mean: "ngã xuống, sụp xuống", ex: "Old structures can _______ during bad weather if people do not repair them carefully." },
+            { word: "feedback", type: "noun", phonetic: "/ˈfiːdbæk/", mean: "phản hồi, nhận xét", ex: "Useful _______ from a teacher helps students understand their mistakes and improve their writing." },
+            { word: "fill out a form", type: "verb phrase", phonetic: "/fɪl aʊt ə fɔːrm/", mean: "điền vào mẫu đơn", ex: "New students must _______ before they can officially join the course." },
+            { word: "flow", type: "noun", phonetic: "/fləʊ/", mean: "dòng chảy; sự lưu thông liên tục", ex: "A clear outline helps improve the _______ of ideas in a presentation or essay." },
+            { word: "illiterate", type: "adjective", phonetic: "/ɪˈlɪtərət/", mean: "mù chữ, không biết đọc viết", ex: "Some adults feel embarrassed when they are _______, so education programs need to be supportive." },
+            { word: "key facts", type: "noun phrase", phonetic: "/kiː fækts/", mean: "các sự thật/thông tin quan trọng", ex: "Students should note the _______ from the lecture before they write a summary." },
+            { word: "online", type: "adverb/adjective", phonetic: "/ˌɒnˈlaɪn/", mean: "trực tuyến, trên mạng", ex: "Many people study _______ because they can learn from home and choose a flexible schedule." },
+            { word: "outline", type: "noun", phonetic: "/ˈaʊtlaɪn/", mean: "dàn ý, tóm tắt ý chính", ex: "A clear _______ helps students organize their ideas before they start writing an essay." },
+            { word: "practise", type: "verb", phonetic: "/ˈpræktɪs/", mean: "luyện tập, thực hành", ex: "Learners should _______ speaking English every day to become more confident and fluent." },
+            { word: "make progress", type: "verb phrase", phonetic: "/meɪk ˈprəʊɡres/", mean: "tiến bộ", ex: "Students can _______ quickly when they study regularly and ask for help when necessary." },
+            { word: "qualify", type: "verb", phonetic: "/ˈkwɒlɪfaɪ/", mean: "đủ điều kiện, vượt qua vòng loại", ex: "Athletes need to train hard if they want to _______ for an important competition." },
+            { word: "reduce", type: "verb", phonetic: "/rɪˈdjuːs/", mean: "giảm, làm giảm", ex: "Schools can _______ pressure by giving students clear deadlines and practical study advice." },
+            { word: "structure", type: "noun", phonetic: "/ˈstrʌktʃər/", mean: "công trình; cấu trúc", ex: "The _______ of the essay is clear because it has an introduction, body paragraphs, and a conclusion." },
+            { word: "trend", type: "noun", phonetic: "/trend/", mean: "xu hướng", ex: "Online learning is a growing _______ because it is convenient for both students and teachers." },
+            { word: "tutorial", type: "noun", phonetic: "/tjuːˈtɔːriəl/", mean: "buổi học nhóm nhỏ, buổi hướng dẫn", ex: "A _______ gives students a chance to ask questions and discuss difficult parts of the lesson." },
+            { word: "under pressure", type: "phrase", phonetic: "/ˌʌndər ˈpreʃər/", mean: "chịu áp lực", ex: "Many students feel _______ before exams, especially when they have many subjects to review." },
+            { word: "unemployment rate", type: "noun phrase", phonetic: "/ˌʌnɪmˈplɔɪmənt reɪt/", mean: "tỷ lệ thất nghiệp", ex: "The _______ can affect young people’s career plans and their confidence about the future." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let currentFallbackAudio = null;
+        let isTransitioning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Lo-fi chill study music
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=acoustic-guitars-ambient-113264.mp3');
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const playTone = (oscType, freq1, freq2, vol, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = oscType;
+                osc.frequency.setValueAtTime(freq1, now);
+                if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                gain.gain.setValueAtTime(vol, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                osc.start(now); osc.stop(now + dur);
+            };
+            if (type === 'start') playTone('triangle', 300, 450, 0.1, 0.4);
+            else if (type === 'success') { playTone('sine', 600, 800, 0.1, 0.15); setTimeout(() => playTone('sine', 800, 1000, 0.1, 0.2), 150); }
+            else if (type === 'error') playTone('sawtooth', 150, 100, 0.1, 0.3);
+            else if (type === 'flip') playTone('square', 200, 150, 0.03, 0.1);
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            window.speechSynthesis.cancel();
+            if (currentFallbackAudio) {
+                currentFallbackAudio.pause(); currentFallbackAudio.currentTime = 0;
+            }
+
+            let rawWord = flashcards[currentIndex].word;
+            let wordToSpeak = rawWord.replace(/[-/()’']/g, ' ').replace(/\s+/g, ' ').trim();
+
+            // API priority: US Female (Type 2)
+            currentFallbackAudio = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(wordToSpeak)}&type=2`);
+            currentFallbackAudio.play().catch(() => {
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                if (femaleUS) utter.voice = femaleUS;
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item) => {
+                return `
+                <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
+                    <td class="p-3 font-academic font-bold text-[#002147] text-lg">${item.word}</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 text-xs font-bold font-inter uppercase tracking-widest rounded">${item.type}</span></td>
+                    <td class="p-3 text-slate-600 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { };
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+
+            let wordLength = card.word.replace(/[\s-()’']/g, '').length;
+            let underlineWidth = wordLength < 6 ? 'w-16' : (wordLength < 12 ? 'w-24' : (wordLength < 20 ? 'w-36' : 'w-48'));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-[3px] border-amber-500 mx-1 align-baseline bg-amber-50/50"></span>`;
+
+            let displayEx = card.ex;
+            if (displayEx.startsWith("_______")) displayEx = blankHtml + displayEx.substring(7);
+            else displayEx = displayEx.replace('_______', blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+
+            const wordsArray = card.word.split(' ');
+
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex gap-0.5 sm:gap-1';
+
+                w.split('').forEach((char) => {
+                    if (char === '-' || char === "'" || char === "’") {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'text-2xl font-bold text-amber-600 self-center font-inter px-1';
+                        group.appendChild(symbol);
+                    } else if (char === '(' || char === ')') {
+                        // ignore brackets visually
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'uni-input editable-input';
+
+                        input.addEventListener('input', function () {
+                            this.value = this.value.toUpperCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while (next < inputs.length && inputs[next].readOnly) next++;
+                                if (next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function (e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while (prev >= 0 && inputs[prev].readOnly) prev--;
+                                if (prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+
+                container.appendChild(group);
+                if (wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div'); space.className = 'w-2 sm:w-4';
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            if (currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if (hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            const target = rawWord.replace(/[\s-()’']/g, '').toUpperCase();
+
+            const inputs = document.querySelectorAll('.uni-input');
+            let pool = [];
+            for (let i = 0; i < inputs.length; i++) {
+                if (!inputs[i].readOnly && inputs[i].value.toUpperCase() !== target[i]) pool.push(i);
+            }
+
+            if (pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4));
+
+            for (let i = 0; i < Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        }
+
+        function checkAnswer() {
+            if (isTransitioning) return;
+
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+
+            const target = normalizeString(rawWord.replace(/[\s-()’']/g, ''));
+            const inputs = document.querySelectorAll('.uni-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+
+            if (user === target) {
+                playSound('success');
+                isTransitioning = true;
+
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#d97706"; // Amber 600
+                    seal.style.borderColor = "#d97706";
+                } else {
+                    seal.textContent = "CREDIT EARNED";
+                    seal.style.color = "#3b82f6"; // Blue 500
+                    seal.style.borderColor = "#3b82f6";
+                }
+
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+
+                let backExStr = card.ex;
+                let targetDisplay = rawWord;
+
+                if (backExStr.startsWith("_______")) {
+                    let capitalizedWord = targetDisplay.charAt(0).toUpperCase() + targetDisplay.slice(1);
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${capitalizedWord}</span>`);
+                } else {
+                    backExStr = backExStr.replace('_______', `<span class="highlighter">${targetDisplay}</span>`);
+                }
+                document.getElementById('back-ex').innerHTML = backExStr;
+
+                // Trigger Card Flip
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // AUTO PLAY AUDIO
+                setTimeout(() => {
+                    speakCurrentWord();
+                }, 400);
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 600);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 300);
+
+                inputs.forEach((input, idx) => {
+                    if (!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if (isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if (currentIndex > 0) { currentIndex--; renderCard(); }
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec / 60); const s = totalSec % 60;
+
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `TRANSCRIPT ISSUED: ${dateString}`;
+
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#d97706";
+
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint
+                    ? '<span class="text-amber-600 font-bold font-inter uppercase text-xs border border-amber-300 px-2 py-1 rounded bg-amber-50 shadow-sm">ASSISTED</span>'
+                    : '<span class="text-blue-600 font-bold font-inter uppercase text-xs border border-blue-300 px-2 py-1 rounded bg-blue-50 shadow-sm">PASSED</span>';
+
+                return `
+                    <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
+                        <td class="p-3 text-center">${statusIcon}</td>
+                        <td class="p-3 font-bold font-academic text-[#002147] text-lg">${item.word}</td>
+                        <td class="p-3 text-slate-600 text-sm">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable();
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('main-content').style.display === 'none') return;
+            if (e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (isTransitioning) return;
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard();
+                else checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
