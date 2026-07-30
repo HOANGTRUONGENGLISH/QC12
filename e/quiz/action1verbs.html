@@ -446,7 +446,17 @@
         function startGame() {
             // Lấy tên người dùng
             const nameValue = DOM.userNameInput.value.trim();
-            userName = nameValue !== "" ? nameValue : "Học sinh xuất sắc";
+
+            // Kiểm tra xem người dùng đã nhập tên chưa
+            if (nameValue === "") {
+                DOM.userNameInput.classList.add('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                setTimeout(() => {
+                    DOM.userNameInput.classList.remove('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                }, 600);
+                return; // Dừng lại, không cho phép vào lớp
+            }
+
+            userName = nameValue;
 
             quizData = generateQuizData();
             currentQuestionIndex = 0;
