@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TOEIC VOCB - 15-MINUTE TEST 1</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        .neon-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #082f49;
+            /* Sky 900 / Deep Ocean */
+            -webkit-tap-highlight-color: transparent;
+            color: #e0f2fe;
+            /* Sky 100 */
+            touch-action: manipulation;
+        }
+
+        /* Custom Scrollbar - Neon Blue */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0c4a6e;
+        }
+
+        /* Sky 900 */
+        ::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 4px;
+        }
+
+        /* Sky 500 */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* Sky 400 */
+
+        /* Animations */
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(-15deg) scale(0.8);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.3;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translateY(-20vh) rotate(20deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: float-up linear infinite;
+            z-index: -1;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+            /* Neon blue glow */
+        }
+
+        @keyframes pop-in {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-pop {
+            animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-6px);
+            }
+
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        @keyframes pulse-neon {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(34, 211, 238, 0.4), 0 0 30px rgba(34, 211, 238, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(34, 211, 238, 0.7), 0 0 45px rgba(34, 211, 238, 0.4);
+            }
+        }
+
+        .btn-glow {
+            animation: pulse-neon 2.5s infinite;
+        }
+
+        /* Neon Glassmorphism Panels (Ocean feel) */
+        .glass-panel {
+            background: rgba(8, 47, 73, 0.85);
+            /* Sky 900 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            /* Sky 400 */
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.2), inset 0 0 20px rgba(34, 211, 238, 0.05);
+        }
+
+        .question-text strong {
+            color: #22d3ee;
+            /* Cyan 400 */
+            font-weight: 800;
+            padding: 2px 8px;
+            background: rgba(12, 74, 110, 0.6);
+            /* Sky 900 */
+            border: 1px solid rgba(34, 211, 238, 0.4);
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15em;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .neon-text-gradient {
+            background: linear-gradient(to right, #38bdf8, #22d3ee);
+            /* Sky to Cyan */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Water ripples pattern */
+        .water-lines {
+            background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(34, 211, 238, 0.05) 31px, rgba(34, 211, 238, 0.05) 32px);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen relative flex items-center justify-center p-4 lg:p-8">
+
+    <div id="background-layer" class="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+        <!-- Deep blue ocean background -->
+        <div
+            class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0369a1] via-[#082f49] to-[#020617] opacity-100">
+        </div>
+        <!-- Bubble overlay -->
+        <div
+            class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiMyMmQzZWUiIGZpbGwtb3BhY2l0eT0iMC4wOCIvPjwvc3ZnPg==')] opacity-60">
+        </div>
+        <div id="floating-container"></div>
+    </div>
+
+    <div id="main-content" class="relative w-full max-w-3xl transition-all duration-500 z-10">
+
+        <!-- START SCREEN -->
+        <div id="screen-start"
+            class="glass-panel rounded-3xl p-6 md:p-14 text-center transform hover:scale-[1.01] transition-transform duration-500">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">🌊🐋🔱</div>
+            <h1
+                class="text-3xl sm:text-4xl md:text-5xl font-black mb-3 md:mb-4 neon-text-gradient neon-font tracking-tight drop-shadow-sm leading-tight uppercase">
+                TOEIC <br><span class="text-2xl md:text-3xl">15-MINUTE TEST 1</span>
+            </h1>
+            <p
+                class="text-base sm:text-lg md:text-xl text-sky-100/80 mb-6 font-medium leading-relaxed max-w-xl mx-auto">
+                Lặn sâu để chinh phục <span id="total-count"
+                    class="font-bold text-cyan-300 bg-cyan-900/40 px-3 py-1 rounded-lg border border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.3)] mx-1"></span>
+                kho báu từ vựng TOEIC đỉnh cao! 🤿
+            </p>
+
+            <div class="mb-8 relative max-w-xs md:max-w-sm mx-auto">
+                <input type="text" id="user-name-input" placeholder="Nhập tên thợ lặn của bạn..."
+                    class="w-full bg-sky-950/60 border-2 border-cyan-500/50 rounded-xl px-4 py-3 text-cyan-100 placeholder-cyan-700/80 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition-all text-center text-base md:text-lg font-semibold shadow-inner"
+                    autocomplete="off" spellcheck="false">
+                <p id="name-error" class="text-rose-400 text-sm mt-2 hidden font-medium">⚠️ Hãy nhập tên để bắt đầu hành
+                    trình!</p>
+            </div>
+
+            <button id="btn-start"
+                class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-gradient-to-r from-cyan-600 to-sky-500 hover:from-sky-500 hover:to-blue-400 text-white font-bold rounded-full text-lg md:text-xl transition-all cursor-pointer transform hover:-translate-y-1 active:translate-y-0 active:scale-95 neon-font tracking-wide uppercase btn-glow"
+                style="touch-action: manipulation;">
+                Bắt Đầu Lặn! 💦
+            </button>
+
+            <!-- Thêm Copyright ở màn hình Start -->
+            <div
+                class="mt-6 md:mt-8 text-center text-[10px] md:text-xs text-cyan-500/50 font-semibold tracking-widest uppercase">
+                © Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing"
+            class="glass-panel rounded-3xl p-4 sm:p-6 md:p-10 hidden border-t-4 border-t-cyan-400 shadow-2xl">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-4 md:mb-6 border-b-2 border-cyan-900/50 pb-3 md:pb-5">
+                <div class="flex flex-col">
+                    <span
+                        class="text-[10px] md:text-xs text-cyan-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Độ
+                        sâu</span>
+                    <span id="progress-text"
+                        class="text-cyan-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg neon-font drop-shadow-[0_0_5px_rgba(34,211,238,0.4)]">TẦNG
+                        1 / 20</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span
+                        class="text-[10px] md:text-xs text-cyan-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Kho
+                        Báu</span>
+                    <span id="score-text"
+                        class="bg-sky-900/60 border border-sky-500/40 px-3 md:px-4 py-1 md:py-1.5 rounded-xl text-sky-300 font-bold text-xs sm:text-sm md:text-base shadow-[0_0_10px_rgba(14,165,233,0.3)] flex items-center gap-1 md:gap-2">
+                        <span>💎</span> <span id="score-number" class="text-base md:text-lg">0</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Question Area -->
+            <div
+                class="mb-5 md:mb-8 bg-black/30 p-5 md:p-8 rounded-2xl border border-cyan-900 shadow-inner relative overflow-hidden water-lines">
+                <h2 id="question-text"
+                    class="text-lg sm:text-xl md:text-2xl font-semibold leading-relaxed question-text text-gray-100 z-10 relative">
+                </h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8">
+                <!-- Buttons injected by JS -->
+            </div>
+
+            <div id="keyboard-hint" class="text-center text-xs text-cyan-400/50 font-semibold mb-4 hidden md:block">
+                Mẹo: Dùng phím số <kbd
+                    class="bg-sky-900/80 px-2 py-1 rounded text-cyan-300 border border-cyan-800">1</kbd> - <kbd
+                    class="bg-sky-900/80 px-2 py-1 rounded text-cyan-300 border border-cyan-800">4</kbd> để chọn nhanh.
+            </div>
+
+            <!-- Explanation Area -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div
+                    class="bg-sky-950/80 border-l-4 border-cyan-400 rounded-r-2xl p-4 md:p-6 mb-5 md:mb-6 shadow-[0_0_20px_rgba(34,211,238,0.15)] relative overflow-hidden">
+                    <div id="rationale-text" class="hidden relative z-10">
+                        <span id="rationale-content" class="block"></span>
+                    </div>
+                </div>
+
+                <button id="btn-next"
+                    class="w-full py-4 md:py-5 bg-blue-900/80 hover:bg-blue-800 border border-blue-500/50 text-blue-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase"
+                    style="touch-action: manipulation;">
+                    Tiếp Tục Bơi ➔
+                </button>
+            </div>
+
+            <!-- Thêm Copyright ở màn hình Playing -->
+            <div
+                class="mt-6 text-center text-[10px] md:text-xs text-cyan-500/50 font-semibold tracking-widest uppercase">
+                © Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end"
+            class="glass-panel rounded-3xl p-6 md:p-14 text-center transform transition-transform duration-500 hidden">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 animate-pop drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">
+                🧜‍♀️👑🏆</div>
+            <h1
+                class="text-2xl sm:text-3xl md:text-5xl font-black mb-3 md:mb-4 neon-text-gradient neon-font tracking-tight drop-shadow-sm leading-tight uppercase">
+                Khám Phá Thành Công!
+            </h1>
+            <p id="final-message"
+                class="text-sm sm:text-base md:text-xl text-sky-100/80 mb-6 md:mb-10 font-medium max-w-lg mx-auto leading-relaxed">
+            </p>
+
+            <!-- Statistics Board -->
+            <div
+                class="max-w-md mx-auto bg-sky-950/80 border border-cyan-500/40 rounded-3xl p-5 md:p-8 text-left shadow-[0_0_25px_rgba(34,211,238,0.15)] mb-8 md:mb-10 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-cyan-400 to-blue-500"></div>
+                <h3
+                    class="text-lg md:text-2xl font-bold text-cyan-400 mb-4 md:mb-6 border-b-2 border-cyan-900/50 pb-3 md:pb-4 text-center neon-font tracking-wide uppercase drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">
+                    Sổ Thợ Lặn<br><span id="display-student-name"
+                        class="text-sky-100 text-base md:text-xl mt-2 block font-sans tracking-normal capitalize"></span>
+                </h3>
+                <ul class="space-y-4 md:space-y-5 text-sky-100/90 text-xs sm:text-sm md:text-base font-medium">
+                    <li class="flex justify-between items-center border-b border-sky-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span
+                                class="text-lg md:text-xl flex-shrink-0">✅</span> Phản xạ nhanh <span
+                                class="hidden sm:inline">(Đúng L1)</span>:</span>
+                        <span id="stat-correct"
+                            class="font-black text-cyan-400 text-xl md:text-2xl neon-font drop-shadow-[0_0_5px_rgba(34,211,238,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-sky-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span
+                                class="text-lg md:text-xl flex-shrink-0">🤔</span> Cẩn trọng <span
+                                class="hidden sm:inline">(Đúng L2)</span>:</span>
+                        <span id="stat-second"
+                            class="font-black text-blue-400 text-xl md:text-2xl neon-font drop-shadow-[0_0_5px_rgba(96,165,250,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2 md:gap-3"><span
+                                class="text-lg md:text-xl flex-shrink-0">📝</span> Đã củng cố <span
+                                class="hidden sm:inline">(Vòng 2)</span>:</span>
+                        <span id="stat-wrong"
+                            class="font-black text-orange-400 text-xl md:text-2xl neon-font drop-shadow-[0_0_5px_rgba(251,146,60,0.6)] flex-shrink-0"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <button id="btn-restart"
+                class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-transparent hover:bg-cyan-900/30 border-2 border-cyan-500 text-cyan-400 hover:text-cyan-300 font-bold rounded-full text-base md:text-xl transition-all flex items-center justify-center gap-3 mx-auto cursor-pointer shadow-[0_0_15px_rgba(34,211,238,0.3)] neon-font tracking-wide uppercase active:scale-95"
+                style="touch-action: manipulation;">
+                🔄 Khám Phá Lại Lần Nữa
+            </button>
+
+            <!-- Thêm Copyright ở màn hình End -->
+            <div
+                class="mt-6 md:mt-8 text-center text-[10px] md:text-xs text-cyan-500/50 font-semibold tracking-widest uppercase">
+                © Copyright 2026 by Hoang Truong English</div>
+        </div>
+    </div>
+
+    <script>
+        // 50 Từ vựng TOEIC/B1 (Word, Meaning, POS, IPA, Example, Example translation)
+        const rawVocab = [
+            ["acquisition", "sự mua lại, thương vụ mua lại", "noun", "/ˌækwɪˈzɪʃən/", "The company announces a major acquisition to expand its business in the Asian market.", "Công ty công bố một thương vụ mua lại lớn để mở rộng kinh doanh tại thị trường châu Á."],
+            ["projected", "được dự kiến, được ước tính", "adjective", "/prəˈdʒektɪd/", "The projected sales figures look positive, so the manager feels confident about next year’s plan.", "Doanh số dự kiến trông rất khả quan, nên người quản lý cảm thấy tự tin về kế hoạch năm tới."],
+            ["consultant", "chuyên gia tư vấn", "noun", "/kənˈsʌltənt/", "The company hires a consultant to review its financial plan and suggest practical improvements.", "Công ty thuê một chuyên gia tư vấn để xem xét kế hoạch tài chính và đề xuất các cải tiến thực tế."],
+            ["viable", "khả thi, có thể thực hiện được", "adjective", "/ˈvaɪəbl/", "The new project seems viable because the costs are reasonable and customer demand is strong.", "Dự án mới có vẻ khả thi vì chi phí hợp lý và nhu cầu của khách hàng rất cao."],
+            ["vacant", "còn trống, bỏ trống", "adjective", "/ˈveɪkənt/", "The hotel has several vacant rooms available for guests during the business conference.", "Khách sạn có một vài phòng trống dành cho khách trong suốt hội nghị doanh nghiệp."],
+            ["itemized", "được liệt kê chi tiết từng mục", "adjective", "/ˈaɪtəmaɪzd/", "Employees must submit itemized receipts when they claim travel or meal expenses.", "Nhân viên phải nộp biên lai được liệt kê chi tiết từng mục khi họ yêu cầu thanh toán chi phí đi lại hoặc ăn uống."],
+            ["lodging expenses", "chi phí lưu trú", "noun phrase", "/ˈlɒdʒɪŋ ɪkˌspensɪz/", "The company covers lodging expenses for staff who travel to another city for training.", "Công ty đài thọ chi phí lưu trú cho nhân viên đi công tác đến thành phố khác để đào tạo."],
+            ["reimburse", "hoàn tiền, bồi hoàn", "verb", "/ˌriːɪmˈbɜːrs/", "The company will reimburse employees for approved travel costs after they submit the required receipts.", "Công ty sẽ hoàn tiền cho nhân viên về các chi phí đi lại được phê duyệt sau khi họ nộp các biên lai cần thiết."],
+            ["retain", "giữ lại, duy trì", "verb", "/rɪˈteɪn/", "The firm wants to retain experienced employees by offering better benefits and training opportunities.", "Công ty muốn giữ lại những nhân viên giàu kinh nghiệm bằng cách cung cấp các phúc lợi và cơ hội đào tạo tốt hơn."],
+            ["attribute A to B", "quy A là do B, cho rằng A là do B", "verb phrase", "/əˈtrɪbjuːt eɪ tuː biː/", "The manager may attribute the delay to a shortage of materials and unexpected transportation problems.", "Người quản lý có thể quy sự chậm trễ là do thiếu hụt vật liệu và các vấn đề vận chuyển không mong muốn."],
+            ["prolonged", "kéo dài", "adjective", "/prəˈlɒŋd/", "A prolonged delay in production can affect delivery schedules and customer satisfaction.", "Sự chậm trễ kéo dài trong sản xuất có thể ảnh hưởng đến lịch trình giao hàng và sự hài lòng của khách hàng."],
+            ["deliberate", "có chủ ý, cố tình", "adjective", "/dɪˈlɪbərət/", "The change in the design is deliberate because the company wants to attract younger customers.", "Sự thay đổi trong thiết kế là có chủ ý vì công ty muốn thu hút khách hàng trẻ tuổi hơn."],
+            ["adjacent to", "liền kề, nằm cạnh", "phrase", "/əˈdʒeɪsnt tuː/", "The new office is adjacent to the train station, so employees can travel there easily.", "Văn phòng mới nằm kề ga tàu, vì vậy nhân viên có thể di chuyển đến đó một cách dễ dàng."],
+            ["a shortage of", "sự thiếu hụt", "noun phrase", "/ə ˈʃɔːrtɪdʒ əv/", "A shortage of skilled workers can slow down important construction and manufacturing projects.", "Sự thiếu hụt công nhân lành nghề có thể làm chậm lại các dự án xây dựng và sản xuất quan trọng."],
+            ["authorized", "được cho phép, được ủy quyền", "adjective", "/ˈɔːθəraɪzd/", "Only authorized staff can enter the storage area and handle important company documents.", "Chỉ những nhân viên được ủy quyền mới có thể vào khu vực lưu trữ và xử lý các tài liệu quan trọng của công ty."],
+            ["possess", "sở hữu, có", "verb", "/pəˈzes/", "Applicants must possess strong communication skills and basic knowledge of office software.", "Ứng viên phải sở hữu kỹ năng giao tiếp tốt và kiến thức cơ bản về phần mềm văn phòng."],
+            ["provided that", "miễn là, với điều kiện là", "conjunction", "/prəˈvaɪdɪd ðæt/", "Employees can work from home provided that they complete their tasks and attend online meetings.", "Nhân viên có thể làm việc tại nhà miễn là họ hoàn thành nhiệm vụ và tham gia các cuộc họp trực tuyến."],
+            ["within the limit", "trong giới hạn cho phép", "phrase", "/wɪˈðɪn ðə ˈlɪmɪt/", "The manager can approve the refund if the amount stays within the limit set by the company.", "Người quản lý có thể phê duyệt khoản hoàn tiền nếu số tiền nằm trong giới hạn cho phép do công ty quy định."],
+            ["inspection", "sự kiểm tra, thanh tra", "noun", "/ɪnˈspekʃən/", "The factory must pass a safety inspection before it can continue normal operations.", "Nhà máy phải vượt qua đợt thanh tra an toàn trước khi có thể tiếp tục hoạt động bình thường."],
+            ["possession", "sự sở hữu, vật sở hữu", "noun", "/pəˈzeʃən/", "The documents are in the manager’s possession, so staff need to ask her before using them.", "Các tài liệu đang thuộc quyền sở hữu của người quản lý, vì vậy nhân viên cần hỏi cô ấy trước khi sử dụng."],
+            ["concession", "sự nhượng bộ; ưu đãi", "noun", "/kənˈseʃən/", "The supplier offers a price concession after the client complains about the late shipment.", "Nhà cung cấp đưa ra một sự nhượng bộ về giá sau khi khách hàng phàn nàn về việc giao hàng trễ."],
+            ["demand for", "nhu cầu đối với", "noun phrase", "/dɪˈmɑːnd fɔːr/", "Demand for online payment services increases as more customers shop on digital platforms.", "Nhu cầu đối với các dịch vụ thanh toán trực tuyến tăng lên khi có nhiều khách hàng mua sắm trên các nền tảng kỹ thuật số hơn."],
+            ["considerably", "đáng kể, nhiều", "adverb", "/kənˈsɪdərəbli/", "Operating costs can rise considerably when fuel prices and rental fees increase at the same time.", "Chi phí hoạt động có thể tăng lên đáng kể khi giá nhiên liệu và phí thuê tăng cùng một lúc."],
+            ["fluctuate", "dao động, thay đổi lên xuống", "verb", "/ˈflʌktʃueɪt/", "Prices may fluctuate during the year because of seasonal demand and changes in supply.", "Giá cả có thể dao động trong năm do nhu cầu theo mùa và sự thay đổi trong nguồn cung."],
+            ["be reluctant to", "miễn cưỡng, không sẵn lòng làm gì", "adjective phrase", "/bi rɪˈlʌktənt tuː/", "Some customers may be reluctant to buy the product if they cannot see clear proof of quality.", "Một số khách hàng có thể miễn cưỡng mua sản phẩm nếu họ không thấy bằng chứng rõ ràng về chất lượng."],
+            ["make a commitment", "đưa ra cam kết", "verb phrase", "/meɪk ə kəˈmɪtmənt/", "The company needs to make a commitment to better service before customers regain trust.", "Công ty cần đưa ra cam kết về dịch vụ tốt hơn trước khi khách hàng lấy lại niềm tin."],
+            ["replacement", "sự thay thế; sản phẩm/người thay thế", "noun", "/rɪˈpleɪsmənt/", "The customer requests a replacement because the original item arrives with serious damage.", "Khách hàng yêu cầu một sản phẩm thay thế vì món hàng ban đầu được giao đến với hư hỏng nghiêm trọng."],
+            ["ask for permission", "xin phép", "verb phrase", "/ɑːsk fɔːr pəˈmɪʃən/", "Employees should ask for permission before they use company equipment for personal tasks.", "Nhân viên nên xin phép trước khi sử dụng thiết bị của công ty cho các công việc cá nhân."],
+            ["give permission", "cho phép", "verb phrase", "/ɡɪv pəˈmɪʃən/", "The supervisor can give permission for staff to leave early after the urgent work is complete.", "Người giám sát có thể cho phép nhân viên về sớm sau khi công việc khẩn cấp hoàn thành."],
+            ["proof", "bằng chứng, giấy tờ chứng minh", "noun", "/pruːf/", "Customers need proof of purchase when they want to return or exchange a product.", "Khách hàng cần bằng chứng mua hàng khi muốn trả lại hoặc đổi một sản phẩm."],
+            ["construction site", "công trường xây dựng", "noun phrase", "/kənˈstrʌkʃən saɪt/", "Visitors must wear safety helmets when they enter the construction site.", "Khách tham quan phải đội mũ bảo hiểm an toàn khi vào công trường xây dựng."],
+            ["budget", "ngân sách", "noun", "/ˈbʌdʒɪt/", "The team prepares a detailed budget before it starts the renovation project.", "Nhóm chuẩn bị một ngân sách chi tiết trước khi bắt đầu dự án cải tạo."],
+            ["circulate", "lưu hành, truyền tay, gửi đi", "verb", "/ˈsɜːrkjəleɪt/", "The assistant will circulate the meeting agenda to all department members this afternoon.", "Trợ lý sẽ gửi chương trình cuộc họp cho tất cả các thành viên trong bộ phận vào chiều nay."],
+            ["be aware of", "nhận thức được, biết về", "adjective phrase", "/bi əˈweər əv/", "Staff should be aware of the new safety rules before they visit the warehouse.", "Nhân viên nên nhận thức được các quy tắc an toàn mới trước khi đến thăm nhà kho."],
+            ["accommodate", "đáp ứng, chứa được, phục vụ", "verb", "/əˈkɒmədeɪt/", "The meeting room can accommodate up to fifty participants for training sessions.", "Phòng họp có thể chứa được tới năm mươi người tham gia cho các buổi đào tạo."],
+            ["instead of", "thay vì", "phrase", "/ɪnˈsted əv/", "The company sends digital invoices instead of paper copies to reduce printing costs.", "Công ty gửi hóa đơn điện tử thay vì bản sao giấy để giảm chi phí in ấn."],
+            ["oversee", "giám sát, quản lý", "verb", "/ˌəʊvərˈsiː/", "A senior engineer will oversee the construction process and report progress every week.", "Một kỹ sư cao cấp sẽ giám sát quá trình xây dựng và báo cáo tiến độ mỗi tuần."],
+            ["be delegated to", "được giao phó cho", "verb phrase", "/bi ˈdelɪɡeɪtɪd tuː/", "Some administrative tasks can be delegated to junior staff after proper training.", "Một số nhiệm vụ hành chính có thể được giao phó cho nhân viên cấp dưới sau khi được đào tạo bài bản."],
+            ["exceed", "vượt quá", "verb", "/ɪkˈsiːd/", "Expenses must not exceed the approved budget unless the director gives permission.", "Các chi phí không được vượt quá ngân sách đã được phê duyệt trừ khi giám đốc cho phép."],
+            ["unusually", "một cách bất thường", "adverb", "/ʌnˈjuːʒuəli/", "Sales are unusually high this month because the company launches a successful promotion.", "Doanh số bán hàng tháng này cao một cách bất thường vì công ty tung ra một chương trình khuyến mãi thành công."],
+            ["portal", "cổng thông tin, trang truy cập", "noun", "/ˈpɔːrtl/", "Employees can use the company portal to check schedules, documents, and salary information.", "Nhân viên có thể sử dụng cổng thông tin công ty để kiểm tra lịch trình, tài liệu và thông tin lương."],
+            ["trigger", "kích hoạt, gây ra", "verb", "/ˈtrɪɡər/", "A late payment can trigger an automatic reminder from the accounting system.", "Việc thanh toán trễ có thể kích hoạt một lời nhắc tự động từ hệ thống kế toán."],
+            ["resume", "tiếp tục lại, bắt đầu lại", "verb", "/rɪˈzuːm/", "Work can resume after the safety team completes its inspection of the equipment.", "Công việc có thể tiếp tục lại sau khi nhóm an toàn hoàn tất việc thanh tra thiết bị."],
+            ["vary", "thay đổi, khác nhau", "verb", "/ˈveəri/", "Delivery times may vary depending on the customer’s location and the size of the order.", "Thời gian giao hàng có thể thay đổi tùy thuộc vào vị trí của khách hàng và quy mô của đơn hàng."],
+            ["service agreement", "hợp đồng/thỏa thuận dịch vụ", "noun phrase", "/ˈsɜːrvɪs əˈɡriːmənt/", "The service agreement explains the company’s responsibilities, payment terms, and support options.", "Thỏa thuận dịch vụ giải thích trách nhiệm của công ty, các điều khoản thanh toán và các tùy chọn hỗ trợ."],
+            ["delivery frequency", "tần suất giao hàng", "noun phrase", "/dɪˈlɪvəri ˈfriːkwənsi/", "Customers can choose the delivery frequency that best matches their business needs.", "Khách hàng có thể chọn tần suất giao hàng phù hợp nhất với nhu cầu kinh doanh của họ."],
+            ["renovation", "sự cải tạo, sửa sang", "noun", "/ˌrenəˈveɪʃən/", "The hotel remains open during the renovation, but some rooms are temporarily unavailable.", "Khách sạn vẫn mở cửa trong quá trình sửa sang, nhưng một số phòng tạm thời không có sẵn."],
+            ["capacity", "sức chứa, công suất, khả năng", "noun", "/kəˈpæsəti/", "The factory increases its production capacity by adding new machines and hiring more workers.", "Nhà máy tăng công suất sản xuất bằng cách bổ sung thêm máy móc mới và thuê thêm công nhân."],
+            ["refrigerate", "làm lạnh, bảo quản lạnh", "verb", "/rɪˈfrɪdʒəreɪt/", "Staff must refrigerate food products immediately to keep them fresh and safe for customers.", "Nhân viên phải bảo quản lạnh các sản phẩm thực phẩm ngay lập tức để giữ chúng tươi ngon và an toàn cho khách hàng."],
+            ["shipment", "lô hàng, việc giao hàng", "noun", "/ˈʃɪpmənt/", "The shipment arrives late because bad weather affects transportation routes.", "Lô hàng đến trễ vì thời tiết xấu ảnh hưởng đến các tuyến đường vận chuyển."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        let quizData = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0;
+        let hasAnswered = false;
+        let currentShuffledOptions = [];
+        let reviewQueue = [];
+        let isReviewRound = false;
+        let userName = "";
+
+        const DOM = {
+            screenStart: document.getElementById('screen-start'),
+            screenPlaying: document.getElementById('screen-playing'),
+            screenEnd: document.getElementById('screen-end'),
+            progressText: document.getElementById('progress-text'),
+            scoreNumber: document.getElementById('score-number'),
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            explanationContainer: document.getElementById('explanation-container'),
+            rationaleText: document.getElementById('rationale-text'),
+            rationaleContent: document.getElementById('rationale-content'),
+            btnNext: document.getElementById('btn-next'),
+            btnStart: document.getElementById('btn-start'),
+            btnRestart: document.getElementById('btn-restart'),
+            userNameInput: document.getElementById('user-name-input'),
+            nameError: document.getElementById('name-error'),
+            displayStudentName: document.getElementById('display-student-name')
+        };
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function generateQuizData() {
+            const shuffledRaw = shuffleArray([...rawVocab]);
+
+            return shuffledRaw.map((item, index) => {
+                const word = item[0];
+                const meaning = item[1];
+                const pos = item[2];
+                const ipa = item[3];
+                const exampleEn = item[4];
+                const exampleVn = item[5];
+
+                let wrongMeanings = [];
+                const allMeanings = rawVocab.map(v => v[1]).filter(m => m !== meaning);
+                const shuffledWrong = shuffleArray(allMeanings);
+                wrongMeanings = shuffledWrong.slice(0, 3);
+
+                const options = [
+                    { text: meaning, isCorrect: true },
+                    { text: wrongMeanings[0], isCorrect: false },
+                    { text: wrongMeanings[1], isCorrect: false },
+                    { text: wrongMeanings[2], isCorrect: false }
+                ];
+
+                return {
+                    questionNumber: index + 1,
+                    question: `Từ/cụm từ **${word}** có nghĩa là gì?`,
+                    answerOptions: options,
+                    itemWord: word,
+                    itemEx: exampleEn,
+                    rationale: `
+                        <div class="flex flex-col gap-2 mb-3 md:mb-4 border-b border-cyan-500/30 pb-3 md:pb-4">
+                            <div class="flex items-center flex-wrap gap-2 md:gap-3">
+                                <span class="text-2xl md:text-3xl font-black text-cyan-400 tracking-wide neon-font drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">${word}</span>
+                                <span class="text-cyan-200/80 italic text-sm md:text-base bg-sky-900/80 px-2 py-0.5 rounded-md border border-cyan-500/30">(${pos})</span>
+                                <button onclick="speakWord('${word.replace(/['’]/g, "\\'")}')" class="ml-auto p-2 bg-sky-900/50 hover:bg-sky-800 text-cyan-300 rounded-full transition-all flex items-center justify-center w-10 h-10 md:w-11 md:h-11 shadow-[0_0_10px_rgba(34,211,238,0.2)] border border-cyan-500/50 hover:scale-110 flex-shrink-0" title="Nghe từ vựng" style="touch-action: manipulation;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                                </button>
+                            </div>
+                            <span class="text-sky-100 font-mono text-sm md:text-base tracking-wider">${ipa}</span>
+                        </div>
+                        
+                        <div class="flex items-start md:items-center justify-between text-sky-100 font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-cyan-500 bg-sky-900/40 py-2 pr-2 rounded-r-lg mb-2 gap-2">
+                            <div class="pt-1 md:pt-0"><span class="text-cyan-400 mr-1 md:mr-2 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">🌊</span> <span>${exampleEn}</span></div>
+                            
+                            <button onclick="speakWord('${exampleEn.replace(/['’]/g, "\\'")}')" class="p-1.5 bg-blue-900/60 hover:bg-blue-800 text-blue-300 rounded-full transition-all flex items-center justify-center w-8 h-8 md:w-10 md:h-10 shadow-[0_0_10px_rgba(59,130,246,0.3)] border border-blue-500/40 hover:scale-110 flex-shrink-0 mt-0.5 md:mt-0" title="Nghe câu ví dụ" style="touch-action: manipulation;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                            </button>
+                        </div>
+                        <div class="text-sky-300/80 italic font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-sky-800 bg-sky-950/50 py-2 pr-3 rounded-r-lg">
+                            <span class="text-sky-600 mr-2">🇻🇳</span> <span>${exampleVn}</span>
+                        </div>`
+                };
+            });
+        }
+
+        function startGame() {
+            const nameValue = DOM.userNameInput.value.trim();
+
+            if (nameValue === "") {
+                DOM.userNameInput.classList.add('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                DOM.nameError.classList.remove('hidden');
+                setTimeout(() => {
+                    DOM.userNameInput.classList.remove('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                }, 600);
+                return;
+            }
+
+            DOM.nameError.classList.add('hidden');
+            userName = nameValue;
+            quizData = generateQuizData();
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            reviewQueue = [];
+            isReviewRound = false;
+
+            DOM.screenStart.classList.add('hidden');
+            DOM.screenEnd.classList.add('hidden');
+            DOM.screenPlaying.classList.remove('hidden');
+
+            DOM.screenPlaying.style.opacity = 0;
+            setTimeout(() => {
+                DOM.screenPlaying.style.transition = 'opacity 0.5s ease';
+                DOM.screenPlaying.style.opacity = 1;
+            }, 10);
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+
+            const currentQ = quizData[currentQuestionIndex];
+
+            if (isReviewRound) {
+                DOM.progressText.innerText = `ÔN TẬP: TẦNG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-orange-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg neon-font drop-shadow-[0_0_5px_rgba(251,146,60,0.5)]";
+            } else {
+                DOM.progressText.innerText = `TẦNG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-cyan-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg neon-font drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]";
+            }
+
+            DOM.scoreNumber.innerText = score;
+            DOM.questionText.innerHTML = currentQ.question.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+
+            DOM.optionsContainer.innerHTML = '';
+            const labels = ['1', '2', '3', '4'];
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.style.touchAction = 'manipulation';
+                const numberLabel = `<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-sky-950 text-cyan-400 font-bold border border-cyan-800/50 text-sm mr-3 font-mono transition-colors flex-shrink-0">${labels[index]}</span>`;
+
+                btn.className = "group text-left p-3 sm:p-4 rounded-xl border border-sky-900/60 transition-all duration-300 text-sm sm:text-base bg-sky-900/30 hover:bg-cyan-900/40 hover:border-cyan-500/50 text-sky-100 cursor-pointer shadow-sm font-semibold flex items-center";
+                btn.innerHTML = `${numberLabel} <span class="leading-snug">${option.text}</span>`;
+
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    handleAnswer(index, option.isCorrect);
+                });
+
+                DOM.optionsContainer.appendChild(btn);
+            });
+
+            DOM.explanationContainer.classList.remove('max-h-[800px]', 'opacity-100', 'mt-6');
+            DOM.explanationContainer.classList.add('max-h-0', 'opacity-0');
+            DOM.rationaleText.className = "hidden";
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                DOM.btnNext.innerHTML = 'Tiếp Tục Bơi ➔';
+                DOM.btnNext.className = "w-full py-4 md:py-5 bg-blue-900/80 hover:bg-blue-800 border border-blue-500/50 text-blue-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase";
+            } else {
+                DOM.btnNext.innerHTML = 'Đang xử lý...';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = DOM.optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            Array.from(buttons).forEach(b => b.classList.remove('group', 'hover:bg-cyan-900/40', 'hover:border-cyan-500/50'));
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    if (!isReviewRound) score++;
+                    DOM.scoreNumber.innerText = score;
+                    DOM.scoreNumber.style.transform = 'scale(1.5)';
+                    DOM.scoreNumber.style.color = '#38bdf8';
+                    setTimeout(() => {
+                        DOM.scoreNumber.style.transform = 'scale(1)';
+                        DOM.scoreNumber.style.color = 'inherit';
+                    }, 300);
+                } else if (attempts === 1) {
+                    if (!isReviewRound) correctSecondTry++;
+                }
+
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-cyan-500 text-sky-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(34,211,238,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-cyan-400 transition-all duration-500 text-sm sm:text-base bg-cyan-900/40 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.3)] font-bold flex items-center";
+
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-900/40')) {
+                        buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                    }
+                }
+
+                speakWord(currentQ.itemWord);
+                showRationale(currentQ);
+                updateNextButtonState();
+            } else {
+                attempts++;
+
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-rose-600 text-white font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(225,29,72,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-rose-500 transition-all duration-300 text-sm sm:text-base bg-rose-900/40 text-rose-300 animate-shake flex items-center shadow-[0_0_15px_rgba(244,63,94,0.2)]";
+
+                const textSpan = btn.querySelector('span:last-child');
+                textSpan.classList.add('line-through', 'decoration-rose-500', 'opacity-70');
+
+                btn.disabled = true;
+
+                setTimeout(() => { btn.classList.remove('animate-shake'); }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    if (!isReviewRound) failedQuestions++;
+
+                    reviewQueue.push(currentQ);
+
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            const correctNum = buttons[i].querySelector('span:first-child');
+                            correctNum.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-cyan-500 text-sky-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(34,211,238,0.8)]";
+                            buttons[i].className = "text-left p-3 sm:p-4 rounded-xl border border-cyan-400 transition-all duration-500 text-sm sm:text-base bg-cyan-900/40 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.3)] font-bold flex items-center";
+                        } else if (!buttons[i].classList.contains('bg-rose-900/40')) {
+                            buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                        }
+                    }
+                    speakWord(currentQ.itemWord);
+                    showRationale(currentQ);
+                    updateNextButtonState();
+                }
+            }
+        }
+
+        function updateNextButtonState() {
+            if (currentQuestionIndex === quizData.length - 1) {
+                if (reviewQueue.length > 0) {
+                    DOM.btnNext.innerHTML = 'Sang Vòng Ôn Tập 📝';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-orange-600/90 hover:bg-orange-500 border border-orange-400/50 text-white font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase";
+                } else {
+                    DOM.btnNext.innerHTML = 'Trở Về Bờ 🏁';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-gradient-to-r from-cyan-600 to-blue-500 hover:from-blue-500 hover:to-cyan-400 text-sky-50 font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase";
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            DOM.rationaleContent.innerHTML = currentQ.rationale;
+            DOM.rationaleText.className = "block text-base md:text-lg animate-pop";
+
+            DOM.explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            DOM.explanationContainer.classList.add('max-h-[800px]', 'opacity-100', 'mt-6');
+
+            if (window.innerWidth < 768) {
+                setTimeout(() => { DOM.explanationContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else if (reviewQueue.length > 0) {
+                isReviewRound = true;
+                quizData = shuffleArray([...reviewQueue]);
+                reviewQueue = [];
+                currentQuestionIndex = 0;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            DOM.screenPlaying.classList.add('hidden');
+            DOM.screenEnd.classList.remove('hidden');
+            DOM.screenEnd.classList.add('animate-pop');
+
+            const finalMessage = document.getElementById('final-message');
+            const percentage = score / rawVocab.length;
+
+            if (percentage >= 0.9) {
+                finalMessage.style.display = "none";
+            } else if (percentage >= 0.6) {
+                finalMessage.innerText = `Tuyệt vời ${userName}! Bạn đã thu thập được kha khá kho báu đại dương. Lặn thêm lần nữa để đạt điểm tối đa nhé! 🐚`;
+                finalMessage.style.display = "block";
+            } else {
+                finalMessage.innerText = `Đại dương này còn quá nhiều điều mới mẻ với ${userName}. Đừng bỏ cuộc, hãy nạp lại bình dưỡng khí và bắt đầu lại nào! 🤿`;
+                finalMessage.style.display = "block";
+            }
+
+            DOM.displayStudentName.innerText = `Thợ lặn: ${userName}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        let availableVoices = [];
+        function initVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+            if (availableVoices.length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { availableVoices = window.speechSynthesis.getVoices(); };
+            }
+        }
+
+        window.speakWord = function (text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+
+                let spokenText = text;
+                if (spokenText.trim() === 'I') spokenText = 'eye';
+                spokenText = spokenText.replace(/\//g, ' or ');
+
+                const utterance = new SpeechSynthesisUtterance(spokenText);
+
+                let selectedVoice = null;
+                const enVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+
+                if (enVoices.length > 0) {
+                    selectedVoice = enVoices.find(v => v.name.includes('Samantha')) ||
+                        enVoices.find(v => v.name.includes('Zira')) ||
+                        enVoices.find(v => v.name.includes('Google US English')) ||
+                        enVoices.find(v => v.lang === 'en-US' && v.name.includes('Female')) ||
+                        enVoices[0];
+                }
+
+                if (selectedVoice) utterance.voice = selectedVoice;
+                utterance.lang = selectedVoice ? selectedVoice.lang : 'en-US';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.1;
+                utterance.volume = 1;
+
+                try { window.speechSynthesis.speak(utterance); } catch (e) { console.error("TTS Error:", e); }
+            }
+        };
+
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['🐠', '🐬', '🐋', '🦑', '🐙', '🦈', '🐚', '🦀', '🌊', '⚓', '🫧'];
+            const numberOfItems = window.innerWidth > 768 ? 25 : 15;
+
+            for (let i = 0; i < numberOfItems; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+
+                const duration = Math.random() * 25 + 15;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 20}s`;
+                item.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        function initApp() {
+            createFloatingItems();
+            initVoices();
+
+            DOM.btnStart.addEventListener('click', function (e) { e.preventDefault(); startGame(); });
+            DOM.btnRestart.addEventListener('click', function (e) { e.preventDefault(); startGame(); });
+            DOM.btnNext.addEventListener('click', function (e) { e.preventDefault(); nextQuestion(); });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    if (!DOM.screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); nextQuestion();
+                    } else if (!DOM.screenStart.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    } else if (!DOM.screenEnd.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    }
+                }
+
+                if (!DOM.screenPlaying.classList.contains('hidden') && !hasAnswered) {
+                    if (['1', '2', '3', '4'].includes(event.key)) {
+                        const index = parseInt(event.key) - 1;
+                        const buttons = DOM.optionsContainer.children;
+                        if (buttons[index] && !buttons[index].disabled) {
+                            buttons[index].click();
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+</body>
+
+</html>
