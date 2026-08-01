@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ACCOUNTING VOCAB - DEBT & CONTRACT</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        .neon-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #082f49;
+            /* Sky 900 / Deep Ocean */
+            -webkit-tap-highlight-color: transparent;
+            color: #e0f2fe;
+            /* Sky 100 */
+            touch-action: manipulation;
+        }
+
+        /* Custom Scrollbar - Neon Blue */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0c4a6e;
+        }
+
+        /* Sky 900 */
+        ::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 4px;
+        }
+
+        /* Sky 500 */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* Sky 400 */
+
+        /* Animations */
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(-15deg) scale(0.8);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.4;
+            }
+
+            90% {
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(-20vh) rotate(20deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: float-up linear infinite;
+            z-index: -1;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+            /* Neon blue glow */
+        }
+
+        @keyframes pop-in {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-pop {
+            animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-6px);
+            }
+
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        @keyframes pulse-neon {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(34, 211, 238, 0.4), 0 0 30px rgba(34, 211, 238, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(34, 211, 238, 0.7), 0 0 45px rgba(34, 211, 238, 0.4);
+            }
+        }
+
+        .btn-glow {
+            animation: pulse-neon 2.5s infinite;
+        }
+
+        /* Neon Glassmorphism Panels (Ocean feel) */
+        .glass-panel {
+            background: rgba(8, 47, 73, 0.85);
+            /* Sky 900 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            /* Sky 400 */
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.2), inset 0 0 20px rgba(34, 211, 238, 0.05);
+        }
+
+        .question-text strong {
+            color: #22d3ee;
+            /* Cyan 400 */
+            font-weight: 800;
+            padding: 2px 8px;
+            background: rgba(12, 74, 110, 0.6);
+            /* Sky 900 */
+            border: 1px solid rgba(34, 211, 238, 0.4);
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15em;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        .neon-text-gradient {
+            background: linear-gradient(to right, #38bdf8, #22d3ee);
+            /* Sky to Cyan */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Water ripples pattern */
+        .water-lines {
+            background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(34, 211, 238, 0.05) 31px, rgba(34, 211, 238, 0.05) 32px);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen relative flex flex-col items-center justify-center p-4 lg:p-8">
+
+    <div id="background-layer" class="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+        <!-- Deep blue ocean background -->
+        <div
+            class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0369a1] via-[#082f49] to-[#020617] opacity-100">
+        </div>
+        <!-- Bubble overlay -->
+        <div
+            class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiMyMmQzZWUiIGZpbGwtb3BhY2l0eT0iMC4wOCIvPjwvc3ZnPg==')] opacity-60">
+        </div>
+        <div id="floating-container"></div>
+    </div>
+
+    <div id="main-content" class="relative w-full max-w-3xl transition-all duration-500 z-10 my-auto">
+
+        <!-- START SCREEN -->
+        <div id="screen-start"
+            class="glass-panel rounded-3xl p-6 md:p-14 text-center transform hover:scale-[1.01] transition-transform duration-500">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">🌊🐋🔱</div>
+            <h1
+                class="text-3xl sm:text-4xl md:text-5xl font-black mb-3 md:mb-4 neon-text-gradient neon-font tracking-tight drop-shadow-sm leading-tight uppercase">
+                ACCOUNTING VOCA <br><span class="text-2xl md:text-3xl">DEBT & CONTRACT</span>
+            </h1>
+            <p
+                class="text-base sm:text-lg md:text-xl text-sky-100/80 mb-6 font-medium leading-relaxed max-w-xl mx-auto">
+                Lặn sâu để chinh phục <span id="total-count"
+                    class="font-bold text-cyan-300 bg-cyan-900/40 px-3 py-1 rounded-lg border border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.3)] mx-1"></span>
+                kho báu từ vựng kinh doanh đỉnh cao! 🤿
+            </p>
+
+            <div class="mb-8 relative max-w-xs md:max-w-sm mx-auto">
+                <input type="text" id="user-name-input" placeholder="Nhập tên thợ lặn của bạn..."
+                    class="w-full bg-sky-950/60 border-2 border-cyan-500/50 rounded-xl px-4 py-3 text-cyan-100 placeholder-cyan-700/80 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 transition-all text-center text-base md:text-lg font-semibold shadow-inner"
+                    autocomplete="off" spellcheck="false">
+                <p id="name-error" class="text-rose-400 text-sm mt-2 hidden font-medium">⚠️ Hãy nhập tên để bắt đầu hành
+                    trình!</p>
+            </div>
+
+            <button id="btn-start"
+                class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-gradient-to-r from-cyan-600 to-sky-500 hover:from-sky-500 hover:to-blue-400 text-white font-bold rounded-full text-lg md:text-xl transition-all cursor-pointer transform hover:-translate-y-1 active:translate-y-0 active:scale-95 neon-font tracking-wide uppercase btn-glow"
+                style="touch-action: manipulation;">
+                Bắt Đầu Lặn! 💦
+            </button>
+
+            <div class="mt-8 text-[10px] md:text-xs text-cyan-500/50 font-semibold tracking-widest uppercase">©
+                Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing"
+            class="glass-panel rounded-3xl p-4 sm:p-6 md:p-10 hidden border-t-4 border-t-cyan-400 shadow-2xl">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-4 md:mb-6 border-b-2 border-cyan-900/50 pb-3 md:pb-5">
+                <div class="flex flex-col">
+                    <span
+                        class="text-[10px] md:text-xs text-cyan-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Độ
+                        sâu</span>
+                    <span id="progress-text"
+                        class="text-cyan-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg neon-font drop-shadow-[0_0_5px_rgba(34,211,238,0.4)]">TẦNG
+                        1 / 20</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span
+                        class="text-[10px] md:text-xs text-cyan-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Kho
+                        Báu</span>
+                    <span id="score-text"
+                        class="bg-sky-900/60 border border-sky-500/40 px-3 md:px-4 py-1 md:py-1.5 rounded-xl text-sky-300 font-bold text-xs sm:text-sm md:text-base shadow-[0_0_10px_rgba(14,165,233,0.3)] flex items-center gap-1 md:gap-2">
+                        <span>💎</span> <span id="score-number" class="text-base md:text-lg">0</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Question Area -->
+            <div
+                class="mb-5 md:mb-8 bg-black/30 p-5 md:p-8 rounded-2xl border border-cyan-900 shadow-inner relative overflow-hidden water-lines">
+                <h2 id="question-text"
+                    class="text-lg sm:text-xl md:text-2xl font-semibold leading-relaxed question-text text-gray-100 z-10 relative">
+                </h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8">
+                <!-- Buttons injected by JS -->
+            </div>
+
+            <div id="keyboard-hint" class="text-center text-xs text-cyan-400/50 font-semibold mb-4 hidden md:block">
+                Mẹo: Dùng phím số <kbd
+                    class="bg-sky-900/80 px-2 py-1 rounded text-cyan-300 border border-cyan-800">1</kbd> - <kbd
+                    class="bg-sky-900/80 px-2 py-1 rounded text-cyan-300 border border-cyan-800">4</kbd> để chọn nhanh.
+            </div>
+
+            <!-- Explanation Area -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div
+                    class="bg-sky-950/80 border-l-4 border-cyan-400 rounded-r-2xl p-4 md:p-6 mb-5 md:mb-6 shadow-[0_0_20px_rgba(34,211,238,0.15)] relative overflow-hidden">
+                    <div id="rationale-text" class="hidden relative z-10">
+                        <span id="rationale-content" class="block"></span>
+                    </div>
+                </div>
+
+                <button id="btn-next"
+                    class="w-full py-4 md:py-5 bg-blue-900/80 hover:bg-blue-800 border border-blue-500/50 text-blue-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase"
+                    style="touch-action: manipulation;">
+                    Tiếp Tục Bơi ➔
+                </button>
+            </div>
+
+            <div
+                class="mt-6 text-center text-[10px] md:text-xs text-cyan-500/50 font-semibold tracking-widest uppercase">
+                © Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end"
+            class="glass-panel rounded-3xl p-6 md:p-14 text-center transform transition-transform duration-500 hidden">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 animate-pop drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">
+                🧜‍♀️👑🏆</div>
+            <h1
+                class="text-2xl sm:text-3xl md:text-5xl font-black mb-3 md:mb-4 neon-text-gradient neon-font tracking-tight drop-shadow-sm leading-tight uppercase">
+                Khám Phá Thành Công!
+            </h1>
+            <p id="final-message"
+                class="text-sm sm:text-base md:text-xl text-sky-100/80 mb-6 md:mb-10 font-medium max-w-lg mx-auto leading-relaxed">
+            </p>
+
+            <!-- Statistics Board -->
+            <div
+                class="max-w-md mx-auto bg-sky-950/80 border border-cyan-500/40 rounded-3xl p-5 md:p-8 text-left shadow-[0_0_25px_rgba(34,211,238,0.15)] mb-8 md:mb-10 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-cyan-400 to-blue-500"></div>
+                <h3
+                    class="text-lg md:text-2xl font-bold text-cyan-400 mb-4 md:mb-6 border-b-2 border-cyan-900/50 pb-3 md:pb-4 text-center neon-font tracking-wide uppercase drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">
+                    Sổ Thợ Lặn<br><span id="display-student-name"
+                        class="text-sky-100 text-base md:text-xl mt-2 block font-sans tracking-normal capitalize"></span>
+                </h3>
+                <ul class="space-y-4 md:space-y-5 text-sky-100/90 text-xs sm:text-sm md:text-base font-medium">
+                    <li class="flex justify-between items-center border-b border-sky-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span
+                                class="text-lg md:text-xl flex-shrink-0">✅</span> Phản xạ nhanh <span
+                                class="hidden sm:inline">(Đúng L1)</span>:</span>
+                        <span id="stat-correct"
+                            class="font-black text-cyan-400 text-xl md:text-2xl neon-font drop-shadow-[0_0_5px_rgba(34,211,238,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-sky-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span
+                                class="text-lg md:text-xl flex-shrink-0">🤔</span> Cẩn trọng <span
+                                class="hidden sm:inline">(Đúng L2)</span>:</span>
+                        <span id="stat-second"
+                            class="font-black text-blue-400 text-xl md:text-2xl neon-font drop-shadow-[0_0_5px_rgba(96,165,250,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2 md:gap-3"><span
+                                class="text-lg md:text-xl flex-shrink-0">📝</span> Đã củng cố <span
+                                class="hidden sm:inline">(Vòng 2)</span>:</span>
+                        <span id="stat-wrong"
+                            class="font-black text-orange-400 text-xl md:text-2xl neon-font drop-shadow-[0_0_5px_rgba(251,146,60,0.6)] flex-shrink-0"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <button id="btn-restart"
+                class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-transparent hover:bg-cyan-900/30 border-2 border-cyan-500 text-cyan-400 hover:text-cyan-300 font-bold rounded-full text-base md:text-xl transition-all flex items-center justify-center gap-3 mx-auto cursor-pointer shadow-[0_0_15px_rgba(34,211,238,0.3)] neon-font tracking-wide uppercase active:scale-95"
+                style="touch-action: manipulation;">
+                🔄 Khám Phá Lại Lần Nữa
+            </button>
+
+            <div
+                class="mt-6 md:mt-8 text-center text-[10px] md:text-xs text-cyan-500/50 font-semibold tracking-widest uppercase">
+                © Copyright 2026 by Hoang Truong English</div>
+        </div>
+    </div>
+
+    <script>
+        // 28 Vocabulary items (Finance/Business)
+        const rawVocab = [
+            ["be in debt", "verb phrase", "/biː ɪn det/", "mắc nợ", "Many young people can be in debt if they spend too much money on things they do not really need.", "Nhiều người trẻ có thể mắc nợ nếu họ tiêu quá nhiều tiền vào những thứ họ không thực sự cần."],
+            ["pay off a debt", "verb phrase", "/peɪ ɒf ə det/", "trả hết nợ", "You should pay off a debt slowly every month if you do not have enough money at one time.", "Bạn nên trả hết nợ từ từ mỗi tháng nếu bạn không có đủ tiền cùng một lúc."],
+            ["get into debt", "verb phrase", "/ɡet ˈɪntuː det/", "rơi vào cảnh nợ nần", "People should not get into debt because of expensive clothes, phones, or holidays.", "Mọi người không nên rơi vào cảnh nợ nần vì quần áo, điện thoại hoặc những kỳ nghỉ đắt tiền."],
+            ["a large debt", "noun phrase", "/ə lɑːrdʒ det/", "khoản nợ lớn", "A large debt can make a family feel worried about money for a long time.", "Một khoản nợ lớn có thể khiến một gia đình cảm thấy lo lắng về tiền bạc trong một thời gian dài."],
+            ["sign a lease", "verb phrase", "/saɪn ə liːs/", "ký hợp đồng thuê", "Tenants need to sign a lease before they move into a new apartment.", "Người thuê nhà cần ký hợp đồng thuê trước khi dọn vào căn hộ mới."],
+            ["extend a lease", "verb phrase", "/ɪkˈstend ə liːs/", "gia hạn hợp đồng thuê", "The company wants to extend a lease because the office is near its customers.", "Công ty muốn gia hạn hợp đồng thuê vì văn phòng gần với khách hàng của họ."],
+            ["a two-year lease", "noun phrase", "/ə ˌtuː jɪə liːs/", "hợp đồng thuê hai năm", "A two-year lease can help a small business use the same office for a longer time.", "Hợp đồng thuê hai năm có thể giúp một doanh nghiệp nhỏ sử dụng cùng một văn phòng trong thời gian dài hơn."],
+            ["lease an office", "verb phrase", "/liːs ən ˈɒfɪs/", "thuê văn phòng", "A new company may lease an office in the city center to meet clients easily.", "Một công ty mới có thể thuê văn phòng ở trung tâm thành phố để gặp gỡ khách hàng dễ dàng."],
+            ["high gearing", "noun phrase", "/haɪ ˈɡɪərɪŋ/", "mức đòn bẩy tài chính cao", "High gearing can be risky because the company uses a lot of borrowed money.", "Đòn bẩy tài chính cao có thể gặp rủi ro vì công ty sử dụng nhiều tiền vay mượn."],
+            ["low gearing", "noun phrase", "/ləʊ ˈɡɪərɪŋ/", "mức đòn bẩy tài chính thấp", "Low gearing can show that a company does not depend too much on debt.", "Đòn bẩy tài chính thấp có thể cho thấy một công ty không phụ thuộc quá nhiều vào nợ."],
+            ["gearing ratio", "noun phrase", "/ˈɡɪərɪŋ ˈreɪʃiəʊ/", "tỷ lệ đòn bẩy tài chính", "A gearing ratio helps managers understand how much debt the company has.", "Tỷ lệ đòn bẩy tài chính giúp các nhà quản lý hiểu công ty có bao nhiêu nợ."],
+            ["reduce gearing", "verb phrase", "/rɪˈdjuːs ˈɡɪərɪŋ/", "giảm đòn bẩy tài chính", "The company needs to reduce gearing to make its financial position safer.", "Công ty cần giảm đòn bẩy tài chính để làm cho tình hình tài chính an toàn hơn."],
+            ["current liabilities", "noun phrase", "/ˈkʌrənt ˌlaɪəˈbɪlətiz/", "nợ ngắn hạn", "Current liabilities are debts that a business usually needs to pay soon.", "Nợ ngắn hạn là những khoản nợ mà một doanh nghiệp thường cần phải trả sớm."],
+            ["total liabilities", "noun phrase", "/ˈtəʊtl ˌlaɪəˈbɪlətiz/", "tổng nợ phải trả", "Total liabilities show all the money that a company needs to pay to others.", "Tổng nợ phải trả cho thấy tất cả số tiền mà một công ty cần trả cho người khác."],
+            ["assets and liabilities", "noun phrase", "/ˈæsets ənd ˌlaɪəˈbɪlətiz/", "tài sản và nợ phải trả", "A balance sheet shows a company’s assets and liabilities in a clear way.", "Bảng cân đối kế toán thể hiện tài sản và nợ phải trả của một công ty một cách rõ ràng."],
+            ["reduce liabilities", "verb phrase", "/rɪˈdjuːs ˌlaɪəˈbɪlətiz/", "giảm các khoản nợ phải trả", "A business can reduce liabilities when it pays suppliers on time and controls spending.", "Một doanh nghiệp có thể giảm nợ phải trả khi thanh toán cho nhà cung cấp đúng hạn và kiểm soát chi tiêu."],
+            ["sign a contract", "verb phrase", "/saɪn ə ˈkɒntrækt/", "ký hợp đồng", "Two companies need to sign a contract before they start working together.", "Hai công ty cần ký hợp đồng trước khi bắt đầu làm việc cùng nhau."],
+            ["break a contract", "verb phrase", "/breɪk ə ˈkɒntrækt/", "vi phạm hợp đồng", "A company should not break a contract because it can lose trust and money.", "Một công ty không nên vi phạm hợp đồng vì có thể mất niềm tin và tiền bạc."],
+            ["renew a contract", "verb phrase", "/rɪˈnjuː ə ˈkɒntrækt/", "gia hạn hợp đồng", "The manager wants to renew a contract with the supplier because the service is good.", "Người quản lý muốn gia hạn hợp đồng với nhà cung cấp vì dịch vụ tốt."],
+            ["contract terms", "noun phrase", "/ˈkɒntrækt tɜːmz/", "các điều khoản hợp đồng", "Employees should read the contract terms carefully before they accept a new job.", "Nhân viên nên đọc kỹ các điều khoản hợp đồng trước khi nhận công việc mới."],
+            ["complete a transaction", "verb phrase", "/kəmˈpliːt ə trænˈzækʃən/", "hoàn tất giao dịch", "Customers need to complete a transaction before they receive an online order confirmation.", "Khách hàng cần hoàn tất giao dịch trước khi nhận được xác nhận đơn hàng trực tuyến."],
+            ["financial transaction", "noun phrase", "/faɪˈnænʃl trænˈzækʃən/", "giao dịch tài chính", "A financial transaction can include a payment, a transfer, or a purchase.", "Giao dịch tài chính có thể bao gồm thanh toán, chuyển khoản hoặc mua hàng."],
+            ["bank transaction", "noun phrase", "/bæŋk trænˈzækʃən/", "giao dịch ngân hàng", "You should check each bank transaction to make sure the amount is correct.", "Bạn nên kiểm tra từng giao dịch ngân hàng để đảm bảo số tiền là chính xác."],
+            ["transaction record", "noun phrase", "/trænˈzækʃən ˈrekɔːd/", "hồ sơ giao dịch", "A transaction record helps the accountant check payments and prepare reports.", "Hồ sơ giao dịch giúp kế toán kiểm tra các khoản thanh toán và chuẩn bị báo cáo."],
+            ["major shareholder", "noun phrase", "/ˈmeɪdʒə ˈʃeəhəʊldə/", "cổ đông lớn", "A major shareholder can have a strong voice in important company decisions.", "Một cổ đông lớn có thể có tiếng nói mạnh mẽ trong các quyết định quan trọng của công ty."],
+            ["company shareholder", "noun phrase", "/ˈkʌmpəni ˈʃeəhəʊldə/", "cổ đông công ty", "A company shareholder owns part of the business and may receive profit from it.", "Một cổ đông công ty sở hữu một phần doanh nghiệp và có thể nhận được lợi nhuận từ đó."],
+            ["shareholders’ meeting", "noun phrase", "/ˈʃeəhəʊldəz ˈmiːtɪŋ/", "cuộc họp cổ đông", "A shareholders’ meeting gives investors a chance to ask questions about the company.", "Một cuộc họp cổ đông mang đến cho các nhà đầu tư cơ hội đặt câu hỏi về công ty."],
+            ["shareholder rights", "noun phrase", "/ˈʃeəhəʊldə raɪts/", "quyền của cổ đông", "Shareholder rights help investors protect their money and understand company decisions.", "Quyền của cổ đông giúp các nhà đầu tư bảo vệ tiền của họ và hiểu được các quyết định của công ty."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        let quizData = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0;
+        let hasAnswered = false;
+        let currentShuffledOptions = [];
+        let reviewQueue = [];
+        let isReviewRound = false;
+        let userName = "";
+
+        const DOM = {
+            screenStart: document.getElementById('screen-start'),
+            screenPlaying: document.getElementById('screen-playing'),
+            screenEnd: document.getElementById('screen-end'),
+            progressText: document.getElementById('progress-text'),
+            scoreNumber: document.getElementById('score-number'),
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            explanationContainer: document.getElementById('explanation-container'),
+            rationaleText: document.getElementById('rationale-text'),
+            rationaleContent: document.getElementById('rationale-content'),
+            btnNext: document.getElementById('btn-next'),
+            btnStart: document.getElementById('btn-start'),
+            btnRestart: document.getElementById('btn-restart'),
+            userNameInput: document.getElementById('user-name-input'),
+            nameError: document.getElementById('name-error'),
+            displayStudentName: document.getElementById('display-student-name')
+        };
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function generateQuizData() {
+            const shuffledRaw = shuffleArray([...rawVocab]);
+
+            return shuffledRaw.map((item, index) => {
+                const word = item[0];
+                const pos = item[1];
+                const ipa = item[2];
+                const meaning = item[3];
+                const exampleEn = item[4];
+                const exampleVn = item[5];
+
+                let wrongMeanings = [];
+                const allMeanings = rawVocab.map(v => v[3]).filter(m => m !== meaning);
+                const shuffledWrong = shuffleArray(allMeanings);
+                wrongMeanings = shuffledWrong.slice(0, 3);
+
+                const options = [
+                    { text: meaning, isCorrect: true },
+                    { text: wrongMeanings[0], isCorrect: false },
+                    { text: wrongMeanings[1], isCorrect: false },
+                    { text: wrongMeanings[2], isCorrect: false }
+                ];
+
+                return {
+                    questionNumber: index + 1,
+                    question: `Từ/cụm từ **${word}** có nghĩa là gì?`,
+                    answerOptions: options,
+                    itemWord: word,
+                    rationale: `
+                        <div class="flex flex-col gap-2 mb-3 md:mb-4 border-b border-cyan-500/30 pb-3 md:pb-4">
+                            <div class="flex items-center flex-wrap gap-2 md:gap-3">
+                                <span class="text-2xl md:text-3xl font-black text-cyan-400 tracking-wide neon-font drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">${word}</span>
+                                <span class="text-cyan-200/80 italic text-sm md:text-base bg-sky-900/80 px-2 py-0.5 rounded-md border border-cyan-500/30">(${pos})</span>
+                                <button onclick="speakWord('${word.replace(/['’]/g, "\\'")}')" class="ml-auto p-2 bg-sky-900/50 hover:bg-sky-800 text-cyan-300 rounded-full transition-all flex items-center justify-center w-10 h-10 md:w-11 md:h-11 shadow-[0_0_10px_rgba(34,211,238,0.2)] border border-cyan-500/50 hover:scale-110 flex-shrink-0" title="Nghe từ vựng" style="touch-action: manipulation;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                                </button>
+                            </div>
+                            <span class="text-sky-100 font-mono text-sm md:text-base tracking-wider">${ipa}</span>
+                        </div>
+                        
+                        <div class="flex items-start justify-between text-sky-100 font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-cyan-500 bg-sky-900/40 py-2 pr-2 rounded-r-lg mb-2 gap-2">
+                            <div class="pt-1 md:pt-0"><span class="text-cyan-400 mr-1 md:mr-2 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">🌊</span> <span>${exampleEn}</span></div>
+                            
+                            <button onclick="speakWord('${exampleEn.replace(/['’]/g, "\\'")}')" class="p-1.5 bg-blue-900/60 hover:bg-blue-800 text-blue-300 rounded-full transition-all flex items-center justify-center w-8 h-8 md:w-10 md:h-10 shadow-[0_0_10px_rgba(59,130,246,0.3)] border border-blue-500/40 hover:scale-110 flex-shrink-0 mt-0.5 md:mt-0" title="Nghe câu ví dụ" style="touch-action: manipulation;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                            </button>
+                        </div>
+                        <div class="text-sky-300/80 italic font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-sky-800 bg-sky-950/50 py-2 pr-3 rounded-r-lg">
+                            <span class="text-sky-600 mr-2">🇻🇳</span> <span>${exampleVn}</span>
+                        </div>`
+                };
+            });
+        }
+
+        function startGame() {
+            const nameValue = DOM.userNameInput.value.trim();
+
+            if (nameValue === "") {
+                DOM.userNameInput.classList.add('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                DOM.nameError.classList.remove('hidden');
+                setTimeout(() => {
+                    DOM.userNameInput.classList.remove('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                }, 600);
+                return;
+            }
+
+            DOM.nameError.classList.add('hidden');
+            userName = nameValue;
+            quizData = generateQuizData();
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            reviewQueue = [];
+            isReviewRound = false;
+
+            DOM.screenStart.classList.add('hidden');
+            DOM.screenEnd.classList.add('hidden');
+            DOM.screenPlaying.classList.remove('hidden');
+
+            DOM.screenPlaying.style.opacity = 0;
+            setTimeout(() => {
+                DOM.screenPlaying.style.transition = 'opacity 0.5s ease';
+                DOM.screenPlaying.style.opacity = 1;
+            }, 10);
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+
+            const currentQ = quizData[currentQuestionIndex];
+
+            if (isReviewRound) {
+                DOM.progressText.innerText = `ÔN TẬP: TẦNG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-orange-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg neon-font drop-shadow-[0_0_5px_rgba(251,146,60,0.5)]";
+            } else {
+                DOM.progressText.innerText = `TẦNG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-cyan-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg neon-font drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]";
+            }
+
+            DOM.scoreNumber.innerText = score;
+            DOM.questionText.innerHTML = currentQ.question.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+
+            DOM.optionsContainer.innerHTML = '';
+            const labels = ['1', '2', '3', '4'];
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.style.touchAction = 'manipulation';
+                const numberLabel = `<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-sky-950 text-cyan-400 font-bold border border-cyan-800/50 text-sm mr-3 font-mono transition-colors flex-shrink-0">${labels[index]}</span>`;
+
+                btn.className = "group text-left p-3 sm:p-4 rounded-xl border border-sky-900/60 transition-all duration-300 text-sm sm:text-base bg-sky-900/30 hover:bg-cyan-900/40 hover:border-cyan-500/50 text-sky-100 cursor-pointer shadow-sm font-semibold flex items-center";
+                btn.innerHTML = `${numberLabel} <span class="leading-snug">${option.text}</span>`;
+
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    handleAnswer(index, option.isCorrect);
+                });
+
+                DOM.optionsContainer.appendChild(btn);
+            });
+
+            DOM.explanationContainer.classList.remove('max-h-[800px]', 'opacity-100', 'mt-6');
+            DOM.explanationContainer.classList.add('max-h-0', 'opacity-0');
+            DOM.rationaleText.className = "hidden";
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                DOM.btnNext.innerHTML = 'Tiếp Tục Bơi ➔';
+                DOM.btnNext.className = "w-full py-4 md:py-5 bg-blue-900/80 hover:bg-blue-800 border border-blue-500/50 text-blue-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase";
+            } else {
+                DOM.btnNext.innerHTML = 'Đang xử lý...';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = DOM.optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            Array.from(buttons).forEach(b => b.classList.remove('group', 'hover:bg-cyan-900/40', 'hover:border-cyan-500/50'));
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    if (!isReviewRound) score++;
+                    DOM.scoreNumber.innerText = score;
+                    DOM.scoreNumber.style.transform = 'scale(1.5)';
+                    DOM.scoreNumber.style.color = '#38bdf8';
+                    setTimeout(() => {
+                        DOM.scoreNumber.style.transform = 'scale(1)';
+                        DOM.scoreNumber.style.color = 'inherit';
+                    }, 300);
+                } else if (attempts === 1) {
+                    if (!isReviewRound) correctSecondTry++;
+                }
+
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-cyan-500 text-sky-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(34,211,238,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-cyan-400 transition-all duration-500 text-sm sm:text-base bg-cyan-900/40 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.3)] font-bold flex items-center";
+
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-900/40')) {
+                        buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                    }
+                }
+
+                speakWord(currentQ.itemWord);
+                showRationale(currentQ);
+                updateNextButtonState();
+            } else {
+                attempts++;
+
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-rose-600 text-white font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(225,29,72,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-rose-500 transition-all duration-300 text-sm sm:text-base bg-rose-900/40 text-rose-300 animate-shake flex items-center shadow-[0_0_15px_rgba(244,63,94,0.2)]";
+
+                const textSpan = btn.querySelector('span:last-child');
+                textSpan.classList.add('line-through', 'decoration-rose-500', 'opacity-70');
+
+                btn.disabled = true;
+
+                setTimeout(() => { btn.classList.remove('animate-shake'); }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    if (!isReviewRound) failedQuestions++;
+
+                    reviewQueue.push(currentQ);
+
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            const correctNum = buttons[i].querySelector('span:first-child');
+                            correctNum.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-cyan-500 text-sky-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(34,211,238,0.8)]";
+                            buttons[i].className = "text-left p-3 sm:p-4 rounded-xl border border-cyan-400 transition-all duration-500 text-sm sm:text-base bg-cyan-900/40 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.3)] font-bold flex items-center";
+                        } else if (!buttons[i].classList.contains('bg-rose-900/40')) {
+                            buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                        }
+                    }
+                    speakWord(currentQ.itemWord);
+                    showRationale(currentQ);
+                    updateNextButtonState();
+                }
+            }
+        }
+
+        function updateNextButtonState() {
+            if (currentQuestionIndex === quizData.length - 1) {
+                if (reviewQueue.length > 0) {
+                    DOM.btnNext.innerHTML = 'Sang Vòng Ôn Tập 📝';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-orange-600/90 hover:bg-orange-500 border border-orange-400/50 text-white font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase";
+                } else {
+                    DOM.btnNext.innerHTML = 'Trở Về Bờ 🏁';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-gradient-to-r from-cyan-600 to-blue-500 hover:from-blue-500 hover:to-cyan-400 text-sky-50 font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 neon-font tracking-wide uppercase";
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            DOM.rationaleContent.innerHTML = currentQ.rationale;
+            DOM.rationaleText.className = "block text-base md:text-lg animate-pop";
+
+            DOM.explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            DOM.explanationContainer.classList.add('max-h-[800px]', 'opacity-100', 'mt-6');
+
+            if (window.innerWidth < 768) {
+                setTimeout(() => { DOM.explanationContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else if (reviewQueue.length > 0) {
+                isReviewRound = true;
+                quizData = shuffleArray([...reviewQueue]);
+                reviewQueue = [];
+                currentQuestionIndex = 0;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            DOM.screenPlaying.classList.add('hidden');
+            DOM.screenEnd.classList.remove('hidden');
+            DOM.screenEnd.classList.add('animate-pop');
+
+            const finalMessage = document.getElementById('final-message');
+            const percentage = score / rawVocab.length;
+
+            if (percentage >= 0.9) {
+                finalMessage.style.display = "none";
+            } else if (percentage >= 0.6) {
+                finalMessage.innerText = `Tuyệt vời ${userName}! Bạn đã thu thập được kha khá kho báu đại dương. Lặn thêm lần nữa để đạt điểm tối đa nhé! 🐚`;
+                finalMessage.style.display = "block";
+            } else {
+                finalMessage.innerText = `Đại dương này còn quá nhiều điều mới mẻ với ${userName}. Đừng bỏ cuộc, hãy nạp lại bình dưỡng khí và bắt đầu lại nào! 🤿`;
+                finalMessage.style.display = "block";
+            }
+
+            DOM.displayStudentName.innerText = `Thợ lặn: ${userName}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        let availableVoices = [];
+        function initVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+            if (availableVoices.length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { availableVoices = window.speechSynthesis.getVoices(); };
+            }
+        }
+
+        window.speakWord = function (text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+
+                let spokenText = text;
+                // Fix pronunciation for "I" alone
+                if (spokenText.trim() === 'I') spokenText = 'eye';
+                // Handle "/" correctly in phrases
+                spokenText = spokenText.replace(/\//g, ' or ');
+
+                const utterance = new SpeechSynthesisUtterance(spokenText);
+
+                let selectedVoice = null;
+                const enVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+
+                if (enVoices.length > 0) {
+                    selectedVoice = enVoices.find(v => v.name.includes('Samantha')) ||
+                        enVoices.find(v => v.name.includes('Zira')) ||
+                        enVoices.find(v => v.name.includes('Google US English')) ||
+                        enVoices.find(v => v.lang === 'en-US' && v.name.includes('Female')) ||
+                        enVoices[0];
+                }
+
+                if (selectedVoice) utterance.voice = selectedVoice;
+                utterance.lang = selectedVoice ? selectedVoice.lang : 'en-US';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.1;
+                utterance.volume = 1;
+
+                try { window.speechSynthesis.speak(utterance); } catch (e) { console.error("TTS Error:", e); }
+            }
+        };
+
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['🐠', '🐬', '🐋', '🦑', '🐙', '🦈', '🐚', '🦀', '🌊', '⚓', '🫧', '💰', '📊', '📈'];
+            const numberOfItems = window.innerWidth > 768 ? 25 : 15;
+
+            for (let i = 0; i < numberOfItems; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+
+                const duration = Math.random() * 25 + 15;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 20}s`;
+                item.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        function initApp() {
+            createFloatingItems();
+            initVoices();
+
+            DOM.btnStart.addEventListener('click', function (e) { e.preventDefault(); startGame(); });
+            DOM.btnRestart.addEventListener('click', function (e) { e.preventDefault(); startGame(); });
+            DOM.btnNext.addEventListener('click', function (e) { e.preventDefault(); nextQuestion(); });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    if (!DOM.screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); nextQuestion();
+                    } else if (!DOM.screenStart.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    } else if (!DOM.screenEnd.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    }
+                }
+
+                if (!DOM.screenPlaying.classList.contains('hidden') && !hasAnswered) {
+                    if (['1', '2', '3', '4'].includes(event.key)) {
+                        const index = parseInt(event.key) - 1;
+                        const buttons = DOM.optionsContainer.children;
+                        if (buttons[index] && !buttons[index].disabled) {
+                            buttons[index].click();
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+</body>
+
+</html>
