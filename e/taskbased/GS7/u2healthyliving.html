@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WORD ORDER - GS7 - ADJ for HOBBIES</title>
+    <title>WORD ORDER - GS 7 - ADJ for HEALTHY LIVING</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons -->
@@ -15,7 +15,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #10b981 0%, #0f766e 100%);
             background-attachment: fixed;
             min-height: 100vh;
             color: white;
@@ -135,7 +135,7 @@
     <!-- Header -->
     <header class="text-center mb-6 sm:mb-8 mt-2 sm:mt-4">
         <h1 class="text-2xl sm:text-4xl font-bold mb-2 flex items-center justify-center gap-2 sm:gap-3 drop-shadow-md">
-            <i class="ph-fill ph-magic-wand text-orange-300"></i>
+            <i class="ph-fill ph-leaf text-lime-300"></i>
             Sentence Builder
         </h1>
         <p class="text-sm sm:text-base text-white/80 font-medium tracking-wide">Nhấn vào các từ để sắp xếp thành câu
@@ -144,10 +144,10 @@
         <!-- Progress Bar -->
         <div class="w-full max-w-md mx-auto mt-4 sm:mt-6 bg-black/20 h-2 rounded-full overflow-hidden">
             <div id="progress-bar"
-                class="bg-gradient-to-r from-fuchsia-400 to-cyan-400 h-full w-0 transition-all duration-500 rounded-full">
+                class="bg-gradient-to-r from-lime-300 to-green-400 h-full w-0 transition-all duration-500 rounded-full">
             </div>
         </div>
-        <p class="text-xs sm:text-sm text-white/60 mt-2" id="progress-text">0 / 11</p>
+        <p class="text-xs sm:text-sm text-white/60 mt-2" id="progress-text">0 / 9</p>
     </header>
 
     <!-- Main Game Area -->
@@ -156,7 +156,7 @@
         <!-- Source Area (Word Pool) -->
         <section class="w-full">
             <h2 class="text-base sm:text-lg font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-white/90">
-                <i class="ph ph-puzzle-piece text-lg sm:text-xl text-rose-200"></i> Word Pool
+                <i class="ph ph-puzzle-piece text-lg sm:text-xl text-lime-200"></i> Word Pool
             </h2>
             <div class="glass-panel rounded-2xl p-3 sm:p-6 flex flex-col gap-4 sm:gap-5 relative overflow-hidden">
 
@@ -168,7 +168,7 @@
                 <!-- Translation Hint Box -->
                 <div
                     class="bg-black/25 p-2 sm:p-3 rounded-xl border border-white/10 text-center shadow-inner flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 z-10">
-                    <i class="ph ph-translate text-lg sm:text-xl text-orange-300"></i>
+                    <i class="ph ph-translate text-lg sm:text-xl text-lime-300"></i>
                     <span id="translation-text"
                         class="text-sm sm:text-base text-white/95 font-medium tracking-wide"></span>
                 </div>
@@ -184,7 +184,7 @@
         <!-- Target Area (Sentence Board) -->
         <section class="w-full mt-1 sm:mt-2">
             <h2 class="text-base sm:text-lg font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-white/90">
-                <i class="ph ph-text-align-left text-lg sm:text-xl text-rose-300"></i> Your Sentence
+                <i class="ph ph-text-align-left text-lg sm:text-xl text-green-200"></i> Your Sentence
             </h2>
             <div id="sentence-board"
                 class="glass-panel rounded-2xl p-3 sm:p-6 min-h-[100px] sm:min-h-[120px] flex flex-wrap content-start items-center justify-center gap-2 sm:gap-3 border-2 border-white/20 relative">
@@ -201,20 +201,20 @@
         <div class="flex flex-wrap justify-center gap-3 sm:gap-4 my-2 mb-8 sm:mb-10">
             <button id="btn-check"
                 class="glass-panel hover:bg-white/20 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center gap-2 transition-all transform active:scale-95 shadow-lg border-white/40 group">
-                <i class="ph-bold ph-check-circle group-hover:text-cyan-300 transition-colors"></i> Check Answer
+                <i class="ph-bold ph-check-circle group-hover:text-lime-300 transition-colors"></i> Check Answer
             </button>
             <button id="btn-hint"
-                class="glass-panel hover:bg-fuchsia-500/30 hover:bg-fuchsia-500/50 px-4 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center justify-center transition-all transform active:scale-95 shadow-lg border-white/40 group"
+                class="glass-panel hover:bg-lime-500/30 hover:bg-lime-500/50 px-4 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center justify-center transition-all transform active:scale-95 shadow-lg border-white/40 group"
                 title="Gợi ý đáp án">
-                <i class="ph-fill ph-lightbulb text-fuchsia-300 group-hover:scale-110 transition-transform"></i>
+                <i class="ph-fill ph-lightbulb text-lime-300 group-hover:scale-110 transition-transform"></i>
             </button>
             <button id="btn-replay"
-                class="glass-panel bg-cyan-500/30 hover:bg-cyan-500/50 px-4 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center justify-center transition-all transform active:scale-95 shadow-lg border-white/40 hidden group"
+                class="glass-panel bg-teal-500/30 hover:bg-teal-500/50 px-4 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center justify-center transition-all transform active:scale-95 shadow-lg border-white/40 hidden group"
                 title="Nghe lại">
-                <i class="ph-fill ph-speaker-high text-cyan-100 group-hover:scale-110 transition-transform"></i>
+                <i class="ph-fill ph-speaker-high text-teal-100 group-hover:scale-110 transition-transform"></i>
             </button>
             <button id="btn-next"
-                class="glass-panel bg-violet-500/30 hover:bg-violet-500/50 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center gap-2 transition-all transform active:scale-95 shadow-lg border-white/40 hidden group">
+                class="glass-panel bg-green-500/30 hover:bg-green-500/50 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-base sm:text-lg flex items-center gap-2 transition-all transform active:scale-95 shadow-lg border-white/40 hidden group">
                 Next <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </button>
         </div>
@@ -232,13 +232,13 @@
         <div class="glass-panel p-10 rounded-3xl text-center max-w-md mx-4 transform scale-90 transition-transform duration-500 border-white/30"
             id="modal-content">
             <div
-                class="w-24 h-24 bg-gradient-to-br from-fuchsia-400 to-cyan-400 rounded-full mx-auto flex items-center justify-center mb-6 shadow-lg shadow-cyan-500/30">
+                class="w-24 h-24 bg-gradient-to-br from-lime-400 to-green-500 rounded-full mx-auto flex items-center justify-center mb-6 shadow-lg shadow-green-500/30">
                 <i class="ph-fill ph-trophy text-5xl text-white"></i>
             </div>
             <h2 class="text-3xl font-bold mb-4">Hoàn Thành!</h2>
             <p class="text-lg text-white/80 mb-8">Bạn đã xuất sắc vượt qua tất cả các câu hỏi.</p>
             <button onclick="restartGame()"
-                class="bg-white text-[#8b5cf6] hover:bg-gray-100 px-8 py-3 rounded-full font-bold text-lg transition-colors shadow-lg w-full">
+                class="bg-white text-[#0f766e] hover:bg-gray-100 px-8 py-3 rounded-full font-bold text-lg transition-colors shadow-lg w-full">
                 Chơi Lại
             </button>
         </div>
@@ -246,17 +246,15 @@
 
     <script>
         const sentencesData = [
-            { en: "My brother has an amazing coin collection.", vn: "Anh trai tôi có một bộ sưu tập tiền xu tuyệt vời." },
-            { en: "Reading books is a common hobby among students.", vn: "Đọc sách là một sở thích phổ biến của học sinh." },
-            { en: "I usually draw pictures in my free time.", vn: "Tôi thường vẽ tranh vào thời gian rảnh." },
-            { en: "Gardening makes my grandmother happy.", vn: "Việc làm vườn làm cho bà tôi vui vẻ." },
-            { en: "Collecting books can be helpful for your studies.", vn: "Sưu tầm sách có thể hữu ích cho việc học của bạn." },
-            { en: "My sister is interested in making models.", vn: "Chị gái tôi thích làm mô hình." },
-            { en: "You need to be patient when you make pottery.", vn: "Bạn cần kiên nhẫn khi làm đồ gốm." },
-            { en: "Playing football is a popular hobby in my school.", vn: "Chơi bóng đá là một sở thích phổ biến ở trường tôi." },
-            { en: "He is a regular member of the photography club.", vn: "Anh ấy là thành viên thường xuyên của câu lạc bộ nhiếp ảnh." },
-            { en: "Collecting old bottles is an unusual hobby.", vn: "Sưu tầm chai lọ cũ là một sở thích khác thường." },
-            { en: "Some stamps in his collection are very valuable.", vn: "Một vài con tem trong bộ sưu tập của anh ấy rất có giá trị." }
+            { en: "My lips become chapped in cold weather.", vn: "Môi tôi trở nên nứt nẻ khi thời tiết lạnh." },
+            { en: "We should keep our hands clean before meals.", vn: "Chúng ta nên giữ tay sạch sẽ trước bữa ăn." },
+            { en: "Reading in a dim room is bad for your eyes.", vn: "Đọc sách trong phòng mờ tối rất có hại cho mắt của bạn." },
+            { en: "Regular exercise helps us stay fit.", vn: "Tập thể dục thường xuyên giúp chúng ta giữ dáng." },
+            { en: "Too much fast food is harmful to our health.", vn: "Ăn quá nhiều thức ăn nhanh rất có hại cho sức khỏe của chúng ta." },
+            { en: "Fruit and vegetables are healthy foods.", vn: "Trái cây và rau quả là những thực phẩm lành mạnh." },
+            { en: "Chess is a popular indoor activity.", vn: "Cờ vua là một hoạt động trong nhà phổ biến." },
+            { en: "Cycling is a good outdoor activity.", vn: "Đạp xe là một hoạt động ngoài trời tốt." },
+            { en: "A high fever can be a serious health problem.", vn: "Sốt cao có thể là một vấn đề sức khỏe nghiêm trọng." }
         ];
 
         let sentenceQueue = [...sentencesData];
