@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTE Grammar Quiz - Sequence of 7 Tenses</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @keyframes pulseBorder {
+
+            0%,
+            100% {
+                border-color: rgba(16, 185, 129, 0.8);
+                box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+            }
+
+            50% {
+                border-color: rgba(16, 185, 129, 0.2);
+                box-shadow: 0 0 5px rgba(16, 185, 129, 0.0);
+            }
+        }
+
+        .animate-pulse-border {
+            animation: pulseBorder 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* ANIMATIONS FOR FOREST BACKGROUND */
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(110vh) translateX(20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes floatFirefly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(var(--tx), var(--ty)) scale(1.2);
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(calc(var(--tx) * -1), calc(var(--ty) * -1)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .leaf {
+            animation: fall var(--duration, 10s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .firefly {
+            animation: floatFirefly var(--duration) ease-in-out infinite alternate, flicker var(--flicker-dur) infinite;
+            animation-delay: var(--delay);
+            box-shadow: 0 0 10px 2px #f59e0b, 0 0 20px 5px #fbbf24;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.6);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ----- BỘ ICON CHO GIAO DIỆN (FOREST THEME) -----
+        const LeafIcon = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" /><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" /></svg>;
+        const TreeIcon = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.994 4.098a5.502 5.502 0 0 0-8.988 0A6.498 6.498 0 0 0 3 11a6.5 6.5 0 0 0 6 6h1.272l-1.026 5h2.464l-.98-5H15a6.5 6.5 0 0 0 6-6 6.498 6.498 0 0 0-3.006-6.902Z" /></svg>;
+        const ArrowRight = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
+        const ArrowLeft = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>;
+        const CheckCircle2 = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>;
+        const XCircle = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>;
+        const Clock = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+        const Calendar = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+        const User = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+        const Info = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>;
+        const HelpCircle = ({ size = 24, className = "" }) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>;
+
+        // ----- FOREST BACKGROUND -----
+        const ForestBackground = () => {
+            // Sinh ngẫu nhiên các chiếc lá rơi
+            const leaves = Array.from({ length: 25 }).map((_, i) => ({
+                id: i,
+                left: `${Math.random() * 100}vw`,
+                size: `${Math.random() * 1 + 0.5}rem`,
+                duration: `${Math.random() * 10 + 10}s`,
+                delay: `${Math.random() * -15}s`,
+                opacity: Math.random() * 0.5 + 0.2,
+                color: Math.random() > 0.5 ? 'text-emerald-400' : 'text-green-600'
+            }));
+
+            const fireflies = Array.from({ length: 30 }).map((_, i) => ({
+                id: `ff-${i}`,
+                top: `${Math.random() * 100}vh`,
+                left: `${Math.random() * 100}vw`,
+                size: `${Math.random() * 4 + 2}px`,
+                duration: `${Math.random() * 15 + 10}s`,
+                delay: `${Math.random() * -20}s`,
+                flicker: `${Math.random() * 2 + 1}s`,
+                tx: `${(Math.random() - 0.5) * 200}px`,
+                ty: `${(Math.random() - 0.5) * 200}px`
+            }));
+
+            return (
+                <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-gradient-to-b from-[#0f2027] via-[#103020] to-[#0a1510]">
+
+                    {/* Rừng cây (silhouettes) */}
+                    <div className="absolute bottom-0 left-0 w-full h-[40vh] opacity-30 text-emerald-900 flex items-end justify-around">
+                        <TreeIcon size={120} className="transform -translate-x-10" />
+                        <TreeIcon size={200} className="transform -translate-x-5" />
+                        <TreeIcon size={150} />
+                        <TreeIcon size={250} className="transform translate-x-5" />
+                        <TreeIcon size={180} className="transform translate-x-10" />
+                    </div>
+                    <div className="absolute bottom-0 left-0 w-full h-[30vh] opacity-50 text-green-950 flex items-end justify-between px-10">
+                        <TreeIcon size={300} className="transform -translate-x-10" />
+                        <TreeIcon size={280} />
+                        <TreeIcon size={350} className="transform translate-x-10" />
+                    </div>
+
+                    {/* Lá rơi */}
+                    {leaves.map(leaf => (
+                        <div
+                            key={leaf.id}
+                            className={`absolute top-0 leaf ${leaf.color}`}
+                            style={{
+                                left: leaf.left,
+                                '--duration': leaf.duration,
+                                '--delay': leaf.delay,
+                                opacity: leaf.opacity
+                            }}
+                        >
+                            <LeafIcon size={leaf.size} />
+                        </div>
+                    ))}
+
+                    {/* Đom đóm */}
+                    {fireflies.map(ff => (
+                        <div
+                            key={ff.id}
+                            className="absolute rounded-full bg-amber-200 firefly"
+                            style={{
+                                top: ff.top, left: ff.left, width: ff.size, height: ff.size,
+                                '--duration': ff.duration, '--delay': ff.delay, '--flicker-dur': ff.flicker,
+                                '--tx': ff.tx, '--ty': ff.ty
+                            }}
+                        ></div>
+                    ))}
+                </div>
+            );
+        }
+
+        // ----- DỮ LIỆU CÂU HỎI -----
+        const QUESTIONS = [
+            // Bài tập 1
+            { id: 1, text: "The River Nile ______ into the Mediterranean.", options: ["is flowing", "flows", "flow", "has flowed"], answer: 1, translation: "Sông Nile chảy vào Địa Trung Hải.", explanation: "Sự thật hiển nhiên -> Hiện tại đơn" },
+            { id: 2, text: "This book is mine. That one ______ to Pierre.", options: ["is belonging", "belong", "belongs", "belonging"], answer: 2, translation: "Cuốn sách này là của tôi. Cuốn kia thuộc về Pierre.", explanation: "Động từ trạng thái (belong) không dùng ở thì tiếp diễn -> Hiện tại đơn" },
+            { id: 3, text: "Look at Joan! She ______ her fingernails. She must be nervous.", options: ["bites", "bite", "is bite", "is biting"], answer: 3, translation: "Nhìn Joan kìa! Cô ấy đang cắn móng tay. Chắc cô ấy đang lo lắng.", explanation: "Hành động đang xảy ra tại thời điểm nói ('Look!') -> Hiện tại tiếp diễn" },
+            { id: 4, text: "We usually ______ vegetables in our garden.", options: ["grow", "are growing", "grows", "growing"], answer: 0, translation: "Chúng tôi thường trồng rau trong vườn nhà.", explanation: "Thói quen ('usually') -> Hiện tại đơn" },
+            { id: 5, text: "Let’s go out. It ______ now.", options: ["doesn’t rain", "isn’t raining", "not raining", "doesn’t raining"], answer: 1, translation: "Ra ngoài thôi. Bây giờ trời không mưa.", explanation: "Hành động đang diễn ra tại thời điểm nói ('now') -> Hiện tại tiếp diễn" },
+            { id: 6, text: "Every morning, the sun ______ in my bedroom window and ______ me up.", options: ["is shining / is waking", "shine / wake", "shines / wakes", "shines / is waking"], answer: 2, translation: "Mỗi buổi sáng, mặt trời chiếu sáng qua cửa sổ phòng ngủ và đánh thức tôi dậy.", explanation: "Thói quen lặp đi lặp lại ('Every morning') -> Hiện tại đơn" },
+            { id: 7, text: "Jim is very untidy. He ______ his things all over the place!", options: ["leaves always", "always leaves", "always is leaving", "is always leaving"], answer: 3, translation: "Jim rất bừa bộn. Anh ấy luôn vứt đồ đạc khắp nơi!", explanation: "Sự phàn nàn về một thói quen xấu ('always' + V-ing) -> Hiện tại tiếp diễn" },
+            { id: 8, text: "Ann ______ very happy at the moment.", options: ["is seeming", "seems", "seem", "seeming"], answer: 1, translation: "Ann có vẻ rất vui vào lúc này.", explanation: "Động từ trạng thái (seem) không dùng ở thì tiếp diễn -> Hiện tại đơn" },
+            { id: 9, text: "He’s a photographer. He ______ a lot of photos.", options: ["takes", "is take", "take", "is taking"], answer: 0, translation: "Anh ấy là một nhiếp ảnh gia. Anh ấy chụp rất nhiều ảnh.", explanation: "Sự thật/Nghề nghiệp -> Hiện tại đơn" },
+            { id: 10, text: "Oh! What’s the matter with your hand? It ______!", options: ["bleeds", "bleed", "is bleeding", "bleeding"], answer: 2, translation: "Ồ! Có chuyện gì với tay bạn vậy? Nó đang chảy máu kìa!", explanation: "Sự việc đang xảy ra trước mắt -> Hiện tại tiếp diễn" },
+
+            // Bài tập 2: Past Simple vs. Present Perfect
+            { id: 11, text: "I ______ this shirt for nearly four years.", options: ["had", "have had", "have", "was having"], answer: 1, translation: "Tôi đã có chiếc áo sơ mi này gần bốn năm rồi.", explanation: "'for nearly four years' -> Hiện tại hoàn thành" },
+            { id: 12, text: "Joanna ______ her desk, but now it’s in a mess again.", options: ["has tidied", "has been tidying", "tidy", "tidied"], answer: 3, translation: "Joanna đã dọn dẹp bàn của mình, nhưng bây giờ nó lại bừa bộn.", explanation: "Hành động đã xảy ra và kết thúc trong quá khứ -> Quá khứ đơn" },
+            { id: 13, text: "Mike ______ his key. He can’t find it anywhere.", options: ["has lost", "lost", "has been losing", "loses"], answer: 0, translation: "Mike đã làm mất chìa khóa. Anh ấy không thể tìm thấy nó ở đâu cả.", explanation: "Hành động xảy ra trong quá khứ nhưng để lại kết quả ở hiện tại -> Hiện tại hoàn thành" },
+            { id: 14, text: "The last time I ______ to Brighton was in August.", options: ["have gone", "have been", "went", "go"], answer: 2, translation: "Lần cuối cùng tôi đến Brighton là vào tháng Tám.", explanation: "'The last time' + mệnh đề Quá khứ đơn" },
+            { id: 15, text: "I ______ my homework. I ______ it before tea.", options: ["have finished / have done", "finished / did", "have finished / did", "finished / have done"], answer: 2, translation: "Tôi đã làm xong bài tập. Tôi đã làm nó trước giờ uống trà.", explanation: "Câu trước nhấn mạnh kết quả (HTHT). Câu sau có thời điểm rõ ràng 'before tea' -> Quá khứ đơn" },
+            { id: 16, text: "And the race is over! And Micky Simpson ______ in record time!", options: ["won", "wins", "was winning", "has won"], answer: 3, translation: "Và cuộc đua đã kết thúc! Và Micky Simpson đã chiến thắng với thời gian kỷ lục!", explanation: "Hành động vừa mới xảy ra, để lại kết quả hiện tại -> Hiện tại hoàn thành" },
+            { id: 17, text: "Martin ______ to Greece five times. He loves the place.", options: ["has been", "went", "was", "has gone"], answer: 0, translation: "Martin đã đến Hy Lạp năm lần. Anh ấy yêu nơi này.", explanation: "Số lần trải nghiệm tính đến hiện tại ('five times') -> Hiện tại hoàn thành" },
+            { id: 18, text: "Of course I can ride a bike. But I ______ one for years.", options: ["didn’t ride", "don’t ride", "haven’t ridden", "wasn’t riding"], answer: 2, translation: "Tất nhiên là tôi biết đạp xe. Nhưng tôi đã không đạp xe nhiều năm rồi.", explanation: "'for years' (từ quá khứ đến nay) -> Hiện tại hoàn thành" },
+            { id: 19, text: "I don’t know Carol’s husband. I ______ him.", options: ["never met", "have never met", "never meet", "didn’t ever meet"], answer: 1, translation: "Tôi không biết chồng của Carol. Tôi chưa bao giờ gặp anh ấy.", explanation: "Chưa từng làm việc gì tính đến hiện tại -> Hiện tại hoàn thành" },
+            { id: 20, text: "Rupert ______ a message for you. He ______ last night.", options: ["left / has rung", "has left / has rung", "left / rang", "has left / rang"], answer: 3, translation: "Rupert đã để lại một tin nhắn cho bạn. Anh ấy đã gọi tối qua.", explanation: "Hành động để lại tin nhắn có kết quả ở hiện tại (HTHT). Hành động gọi có thời gian rõ ràng 'last night' -> Quá khứ đơn" },
+            { id: 21, text: "Your car looks very clean. ______ it?", options: ["Have you washed", "Did you wash", "Do you wash", "Were you washing"], answer: 0, translation: "Xe của bạn trông rất sạch sẽ. Bạn vừa rửa nó phải không?", explanation: "Nhấn mạnh kết quả ở hiện tại ('looks clean') -> Hiện tại hoàn thành" },
+            { id: 22, text: "We ______ here in 1993. We ______ here a long time now.", options: ["have moved / were", "moved / were", "moved / have been", "have moved / have been"], answer: 2, translation: "Chúng tôi đã chuyển đến đây vào năm 1993. Chúng tôi đã ở đây một thời gian dài rồi.", explanation: "Thời điểm xác định 'in 1993' (QKĐ). Khoảng thời gian từ đó đến nay 'a long time now' (HTHT)." },
+            { id: 23, text: "Mr Clark ______ in a bank for 15 years. Then he gave it up.", options: ["has worked", "worked", "has been working", "works"], answer: 1, translation: "Ông Clark đã làm việc trong một ngân hàng 15 năm. Sau đó ông ấy đã nghỉ việc.", explanation: "Hành động đã hoàn toàn kết thúc trong quá khứ ('gave it up') -> Quá khứ đơn" },
+            { id: 24, text: "Is this the first time you ______ pasta?", options: ["cooked", "did cook", "cook", "have cooked"], answer: 3, translation: "Đây có phải là lần đầu tiên bạn nấu mì ống không?", explanation: "'This is the first time' -> Hiện tại hoàn thành" },
+            { id: 25, text: "I ______ for a computer company since I ______ from university.", options: ["have worked / graduated", "worked / have graduated", "have worked / have graduated", "worked / graduated"], answer: 0, translation: "Tôi đã làm việc cho một công ty máy tính kể từ khi tôi tốt nghiệp đại học.", explanation: "HTHT + since + Quá khứ đơn" },
+            { id: 26, text: "We ______ the parcel three weeks ago. If you still ______ it, please inform us immediately.", options: ["have posted / didn’t receive", "posted / didn’t receive", "posted / haven’t received", "have posted / haven’t received"], answer: 2, translation: "Chúng tôi đã gửi bưu kiện ba tuần trước. Nếu bạn vẫn chưa nhận được nó, vui lòng thông báo cho chúng tôi ngay.", explanation: "'three weeks ago' (QKĐ). Tình trạng 'chưa nhận được' kéo dài đến hiện tại -> HTHT" },
+            { id: 27, text: "Albert Einstein ______ the scientist who ______ the theory of relativity.", options: ["has been / has developed", "was / has developed", "has been / developed", "was / developed"], answer: 3, translation: "Albert Einstein là nhà khoa học đã phát triển thuyết tương đối.", explanation: "Nói về một người đã khuất và sự kiện lịch sử -> Quá khứ đơn" },
+            { id: 28, text: "My grandfather ______ 30 years ago. I ______ him.", options: ["has died / never met", "died / have never met", "died / never met", "has died / have never met"], answer: 1, translation: "Ông tôi đã mất cách đây 30 năm. Tôi chưa bao giờ gặp ông.", explanation: "'30 years ago' (QKĐ). Trải nghiệm chưa từng có tính đến nay -> HTHT" },
+
+            // Bài tập 3: Present Perfect vs. Past Perfect
+            { id: 29, text: "Who is that woman? I ______ her before.", options: ["never saw", "had never seen", "have never seen", "never see"], answer: 2, translation: "Người phụ nữ kia là ai? Tôi chưa bao giờ gặp cô ấy trước đây.", explanation: "Trải nghiệm tính từ trước đến thời điểm nói ở HIỆN TẠI ('is') -> Hiện tại hoàn thành" },
+            { id: 30, text: "The house was dirty. They ______ it for weeks.", options: ["hadn’t cleaned", "haven’t cleaned", "didn’t clean", "haven’t been cleaning"], answer: 0, translation: "Ngôi nhà rất bẩn. Họ đã không dọn dẹp nó trong nhiều tuần.", explanation: "Việc 'không dọn' xảy ra TRƯỚC thời điểm 'was dirty' (Quá khứ) -> Quá khứ hoàn thành" },
+            { id: 31, text: "There was no sign of a taxi, although I ______ one half an hour before.", options: ["have ordered", "ordered", "have been ordering", "had ordered"], answer: 3, translation: "Không thấy bóng dáng chiếc taxi nào, mặc dù tôi đã đặt một chiếc nửa giờ trước đó.", explanation: "Hành động 'đặt taxi' xảy ra TRƯỚC thời điểm 'was no sign' (Quá khứ) -> Quá khứ hoàn thành" },
+            { id: 32, text: "You can have that newspaper. I ______ with it.", options: ["had finished", "have finished", "finished", "have been finished"], answer: 1, translation: "Bạn có thể lấy tờ báo đó. Tôi đã đọc xong rồi.", explanation: "Hành động 'đọc xong' liên quan đến kết quả ở HIỆN TẠI ('can have') -> Hiện tại hoàn thành" },
+            { id: 33, text: "We went to the box office at lunch-time, but they ______ all the tickets.", options: ["have already sold", "already sold", "had already sold", "had already been selling"], answer: 2, translation: "Chúng tôi đã đến quầy vé vào giờ ăn trưa, nhưng họ đã bán hết vé rồi.", explanation: "Hành động 'bán hết' xảy ra TRƯỚC hành động 'went' (Quá khứ) -> Quá khứ hoàn thành" },
+            { id: 34, text: "It isn’t raining now. It ______ at last.", options: ["stopped", "had stopped", "had been stopping", "has stopped"], answer: 3, translation: "Bây giờ trời không mưa nữa. Cuối cùng thì trời cũng tạnh.", explanation: "Kết quả ở HIỆN TẠI ('isn't raining') -> Hiện tại hoàn thành" },
+            { id: 35, text: "It’ll soon get warm here. I ______ the heating on.", options: ["have turned", "had turned", "turned", "have been turning"], answer: 0, translation: "Ở đây sẽ sớm ấm lên thôi. Tôi đã bật lò sưởi rồi.", explanation: "Hành động 'bật lò sưởi' để lại kết quả ảnh hưởng đến HIỆN TẠI/TƯƠNG LAI -> Hiện tại hoàn thành" },
+            { id: 36, text: "It was twenty to six. Most of the shops ______.", options: ["have just closed", "had just closed", "just close", "have just been closing"], answer: 1, translation: "Lúc đó là sáu giờ kém hai mươi. Hầu hết các cửa hàng vừa mới đóng cửa.", explanation: "Sự việc 'đóng cửa' xảy ra TRƯỚC thời điểm 'was twenty to six' (Quá khứ) -> Quá khứ hoàn thành" },
+            { id: 37, text: "Karen didn’t want to come to the cinema with us because she ______ the film.", options: ["has already seen", "already saw", "has seen already", "had already seen"], answer: 3, translation: "Karen đã không muốn đi xem phim cùng chúng tôi vì cô ấy đã xem bộ phim đó rồi.", explanation: "Hành động 'xem phim' xảy ra TRƯỚC hành động 'didn't want' (Quá khứ) -> Quá khứ hoàn thành" },
+            { id: 38, text: "There’s no more cheese. We ______ it all, I’m afraid.", options: ["ate", "had eaten", "have eaten", "have been eating"], answer: 2, translation: "Không còn phô mai nữa. Tôi e là chúng ta đã ăn hết rồi.", explanation: "Kết quả rõ ràng ở HIỆN TẠI ('There is no more') -> Hiện tại hoàn thành" },
+            { id: 39, text: "I’m very pleased to see you again after such a long time. We ______ each other for five years.", options: ["haven’t seen", "hadn’t seen", "didn’t see", "don’t see"], answer: 0, translation: "Tôi rất vui khi gặp lại bạn sau một thời gian dài. Chúng ta đã không gặp nhau 5 năm rồi.", explanation: "Tính từ quá khứ đến HIỆN TẠI ('am very pleased') -> Hiện tại hoàn thành" },
+            { id: 40, text: "I spoke to Melanie at lunch-time. Someone ______ her the news earlier.", options: ["has told", "had told", "told", "has been telling"], answer: 1, translation: "Tôi đã nói chuyện với Melanie vào giờ ăn trưa. Ai đó đã kể cho cô ấy tin tức này từ trước.", explanation: "Việc 'kể tin' xảy ra TRƯỚC việc 'spoke' (Quá khứ) -> Quá khứ hoàn thành" },
+            { id: 41, text: "By 1960, most of Britain’s old colonies ______ independent.", options: ["have become", "became", "had become", "have been becoming"], answer: 2, translation: "Đến năm 1960, hầu hết các thuộc địa cũ của Anh đã trở nên độc lập.", explanation: "By + mốc thời gian trong QUÁ KHỨ -> Quá khứ hoàn thành" },
+            { id: 42, text: "Don’t you want to see this program? It ______.", options: ["started", "had started", "is starting", "has started"], answer: 3, translation: "Bạn không muốn xem chương trình này sao? Nó đã bắt đầu rồi.", explanation: "Sự việc có liên quan đến HIỆN TẠI ('want to see') -> Hiện tại hoàn thành" },
+            { id: 43, text: "At first I thought I ______ the right thing, but I soon realised that I ______ a serious mistake.", options: ["had done / had made", "have done / have made", "did / made", "had done / have made"], answer: 0, translation: "Lúc đầu tôi tưởng mình đã làm đúng, nhưng tôi sớm nhận ra rằng mình đã phạm một sai lầm nghiêm trọng.", explanation: "Cả hai hành động đều xảy ra TRƯỚC các suy nghĩ trong quá khứ ('thought', 'realised') -> Quá khứ hoàn thành" },
+
+            // Bài tập 4: Quá khứ tiếp diễn vs. Quá khứ đơn vs. Quá khứ hoàn thành
+            { id: 44, text: "When I ______ home from work, I ______ an old friend at the bus stop.", options: ["walked / was seeing", "had walked / saw", "was walking / saw", "was walking / was seeing"], answer: 2, translation: "Khi tôi đang đi bộ về nhà sau giờ làm việc, tôi đã nhìn thấy một người bạn cũ ở trạm xe buýt.", explanation: "Hành động đang xảy ra (was walking) thì hành động khác cắt ngang (saw)" },
+            { id: 45, text: "While Sarah ______ dinner, her husband ______ the table.", options: ["was preparing / was setting", "prepared / set", "had prepared / was setting", "was preparing / set"], answer: 0, translation: "Trong khi Sarah đang chuẩn bị bữa tối, chồng cô ấy đang dọn bàn.", explanation: "Hai hành động song song trong quá khứ -> Cùng chia Quá khứ tiếp diễn" },
+            { id: 46, text: "After the students ______ their final examination, they ______ out to celebrate.", options: ["finished / had gone", "were finishing / went", "had finished / had gone", "had finished / went"], answer: 3, translation: "Sau khi các sinh viên đã hoàn thành kỳ thi cuối kỳ, họ đi ra ngoài để ăn mừng.", explanation: "After + Quá khứ hoàn thành (xảy ra trước), Quá khứ đơn (xảy ra sau)" },
+            { id: 47, text: "Before the ambulance ______, the injured man ______ consciousness.", options: ["had arrived / lost", "arrived / had lost", "was arriving / had lost", "arrived / lost"], answer: 1, translation: "Trước khi xe cấp cứu đến, người đàn ông bị thương đã bất tỉnh.", explanation: "Before + Quá khứ đơn (xảy ra sau), Quá khứ hoàn thành (xảy ra trước)" },
+            { id: 48, text: "Before the teacher ______ into the classroom, several students ______ their seats.", options: ["had come / left", "came / had left", "was coming / left", "came / were leaving"], answer: 1, translation: "Trước khi giáo viên bước vào lớp, một vài học sinh đã rời khỏi chỗ ngồi.", explanation: "Before + Quá khứ đơn (xảy ra sau), Quá khứ hoàn thành (xảy ra trước)" },
+            { id: 49, text: "When Tom ______ across the street, a cyclist suddenly ______ into him.", options: ["crossed / was crashing", "had crossed / crashed", "crossed / crashed", "was crossing / crashed"], answer: 3, translation: "Khi Tom đang băng qua đường, một người đi xe đạp bất ngờ tông vào anh ấy.", explanation: "Hành động đang xảy ra (was crossing) thì hành động khác cắt ngang (crashed)" },
+            { id: 50, text: "While I ______ for the exam, my sister ______ on her presentation in the next room.", options: ["was studying / was working", "studied / worked", "had studied / worked", "was studying / worked"], answer: 0, translation: "Trong khi tôi đang học thi, chị gái tôi đang làm bài thuyết trình ở phòng bên cạnh.", explanation: "Hai hành động diễn ra song song trong quá khứ -> Quá khứ tiếp diễn" },
+            { id: 51, text: "After the company ______ the new product, sales ______ rapidly.", options: ["launched / had increased", "was launching / increased", "had launched / increased", "had launched / had increased"], answer: 2, translation: "Sau khi công ty tung ra sản phẩm mới, doanh số đã tăng nhanh chóng.", explanation: "After + Quá khứ hoàn thành (xảy ra trước), Quá khứ đơn (xảy ra sau)" },
+            { id: 52, text: "When the children ______ in the garden, one of them ______ a strange object in the soil.", options: ["played / was finding", "had played / found", "played / had found", "were playing / found"], answer: 3, translation: "Khi bọn trẻ đang chơi trong vườn, một trong số chúng đã tìm thấy một vật thể lạ dưới đất.", explanation: "Hành động đang xảy ra (were playing) thì hành động khác cắt ngang (found)" },
+            { id: 53, text: "Before Jane ______ the email, her manager ______ her about the change in schedule.", options: ["had read / told", "read / had told", "was reading / told", "read / was telling"], answer: 1, translation: "Trước khi Jane đọc email, quản lý của cô ấy đã nói cho cô biết về sự thay đổi lịch trình.", explanation: "Before + Quá khứ đơn (xảy ra sau), Quá khứ hoàn thành (xảy ra trước)" },
+            { id: 54, text: "After the scientists ______ the data several times, they ______ their findings.", options: ["analysed / had published", "were analysing / published", "had analysed / published", "had analysed / had published"], answer: 2, translation: "Sau khi các nhà khoa học đã phân tích dữ liệu nhiều lần, họ công bố những phát hiện của mình.", explanation: "After + Quá khứ hoàn thành (xảy ra trước), Quá khứ đơn (xảy ra sau)" },
+            { id: 55, text: "While the teacher ______ the new grammar point, the students ______ notes carefully.", options: ["was explaining / were taking", "explained / took", "had explained / were taking", "was explaining / took"], answer: 0, translation: "Trong khi giáo viên đang giải thích điểm ngữ pháp mới, các học sinh đang ghi chép cẩn thận.", explanation: "Hai hành động diễn ra song song trong quá khứ -> Quá khứ tiếp diễn" },
+            { id: 56, text: "While the tourists ______ around the old town, their guide ______ them stories about its history.", options: ["were walking / was telling", "walked / told", "had walked / was telling", "were walking / told"], answer: 0, translation: "Trong khi các du khách đang đi dạo quanh khu phố cổ, hướng dẫn viên của họ đang kể cho họ nghe những câu chuyện về lịch sử của nó.", explanation: "Hai hành động diễn ra song song trong quá khứ -> Quá khứ tiếp diễn" },
+            { id: 57, text: "After Mary ______ all the necessary documents, she ______ them to the university.", options: ["collected / had sent", "was collecting / sent", "had collected / sent", "had collected / had sent"], answer: 2, translation: "Sau khi Mary đã thu thập tất cả các tài liệu cần thiết, cô ấy đã gửi chúng đến trường đại học.", explanation: "After + Quá khứ hoàn thành (xảy ra trước), Quá khứ đơn (xảy ra sau)" },
+            { id: 58, text: "Before the guests ______ at the restaurant, we ______ a table near the window.", options: ["had arrived / reserved", "arrived / had reserved", "were arriving / reserved", "arrived / were reserving"], answer: 1, translation: "Trước khi những vị khách đến nhà hàng, chúng tôi đã đặt trước một bàn gần cửa sổ.", explanation: "Before + Quá khứ đơn (xảy ra sau), Quá khứ hoàn thành (xảy ra trước)" },
+            { id: 59, text: "When we ______ along the beach, it suddenly ______ to rain heavily.", options: ["walked / was starting", "had walked / started", "walked / had started", "were walking / started"], answer: 3, translation: "Khi chúng tôi đang đi dọc theo bãi biển, trời đột nhiên bắt đầu mưa lớn.", explanation: "Hành động đang xảy ra (were walking) thì hành động khác cắt ngang (started)" },
+            { id: 60, text: "After the mechanic ______ the engine carefully, he ______ the cause of the problem.", options: ["had examined / discovered", "examined / had discovered", "was examining / discovered", "had examined / had discovered"], answer: 0, translation: "Sau khi thợ máy đã kiểm tra động cơ cẩn thận, anh ta phát hiện ra nguyên nhân của vấn đề.", explanation: "After + Quá khứ hoàn thành (xảy ra trước), Quá khứ đơn (xảy ra sau)" },
+            { id: 61, text: "When Lisa ______ to school yesterday morning, she ______ that she had left her homework at home.", options: ["walked / was realizing", "had walked / realized", "walked / had realized", "was walking / realized"], answer: 3, translation: "Khi Lisa đang đi bộ đến trường sáng hôm qua, cô ấy nhận ra rằng mình đã để quên bài tập ở nhà.", explanation: "Hành động đang xảy ra (was walking) thì hành động khác cắt ngang (realized)" },
+            { id: 62, text: "While the children ______ a film in the living room, their parents ______ dinner in the kitchen.", options: ["watched / prepared", "were watching / were preparing", "had watched / prepared", "were watching / prepared"], answer: 1, translation: "Trong khi bọn trẻ đang xem phim ở phòng khách, bố mẹ chúng đang chuẩn bị bữa tối trong bếp.", explanation: "Hai hành động diễn ra song song trong quá khứ -> Quá khứ tiếp diễn" },
+            { id: 63, text: "Before the police ______ at the scene, the suspect ______ through the back door.", options: ["had arrived / escaped", "arrived / had escaped", "were arriving / escaped", "arrived / was escaping"], answer: 1, translation: "Trước khi cảnh sát đến hiện trường, kẻ tình nghi đã trốn thoát qua cửa sau.", explanation: "Before + Quá khứ đơn (xảy ra sau), Quá khứ hoàn thành (xảy ra trước)" }
+        ];
+
+        // ----- ÂM THANH (Web Audio API) -----
+        const playSound = (type) => {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.15);
+
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 0.15);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.17);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+                } else {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(250, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                }
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 1.0);
+            } catch (e) {
+                console.error("Trình duyệt không hỗ trợ Web Audio API", e);
+            }
+        };
+
+        // ----- LOGIC ỨNG DỤNG -----
+        function App() {
+            const [gameState, setGameState] = useState('welcome');
+            const [userName, setUserName] = useState('');
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [timeElapsed, setTimeElapsed] = useState(0);
+            const [finishDate, setFinishDate] = useState(null);
+            const [showHint, setShowHint] = useState(false);
+
+            const inputRef = useRef(null);
+
+            useEffect(() => {
+                let timer;
+                if (gameState === 'playing') {
+                    timer = setInterval(() => { setTimeElapsed((prev) => prev + 1); }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [gameState]);
+
+            useEffect(() => {
+                setShowHint(false); // Reset hint khi đổi câu hỏi
+            }, [currentIdx]);
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Enter') {
+                        if (gameState === 'welcome' && userName.trim() !== '') {
+                            startQuiz();
+                        } else if (gameState === 'playing') {
+                            const currentAns = answers[currentIdx];
+                            if (currentAns?.resolved) {
+                                handleNext();
+                            }
+                        }
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [gameState, userName, currentIdx, answers]);
+
+            const startQuiz = () => {
+                setGameState('playing');
+                setTimeElapsed(0);
+                setCurrentIdx(0);
+                setAnswers({});
+            };
+
+            const handleNext = () => {
+                if (currentIdx < QUESTIONS.length - 1) {
+                    setCurrentIdx(currentIdx + 1);
+                } else {
+                    finishQuiz();
+                }
+            };
+
+            const handleBack = () => {
+                if (currentIdx > 0) {
+                    setCurrentIdx(currentIdx - 1);
+                }
+            };
+
+            const selectOption = (optIdx) => {
+                const currentQ = QUESTIONS[currentIdx];
+                const currentAns = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+
+                if (currentAns.resolved || currentAns.attempts.includes(optIdx)) return;
+
+                const newAttempts = [...currentAns.attempts, optIdx];
+                let isResolved = false;
+                let isFirstTryCorrect = false;
+
+                if (optIdx === currentQ.answer) {
+                    playSound('correct');
+                    isResolved = true;
+                    if (newAttempts.length === 1) isFirstTryCorrect = true;
+                } else {
+                    playSound('incorrect');
+                    if (newAttempts.length >= 2) isResolved = true;
+                }
+
+                setAnswers({
+                    ...answers,
+                    [currentIdx]: {
+                        attempts: newAttempts,
+                        resolved: isResolved,
+                        firstTryCorrect: isFirstTryCorrect
+                    }
+                });
+            };
+
+            const finishQuiz = () => {
+                setFinishDate(new Date());
+                setGameState('summary');
+            };
+
+            const formatTime = (seconds) => {
+                const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const s = (seconds % 60).toString().padStart(2, '0');
+                return `${m}:${s}`;
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                QUESTIONS.forEach((q, idx) => {
+                    if (answers[idx]?.firstTryCorrect) correct++;
+                });
+                return correct;
+            };
+
+            const optionLabels = ["A", "B", "C", "D"];
+
+            return (
+                <div className="min-h-screen font-sans flex flex-col items-center justify-between p-4 sm:p-8 relative overflow-hidden z-10">
+
+                    <ForestBackground />
+
+                    <div className="w-full max-w-4xl z-10 flex-grow flex flex-col justify-center items-center">
+
+                        {gameState === 'welcome' && (
+                            <div className="bg-emerald-950/40 backdrop-blur-xl border border-emerald-500/30 p-10 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition-all relative overflow-hidden">
+                                {/* Lớp phủ sáng mờ */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-green-400/10 to-transparent opacity-50 pointer-events-none"></div>
+
+                                <div className="flex justify-center mb-6 text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                                    <TreeIcon size={64} className="animate-pulse" style={{ animationDuration: '3s' }} />
+                                </div>
+                                <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-100 to-green-400 mb-2 tracking-tight">
+                                    Welcome to HTE
+                                </h1>
+                                <p className="text-emerald-100/80 mb-8 font-medium tracking-wide uppercase text-sm">Review of English Tenses</p>
+
+                                <div className="mb-8 relative z-10">
+                                    <label className="block text-left text-sm font-semibold text-emerald-200 mb-2">Please enter your name:</label>
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        autoFocus
+                                        className="w-full px-5 py-4 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-white focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40 transition-all text-lg placeholder-emerald-200/30 shadow-inner"
+                                        placeholder="Your Name..."
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={startQuiz}
+                                    disabled={userName.trim() === ''}
+                                    className={`w-full py-4 rounded-xl font-bold text-lg flex justify-center items-center gap-2 transition-all duration-300 relative z-10 shadow-lg ${userName.trim() !== '' ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-emerald-950 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-[1.02]' : 'bg-gray-700/50 text-gray-400 cursor-not-allowed'}`}
+                                >
+                                    Start <ArrowRight size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        {gameState === 'playing' && (
+                            <div className="w-full">
+                                {/* Tiêu đề Quiz lớn */}
+                                <div className="text-center mb-8 relative z-10">
+                                    <h2 className="inline-flex items-center justify-center gap-3 text-lg sm:text-2xl md:text-3xl font-black uppercase tracking-widest bg-emerald-950/60 backdrop-blur-xl px-8 py-3 sm:px-12 sm:py-4 rounded-full border border-emerald-500/30 shadow-[0_10px_30px_rgba(4,120,87,0.3)]">
+                                        <TreeIcon size={28} className="text-emerald-400 drop-shadow-md" />
+                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-green-400 drop-shadow-sm">
+                                            REVIEW OF TENSES
+                                        </span>
+                                    </h2>
+                                </div>
+
+                                <div className="flex flex-wrap justify-between items-center bg-emerald-950/40 backdrop-blur-md border border-emerald-500/30 p-4 rounded-2xl mb-6 text-emerald-50 shadow-lg font-medium">
+                                    <div className="flex items-center gap-2">
+                                        <User size={18} className="text-emerald-400" />
+                                        <span className="truncate max-w-[150px] sm:max-w-xs">{userName}</span>
+                                    </div>
+                                    <div className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-green-400">
+                                        Question {currentIdx + 1} / {QUESTIONS.length}
+                                    </div>
+                                    <div className="flex items-center gap-2 font-mono text-emerald-200 bg-black/40 px-4 py-1.5 rounded-lg border border-emerald-800/50 shadow-inner">
+                                        <Clock size={18} className="animate-pulse text-emerald-400" /> {formatTime(timeElapsed)}
+                                    </div>
+                                </div>
+
+                                <div className="w-full bg-black/40 h-2.5 rounded-full mb-8 overflow-hidden border border-emerald-900/50 shadow-inner">
+                                    <div
+                                        className="h-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-300 ease-out relative"
+                                        style={{ width: `${((currentIdx + 1) / QUESTIONS.length) * 100}%` }}
+                                    >
+                                        <div className="absolute top-0 bottom-0 right-0 w-6 bg-white/30 animate-pulse rounded-full"></div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-emerald-950/60 backdrop-blur-xl border border-emerald-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl mb-4 relative">
+                                    <LeafIcon size={160} className="absolute -right-12 -bottom-10 text-emerald-400/10 pointer-events-none -rotate-12" />
+
+                                    <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8 leading-relaxed relative z-10">
+                                        <span className="text-emerald-400 mr-2">{currentIdx + 1}.</span>
+                                        {QUESTIONS[currentIdx].text}
+                                    </h2>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                                        {QUESTIONS[currentIdx].options.map((opt, idx) => {
+                                            const currentQ = QUESTIONS[currentIdx];
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false };
+                                            const isSelected = currentAnsInfo.attempts.includes(idx);
+                                            const isCorrectAns = idx === currentQ.answer;
+
+                                            let btnClass = "flex items-center p-4 rounded-2xl text-left border-2 transition-all duration-200 group font-medium ";
+                                            let iconClass = "w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl mr-4 text-lg transition-colors shadow-inner font-bold ";
+                                            let textClass = "text-lg transition-colors ";
+
+                                            if (currentAnsInfo.resolved && isCorrectAns) {
+                                                btnClass += "bg-emerald-800/60 border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.4)]";
+                                                iconClass += "bg-emerald-400 text-emerald-950";
+                                                textClass += "text-white";
+                                            } else if (isSelected && !isCorrectAns) {
+                                                btnClass += "bg-rose-900/40 border-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.4)] animate-pulse-border cursor-not-allowed";
+                                                iconClass += "bg-rose-600 text-white";
+                                                textClass += "text-rose-200 line-through opacity-70";
+                                            } else {
+                                                btnClass += "bg-black/30 border-emerald-800/50 hover:bg-emerald-900/40 hover:border-emerald-500/50 cursor-pointer shadow-sm";
+                                                iconClass += "bg-black/40 text-emerald-200 group-hover:bg-emerald-500/30 border border-emerald-800/50";
+                                                textClass += "text-emerald-50";
+                                            }
+
+                                            return (
+                                                <button key={idx} onClick={() => selectOption(idx)} disabled={currentAnsInfo.resolved || isSelected} className={btnClass}>
+                                                    <div className={iconClass}>{optionLabels[idx]}</div>
+                                                    <span className={textClass}>{opt}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="mt-5 text-center min-h-[24px] z-10 relative">
+                                        {(() => {
+                                            const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+                                            if (currentAnsInfo.resolved) {
+                                                return currentAnsInfo.firstTryCorrect
+                                                    ? <span className="text-emerald-300 font-medium bg-emerald-900/40 border border-emerald-700/50 px-4 py-1.5 rounded-full inline-block shadow-sm">Excellent! Correct answer.</span>
+                                                    : <span className="text-amber-300 font-medium bg-amber-900/40 border border-amber-700/50 px-4 py-1.5 rounded-full inline-block shadow-sm">The correct answer has been revealed.</span>;
+                                            } else if (currentAnsInfo.attempts.length > 0) {
+                                                return <span className="text-rose-300 font-medium bg-rose-900/40 border border-rose-700/50 px-4 py-1.5 rounded-full inline-block shadow-sm">Incorrect. Try again! (Attempts left: {2 - currentAnsInfo.attempts.length})</span>;
+                                            }
+                                            return null;
+                                        })()}
+                                    </div>
+
+                                    {/* Bubble Hint Nổi */}
+                                    <div className="mt-6 flex flex-col items-center relative z-50">
+                                        <button
+                                            onClick={() => setShowHint(!showHint)}
+                                            className={`px-4 py-2 rounded-full text-sm font-semibold shadow-sm border transition-all flex items-center gap-2 ${showHint ? 'bg-emerald-500/20 border-emerald-400/50 text-emerald-200' : 'bg-black/40 border-emerald-800/50 text-emerald-400 hover:bg-emerald-900/50'}`}
+                                        >
+                                            <HelpCircle size={16} />
+                                            {showHint ? 'Hide Hint' : 'Show Hint'}
+                                        </button>
+
+                                        {showHint && (
+                                            <div className="absolute top-full mt-3 w-max max-w-[90vw] sm:max-w-md p-4 bg-emerald-950/95 backdrop-blur-xl border border-emerald-500/50 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.7)] text-emerald-50 text-left z-50">
+                                                {/* Mũi tên chỉ lên */}
+                                                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-emerald-950/95 border-t border-l border-emerald-500/50 rotate-45 rounded-tl-sm"></div>
+
+                                                <div className="relative z-10">
+                                                    <div className="flex items-center gap-1.5 mb-1">
+                                                        <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Translation</span>
+                                                    </div>
+                                                    <p className="font-medium text-[14px] leading-relaxed text-emerald-50 mb-3">{QUESTIONS[currentIdx].translation}</p>
+
+                                                    {answers[currentIdx]?.resolved ? (
+                                                        <div className="pt-3 border-t border-emerald-800/50">
+                                                            <div className="flex items-center gap-1.5 mb-1">
+                                                                <span className="text-[10px] uppercase font-bold text-green-400 tracking-wider">Grammar Rule</span>
+                                                            </div>
+                                                            <p className="text-[13px] text-emerald-200 leading-relaxed"><strong className="font-semibold text-emerald-400">Rule:</strong> {QUESTIONS[currentIdx].explanation}</p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="mt-1 pt-2 border-t border-emerald-800/50">
+                                                            <p className="text-emerald-400/60 italic text-[11px] font-medium text-center">* Please select an answer to reveal the grammar rule.</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-4 w-full">
+                                    <button
+                                        onClick={handleBack} disabled={currentIdx === 0}
+                                        className={`flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-4 sm:py-3 rounded-xl font-semibold transition-all shadow-sm ${currentIdx === 0 ? 'opacity-0 cursor-default hidden sm:flex' : 'bg-emerald-950/60 text-emerald-200 hover:bg-emerald-900 border border-emerald-800/50'}`}
+                                    >
+                                        <ArrowLeft size={20} /> Back
+                                    </button>
+
+                                    <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
+                                        <button
+                                            onClick={handleNext} disabled={!(answers[currentIdx]?.resolved)}
+                                            className={`flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg
+                        ${answers[currentIdx]?.resolved
+                                                    ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-emerald-950 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:scale-105 cursor-pointer border border-emerald-400/50'
+                                                    : 'bg-black/30 text-emerald-700 border border-emerald-900/50 cursor-not-allowed'}`}
+                                        >
+                                            {currentIdx === QUESTIONS.length - 1 ? 'Finish Quiz' : 'Next'}
+                                            {currentIdx === QUESTIONS.length - 1 ? <CheckCircle2 size={20} /> : <ArrowRight size={20} />}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {gameState === 'summary' && (
+                            <div className="w-full bg-emerald-950/80 backdrop-blur-xl border border-emerald-500/30 p-6 sm:p-10 rounded-3xl shadow-2xl relative">
+                                <div className="text-center mb-10">
+                                    <div className="inline-flex justify-center items-center w-20 h-20 bg-gradient-to-tr from-emerald-400 to-green-600 rounded-full mb-4 shadow-[0_0_30px_rgba(16,185,129,0.4)] border-4 border-emerald-950">
+                                        <TreeIcon size={36} className="text-emerald-950" />
+                                    </div>
+                                    <h1 className="text-4xl font-black text-white mb-2 tracking-tight">Quiz Summary</h1>
+                                    <p className="text-xl text-emerald-300 font-medium">Great expedition, {userName}!</p>
+                                </div>
+
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-emerald-800/50 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <Calendar className="text-emerald-400 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-200/70 mb-1 font-semibold uppercase tracking-wider">Date</div>
+                                        <div className="text-sm font-bold text-white">{finishDate?.toLocaleDateString('vi-VN')} {finishDate?.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</div>
+                                    </div>
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-emerald-800/50 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <Clock className="text-emerald-400 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-200/70 mb-1 font-semibold uppercase tracking-wider">Time Taken</div>
+                                        <div className="text-lg font-black text-white">{formatTime(timeElapsed)}</div>
+                                    </div>
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-emerald-800/50 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <CheckCircle2 className="text-green-400 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-200/70 mb-1 font-semibold uppercase tracking-wider">1st Try Correct</div>
+                                        <div className="text-2xl font-black text-green-400">{calculateScore()}</div>
+                                    </div>
+                                    <div className="bg-black/30 p-4 rounded-2xl border border-emerald-800/50 flex flex-col items-center justify-center text-center shadow-sm">
+                                        <XCircle className="text-rose-400 mb-2" size={24} />
+                                        <div className="text-xs text-emerald-200/70 mb-1 font-semibold uppercase tracking-wider">Mistakes</div>
+                                        <div className="text-2xl font-black text-rose-400">{QUESTIONS.length - calculateScore()}</div>
+                                    </div>
+                                </div>
+
+                                <div className="mb-10 text-center">
+                                    <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-green-300 mb-4 drop-shadow-sm">
+                                        {Math.round((calculateScore() / QUESTIONS.length) * 100)}%
+                                    </div>
+                                    <div className="w-full max-w-md mx-auto bg-black/40 h-4 rounded-full overflow-hidden shadow-inner border border-emerald-900/50">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-rose-500 via-amber-400 to-green-500 transition-all duration-1000"
+                                            style={{ width: `${(calculateScore() / QUESTIONS.length) * 100}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 border-t border-emerald-800/50 pt-8">
+                                    <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><Info size={24} className="text-emerald-400" /> Detailed Review</h3>
+                                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                        {QUESTIONS.map((q, idx) => {
+                                            const ansInfo = answers[idx] || { attempts: [], firstTryCorrect: false };
+                                            const isCorrect = ansInfo.firstTryCorrect;
+                                            const firstGuessIdx = ansInfo.attempts[0];
+                                            const isUnanswered = ansInfo.attempts.length === 0;
+
+                                            return (
+                                                <div key={idx} className={`p-5 rounded-2xl border shadow-sm ${isCorrect ? 'bg-emerald-900/30 border-emerald-500/40' : 'bg-rose-900/20 border-rose-500/30'} flex flex-col gap-4`}>
+                                                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                                                        <div className="flex-shrink-0 mt-1">
+                                                            {isCorrect ? <div className="bg-emerald-500/20 p-2 rounded-xl text-emerald-400"><CheckCircle2 size={24} /></div>
+                                                                : <div className="bg-rose-500/20 p-2 rounded-xl text-rose-400"><XCircle size={24} /></div>}
+                                                        </div>
+                                                        <div className="flex-grow">
+                                                            <p className="text-white font-bold text-[17px] mb-1 leading-snug"><span className="text-emerald-400/70 mr-1">{q.id}.</span> {q.text}</p>
+                                                            <p className="text-emerald-200/60 text-[14px] mb-4 italic font-medium">"{q.translation}"</p>
+
+                                                            <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                                                                <div className="bg-black/30 p-3 rounded-xl border border-emerald-800/30 shadow-inner">
+                                                                    <span className="text-emerald-300/60 text-xs font-bold uppercase block mb-1">Your First Try:</span>
+                                                                    <span className={`font-bold text-[15px] ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                                                        {isUnanswered ? "None" : `${optionLabels[firstGuessIdx]}. ${q.options[firstGuessIdx]}`}
+                                                                    </span>
+                                                                </div>
+                                                                {!isCorrect && (
+                                                                    <div className="bg-emerald-900/40 p-3 rounded-xl border border-emerald-500/30 shadow-inner">
+                                                                        <span className="text-emerald-400/80 text-xs font-bold uppercase block mb-1">Correct Answer:</span>
+                                                                        <span className="font-bold text-[15px] text-emerald-300">
+                                                                            {optionLabels[q.answer]}. {q.options[q.answer]}
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {q.explanation && (
+                                                        <div className={`mt-1 p-4 rounded-xl border flex items-start gap-3 text-[14px] font-medium shadow-sm ${isCorrect ? 'bg-emerald-950/50 border-emerald-500/20 text-emerald-200' : 'bg-rose-950/50 border-rose-500/20 text-rose-200'}`}>
+                                                            <Info size={20} className="flex-shrink-0 mt-0.5 opacity-60" />
+                                                            <p className="leading-relaxed"><strong className="font-bold opacity-80 uppercase text-xs mr-2">Rule:</strong> {q.explanation}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="mt-10 flex justify-center">
+                                    <button
+                                        onClick={() => window.location.reload()}
+                                        className="px-8 py-4 rounded-xl font-bold bg-black/40 hover:bg-emerald-900 text-white shadow-lg transition-all flex items-center gap-3 group border border-emerald-600/50"
+                                    >
+                                        <Clock size={20} className="group-hover:-rotate-90 transition-transform duration-500" /> Retake Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <footer className="w-full text-center py-6 mt-auto z-20 relative">
+                        <p className="text-emerald-50 text-sm font-semibold tracking-wide bg-[#0a1510]/80 backdrop-blur-md inline-block px-6 py-2.5 rounded-full border border-emerald-800/50 shadow-lg">
+                            © Copyright by <span className="text-emerald-400 font-bold">Hoang Truong English</span>
+                        </p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
