@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thánh Điện Từ Vựng - GS12 U1</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Typography */
+        h1, h2, h3, .theme-font { font-family: 'Playfair Display', serif; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            background-color: #2e1065; /* Violet 900 */
+            -webkit-tap-highlight-color: transparent;
+            color: #ede9fe; /* Violet 100 */
+            touch-action: manipulation; 
+        }
+
+        /* Custom Scrollbar - Violet */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #3b0764; } /* Purple 950 */
+        ::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 4px; } /* Violet 500 */
+        ::-webkit-scrollbar-thumb:hover { background: #a855f7; } /* Purple 500 */
+
+        /* Animations */
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(-15deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh) rotate(20deg) scale(1.2); opacity: 0; }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: float-up linear infinite;
+            z-index: -1;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.4)); /* Violet glow */
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .animate-shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(139, 92, 246, 0.7), 0 0 45px rgba(139, 92, 246, 0.4); }
+        }
+        .btn-glow { animation: pulse-glow 2.5s infinite; }
+
+        /* Glassmorphism Panels (Violet feel) */
+        .glass-panel {
+            background: rgba(46, 16, 101, 0.85); /* Violet 900 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(167, 139, 250, 0.3); /* Violet 400 */
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2), inset 0 0 20px rgba(167, 139, 250, 0.05);
+        }
+        
+        .question-text strong {
+            color: #c4b5fd; /* Violet 300 */
+            font-weight: 700;
+            padding: 2px 8px;
+            background: rgba(76, 29, 149, 0.6); /* Violet 800 */
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.15em;
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+
+        .theme-text-gradient {
+            background: linear-gradient(to right, #a78bfa, #f472b6); /* Violet to Pink */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hidden { display: none !important; }
+        
+        /* Sparkle pattern */
+        .sparkle-lines {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(167, 139, 250, 0.03) 15px, rgba(167, 139, 250, 0.03) 16px);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col items-center justify-center p-4 lg:p-8">
+
+    <div id="background-layer" class="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#4c1d95] via-[#2e1065] to-[#0f172a] opacity-100"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNhNzhiZmEiIGZpbGwtb3BhY2l0eT0iMC4wOCIvPjwvc3ZnPg==')] opacity-60"></div>
+        <div id="floating-container"></div>
+    </div>
+
+    <div id="main-content" class="relative w-full max-w-3xl transition-all duration-500 z-10 my-auto">
+        
+        <div id="screen-start" class="glass-panel rounded-3xl p-6 md:p-14 text-center transform hover:scale-[1.01] transition-transform duration-500">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 drop-shadow-[0_0_15px_rgba(167,139,250,0.6)]">🏛️✨📜</div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 theme-text-gradient theme-font tracking-tight drop-shadow-sm leading-tight uppercase">
+            Hành Trình Lịch Sử <br><span class="text-2xl md:text-3xl font-sans tracking-normal capitalize font-semibold text-violet-200">GS12 - Unit 1</span>
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl text-violet-100/80 mb-6 font-medium leading-relaxed max-w-xl mx-auto">
+                Khám phá <span id="total-count" class="font-bold text-pink-300 bg-fuchsia-900/40 px-3 py-1 rounded-lg border border-fuchsia-500/50 shadow-[0_0_10px_rgba(232,121,249,0.3)] mx-1"></span> mảnh ghép từ vựng về những vĩ nhân và dấu ấn thời đại! 🌟
+            </p>
+            
+            <div class="mb-8 relative max-w-xs md:max-w-sm mx-auto">
+                <input type="text" id="user-name-input" placeholder="Nhập tên học giả của bạn..." class="w-full bg-violet-950/60 border-2 border-violet-500/50 rounded-xl px-4 py-3 text-violet-100 placeholder-violet-400/60 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 transition-all text-center text-base md:text-lg font-semibold shadow-inner" autocomplete="off" spellcheck="false">
+                <p id="name-error" class="text-pink-400 text-sm mt-2 hidden font-medium">⚠️ Hãy nhập tên để lưu danh sử sách!</p>
+            </div>
+
+            <button id="btn-start" class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-fuchsia-500 hover:to-pink-500 text-white font-bold rounded-full text-lg md:text-xl transition-all cursor-pointer transform hover:-translate-y-1 active:translate-y-0 active:scale-95 font-sans tracking-wide uppercase btn-glow" style="touch-action: manipulation;">
+                Mở Cuốn Biên Niên Sử 📖
+            </button>
+            
+            <div class="mt-8 text-[10px] md:text-xs text-violet-400/50 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <div id="screen-playing" class="glass-panel rounded-3xl p-4 sm:p-6 md:p-10 hidden border-t-4 border-t-violet-400 shadow-2xl">
+            
+            <div class="flex justify-between items-center mb-4 md:mb-6 border-b-2 border-violet-800/50 pb-3 md:pb-5">
+                <div class="flex flex-col">
+                    <span class="text-[10px] md:text-xs text-violet-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Tiến trình</span>
+                    <span id="progress-text" class="text-violet-300 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg font-sans drop-shadow-[0_0_5px_rgba(167,139,250,0.4)]">TRANG 1 / 20</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] md:text-xs text-violet-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Điểm sáng</span>
+                    <span id="score-text" class="bg-violet-900/60 border border-violet-500/40 px-3 md:px-4 py-1 md:py-1.5 rounded-xl text-violet-200 font-bold text-xs sm:text-sm md:text-base shadow-[0_0_10px_rgba(139,92,246,0.3)] flex items-center gap-1 md:gap-2">
+                        <span>✨</span> <span id="score-number" class="text-base md:text-lg">0</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="mb-5 md:mb-8 bg-black/20 p-5 md:p-8 rounded-2xl border border-violet-800/50 shadow-inner relative overflow-hidden sparkle-lines">
+                <h2 id="question-text" class="text-lg sm:text-xl md:text-2xl font-semibold leading-relaxed question-text text-gray-100 z-10 relative"></h2>
+            </div>
+
+            <div id="options-container" class="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8">
+            </div>
+
+            <div id="keyboard-hint" class="text-center text-xs text-violet-400/50 font-semibold mb-4 hidden md:block">
+                Mẹo: Dùng phím số <kbd class="bg-violet-900/80 px-2 py-1 rounded text-violet-300 border border-violet-700">1</kbd> - <kbd class="bg-violet-900/80 px-2 py-1 rounded text-violet-300 border border-violet-700">4</kbd> để chọn nhanh.
+            </div>
+
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-violet-950/80 border-l-4 border-fuchsia-400 rounded-r-2xl p-4 md:p-6 mb-5 md:mb-6 shadow-[0_0_20px_rgba(217,70,239,0.15)] relative overflow-hidden">
+                    <div id="rationale-text" class="hidden relative z-10">
+                        <span id="rationale-content" class="block"></span>
+                    </div>
+                </div>
+                
+                <button id="btn-next" class="w-full py-4 md:py-5 bg-fuchsia-900/80 hover:bg-fuchsia-800 border border-fuchsia-500/50 text-fuchsia-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(217,70,239,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase" style="touch-action: manipulation;">
+                    Lật Trang Tiếp Theo ➔
+                </button>
+            </div>
+            
+            <div class="mt-6 text-center text-[10px] md:text-xs text-violet-400/50 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <div id="screen-end" class="glass-panel rounded-3xl p-6 md:p-14 text-center transform transition-transform duration-500 hidden">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 animate-pop drop-shadow-[0_0_15px_rgba(167,139,250,0.6)]">🎓🏆📜</div>
+            <h1 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4 theme-text-gradient theme-font tracking-tight drop-shadow-sm leading-tight uppercase">
+                Hoàn Tất Cuốn Biên Niên Sử!
+            </h1>
+            <p id="final-message" class="text-sm sm:text-base md:text-xl text-violet-200/80 mb-6 md:mb-10 font-medium max-w-lg mx-auto leading-relaxed"></p>
+
+            <div class="max-w-md mx-auto bg-violet-950/80 border border-fuchsia-500/40 rounded-3xl p-5 md:p-8 text-left shadow-[0_0_25px_rgba(217,70,239,0.15)] mb-8 md:mb-10 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-fuchsia-400 to-violet-500"></div>
+                <h3 class="text-lg md:text-2xl font-bold text-fuchsia-300 mb-4 md:mb-6 border-b-2 border-violet-800/50 pb-3 md:pb-4 text-center font-sans tracking-wide uppercase drop-shadow-[0_0_5px_rgba(217,70,239,0.5)]">Lưu Danh Sử Sách<br><span id="display-student-name" class="text-violet-100 text-base md:text-xl mt-2 block font-sans tracking-normal capitalize font-semibold"></span></h3>
+                <ul class="space-y-4 md:space-y-5 text-violet-200/90 text-xs sm:text-sm md:text-base font-medium">
+                    <li class="flex justify-between items-center border-b border-violet-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span class="text-lg md:text-xl flex-shrink-0">✅</span> Phản xạ nhanh <span class="hidden sm:inline">(Đúng L1)</span>:</span> 
+                        <span id="stat-correct" class="font-black text-fuchsia-400 text-xl md:text-2xl font-sans drop-shadow-[0_0_5px_rgba(232,121,249,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-violet-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span class="text-lg md:text-xl flex-shrink-0">🤔</span> Cẩn trọng <span class="hidden sm:inline">(Đúng L2)</span>:</span> 
+                        <span id="stat-second" class="font-black text-blue-400 text-xl md:text-2xl font-sans drop-shadow-[0_0_5px_rgba(96,165,250,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2 md:gap-3"><span class="text-lg md:text-xl flex-shrink-0">📝</span> Đã củng cố <span class="hidden sm:inline">(Vòng 2)</span>:</span> 
+                        <span id="stat-wrong" class="font-black text-pink-500 text-xl md:text-2xl font-sans drop-shadow-[0_0_5px_rgba(236,72,153,0.6)] flex-shrink-0"></span>
+                    </li>
+                </ul>
+            </div>
+            
+            <button id="btn-restart" class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-transparent hover:bg-violet-900/40 border-2 border-violet-400 text-violet-300 hover:text-violet-200 font-bold rounded-full text-base md:text-xl transition-all flex items-center justify-center gap-3 mx-auto cursor-pointer shadow-[0_0_15px_rgba(167,139,250,0.3)] font-sans tracking-wide uppercase active:scale-95" style="touch-action: manipulation;">
+                🔄 Khám Phá Lại Lần Nữa
+            </button>
+            
+            <div class="mt-6 md:mt-8 text-center text-[10px] md:text-xs text-violet-400/50 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+    </div>
+
+    <script>
+        const rawVocab = [
+            ["achievement", "noun", "/əˈtʃiːvmənt/", "thành tựu, thành tích", "Winning an important competition can be a great achievement for a young student.", "Giành chiến thắng trong một cuộc thi quan trọng có thể là một thành tựu lớn đối với một học sinh trẻ."],
+            ["Communist Party", "noun phrase", "/ˈkɒmjənɪst ˈpɑːti/", "Đảng Cộng sản", "Students may read about the Communist Party when they study modern history and political systems.", "Học sinh có thể đọc về Đảng Cộng sản khi học về lịch sử hiện đại và các hệ thống chính trị."],
+            ["General Secretary", "noun phrase", "/ˌdʒenrəl ˈsekrətri/", "Tổng Bí thư", "The term General Secretary can refer to the senior leader of a political party or organization.", "Thuật ngữ Tổng Bí thư có thể chỉ nhà lãnh đạo cấp cao của một đảng phái chính trị hoặc tổ chức."],
+            ["implement", "verb", "/ˈɪmplɪment/", "thực hiện, triển khai", "Governments can implement new policies to improve education and public services.", "Chính phủ có thể triển khai các chính sách mới để cải thiện giáo dục và dịch vụ công."],
+            ["economic reforms", "noun phrase", "/ˌiːkəˈnɒmɪk rɪˈfɔːmz/", "các cải cách kinh tế", "Economic reforms can change the way businesses operate and people earn money.", "Các cải cách kinh tế có thể thay đổi cách thức doanh nghiệp hoạt động và người dân kiếm tiền."],
+            ["leadership", "noun", "/ˈliːdəʃɪp/", "sự lãnh đạo, khả năng lãnh đạo", "Good leadership can help a team work together and solve difficult problems.", "Khả năng lãnh đạo tốt có thể giúp một nhóm làm việc cùng nhau và giải quyết các vấn đề khó khăn."],
+            ["a turning point", "noun phrase", "/ə ˈtɜːnɪŋ pɔɪnt/", "bước ngoặt", "Starting university can be a turning point in a young person’s life.", "Bắt đầu học đại học có thể là một bước ngoặt trong cuộc đời của một người trẻ."],
+            ["development", "noun", "/dɪˈveləpmənt/", "sự phát triển", "Education plays an important role in the development of a country and its people.", "Giáo dục đóng vai trò quan trọng trong sự phát triển của một quốc gia và con người."],
+            ["be born in", "verb phrase", "/bi bɔːn ɪn/", "được sinh ra ở/vào", "A famous writer may be born in a small town but later become known around the world.", "Một nhà văn nổi tiếng có thể được sinh ra ở một thị trấn nhỏ nhưng sau đó được cả thế giới biết đến."],
+            ["be known as", "verb phrase", "/bi nəʊn æz/", "được biết đến như là", "A person can be known as a national hero because of important contributions to the country.", "Một người có thể được biết đến như là một anh hùng dân tộc vì những đóng góp quan trọng cho đất nước."],
+            ["mark", "verb", "/mɑːk/", "đánh dấu", "An important event can mark the beginning of a new period in a country’s history.", "Một sự kiện quan trọng có thể đánh dấu sự khởi đầu của một thời kỳ mới trong lịch sử quốc gia."],
+            ["work as a ...", "verb phrase", "/wɜːk æz ə/", "làm việc với tư cách là…", "After university, many graduates want to work as a teacher, engineer, or accountant.", "Sau khi tốt nghiệp đại học, nhiều sinh viên muốn làm việc với tư cách là giáo viên, kỹ sư hoặc kế toán."],
+            ["drop out", "phrasal verb", "/drɒp aʊt/", "bỏ học giữa chừng", "Some students may drop out of school because of financial or family problems.", "Một số học sinh có thể bỏ học giữa chừng vì vấn đề tài chính hoặc gia đình."],
+            ["look forward to + V-ing", "verb phrase", "/lʊk ˈfɔːwəd tuː/", "mong chờ làm gì", "Students often look forward to meeting their friends again after a long holiday.", "Học sinh thường mong chờ được gặp lại bạn bè sau một kỳ nghỉ dài."],
+            ["biography", "noun", "/baɪˈɒɡrəfi/", "tiểu sử", "A biography can tell readers about an important person’s life, work, and achievements.", "Một cuốn tiểu sử có thể kể cho người đọc về cuộc đời, công việc và những thành tựu của một nhân vật quan trọng."],
+            ["a national hero", "noun phrase", "/ə ˈnæʃənəl ˈhɪərəʊ/", "anh hùng dân tộc", "People may regard someone as a national hero because of great service to the country.", "Mọi người có thể coi ai đó là anh hùng dân tộc vì công lao to lớn đối với đất nước."],
+            ["power", "noun", "/ˈpaʊər/", "quyền lực; điện năng", "Political power can influence important decisions, while electrical power allows machines to operate.", "Quyền lực chính trị có thể ảnh hưởng đến các quyết định quan trọng, trong khi năng lượng điện giúp máy móc hoạt động."],
+            ["go out", "phrasal verb", "/ɡəʊ aʊt/", "mất, tắt (điện/đèn)", "The lights may go out during a storm, so families should keep a flashlight at home.", "Đèn có thể bị tắt (mất điện) trong một cơn bão, vì vậy các gia đình nên giữ một chiếc đèn pin ở nhà."],
+            ["soldier", "noun", "/ˈsəʊldʒər/", "người lính", "A soldier may work in difficult conditions and spend a long time away from family.", "Một người lính có thể làm việc trong điều kiện khó khăn và phải xa gia đình một thời gian dài."],
+            ["resist", "verb", "/rɪˈzɪst/", "chống lại, kháng cự", "People may resist an enemy when they want to protect their homes and communities.", "Người dân có thể kháng cự lại kẻ thù khi họ muốn bảo vệ quê hương và cộng đồng của mình."],
+            ["a resistance war", "noun phrase", "/ə rɪˈzɪstəns wɔːr/", "cuộc kháng chiến", "Students can study a resistance war to understand an important period of national history.", "Học sinh có thể nghiên cứu một cuộc kháng chiến để hiểu về một giai đoạn quan trọng trong lịch sử dân tộc."],
+            ["the enemy’s advances", "noun phrase", "/ði ˈenəmiz ədˈvɑːnsɪz/", "những bước tiến/cuộc tiến công của kẻ thù", "Soldiers may try to stop the enemy’s advances and protect important areas.", "Những người lính có thể cố gắng ngăn chặn bước tiến của kẻ thù và bảo vệ các khu vực quan trọng."],
+            ["visit", "verb", "/ˈvɪzɪt/", "thăm, đến thăm", "Tourists often visit historical places to learn more about the past.", "Du khách thường đến thăm các di tích lịch sử để tìm hiểu thêm về quá khứ."],
+            ["ago", "adverb", "/əˈɡəʊ/", "trước đây, cách đây", "My grandparents moved to this town many years ago and still live here today.", "Ông bà tôi đã chuyển đến thị trấn này nhiều năm trước đây và vẫn sống ở đây cho đến nay."],
+            ["treat", "verb", "/triːt/", "điều trị; đối xử", "Doctors need to treat injured people quickly when they arrive at a hospital.", "Các bác sĩ cần phải điều trị cho những người bị thương một cách nhanh chóng khi họ đến bệnh viện."],
+            ["fight", "verb", "/faɪt/", "chiến đấu, chống lại", "Soldiers may fight to protect their country during a war.", "Những người lính có thể chiến đấu để bảo vệ đất nước của họ trong một cuộc chiến."],
+            ["perform surgery", "verb phrase", "/pəˈfɔːm ˈsɜːdʒəri/", "thực hiện ca phẫu thuật", "Doctors sometimes need to perform surgery when medicine alone cannot solve a serious health problem.", "Các bác sĩ đôi khi cần thực hiện phẫu thuật khi chỉ dùng thuốc không thể giải quyết một vấn đề sức khỏe nghiêm trọng."],
+            ["the wounded", "plural noun", "/ðə ˈwuːndɪd/", "những người bị thương", "Medical workers provide food, medicine, and care for the wounded during emergencies.", "Nhân viên y tế cung cấp thực phẩm, thuốc men và chăm sóc cho những người bị thương trong các tình huống khẩn cấp."],
+            ["in the field hospital", "phrase", "/ɪn ðə fiːld ˈhɒspɪtl/", "tại bệnh viện dã chiến", "Doctors and nurses may work in the field hospital during a war or natural disaster.", "Bác sĩ và y tá có thể làm việc tại bệnh viện dã chiến trong một cuộc chiến tranh hoặc thảm họa thiên nhiên."],
+            ["prepare", "verb", "/prɪˈpeər/", "chuẩn bị", "Students should prepare carefully before an important examination or presentation.", "Học sinh nên chuẩn bị kỹ lưỡng trước một kỳ thi hoặc bài thuyết trình quan trọng."],
+            ["personal account of", "noun phrase", "/ˈpɜːsənəl əˈkaʊnt əv/", "lời kể cá nhân về", "The book contains a personal account of life during a difficult period in history.", "Cuốn sách chứa đựng những lời kể cá nhân về cuộc sống trong một giai đoạn khó khăn của lịch sử."],
+            ["succeed", "verb", "/səkˈsiːd/", "thành công", "People can succeed when they work hard, learn from mistakes, and never give up easily.", "Mọi người có thể thành công khi họ làm việc chăm chỉ, học hỏi từ sai lầm và không bao giờ bỏ cuộc dễ dàng."],
+            ["devote + time/effort/energy + to V-ing", "verb phrase", "/dɪˈvəʊt ... tuː/", "dành thời gian/công sức/năng lượng cho việc gì", "Many volunteers devote their time to helping children who need educational support.", "Nhiều tình nguyện viên dành thời gian của họ để giúp đỡ những trẻ em cần hỗ trợ giáo dục."],
+            ["diagnose", "verb", "/ˈdaɪəɡnəʊz/", "chẩn đoán", "Doctors use tests and medical information to diagnose an illness correctly.", "Bác sĩ sử dụng các xét nghiệm và thông tin y tế để chẩn đoán bệnh một cách chính xác."],
+            ["attend", "verb", "/əˈtend/", "tham dự", "Students should attend every lesson if they want to understand the course clearly.", "Học sinh nên tham dự mọi buổi học nếu muốn hiểu rõ khóa học."],
+            ["thrilling", "adjective", "/ˈθrɪlɪŋ/", "hồi hộp, ly kỳ, rất thú vị", "The journey through the mountains can be a thrilling experience for young travelers.", "Cuộc hành trình qua những ngọn núi có thể là một trải nghiệm thú vị và ly kỳ cho những du khách trẻ."],
+            ["experience", "noun", "/ɪkˈspɪəriəns/", "trải nghiệm, kinh nghiệm", "Working with different people can be a useful experience for young employees.", "Làm việc với những người khác nhau có thể là một trải nghiệm hữu ích cho những nhân viên trẻ."],
+            ["rule", "verb", "/ruːl/", "cai trị, quản lý một đất nước", "A king or queen may rule a country under a particular political system.", "Một vị vua hoặc nữ hoàng có thể cai trị một đất nước theo một hệ thống chính trị cụ thể."],
+            ["ambitious", "adjective", "/æmˈbɪʃəs/", "tham vọng, có nhiều hoài bão", "An ambitious student usually has clear goals and wants to achieve great things in the future.", "Một học sinh có nhiều hoài bão thường có những mục tiêu rõ ràng và muốn đạt được những điều to lớn trong tương lai."],
+            ["biological parents", "noun phrase", "/ˌbaɪəˈlɒdʒɪkl ˈpeərənts/", "cha mẹ ruột", "Some adopted children may want to learn more about their biological parents when they grow older.", "Một số trẻ em được nhận nuôi có thể muốn tìm hiểu thêm về cha mẹ ruột của mình khi chúng lớn lên."],
+            ["creative", "adjective", "/kriˈeɪtɪv/", "sáng tạo", "Creative students often enjoy art, design, music, and activities that allow them to develop new ideas.", "Những học sinh sáng tạo thường yêu thích nghệ thuật, thiết kế, âm nhạc và các hoạt động cho phép họ phát triển ý tưởng mới."],
+            ["cutting-edge", "adjective", "/ˌkʌtɪŋ ˈedʒ/", "tiên tiến, hiện đại nhất", "The hospital uses cutting-edge technology to provide better medical care for patients.", "Bệnh viện sử dụng công nghệ tiên tiến nhất để cung cấp dịch vụ chăm sóc y tế tốt hơn cho bệnh nhân."],
+            ["at the age of", "phrase", "/ət ði eɪdʒ əv/", "ở tuổi", "At the age of eighteen, many young people start university or begin their first full-time job.", "Ở tuổi mười tám, nhiều người trẻ bắt đầu học đại học hoặc bắt đầu công việc toàn thời gian đầu tiên của họ."],
+            ["cancer", "noun", "/ˈkænsər/", "bệnh ung thư", "Scientists continue to study cancer in order to develop better treatments for patients.", "Các nhà khoa học tiếp tục nghiên cứu bệnh ung thư để phát triển các phương pháp điều trị tốt hơn cho bệnh nhân."],
+            ["language", "noun", "/ˈlæŋɡwɪdʒ/", "ngôn ngữ", "Learning another language can help people communicate with others from different countries.", "Học một ngôn ngữ khác có thể giúp mọi người giao tiếp với những người từ các quốc gia khác nhau."],
+            ["well-educated", "adjective", "/ˌwel ˈedʒukeɪtɪd/", "có học thức, được giáo dục tốt", "A well-educated person may have strong knowledge and useful skills in many different areas.", "Một người có học thức có thể có kiến thức vững vàng và các kỹ năng hữu ích trong nhiều lĩnh vực khác nhau."],
+            ["determination", "noun", "/dɪˌtɜːmɪˈneɪʃən/", "sự quyết tâm", "Determination can help students continue studying even when a subject becomes difficult.", "Sự quyết tâm có thể giúp học sinh tiếp tục việc học ngay cả khi môn học trở nên khó khăn."],
+            ["intelligence", "noun", "/ɪnˈtelɪdʒəns/", "trí thông minh", "Intelligence is useful, but hard work and good study habits are also important for success.", "Trí thông minh là điều hữu ích, nhưng làm việc chăm chỉ và thói quen học tập tốt cũng rất quan trọng để thành công."],
+            ["powerful", "adjective", "/ˈpaʊəfəl/", "mạnh mẽ, có sức ảnh hưởng lớn", "Education can be a powerful tool for improving people’s lives and creating new opportunities.", "Giáo dục có thể là một công cụ mạnh mẽ để cải thiện cuộc sống của con người và tạo ra những cơ hội mới."],
+            ["encourage", "verb", "/ɪnˈkʌrɪdʒ/", "khuyến khích, động viên", "Teachers should encourage students to ask questions and share their ideas in class.", "Giáo viên nên khuyến khích học sinh đặt câu hỏi và chia sẻ ý tưởng của mình trong lớp."],
+            ["adopt", "verb", "/əˈdɒpt/", "nhận nuôi; áp dụng", "A family may adopt a child and provide a safe and caring home.", "Một gia đình có thể nhận nuôi một đứa trẻ và mang đến một mái ấm an toàn và đầy tình thương."],
+            ["volunteer", "verb/noun", "/ˌvɒlənˈtɪər/", "tình nguyện; tình nguyện viên", "Young people can volunteer at community centers to help children and elderly people.", "Những người trẻ tuổi có thể làm tình nguyện tại các trung tâm cộng đồng để giúp đỡ trẻ em và người già."],
+            ["be admired for", "verb phrase", "/bi ədˈmaɪəd fɔːr/", "được ngưỡng mộ vì", "A person can be admired for courage, kindness, hard work, or important achievements.", "Một người có thể được ngưỡng mộ vì lòng can đảm, lòng tốt, sự chăm chỉ hoặc những thành tựu quan trọng."],
+            ["be dedicated to + V-ing", "adjective phrase", "/bi ˈdedɪkeɪtɪd tuː/", "tận tâm, cống hiến cho việc gì", "Good teachers can be dedicated to helping students improve both knowledge and confidence.", "Những giáo viên tốt có thể tận tâm trong việc giúp học sinh nâng cao cả kiến thức lẫn sự tự tin."],
+            ["defeat", "verb", "/dɪˈfiːt/", "đánh bại", "A strong team can defeat a difficult opponent through good preparation and teamwork.", "Một đội bóng mạnh có thể đánh bại một đối thủ khó nhằn thông qua sự chuẩn bị tốt và tinh thần đồng đội."],
+            ["narrow", "adjective", "/ˈnærəʊ/", "hẹp", "The village has several narrow roads, so large vehicles cannot move through them easily.", "Ngôi làng có một số con đường hẹp, nên các phương tiện lớn không thể di chuyển qua chúng một cách dễ dàng."],
+            ["prevent", "verb", "/prɪˈvent/", "ngăn chặn, phòng tránh", "Regular exercise and a healthy diet can help prevent some common health problems.", "Tập thể dục thường xuyên và chế độ ăn uống lành mạnh có thể giúp phòng tránh một số vấn đề sức khỏe phổ biến."],
+            ["concentrate on", "verb phrase", "/ˈkɒnsntreɪt ɒn/", "tập trung vào", "Students should concentrate on the main ideas when they read a long passage.", "Học sinh nên tập trung vào các ý chính khi đọc một đoạn văn dài."],
+            ["expand", "verb", "/ɪkˈspænd/", "mở rộng, phát triển", "A successful company may expand its business to new cities and offer more products.", "Một công ty thành công có thể mở rộng hoạt động kinh doanh sang các thành phố mới và cung cấp nhiều sản phẩm hơn."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        let quizData = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0; 
+        let hasAnswered = false;
+        let currentShuffledOptions = [];
+        let reviewQueue = [];
+        let isReviewRound = false;
+        let userName = "";
+
+        const DOM = {
+            screenStart: document.getElementById('screen-start'),
+            screenPlaying: document.getElementById('screen-playing'),
+            screenEnd: document.getElementById('screen-end'),
+            progressText: document.getElementById('progress-text'),
+            scoreNumber: document.getElementById('score-number'),
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            explanationContainer: document.getElementById('explanation-container'),
+            rationaleText: document.getElementById('rationale-text'),
+            rationaleContent: document.getElementById('rationale-content'),
+            btnNext: document.getElementById('btn-next'),
+            btnStart: document.getElementById('btn-start'),
+            btnRestart: document.getElementById('btn-restart'),
+            userNameInput: document.getElementById('user-name-input'),
+            nameError: document.getElementById('name-error'),
+            displayStudentName: document.getElementById('display-student-name')
+        };
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function generateQuizData() {
+            const shuffledRaw = shuffleArray([...rawVocab]);
+            
+            return shuffledRaw.map((item, index) => {
+                const word = item[0];
+                const pos = item[1];
+                const ipa = item[2];
+                const meaning = item[3];
+                const exampleEn = item[4];
+                const exampleVn = item[5];
+
+                let wrongMeanings = [];
+                const allMeanings = rawVocab.map(v => v[3]).filter(m => m !== meaning);
+                const shuffledWrong = shuffleArray(allMeanings);
+                wrongMeanings = shuffledWrong.slice(0, 3);
+
+                const options = [
+                    { text: meaning, isCorrect: true },
+                    { text: wrongMeanings[0], isCorrect: false },
+                    { text: wrongMeanings[1], isCorrect: false },
+                    { text: wrongMeanings[2], isCorrect: false }
+                ];
+
+                return {
+                    questionNumber: index + 1,
+                    question: `Thuật ngữ **${word}** có nghĩa là gì?`,
+                    answerOptions: options,
+                    itemWord: word,
+                    rationale: `
+                        <div class="flex flex-col gap-2 mb-3 md:mb-4 border-b border-fuchsia-500/30 pb-3 md:pb-4">
+                            <div class="flex items-center flex-wrap gap-2 md:gap-3">
+                                <span class="text-2xl md:text-3xl font-black text-fuchsia-300 tracking-wide font-sans drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]">${word}</span>
+                                <span class="text-violet-300/80 italic text-sm md:text-base bg-violet-900/80 px-2 py-0.5 rounded-md border border-fuchsia-500/30">(${pos})</span>
+                                <button onclick="speakWord('${word.replace(/['’]/g, "\\'")}')" class="ml-auto p-2 bg-violet-900/50 hover:bg-violet-800 text-fuchsia-300 rounded-full transition-all flex items-center justify-center w-10 h-10 md:w-11 md:h-11 shadow-[0_0_10px_rgba(217,70,239,0.2)] border border-fuchsia-500/50 hover:scale-110 flex-shrink-0" title="Nghe từ vựng" style="touch-action: manipulation;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                                </button>
+                            </div>
+                            <span class="text-violet-200 font-mono text-sm md:text-base tracking-wider">${ipa}</span>
+                        </div>
+                        
+                        <div class="flex items-start justify-between text-violet-100 font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-fuchsia-400 bg-violet-900/40 py-2 pr-2 rounded-r-lg mb-2 gap-2">
+                            <div class="pt-1 md:pt-0"><span class="text-fuchsia-400 mr-1 md:mr-2 drop-shadow-[0_0_5px_rgba(217,70,239,0.5)]">📖</span> <span>${exampleEn}</span></div>
+                            
+                            <button onclick="speakWord('${exampleEn.replace(/['’]/g, "\\'").replace(/\//g, ' or ')}')" class="p-1.5 bg-indigo-900/60 hover:bg-indigo-800 text-indigo-300 rounded-full transition-all flex items-center justify-center w-8 h-8 md:w-10 md:h-10 shadow-[0_0_10px_rgba(99,102,241,0.3)] border border-indigo-500/40 hover:scale-110 flex-shrink-0 mt-0.5 md:mt-0" title="Nghe câu ví dụ" style="touch-action: manipulation;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                            </button>
+                        </div>
+                        <div class="text-violet-300/80 italic font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-violet-800 bg-violet-950/50 py-2 pr-3 rounded-r-lg">
+                            <span class="text-violet-600 mr-2">✍️</span> <span>${exampleVn}</span>
+                        </div>`
+                };
+            });
+        }
+
+        function startGame() {
+            const nameValue = DOM.userNameInput.value.trim();
+
+            if (nameValue === "") {
+                DOM.userNameInput.classList.add('animate-shake', 'border-pink-500', 'ring-2', 'ring-pink-500/50');
+                DOM.nameError.classList.remove('hidden');
+                setTimeout(() => {
+                    DOM.userNameInput.classList.remove('animate-shake', 'border-pink-500', 'ring-2', 'ring-pink-500/50');
+                }, 600);
+                return; 
+            }
+
+            DOM.nameError.classList.add('hidden');
+            userName = nameValue;
+            quizData = generateQuizData(); 
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            reviewQueue = [];
+            isReviewRound = false;
+            
+            DOM.screenStart.classList.add('hidden');
+            DOM.screenEnd.classList.add('hidden');
+            DOM.screenPlaying.classList.remove('hidden');
+            
+            DOM.screenPlaying.style.opacity = 0;
+            setTimeout(() => {
+                DOM.screenPlaying.style.transition = 'opacity 0.5s ease';
+                DOM.screenPlaying.style.opacity = 1;
+            }, 10);
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+            
+            const currentQ = quizData[currentQuestionIndex];
+            
+            if (isReviewRound) {
+                DOM.progressText.innerText = `ÔN TẬP: TRANG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-pink-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg font-sans drop-shadow-[0_0_5px_rgba(244,114,182,0.5)]";
+            } else {
+                DOM.progressText.innerText = `TRANG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-violet-300 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg font-sans drop-shadow-[0_0_5px_rgba(167,139,250,0.4)]";
+            }
+            
+            DOM.scoreNumber.innerText = score;
+            DOM.questionText.innerHTML = currentQ.question.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+            
+            DOM.optionsContainer.innerHTML = '';
+            const labels = ['1', '2', '3', '4'];
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.style.touchAction = 'manipulation';
+                const numberLabel = `<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-violet-950 text-fuchsia-400 font-bold border border-violet-800/50 text-sm mr-3 font-mono transition-colors flex-shrink-0">${labels[index]}</span>`;
+                
+                btn.className = "group text-left p-3 sm:p-4 rounded-xl border border-violet-900/60 transition-all duration-300 text-sm sm:text-base bg-violet-900/30 hover:bg-fuchsia-900/40 hover:border-fuchsia-500/50 text-violet-100 cursor-pointer shadow-sm font-semibold flex items-center";
+                btn.innerHTML = `${numberLabel} <span class="leading-snug">${option.text}</span>`;
+                
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    handleAnswer(index, option.isCorrect);
+                });
+                
+                DOM.optionsContainer.appendChild(btn);
+            });
+
+            DOM.explanationContainer.classList.remove('max-h-[800px]', 'opacity-100', 'mt-6');
+            DOM.explanationContainer.classList.add('max-h-0', 'opacity-0');
+            DOM.rationaleText.className = "hidden"; 
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                DOM.btnNext.innerHTML = 'Lật Trang Tiếp Theo ➔';
+                DOM.btnNext.className = "w-full py-4 md:py-5 bg-fuchsia-900/80 hover:bg-fuchsia-800 border border-fuchsia-500/50 text-fuchsia-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(217,70,239,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase";
+            } else {
+                DOM.btnNext.innerHTML = 'Đang xử lý...';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = DOM.optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            Array.from(buttons).forEach(b => b.classList.remove('group', 'hover:bg-fuchsia-900/40', 'hover:border-fuchsia-500/50'));
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    if (!isReviewRound) score++; 
+                    DOM.scoreNumber.innerText = score;
+                    DOM.scoreNumber.style.transform = 'scale(1.5)';
+                    DOM.scoreNumber.style.color = '#c084fc'; 
+                    setTimeout(() => {
+                        DOM.scoreNumber.style.transform = 'scale(1)';
+                        DOM.scoreNumber.style.color = 'inherit';
+                    }, 300);
+                } else if (attempts === 1) {
+                    if (!isReviewRound) correctSecondTry++; 
+                }
+                
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-fuchsia-500 text-violet-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(217,70,239,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-fuchsia-400 transition-all duration-500 text-sm sm:text-base bg-fuchsia-900/40 text-fuchsia-200 shadow-[0_0_15px_rgba(217,70,239,0.3)] font-bold flex items-center";
+                
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-pink-900/40')) {
+                        buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                    }
+                }
+                
+                speakWord(currentQ.itemWord);
+                showRationale(currentQ);
+                updateNextButtonState();
+            } else {
+                attempts++;
+                
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-pink-600 text-white font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(219,39,119,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-pink-500 transition-all duration-300 text-sm sm:text-base bg-pink-900/40 text-pink-300 animate-shake flex items-center shadow-[0_0_15px_rgba(244,63,94,0.2)]";
+                
+                const textSpan = btn.querySelector('span:last-child');
+                textSpan.classList.add('line-through', 'decoration-pink-500', 'opacity-70');
+                
+                btn.disabled = true; 
+                
+                setTimeout(() => { btn.classList.remove('animate-shake'); }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    if (!isReviewRound) failedQuestions++; 
+                    
+                    reviewQueue.push(currentQ); 
+                    
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            const correctNum = buttons[i].querySelector('span:first-child');
+                            correctNum.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-fuchsia-500 text-violet-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(217,70,239,0.8)]";
+                            buttons[i].className = "text-left p-3 sm:p-4 rounded-xl border border-fuchsia-400 transition-all duration-500 text-sm sm:text-base bg-fuchsia-900/40 text-fuchsia-200 shadow-[0_0_15px_rgba(217,70,239,0.3)] font-bold flex items-center";
+                        } else if (!buttons[i].classList.contains('bg-pink-900/40')) {
+                            buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                        }
+                    }
+                    speakWord(currentQ.itemWord); 
+                    showRationale(currentQ);
+                    updateNextButtonState();
+                }
+            }
+        }
+
+        function updateNextButtonState() {
+            if (currentQuestionIndex === quizData.length - 1) {
+                if (reviewQueue.length > 0) {
+                    DOM.btnNext.innerHTML = 'Khắc Phục Lỗi Sai 📝';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-pink-600/90 hover:bg-pink-500 border border-pink-400/50 text-white font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase";
+                } else {
+                    DOM.btnNext.innerHTML = 'Hoàn Tất Hành Trình 🏁';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-fuchsia-500 hover:to-violet-400 text-violet-50 font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase";
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            DOM.rationaleContent.innerHTML = currentQ.rationale;
+            DOM.rationaleText.className = "block text-base md:text-lg animate-pop";
+            
+            DOM.explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            DOM.explanationContainer.classList.add('max-h-[800px]', 'opacity-100', 'mt-6');
+            
+            if (window.innerWidth < 768) {
+                setTimeout(() => { DOM.explanationContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else if (reviewQueue.length > 0) {
+                isReviewRound = true;
+                quizData = shuffleArray([...reviewQueue]);
+                reviewQueue = [];
+                currentQuestionIndex = 0;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            DOM.screenPlaying.classList.add('hidden');
+            DOM.screenEnd.classList.remove('hidden');
+            DOM.screenEnd.classList.add('animate-pop');
+            
+            const finalMessage = document.getElementById('final-message');
+            const percentage = score / rawVocab.length;
+            
+            if (percentage >= 0.9) {
+                finalMessage.style.display = "none";
+            } else if (percentage >= 0.6) {
+                finalMessage.innerText = `Tuyệt vời ${userName}! Bạn đã lĩnh hội được nhiều tri thức quý giá. Đọc lại cuốn sử này lần nữa để đạt mức thông tuệ nhé! 📖`;
+                finalMessage.style.display = "block";
+            } else {
+                finalMessage.innerText = `Cuốn sử này còn khá nhiều điểm thách thức với ${userName}. Đừng nản lòng, hãy mở sách và bắt đầu lại từ đầu nhé! 🌟`;
+                finalMessage.style.display = "block";
+            }
+
+            DOM.displayStudentName.innerText = `Học giả: ${userName}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        let availableVoices = [];
+        function initVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+            if(availableVoices.length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { availableVoices = window.speechSynthesis.getVoices(); };
+            }
+        }
+
+        window.speakWord = function(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                
+                let spokenText = text;
+                if (spokenText.trim() === 'I') spokenText = 'eye'; 
+                spokenText = spokenText.replace(/\//g, ' or ');
+                spokenText = spokenText.replace(/\+/g, ' and ');
+
+                const utterance = new SpeechSynthesisUtterance(spokenText);
+                
+                let selectedVoice = null;
+                const enVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+                
+                if (enVoices.length > 0) {
+                    selectedVoice = enVoices.find(v => v.name.includes('Samantha')) || 
+                                    enVoices.find(v => v.name.includes('Zira')) ||     
+                                    enVoices.find(v => v.name.includes('Google US English')) || 
+                                    enVoices.find(v => v.lang === 'en-US' && v.name.includes('Female')) ||
+                                    enVoices[0];
+                }
+                
+                if (selectedVoice) utterance.voice = selectedVoice;
+                utterance.lang = selectedVoice ? selectedVoice.lang : 'en-US';
+                utterance.rate = 0.85; 
+                utterance.pitch = 1.1; 
+                utterance.volume = 1;  
+
+                try { window.speechSynthesis.speak(utterance); } catch(e) { console.error("TTS Error:", e); }
+            }
+        };
+
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['🏛️', '📜', '⚖️', '👑', '✒️', '🕰️', '⚔️', '✨', '📖', '🌟'];
+            const numberOfItems = window.innerWidth > 768 ? 25 : 15; 
+            
+            for (let i = 0; i < numberOfItems; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+                
+                const duration = Math.random() * 25 + 15;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 20}s`;
+                item.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        function initApp() {
+            createFloatingItems();
+            initVoices();
+            
+            DOM.btnStart.addEventListener('click', function(e) { e.preventDefault(); startGame(); });
+            DOM.btnRestart.addEventListener('click', function(e) { e.preventDefault(); startGame(); });
+            DOM.btnNext.addEventListener('click', function(e) { e.preventDefault(); nextQuestion(); });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    if (!DOM.screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); nextQuestion();
+                    } else if (!DOM.screenStart.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    } else if (!DOM.screenEnd.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    }
+                }
+                
+                if (!DOM.screenPlaying.classList.contains('hidden') && !hasAnswered) {
+                    if (['1', '2', '3', '4'].includes(event.key)) {
+                        const index = parseInt(event.key) - 1;
+                        const buttons = DOM.optionsContainer.children;
+                        if (buttons[index] && !buttons[index].disabled) {
+                            buttons[index].click(); 
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+</body>
+</html>
