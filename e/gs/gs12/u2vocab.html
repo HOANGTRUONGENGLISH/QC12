@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Từ Vựng Văn Hóa - GS12 U2</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Typography */
+        h1, h2, h3, .theme-font { font-family: 'Playfair Display', serif; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            background-color: #1e1b4b; /* Indigo 950 */
+            -webkit-tap-highlight-color: transparent;
+            color: #e0e7ff; /* Indigo 100 */
+            touch-action: manipulation; 
+        }
+
+        /* Custom Scrollbar - Indigo */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #312e81; } /* Indigo 900 */
+        ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 4px; } /* Indigo 500 */
+        ::-webkit-scrollbar-thumb:hover { background: #818cf8; } /* Indigo 400 */
+
+        /* Animations */
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(-15deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh) rotate(20deg) scale(1.2); opacity: 0; }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: float-up linear infinite;
+            z-index: -1;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.4)); /* Indigo glow */
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .animate-shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.4), 0 0 30px rgba(99, 102, 241, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.7), 0 0 45px rgba(99, 102, 241, 0.4); }
+        }
+        .btn-glow { animation: pulse-glow 2.5s infinite; }
+
+        /* Glassmorphism Panels (Indigo feel) */
+        .glass-panel {
+            background: rgba(30, 27, 75, 0.85); /* Indigo 950 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(99, 102, 241, 0.3); /* Indigo 500 */
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.2), inset 0 0 20px rgba(99, 102, 241, 0.05);
+        }
+        
+        .question-text strong {
+            color: #a5b4fc; /* Indigo 300 */
+            font-weight: 700;
+            padding: 2px 8px;
+            background: rgba(55, 48, 163, 0.6); /* Indigo 800 */
+            border: 1px solid rgba(99, 102, 241, 0.4); /* Indigo 500 */
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.15em;
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .theme-text-gradient {
+            background: linear-gradient(to right, #818cf8, #38bdf8); /* Indigo 400 to Sky 400 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hidden { display: none !important; }
+        
+        /* Sparkle pattern */
+        .sparkle-lines {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(99, 102, 241, 0.04) 15px, rgba(99, 102, 241, 0.04) 16px);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col items-center justify-center p-4 lg:p-8">
+
+    <!-- Background Layer -->
+    <div id="background-layer" class="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#312e81] via-[#1e1b4b] to-[#020617] opacity-100"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiM4MThjZjgiIGZpbGwtb3BhY2l0eT0iMC4wOCIvPjwvc3ZnPg==')] opacity-60"></div>
+        <div id="floating-container"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="relative w-full max-w-3xl transition-all duration-500 z-10 my-auto">
+        
+        <!-- START SCREEN -->
+        <div id="screen-start" class="glass-panel rounded-3xl p-6 md:p-14 text-center transform hover:scale-[1.01] transition-transform duration-500">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 drop-shadow-[0_0_15px_rgba(99,102,241,0.6)]">🎭🍜🌍</div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 theme-text-gradient theme-font tracking-tight drop-shadow-sm leading-tight uppercase">
+            Hành Trình Văn Hóa <br><span class="text-2xl md:text-3xl font-sans tracking-normal capitalize font-semibold text-indigo-200">Cultural Identity</span>
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl text-indigo-100/80 mb-6 font-medium leading-relaxed max-w-xl mx-auto">
+                Khám phá <span id="total-count" class="font-bold text-sky-300 bg-sky-900/40 px-3 py-1 rounded-lg border border-sky-500/50 shadow-[0_0_10px_rgba(56,189,248,0.3)] mx-1"></span> thuật ngữ về Văn hóa & Ẩm thực! 🌟
+            </p>
+            
+            <!-- Nhập Tên -->
+            <div class="mb-8 relative max-w-xs md:max-w-sm mx-auto">
+                <input type="text" id="user-name-input" placeholder="Nhập tên nhà thám hiểm..." class="w-full bg-indigo-950/60 border-2 border-indigo-500/50 rounded-xl px-4 py-3 text-indigo-100 placeholder-indigo-400/60 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30 transition-all text-center text-base md:text-lg font-semibold shadow-inner" autocomplete="off" spellcheck="false">
+                <p id="name-error" class="text-rose-400 text-sm mt-2 hidden font-medium">⚠️ Vui lòng nhập tên để bắt đầu hành trình!</p>
+            </div>
+
+            <button id="btn-start" class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-sky-500 hover:to-blue-500 text-white font-bold rounded-full text-lg md:text-xl transition-all cursor-pointer transform hover:-translate-y-1 active:translate-y-0 active:scale-95 font-sans tracking-wide uppercase btn-glow" style="touch-action: manipulation;">
+                Mở Cánh Cửa Văn Hóa ⛩️
+            </button>
+            
+            <div class="mt-8 text-[10px] md:text-xs text-indigo-400/50 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-4 sm:p-6 md:p-10 hidden border-t-4 border-t-indigo-400 shadow-2xl">
+            
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-4 md:mb-6 border-b-2 border-indigo-800/50 pb-3 md:pb-5">
+                <div class="flex flex-col">
+                    <span class="text-[10px] md:text-xs text-indigo-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Tiến trình</span>
+                    <span id="progress-text" class="text-indigo-300 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg font-sans drop-shadow-[0_0_5px_rgba(99,102,241,0.4)]">TRANG 1 / 20</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] md:text-xs text-indigo-400/80 font-bold tracking-widest uppercase mb-0.5 md:mb-1">Điểm sáng</span>
+                    <span id="score-text" class="bg-indigo-900/60 border border-indigo-500/40 px-3 md:px-4 py-1 md:py-1.5 rounded-xl text-indigo-200 font-bold text-xs sm:text-sm md:text-base shadow-[0_0_10px_rgba(99,102,241,0.3)] flex items-center gap-1 md:gap-2">
+                        <span>✨</span> <span id="score-number" class="text-base md:text-lg">0</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-5 md:mb-8 bg-black/20 p-5 md:p-8 rounded-2xl border border-indigo-800/50 shadow-inner relative overflow-hidden sparkle-lines">
+                <h2 id="question-text" class="text-lg sm:text-xl md:text-2xl font-semibold leading-relaxed question-text text-gray-100 z-10 relative"></h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8">
+                <!-- Buttons injected by JS -->
+            </div>
+
+            <div id="keyboard-hint" class="text-center text-xs text-indigo-400/50 font-semibold mb-4 hidden md:block">
+                Mẹo: Dùng phím số <kbd class="bg-indigo-900/80 px-2 py-1 rounded text-indigo-300 border border-indigo-700">1</kbd> - <kbd class="bg-indigo-900/80 px-2 py-1 rounded text-indigo-300 border border-indigo-700">4</kbd> để chọn nhanh.
+            </div>
+
+            <!-- Explanation & Next Button -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-indigo-950/80 border-l-4 border-sky-400 rounded-r-2xl p-4 md:p-6 mb-5 md:mb-6 shadow-[0_0_20px_rgba(56,189,248,0.15)] relative overflow-hidden">
+                    <div id="rationale-text" class="hidden relative z-10">
+                        <span id="rationale-content" class="block"></span>
+                    </div>
+                </div>
+                
+                <button id="btn-next" class="w-full py-4 md:py-5 bg-sky-900/80 hover:bg-sky-800 border border-sky-500/50 text-sky-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(56,189,248,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase" style="touch-action: manipulation;">
+                    Bước Tiếp Theo ➔
+                </button>
+            </div>
+            
+            <div class="mt-6 text-center text-[10px] md:text-xs text-indigo-400/50 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end" class="glass-panel rounded-3xl p-6 md:p-14 text-center transform transition-transform duration-500 hidden">
+            <div class="text-6xl md:text-8xl mb-4 md:mb-6 animate-pop drop-shadow-[0_0_15px_rgba(99,102,241,0.6)]">🎓🏆🌍</div>
+            <h1 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-4 theme-text-gradient theme-font tracking-tight drop-shadow-sm leading-tight uppercase">
+                Hoàn Tất Hành Trình!
+            </h1>
+            <p id="final-message" class="text-sm sm:text-base md:text-xl text-indigo-200/80 mb-6 md:mb-10 font-medium max-w-lg mx-auto leading-relaxed"></p>
+
+            <!-- Bảng Tổng Kết -->
+            <div class="max-w-md mx-auto bg-indigo-950/80 border border-sky-500/40 rounded-3xl p-5 md:p-8 text-left shadow-[0_0_25px_rgba(56,189,248,0.15)] mb-8 md:mb-10 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-sky-400 to-indigo-500"></div>
+                <h3 class="text-lg md:text-2xl font-bold text-sky-300 mb-4 md:mb-6 border-b-2 border-indigo-800/50 pb-3 md:pb-4 text-center font-sans tracking-wide uppercase drop-shadow-[0_0_5px_rgba(56,189,248,0.5)]">Sổ Điểm Danh<br><span id="display-student-name" class="text-indigo-100 text-base md:text-xl mt-2 block font-sans tracking-normal capitalize font-semibold"></span></h3>
+                <ul class="space-y-4 md:space-y-5 text-indigo-200/90 text-xs sm:text-sm md:text-base font-medium">
+                    <li class="flex justify-between items-center border-b border-indigo-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span class="text-lg md:text-xl flex-shrink-0">✅</span> Phản xạ nhanh <span class="hidden sm:inline">(Đúng L1)</span>:</span> 
+                        <span id="stat-correct" class="font-black text-sky-400 text-xl md:text-2xl font-sans drop-shadow-[0_0_5px_rgba(56,189,248,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-indigo-900/60 pb-2 md:pb-3">
+                        <span class="flex items-center gap-2 md:gap-3"><span class="text-lg md:text-xl flex-shrink-0">🤔</span> Cẩn trọng <span class="hidden sm:inline">(Đúng L2)</span>:</span> 
+                        <span id="stat-second" class="font-black text-teal-400 text-xl md:text-2xl font-sans drop-shadow-[0_0_5px_rgba(45,212,191,0.6)] flex-shrink-0"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2 md:gap-3"><span class="text-lg md:text-xl flex-shrink-0">📝</span> Đã củng cố <span class="hidden sm:inline">(Vòng 2)</span>:</span> 
+                        <span id="stat-wrong" class="font-black text-rose-500 text-xl md:text-2xl font-sans drop-shadow-[0_0_5px_rgba(244,63,94,0.6)] flex-shrink-0"></span>
+                    </li>
+                </ul>
+            </div>
+            
+            <button id="btn-restart" class="w-full md:w-auto px-8 md:px-10 py-4 md:py-5 bg-transparent hover:bg-indigo-900/40 border-2 border-indigo-400 text-indigo-300 hover:text-indigo-200 font-bold rounded-full text-base md:text-xl transition-all flex items-center justify-center gap-3 mx-auto cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.3)] font-sans tracking-wide uppercase active:scale-95" style="touch-action: manipulation;">
+                🔄 Khám Phá Lại Lần Nữa
+            </button>
+            
+            <div class="mt-6 md:mt-8 text-center text-[10px] md:text-xs text-indigo-400/50 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+    </div>
+
+    <script>
+        // Database 86 từ vựng chủ đề Văn hóa & Ẩm thực (Kèm ví dụ tự biên soạn)
+        const rawVocab = [
+            ["autograph", "(n)", "/ˈɔːtəɡrɑːf/", "chữ ký", "The fan waited for hours to get the singer's autograph.", "Người hâm mộ đã đợi hàng giờ để xin chữ ký của ca sĩ."],
+            ["belief", "(n)", "/bɪˈliːf/", "niềm tin", "It is a common belief that hard work brings success.", "Có một niềm tin phổ biến rằng làm việc chăm chỉ sẽ mang lại thành công."],
+            ["booth", "(n)", "/buːð/", "gian hàng", "We bought some traditional souvenirs at the cultural booth.", "Chúng tôi đã mua một vài món quà lưu niệm truyền thống tại gian hàng văn hóa."],
+            ["chain", "(n)", "/ʧeɪn/", "chuỗi", "This fast-food chain has restaurants all over the world.", "Chuỗi thức ăn nhanh này có nhà hàng ở khắp nơi trên thế giới."],
+            ["characteristic", "(n)", "/ˌkærəktəˈrɪstɪk/", "đặc điểm, đặc tính", "Hospitality is a key characteristic of the local culture.", "Sự hiếu khách là một đặc điểm chính của văn hóa địa phương."],
+            ["confusion", "(n)", "/kənˈfjuːʒᵊn/", "sự khó hiểu, hỗn độn, rối rắm", "There was some confusion about the festival schedule.", "Đã có một sự nhầm lẫn về lịch trình lễ hội."],
+            ["costume", "(n)", "/ˈkɒstjuːm/", "trang phục", "Dancers wear colorful costumes during the traditional performance.", "Các vũ công mặc trang phục đầy màu sắc trong buổi biểu diễn truyền thống."],
+            ["cuisine", "(n)", "/kwɪˈziːn/", "ẩm thực", "Vietnamese cuisine is famous for its fresh ingredients.", "Ẩm thực Việt Nam nổi tiếng với các nguyên liệu tươi sống."],
+            ["custom", "(n)", "/ˈkʌstəm/", "phong tục", "It is a local custom to exchange gifts during the New Year.", "Đó là một phong tục địa phương khi trao đổi quà trong dịp Năm Mới."],
+            ["dish", "(n)", "/dɪʃ/", "món ăn", "Pho is a very popular dish in Vietnam.", "Phở là một món ăn rất phổ biến ở Việt Nam."],
+            ["element", "(n)", "/ˈelɪmənt/", "yếu tố", "Music is an important element of any cultural festival.", "Âm nhạc là một yếu tố quan trọng của bất kỳ lễ hội văn hóa nào."],
+            ["feature", "(n)", "/ˈfiːʧə/", "đặc điểm", "The ancient architecture is a unique feature of this city.", "Kiến trúc cổ kính là một đặc điểm độc đáo của thành phố này."],
+            ["identity", "(n)", "/aɪˈdentəti/", "bản sắc, đặc điểm nhận dạng", "Language plays a vital role in preserving national identity.", "Ngôn ngữ đóng vai trò quan trọng trong việc giữ gìn bản sắc dân tộc."],
+            ["lifestyle", "(n)", "/ˈlaɪfˌstaɪl/", "lối sống", "A healthy lifestyle includes a balanced diet and regular exercise.", "Một lối sống lành mạnh bao gồm chế độ ăn uống cân bằng và tập thể dục thường xuyên."],
+            ["popularity", "(n)", "/ˌpɒpjəˈlærəti/", "sự phổ biến, thông dụng", "The popularity of Korean culture has increased globally.", "Sự phổ biến của văn hóa Hàn Quốc đã gia tăng trên toàn cầu."],
+            ["respect", "(n)", "/rɪˈspekt/", "sự tôn trọng", "We should show respect to older people.", "Chúng ta nên thể hiện sự tôn trọng đối với người lớn tuổi."],
+            ["root", "(n)", "/ruːt/", "nguồn gốc", "Many English words have their roots in Latin.", "Nhiều từ tiếng Anh có nguồn gốc từ tiếng Latinh."],
+            ["sale", "(n)", "/seɪl/", "việc bán hàng", "The sale of traditional crafts helps support the local economy.", "Việc bán hàng thủ công truyền thống giúp hỗ trợ nền kinh tế địa phương."],
+            ["souvenir", "(n)", "/ˌsuːvəˈnɪə/", "quà lưu niệm", "I bought a small souvenir to remember my trip.", "Tôi đã mua một món quà lưu niệm nhỏ để nhớ về chuyến đi của mình."],
+            ["taste", "(n)", "/teɪst/", "khẩu vị", "This soup has a very spicy taste.", "Món súp này có khẩu vị rất cay."],
+            ["tipping", "(n)", "/ˈtɪpɪŋ/", "tiền boa", "Tipping is not a common practice in some Asian countries.", "Việc cho tiền boa không phải là một thói quen phổ biến ở một số quốc gia châu Á."],
+            ["announce", "(v)", "/əˈnaʊns/", "thông báo", "The mayor will announce the start of the festival.", "Thị trưởng sẽ thông báo thời gian bắt đầu lễ hội."],
+            ["appreciate", "(v)", "/əˈpriːʃieɪt/", "thưởng thức, trân trọng", "Tourists often appreciate the beautiful scenery of the mountains.", "Du khách thường trân trọng cảnh đẹp của những ngọn núi."],
+            ["ban", "(v)", "/bæn/", "cấm", "The government plans to ban smoking in public areas.", "Chính phủ dự định cấm hút thuốc ở các khu vực công cộng."],
+            ["blend", "(v)", "/blend/", "hòa trộn", "The new dish blends sweet and sour flavors perfectly.", "Món ăn mới hòa trộn hoàn hảo hương vị ngọt và chua."],
+            ["celebrate", "(v)", "/ˈselɪbreɪt/", "tổ chức, mừng", "People celebrate the harvest festival with music and dancing.", "Mọi người tổ chức lễ hội thu hoạch bằng âm nhạc và khiêu vũ."],
+            ["consider", "(v)", "/kənˈsɪdə/", "coi như", "Many people consider rice to be a staple food.", "Nhiều người coi gạo là một loại thực phẩm cơ bản."],
+            ["ignore", "(v)", "/ɪɡˈnɔː/", "phớt lờ", "You should not ignore local customs when traveling.", "Bạn không nên phớt lờ các phong tục địa phương khi đi du lịch."],
+            ["overcome", "(v)", "/ˌəʊvəˈkʌm/", "vượt qua", "International students often have to overcome a language barrier.", "Sinh viên quốc tế thường phải vượt qua rào cản ngôn ngữ."],
+            ["refer", "(v)", "/rəˈfəː/", "ám chỉ, nói đến", "The term 'culture' refers to the beliefs and customs of a society.", "Thuật ngữ 'văn hóa' ám chỉ những niềm tin và phong tục của một xã hội."],
+            ["reflect", "(v)", "/rɪˈflekt/", "phản ánh", "Traditional clothing reflects the history of the country.", "Trang phục truyền thống phản ánh lịch sử của đất nước."],
+            ["serve", "(v)", "/sɜːv/", "phục vụ", "The restaurant will serve local specialities for dinner.", "Nhà hàng sẽ phục vụ các món đặc sản địa phương cho bữa tối."],
+            ["strengthen", "(v)", "/ˈstreŋθᵊn/", "tăng cường", "Cultural exchanges can strengthen relationships between countries.", "Trao đổi văn hóa có thể tăng cường mối quan hệ giữa các quốc gia."],
+            ["world-famous", "(adj)", "/wɜːld/-/ˈfeɪməs/", "nổi tiếng thế giới", "Paris is a world-famous destination for art lovers.", "Paris là một điểm đến nổi tiếng thế giới đối với những người yêu nghệ thuật."],
+            ["extracurricular", "(adj)", "/ˌekstrəkəˈrɪkjələ/", "ngoại khóa", "Students should join extracurricular activities to build social skills.", "Học sinh nên tham gia các hoạt động ngoại khóa để rèn luyện kỹ năng xã hội."],
+            ["staple", "(adj)", "/ˈsteɪpᵊl/", "cơ bản, chủ yếu", "Bread and potatoes are staple foods in many European countries.", "Bánh mì và khoai tây là những thực phẩm cơ bản ở nhiều nước châu Âu."],
+            ["raw", "(adj)", "/rɔː/", "sống", "Sushi is a Japanese dish made with raw fish.", "Sushi là một món ăn Nhật Bản được làm bằng cá sống."],
+            ["cooked", "(adj)", "/kʊkt/", "nấu chín", "Make sure the meat is completely cooked before eating.", "Hãy đảm bảo rằng thịt đã được nấu chín hoàn toàn trước khi ăn."],
+            ["solo", "(adj)", "/ˈsəʊləʊ/", "một mình", "She is planning a solo trip across Asia next year.", "Cô ấy đang lên kế hoạch cho một chuyến đi một mình xuyên châu Á vào năm tới."],
+            ["professional", "(adj)", "/prəˈfeʃᵊnᵊl/", "chuyên nghiệp", "The event was organized by a professional team.", "Sự kiện được tổ chức bởi một đội ngũ chuyên nghiệp."],
+            ["rude", "(adj)", "/ruːd/", "thô lỗ", "It is considered rude to point your finger at someone.", "Việc chỉ tay vào ai đó được coi là thô lỗ."],
+            ["tasty", "(adj)", "/ˈteɪsti/", "ngon", "The street food here is very cheap and tasty.", "Thức ăn đường phố ở đây rất rẻ và ngon."],
+            ["cultural diversity", "(adj-n)", "/ˈkʌlʧᵊrᵊl daɪˈvɜːsəti/", "sự đa dạng văn hóa", "Cultural diversity makes a society more interesting and vibrant.", "Sự đa dạng văn hóa làm cho một xã hội trở nên thú vị và sôi động hơn."],
+            ["culture shock", "(adj-n)", "/ˈkʌlʧə ʃɒk/", "cú sốc văn hóa", "Many immigrants experience culture shock when they first arrive.", "Nhiều người nhập cư trải qua cú sốc văn hóa khi họ mới đến."],
+            ["cultural richness", "(adj-n)", "/ˈkʌlʧᵊrᵊl ˈrɪʧnəs/", "sự phong phú về văn hóa", "The country is known for its incredible cultural richness.", "Đất nước này được biết đến với sự phong phú về văn hóa đáng kinh ngạc."],
+            ["culture specialist", "(adj-n)", "/ˈkʌlʧə ˈspeʃəlɪst/", "chuyên gia văn hóa", "A culture specialist can explain the history of these ancient traditions.", "Một chuyên gia văn hóa có thể giải thích lịch sử của những truyền thống cổ đại này."],
+            ["open booth", "(adj-n)", "/ˈəʊpᵊn buːð/", "gian hàng mở", "The market has many open booths selling fresh fruits.", "Khu chợ có nhiều gian hàng mở bán trái cây tươi."],
+            ["bamboo dancing", "(np)", "/bæmˈbuː ˈdɑːnsɪŋ/", "múa sạp", "Bamboo dancing is a popular activity in mountainous areas.", "Múa sạp là một hoạt động phổ biến ở các khu vực miền núi."],
+            ["tug of war", "(np)", "/tʌɡ ɒv wɔː/", "kéo co", "Tug of war requires both strength and teamwork.", "Trò chơi kéo co đòi hỏi cả sức mạnh và tinh thần đồng đội."],
+            ["food stall", "(np)", "/fuːd stɔːl/", "gian hàng thực phẩm", "We bought some noodles from a local food stall.", "Chúng tôi đã mua một ít mì từ một gian hàng thực phẩm địa phương."],
+            ["cause for alarm", "(np)", "/kɔːz fɔːr əˈlɑːm/", "nguyên nhân báo động", "The sudden change in weather is not a cause for alarm.", "Sự thay đổi thời tiết đột ngột không phải là một nguyên nhân báo động."],
+            ["of importance", "(phrase)", "/ɒv ɪmˈpɔːtᵊns/", "có tầm quan trọng", "Preserving historical sites is of great importance.", "Việc bảo tồn các di tích lịch sử có tầm quan trọng rất lớn."],
+            ["sense of identity", "(np)", "/sens ɒv aɪˈdentəti/", "ý thức về bản sắc", "Wearing traditional clothes gives them a strong sense of identity.", "Mặc trang phục truyền thống mang lại cho họ một ý thức mạnh mẽ về bản sắc."],
+            ["language barrier", "(np)", "/ˈlæŋɡwɪʤ ˈbæriə/", "rào cản ngôn ngữ", "Translation apps can help tourists overcome the language barrier.", "Các ứng dụng dịch thuật có thể giúp du khách vượt qua rào cản ngôn ngữ."],
+            ["personal growth", "(adj-n)", "/ˈpɜːsᵊnᵊl ɡrəʊθ/", "sự phát triển bản thân", "Traveling abroad contributes significantly to personal growth.", "Đi du lịch nước ngoài đóng góp đáng kể vào sự phát triển bản thân."],
+            ["grilled pork meatballs with noodles", "(np)", "/ɡrɪld pɔːk ˈmiːtbɔːlz wɪð ˈnuːdᵊlz/", "bún chả", "Tourists love eating grilled pork meatballs with noodles in Hanoi.", "Du khách thích ăn bún chả khi đến Hà Nội."],
+            ["spring rolls", "(np)", "/sprɪŋ rəʊlz/", "nem cuốn", "Fresh spring rolls are a healthy and delicious appetizer.", "Nem cuốn tươi là một món khai vị ngon và tốt cho sức khỏe."],
+            ["spicy rice cakes", "(np)", "/ˈspaɪsi raɪs keɪks/", "bánh gạo cay", "Spicy rice cakes are a famous street food in Korea.", "Bánh gạo cay là một món ăn đường phố nổi tiếng ở Hàn Quốc."],
+            ["fish and chips", "(np)", "/fɪʃ ænd ʧɪps/", "cá và khoai tây chiên", "Fish and chips is a classic British meal.", "Cá và khoai tây chiên là một bữa ăn kinh điển của người Anh."],
+            ["open up", "(v-prep)", "/ˈəʊpᵊn ʌp/", "mở ra", "Learning English can open up new career opportunities.", "Học tiếng Anh có thể mở ra những cơ hội nghề nghiệp mới."],
+            ["keep up with", "(v-prep)", "/kiːp ʌp wɪð/", "theo kịp với, bắt kịp", "It is hard to keep up with the latest fashion trends.", "Thật khó để theo kịp với các xu hướng thời trang mới nhất."],
+            ["keep an open mind", "(phrase)", "/kiːp ən ˈəʊpᵊn maɪnd/", "nghĩ thoáng", "You should keep an open mind when trying foreign food.", "Bạn nên nghĩ thoáng khi thử các món ăn nước ngoài."],
+            ["take something seriously", "(phrase)", "/teɪk ˈsʌm.θɪŋ ˈsɪəriəsli/", "coi cái gì nghiêm túc", "We need to take environmental protection seriously.", "Chúng ta cần coi việc bảo vệ môi trường một cách nghiêm túc."],
+            ["work on", "(v-prep)", "/wɜːk ɒn/", "làm việc về cái gì", "She is trying to work on her communication skills.", "Cô ấy đang cố gắng cải thiện các kỹ năng giao tiếp của mình."],
+            ["get used to", "(phrase)", "/ɡet juːzd tuː/", "làm quen với", "It takes time to get used to a new climate.", "Cần có thời gian để làm quen với một khí hậu mới."],
+            ["on the rise", "(phrase)", "/ɒn ðə raɪz/", "tăng lên", "The number of international tourists is currently on the rise.", "Số lượng du khách quốc tế hiện đang tăng lên."],
+            ["in advance", "(phrase)", "/ɪn ədˈvɑːns/", "trước", "You must book the tickets in advance to secure a seat.", "Bạn phải đặt vé trước để đảm bảo có chỗ ngồi."],
+            ["cultural", "(adj)", "/ˈkʌlʧᵊrᵊl/", "thuộc văn hóa", "The city hosts many cultural events throughout the year.", "Thành phố tổ chức nhiều sự kiện văn hóa trong suốt cả năm."],
+            ["multicultural", "(adj)", "/ˌmʌltɪˈkʌlʧᵊrᵊl/", "đa văn hóa", "Canada is known for its multicultural society.", "Canada được biết đến với xã hội đa văn hóa của mình."],
+            ["cross-cultural", "(adj)", "/krɒs-ˈkʌlʧᵊrᵊl/", "liên văn hóa", "Cross-cultural understanding helps prevent misunderstandings.", "Sự hiểu biết liên văn hóa giúp ngăn ngừa những hiểu lầm."],
+            ["festivity", "(n)", "/fesˈtɪvəti/", "hoạt động lễ hội", "The town is full of joy and festivity during the winter holiday.", "Thị trấn tràn ngập niềm vui và các hoạt động lễ hội trong kỳ nghỉ đông."],
+            ["festive", "(adj)", "/ˈfestɪv/", "thuộc về lễ hội", "The streets were decorated to create a festive atmosphere.", "Các đường phố được trang trí để tạo ra một bầu không khí lễ hội."],
+            ["trend", "(n)", "/trend/", "xu hướng", "Online shopping has become a major trend in recent years.", "Mua sắm trực tuyến đã trở thành một xu hướng lớn trong những năm gần đây."],
+            ["trendy", "(adj)", "/ˈtrendi/", "xu hướng, mốt", "She always wears trendy clothes that look very modern.", "Cô ấy luôn mặc những bộ quần áo hợp mốt trông rất hiện đại."],
+            ["globalisation", "(n)", "/ˌɡləʊbᵊlaɪˈzeɪʃᵊn/", "toán cầu hóa", "Globalisation has changed the way countries trade with each other.", "Toàn cầu hóa đã thay đổi cách các quốc gia giao thương với nhau."],
+            ["globalise", "(v)", "/ˈɡləʊbᵊlaɪz/", "toàn cầu hóa", "Companies are trying to globalise their operations.", "Các công ty đang cố gắng toàn cầu hóa các hoạt động của họ."],
+            ["captivate", "(v)", "/ˈkæptɪveɪt/", "thu hút, cuốn hút", "The beautiful song managed to captivate the entire audience.", "Bài hát tuyệt đẹp đã thu hút toàn bộ khán giả."],
+            ["captivating", "(adj)", "/ˈkæptɪvetɪŋ/", "thu hút", "She told a captivating story about her journey to Africa.", "Cô ấy kể một câu chuyện đầy thu hút về chuyến đi đến Châu Phi của mình."],
+            ["insult", "(v)", "/ɪnˈsʌlt/", "xúc phạm", "He did not mean to insult you with his comment.", "Anh ấy không cố ý xúc phạm bạn bằng lời bình luận của mình."],
+            ["insulting", "(adj)", "/ɪnˈsʌltɪŋ/", "xúc phạm", "The article contained some insulting remarks about the culture.", "Bài báo chứa một số nhận xét xúc phạm về nền văn hóa đó."],
+            ["speciality", "(n)", "/ˌspeʃiˈæləti/", "đặc sản", "Seafood is a speciality of this coastal region.", "Hải sản là một đặc sản của vùng ven biển này."],
+            ["specialist", "(n)", "/ˈspeʃəlɪst/", "chuyên gia", "You should consult a specialist if the pain continues.", "Bạn nên tham khảo ý kiến chuyên gia nếu cơn đau tiếp tục."],
+            ["origin", "(n)", "/ˈɒrɪʤɪn/", "nguồn gốc", "The exact origin of this festival is still unknown.", "Nguồn gốc chính xác của lễ hội này vẫn chưa được biết."],
+            ["originate", "(v)", "/əˈrɪʤɪneɪt/", "bắt nguồn", "Many modern games originate from traditional pastimes.", "Nhiều trò chơi hiện đại bắt nguồn từ những thú tiêu khiển truyền thống."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        let quizData = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0; 
+        let hasAnswered = false;
+        let currentShuffledOptions = [];
+        let reviewQueue = [];
+        let isReviewRound = false;
+        let userName = "";
+
+        const DOM = {
+            screenStart: document.getElementById('screen-start'),
+            screenPlaying: document.getElementById('screen-playing'),
+            screenEnd: document.getElementById('screen-end'),
+            progressText: document.getElementById('progress-text'),
+            scoreNumber: document.getElementById('score-number'),
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            explanationContainer: document.getElementById('explanation-container'),
+            rationaleText: document.getElementById('rationale-text'),
+            rationaleContent: document.getElementById('rationale-content'),
+            btnNext: document.getElementById('btn-next'),
+            btnStart: document.getElementById('btn-start'),
+            btnRestart: document.getElementById('btn-restart'),
+            userNameInput: document.getElementById('user-name-input'),
+            nameError: document.getElementById('name-error'),
+            displayStudentName: document.getElementById('display-student-name')
+        };
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function generateQuizData() {
+            const shuffledRaw = shuffleArray([...rawVocab]);
+            
+            return shuffledRaw.map((item, index) => {
+                const word = item[0];
+                const pos = item[1] || "";
+                const ipa = item[2] || "";
+                const meaning = item[3];
+                const exampleEn = item[4];
+                const exampleVn = item[5];
+
+                let wrongMeanings = [];
+                const allMeanings = rawVocab.map(v => v[3]).filter(m => m !== meaning);
+                const shuffledWrong = shuffleArray(allMeanings);
+                wrongMeanings = shuffledWrong.slice(0, 3);
+
+                const options = [
+                    { text: meaning, isCorrect: true },
+                    { text: wrongMeanings[0], isCorrect: false },
+                    { text: wrongMeanings[1], isCorrect: false },
+                    { text: wrongMeanings[2], isCorrect: false }
+                ];
+
+                return {
+                    questionNumber: index + 1,
+                    question: `Thuật ngữ **${word}** có nghĩa là gì?`,
+                    answerOptions: options,
+                    itemWord: word,
+                    rationale: `
+                        <div class="flex flex-col gap-2 mb-3 md:mb-4 border-b border-sky-500/30 pb-3 md:pb-4">
+                            <div class="flex items-center flex-wrap gap-2 md:gap-3">
+                                <span class="text-2xl md:text-3xl font-black text-sky-300 tracking-wide font-sans drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]">${word}</span>
+                                ${pos ? `<span class="text-indigo-300/80 italic text-sm md:text-base bg-indigo-900/80 px-2 py-0.5 rounded-md border border-sky-500/30">${pos}</span>` : ''}
+                                <button onclick="speakWord('${word.replace(/['’]/g, "\\'")}')" class="ml-auto p-2 bg-indigo-900/50 hover:bg-indigo-800 text-sky-300 rounded-full transition-all flex items-center justify-center w-10 h-10 md:w-11 md:h-11 shadow-[0_0_10px_rgba(56,189,248,0.2)] border border-sky-500/50 hover:scale-110 flex-shrink-0" title="Nghe từ vựng" style="touch-action: manipulation;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                                </button>
+                            </div>
+                            ${ipa ? `<span class="text-indigo-200 font-mono text-sm md:text-base tracking-wider">${ipa}</span>` : ''}
+                        </div>
+                        
+                        <div class="flex items-start justify-between text-indigo-100 font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-sky-400 bg-indigo-900/40 py-2 pr-2 rounded-r-lg mb-2 gap-2">
+                            <div class="pt-1 md:pt-0"><span class="text-sky-400 mr-1 md:mr-2 drop-shadow-[0_0_5px_rgba(56,189,248,0.5)]">📖</span> <span>${exampleEn}</span></div>
+                            
+                            <button onclick="speakWord('${exampleEn.replace(/['’]/g, "\\'").replace(/\//g, ' or ')}')" class="p-1.5 bg-blue-900/60 hover:bg-blue-800 text-blue-300 rounded-full transition-all flex items-center justify-center w-8 h-8 md:w-10 md:h-10 shadow-[0_0_10px_rgba(59,130,246,0.3)] border border-blue-500/40 hover:scale-110 flex-shrink-0 mt-0.5 md:mt-0" title="Nghe câu ví dụ" style="touch-action: manipulation;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.28l3.435 3.435A1 1 0 0014 18.5V5.5a1 1 0 00-1.707-.707L9.28 8.22A2 2 0 007 10H5z" /></svg>
+                            </button>
+                        </div>
+                        <div class="text-indigo-300/80 italic font-medium text-sm md:text-base leading-relaxed pl-3 border-l-4 border-indigo-800 bg-indigo-950/50 py-2 pr-3 rounded-r-lg">
+                            <span class="text-indigo-500 mr-2">✍️</span> <span>${exampleVn}</span>
+                        </div>`
+                };
+            });
+        }
+
+        function startGame() {
+            const nameValue = DOM.userNameInput.value.trim();
+
+            if (nameValue === "") {
+                DOM.userNameInput.classList.add('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                DOM.nameError.classList.remove('hidden');
+                setTimeout(() => {
+                    DOM.userNameInput.classList.remove('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-500/50');
+                }, 600);
+                return; 
+            }
+
+            DOM.nameError.classList.add('hidden');
+            userName = nameValue;
+            quizData = generateQuizData(); 
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            reviewQueue = [];
+            isReviewRound = false;
+            
+            DOM.screenStart.classList.add('hidden');
+            DOM.screenEnd.classList.add('hidden');
+            DOM.screenPlaying.classList.remove('hidden');
+            
+            DOM.screenPlaying.style.opacity = 0;
+            setTimeout(() => {
+                DOM.screenPlaying.style.transition = 'opacity 0.5s ease';
+                DOM.screenPlaying.style.opacity = 1;
+            }, 10);
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+            
+            const currentQ = quizData[currentQuestionIndex];
+            
+            if (isReviewRound) {
+                DOM.progressText.innerText = `ÔN TẬP: TRANG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-rose-400 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg font-sans drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]";
+            } else {
+                DOM.progressText.innerText = `TRANG ${currentQuestionIndex + 1} / ${quizData.length}`;
+                DOM.progressText.className = "text-indigo-300 font-bold tracking-widest uppercase text-xs sm:text-sm md:text-lg font-sans drop-shadow-[0_0_5px_rgba(99,102,241,0.4)]";
+            }
+            
+            DOM.scoreNumber.innerText = score;
+            DOM.questionText.innerHTML = currentQ.question.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+            
+            DOM.optionsContainer.innerHTML = '';
+            const labels = ['1', '2', '3', '4'];
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.style.touchAction = 'manipulation';
+                const numberLabel = `<span class="inline-flex items-center justify-center w-7 h-7 rounded bg-indigo-950 text-sky-400 font-bold border border-indigo-800/50 text-sm mr-3 font-mono transition-colors flex-shrink-0">${labels[index]}</span>`;
+                
+                btn.className = "group text-left p-3 sm:p-4 rounded-xl border border-indigo-900/60 transition-all duration-300 text-sm sm:text-base bg-indigo-900/30 hover:bg-sky-900/40 hover:border-sky-500/50 text-indigo-100 cursor-pointer shadow-sm font-semibold flex items-center";
+                btn.innerHTML = `${numberLabel} <span class="leading-snug">${option.text}</span>`;
+                
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    handleAnswer(index, option.isCorrect);
+                });
+                
+                DOM.optionsContainer.appendChild(btn);
+            });
+
+            DOM.explanationContainer.classList.remove('max-h-[800px]', 'opacity-100', 'mt-6');
+            DOM.explanationContainer.classList.add('max-h-0', 'opacity-0');
+            DOM.rationaleText.className = "hidden"; 
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                DOM.btnNext.innerHTML = 'Bước Tiếp Theo ➔';
+                DOM.btnNext.className = "w-full py-4 md:py-5 bg-sky-900/80 hover:bg-sky-800 border border-sky-500/50 text-sky-100 font-bold rounded-2xl text-base md:text-xl shadow-[0_0_15px_rgba(56,189,248,0.4)] transition-all flex justify-center items-center gap-2 md:gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase";
+            } else {
+                DOM.btnNext.innerHTML = 'Đang xử lý...';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = DOM.optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            Array.from(buttons).forEach(b => b.classList.remove('group', 'hover:bg-sky-900/40', 'hover:border-sky-500/50'));
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    if (!isReviewRound) score++; 
+                    DOM.scoreNumber.innerText = score;
+                    DOM.scoreNumber.style.transform = 'scale(1.5)';
+                    DOM.scoreNumber.style.color = '#38bdf8'; 
+                    setTimeout(() => {
+                        DOM.scoreNumber.style.transform = 'scale(1)';
+                        DOM.scoreNumber.style.color = 'inherit';
+                    }, 300);
+                } else if (attempts === 1) {
+                    if (!isReviewRound) correctSecondTry++; 
+                }
+                
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-sky-500 text-indigo-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(56,189,248,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-sky-400 transition-all duration-500 text-sm sm:text-base bg-sky-900/40 text-sky-200 shadow-[0_0_15px_rgba(56,189,248,0.3)] font-bold flex items-center";
+                
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-900/40')) {
+                        buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                    }
+                }
+                
+                speakWord(currentQ.itemWord);
+                showRationale(currentQ);
+                updateNextButtonState();
+            } else {
+                attempts++;
+                
+                const numberSpan = btn.querySelector('span:first-child');
+                numberSpan.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-rose-600 text-white font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(225,29,72,0.8)]";
+                btn.className = "text-left p-3 sm:p-4 rounded-xl border border-rose-500 transition-all duration-300 text-sm sm:text-base bg-rose-900/40 text-rose-300 animate-shake flex items-center shadow-[0_0_15px_rgba(244,63,94,0.2)]";
+                
+                const textSpan = btn.querySelector('span:last-child');
+                textSpan.classList.add('line-through', 'decoration-rose-500', 'opacity-70');
+                
+                btn.disabled = true; 
+                
+                setTimeout(() => { btn.classList.remove('animate-shake'); }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    if (!isReviewRound) failedQuestions++; 
+                    
+                    reviewQueue.push(currentQ); 
+                    
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            const correctNum = buttons[i].querySelector('span:first-child');
+                            correctNum.className = "inline-flex items-center justify-center w-7 h-7 rounded bg-sky-500 text-indigo-950 font-bold text-sm mr-3 font-mono flex-shrink-0 shadow-[0_0_10px_rgba(56,189,248,0.8)]";
+                            buttons[i].className = "text-left p-3 sm:p-4 rounded-xl border border-sky-400 transition-all duration-500 text-sm sm:text-base bg-sky-900/40 text-sky-200 shadow-[0_0_15px_rgba(56,189,248,0.3)] font-bold flex items-center";
+                        } else if (!buttons[i].classList.contains('bg-rose-900/40')) {
+                            buttons[i].className += " opacity-30 cursor-not-allowed scale-95";
+                        }
+                    }
+                    speakWord(currentQ.itemWord); 
+                    showRationale(currentQ);
+                    updateNextButtonState();
+                }
+            }
+        }
+
+        function updateNextButtonState() {
+            if (currentQuestionIndex === quizData.length - 1) {
+                if (reviewQueue.length > 0) {
+                    DOM.btnNext.innerHTML = 'Khắc Phục Lỗi Sai 📝';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-rose-600/90 hover:bg-rose-500 border border-rose-400/50 text-white font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(244,63,94,0.4)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase";
+                } else {
+                    DOM.btnNext.innerHTML = 'Hoàn Tất Hành Trình 🏁';
+                    DOM.btnNext.className = "w-full py-4 md:py-5 bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-sky-500 hover:to-indigo-400 text-indigo-50 font-bold rounded-2xl text-lg md:text-xl shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all flex justify-center items-center gap-3 cursor-pointer transform hover:-translate-y-1 active:translate-y-0 font-sans tracking-wide uppercase";
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            DOM.rationaleContent.innerHTML = currentQ.rationale;
+            DOM.rationaleText.className = "block text-base md:text-lg animate-pop";
+            
+            DOM.explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            DOM.explanationContainer.classList.add('max-h-[800px]', 'opacity-100', 'mt-6');
+            
+            if (window.innerWidth < 768) {
+                setTimeout(() => { DOM.explanationContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else if (reviewQueue.length > 0) {
+                isReviewRound = true;
+                quizData = shuffleArray([...reviewQueue]);
+                reviewQueue = [];
+                currentQuestionIndex = 0;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            DOM.screenPlaying.classList.add('hidden');
+            DOM.screenEnd.classList.remove('hidden');
+            DOM.screenEnd.classList.add('animate-pop');
+            
+            const finalMessage = document.getElementById('final-message');
+            const percentage = score / rawVocab.length;
+            
+            if (percentage >= 0.9) {
+                finalMessage.style.display = "none";
+            } else if (percentage >= 0.6) {
+                finalMessage.innerText = `Tuyệt vời ${userName}! Bạn đã lĩnh hội được nhiều kiến thức văn hóa. Cùng luyện tập thêm để đạt mức thông tuệ nhé! ⛩️`;
+                finalMessage.style.display = "block";
+            } else {
+                finalMessage.innerText = `Hành trình này còn khá nhiều thử thách với ${userName}. Đừng nản lòng, hãy mở sách và khám phá lại từ đầu nhé! 🌟`;
+                finalMessage.style.display = "block";
+            }
+
+            DOM.displayStudentName.innerText = `Nhà thám hiểm: ${userName}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        let availableVoices = [];
+        function initVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+            if(availableVoices.length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => { availableVoices = window.speechSynthesis.getVoices(); };
+            }
+        }
+
+        window.speakWord = function(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                
+                let spokenText = text;
+                // Fix issue with single letter 'I'
+                spokenText = spokenText.replace(/\bI\b/g, 'eye'); 
+                spokenText = spokenText.replace(/\//g, ' or ');
+                spokenText = spokenText.replace(/\+/g, ' and ');
+
+                const utterance = new SpeechSynthesisUtterance(spokenText);
+                
+                let selectedVoice = null;
+                const enVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+                
+                if (enVoices.length > 0) {
+                    // Ưu tiên giọng nữ US chất lượng cao
+                    selectedVoice = enVoices.find(v => v.name.includes('Samantha')) || 
+                                    enVoices.find(v => v.name.includes('Zira')) ||     
+                                    enVoices.find(v => v.name.includes('Google US English')) || 
+                                    enVoices.find(v => v.lang === 'en-US' && v.name.includes('Female')) ||
+                                    enVoices[0];
+                }
+                
+                if (selectedVoice) utterance.voice = selectedVoice;
+                utterance.lang = selectedVoice ? selectedVoice.lang : 'en-US';
+                utterance.rate = 0.85; 
+                utterance.pitch = 1.1; 
+                utterance.volume = 1;  
+
+                try { window.speechSynthesis.speak(utterance); } catch(e) { console.error("TTS Error:", e); }
+            }
+        };
+
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['⛩️', '🍜', '🌍', '🎎', '🐉', '🎵', '🎭', '🏮', '✨', '📸'];
+            const numberOfItems = window.innerWidth > 768 ? 25 : 15; 
+            
+            for (let i = 0; i < numberOfItems; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+                
+                const duration = Math.random() * 25 + 15;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 20}s`;
+                item.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        function initApp() {
+            createFloatingItems();
+            initVoices();
+            
+            DOM.btnStart.addEventListener('click', function(e) { e.preventDefault(); startGame(); });
+            DOM.btnRestart.addEventListener('click', function(e) { e.preventDefault(); startGame(); });
+            DOM.btnNext.addEventListener('click', function(e) { e.preventDefault(); nextQuestion(); });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    if (!DOM.screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); nextQuestion();
+                    } else if (!DOM.screenStart.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    } else if (!DOM.screenEnd.classList.contains('hidden')) {
+                        event.preventDefault(); startGame();
+                    }
+                }
+                
+                if (!DOM.screenPlaying.classList.contains('hidden') && !hasAnswered) {
+                    if (['1', '2', '3', '4'].includes(event.key)) {
+                        const index = parseInt(event.key) - 1;
+                        const buttons = DOM.optionsContainer.children;
+                        if (buttons[index] && !buttons[index].disabled) {
+                            buttons[index].click(); 
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+</body>
+</html>
