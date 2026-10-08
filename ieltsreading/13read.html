@@ -1,0 +1,931 @@
+list<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PICK FROM THE LIST - HONEY BADGER</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2canvas cho tính năng chụp màn hình -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* CSS cho thanh cuộn */
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        #passage-container::-webkit-scrollbar, #questions-container::-webkit-scrollbar { width: 8px; }
+        #passage-container::-webkit-scrollbar-track, #questions-container::-webkit-scrollbar-track { background: transparent; }
+        #passage-container::-webkit-scrollbar-thumb, #questions-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; border: 2px solid white; }
+        
+        /* Đảm bảo các thẻ định dạng văn bản hoạt động tốt cùng Tailwind */
+        #app b, #app strong { font-weight: bolder; }
+        #app i, #app em { font-style: italic; }
+        #app u { text-decoration: underline; }
+        #app strike, #app s { text-decoration: line-through; }
+    </style>
+</head>
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+    
+    <div id="app" class="flex flex-col h-full w-full relative"></div>
+
+    <script>
+        const quizData = [
+          {
+            title: "Pick from the list - On the trail of the honey badger",
+            instruction: "Read the rest of the passage and choose TWO letters, A–E, for Questions 2–5.",
+            passage: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-2'>On the trail of the honey badger</h2><h3 class='text-lg font-medium text-slate-700 mb-4 italic'>Researchers learn more about this fearless African predator</h3><p class='mb-4'>On a recent field trip to the Kalahari Desert, a team of researchers learnt a lot more about honey badgers. They were rewarded with a detailed insight into how these fascinating creatures live and hunt.</p><p class='mb-4'>The team employed a local wildlife expert, Kitso Khama, to help them locate and follow the badgers across the desert. Their main aim was to study the badgers’ movements and behaviour as discreetly as possible, without frightening them away or causing them to change their natural behaviour. They also planned to trap a few and study them close up before releasing them. In view of the animal’s reputation, this was something that even Khama was reluctant to do.</p><p class='mb-4'>‘The problem with honey badgers is they are naturally curious animals, especially when they see something new,’ he says. ‘That, combined with their unpredictable nature, can be a dangerous mixture. If they sense you have food, for example, they won’t be shy about coming right up to you for something to eat. They’re actually quite sociable creatures around humans, but as soon as they feel they might be in danger, they can become extremely vicious. Fortunately this is rare, but it does happen.’</p><p class='mb-4'>The research confirmed many things that were already known. As expected, honey badgers ate any creatures they could catch and kill. Even poisonous snakes, feared and avoided by most other animals, were not safe from them. The researchers were surprised, however, by the animal’s fondness for local melons, probably because of their high water content. Previously researchers thought that the animal got all of its liquid requirements from its prey. The team also learnt that, contrary to previous research findings, the badgers occasionally formed loose family groups. They were also able to confirm certain results from previous research, including the fact that female badgers never socialised with each other.</p><p class='mb-4'>Following some of the male badgers was a challenge, since they can cover large distances in a short space of time. Some hunting territories cover more than 500 square kilometres. Although they seem happy to share these territories with other males, there are occasional fights over an important food source, and male badgers can be as aggressive towards each other as they are towards other species.</p><p class='mb-4'>As the badgers became accustomed to the presence of people, it gave the team the chance to get up close to them without being the subject of the animals’ curiosity – or their sudden aggression. The badgers’ eating patterns, which had been disrupted, returned to normal. It also allowed the team to observe more closely some of the other creatures that form working associations with the honey badger, as these seemed to adopt the badgers’ relaxed attitude when near humans.</p>",
+            passageTranslation: "<h2 class='text-xl md:text-2xl font-bold text-slate-900 mb-2'>Theo dấu vết lửng mật</h2><h3 class='text-lg font-medium text-slate-700 mb-4 italic'>Các nhà nghiên cứu tìm hiểu thêm về loài thú săn mồi châu Phi không biết sợ hãi này</h3><p class='mb-4'>Trong một chuyến đi thực tế gần đây đến Sa mạc Kalahari, một nhóm các nhà nghiên cứu đã tìm hiểu được nhiều điều hơn về lửng mật. Họ đã được đền đáp bằng cái nhìn chi tiết về cách những sinh vật hấp dẫn này sinh sống và săn mồi.</p><p class='mb-4'>Nhóm nghiên cứu đã thuê một chuyên gia động vật hoang dã địa phương, Kitso Khama, để giúp họ xác định vị trí và theo dõi những con lửng qua sa mạc. Mục đích chính của họ là nghiên cứu các chuyển động và hành vi của lửng mật một cách kín đáo nhất có thể, mà không làm chúng hoảng sợ hoặc khiến chúng thay đổi hành vi tự nhiên. Họ cũng lên kế hoạch bẫy một vài con và nghiên cứu chúng thật gần trước khi thả chúng ra. Xét về danh tiếng hung dữ của loài vật này, đây là điều mà ngay cả Khama cũng miễn cưỡng không muốn làm.</p><p class='mb-4'>'Vấn đề với lửng mật là chúng là những động vật tò mò bẩm sinh, đặc biệt là khi chúng nhìn thấy một thứ gì đó mới lạ,' ông nói. 'Điều đó, kết hợp với bản tính khó đoán của chúng, có thể là một hỗn hợp nguy hiểm. Ví dụ, nếu chúng cảm nhận được bạn có thức ăn, chúng sẽ không ngại tiến thẳng đến chỗ bạn để kiếm chút gì đó ăn. Chúng thực sự là những sinh vật khá hòa đồng khi ở gần con người, nhưng ngay khi cảm thấy có thể gặp nguy hiểm, chúng có thể trở nên cực kỳ hung ác. Rất may điều này hiếm khi xảy ra, nhưng nó vẫn có thể xảy ra.'</p><p class='mb-4'>Nghiên cứu đã xác nhận nhiều điều đã được biết đến. Đúng như dự đoán, lửng mật ăn bất cứ sinh vật nào chúng có thể bắt và giết. Ngay cả những loài rắn độc, bị hầu hết các loài động vật khác sợ hãi và né tránh, cũng không an toàn trước chúng. Tuy nhiên, các nhà nghiên cứu đã rất ngạc nhiên trước sự yêu thích của loài vật này đối với các loại dưa địa phương, có lẽ vì hàm lượng nước cao của chúng. Trước đây các nhà nghiên cứu nghĩ rằng loài động vật này lấy toàn bộ nhu cầu chất lỏng từ con mồi. Nhóm cũng biết được rằng, trái ngược với các kết quả nghiên cứu trước đây, lửng mật thỉnh thoảng hình thành các nhóm gia đình lỏng lẻo. Họ cũng có thể xác nhận một số kết quả từ nghiên cứu trước đó, bao gồm thực tế là lửng cái không bao giờ giao lưu với nhau.</p><p class='mb-4'>Việc theo dõi một số con đực là một thử thách, vì chúng có thể đi quãng đường lớn trong một thời gian ngắn. Một số lãnh thổ săn mồi rộng hơn 500 km vuông. Mặc dù chúng có vẻ vui vẻ chia sẻ những lãnh thổ này với những con đực khác, vẫn có những cuộc chiến thỉnh thoảng nổ ra tranh giành một nguồn thức ăn quan trọng, và lửng đực có thể hung dữ với nhau y như cách chúng hung dữ với các loài khác.</p><p class='mb-4'>Khi những con lửng đã quen với sự hiện diện của con người, điều đó mang lại cho nhóm cơ hội đến gần chúng mà không trở thành đối tượng của sự tò mò – hay sự hung hãn bất thình lình của loài vật. Thói quen ăn uống của những con lửng, vốn đã bị gián đoạn, trở lại bình thường. Nó cũng cho phép nhóm nghiên cứu quan sát kỹ hơn một số sinh vật khác hình thành các mối quan hệ hợp tác với lửng mật, vì những loài này dường như cũng áp dụng thái độ thư giãn của con lửng khi ở gần con người.</p>",
+            questions: [
+              { 
+                id: 2, 
+                text: "What two things does Kitso Khama say about honey badgers?", 
+                type: "multiple-choice-2", 
+                options: [
+                    { key: "A", text: "They show interest in things they are not familiar with." },
+                    { key: "B", text: "It’s hard to tell how they will behave." },
+                    { key: "C", text: "They are always looking for food." },
+                    { key: "D", text: "They do not enjoy human company." },
+                    { key: "E", text: "It is common for them to attack people." }
+                ],
+                correct: ["A", "B"], 
+                explanation: "<strong>Từ khóa:</strong> Kitso Khama say about honey badgers.<br><br><strong>Trong bài (Đoạn 3):</strong> “The problem with honey badgers is they are naturally <strong>curious</strong> animals, especially when they <strong>see something new</strong>,” he says. “That, combined with their <strong>unpredictable nature</strong>, can be a dangerous mixture.”<br><br><strong>Giải thích:</strong><br>- <strong>A đúng:</strong> Chúng tò mò khi thấy điều mới lạ (curious when they see something new = show interest in things they are not familiar with).<br>- <strong>B đúng:</strong> Bản tính của chúng rất khó đoán (unpredictable nature = hard to tell how they will behave).<br>- C sai vì bài đọc chỉ nói nếu chúng ngửi thấy thức ăn chúng sẽ tới gần, không nói chúng luôn luôn tìm kiếm thức ăn.<br>- D sai vì bài đọc bảo chúng khá hoà đồng với con người (sociable creatures around humans).<br>- E sai vì việc chúng tấn công con người là rất hiếm (Fortunately this is rare)." 
+              },
+              { 
+                id: 3, 
+                text: "What two things did the team find out about honey badgers?", 
+                type: "multiple-choice-2", 
+                options: [
+                    { key: "A", text: "There are some creatures they will not eat." },
+                    { key: "B", text: "They were afraid of poisonous creatures." },
+                    { key: "C", text: "They may get some of the water they need from fruit." },
+                    { key: "D", text: "They do not always live alone." },
+                    { key: "E", text: "Female badgers do not mix with male badgers." }
+                ],
+                correct: ["C", "D"], 
+                explanation: "<strong>Từ khóa:</strong> team find out.<br><br><strong>Trong bài (Đoạn 4):</strong> \"The researchers were surprised, however, by the animal’s <strong>fondness for local melons</strong>, probably because of their <strong>high water content</strong>... The team also learnt that, contrary to previous research findings, the badgers <strong>occasionally formed loose family groups</strong>.\"<br><br><strong>Giải thích:</strong><br>- <strong>C đúng:</strong> Chúng thích ăn dưa địa phương vì có nhiều nước, nên chúng hấp thụ nước từ trái cây (get water from fruit = melons' high water content).<br>- <strong>D đúng:</strong> Trái với nghiên cứu cũ, chúng thỉnh thoảng sống thành các nhóm gia đình lỏng lẻo, nghĩa là không phải lúc nào cũng sống một mình (occasionally formed loose family groups = do not always live alone).<br>- A & B sai vì bài nói chúng ăn mọi thứ và không hề sợ rắn độc (Even poisonous snakes... were not safe from them).<br>- E sai vì bài đọc nói lửng cái không giao tiếp \"với nhau\" (with each other), chứ không nói là không giao tiếp với con đực." 
+              },
+              { 
+                id: 4, 
+                text: "According to the passage, which of these two features are typical of male badgers?", 
+                type: "multiple-choice-2", 
+                options: [
+                    { key: "A", text: "They don’t run very quickly." },
+                    { key: "B", text: "They hunt over a very large area." },
+                    { key: "C", text: "They defend their territory from other badgers." },
+                    { key: "D", text: "They sometimes fight each other." },
+                    { key: "E", text: "They are more aggressive than females." }
+                ],
+                correct: ["B", "D"], 
+                explanation: "<strong>Từ khóa:</strong> features typical of male badgers.<br><br><strong>Trong bài (Đoạn 5):</strong> \"Some <strong>hunting territories cover more than 500 square kilometres</strong>. Although they seem happy to share these territories with other males, there are <strong>occasional fights over an important food source</strong>...\"<br><br><strong>Giải thích:</strong><br>- <strong>B đúng:</strong> Lãnh thổ săn mồi của chúng rộng hơn 500 km vuông (hunting territories cover more than 500 sq km = hunt over a very large area).<br>- <strong>D đúng:</strong> Chúng thỉnh thoảng vẫn đánh nhau để giành nguồn thức ăn (occasional fights = sometimes fight each other).<br>- A không được nhắc tới.<br>- C sai vì đoạn văn nói chúng vui vẻ chia sẻ lãnh thổ với các con đực khác (happy to share territories).<br>- E sai vì không có sự so sánh mức độ hung dữ giữa con đực và con cái." 
+              },
+              { 
+                id: 5, 
+                text: "What two things happened when the honey badgers got used to humans being around them?", 
+                type: "multiple-choice-2", 
+                options: [
+                    { key: "A", text: "The badgers lost interest in people." },
+                    { key: "B", text: "The badgers became less aggressive towards other creatures." },
+                    { key: "C", text: "The badgers started eating more." },
+                    { key: "D", text: "Other animals started working with the badgers." },
+                    { key: "E", text: "Other animals near them became more relaxed." }
+                ],
+                correct: ["A", "E"], 
+                explanation: "<strong>Từ khóa:</strong> got used to humans being around.<br><br><strong>Trong bài (Đoạn 6):</strong> \"As the badgers became accustomed to the presence of people, it gave the team the chance to get up close to them <strong>without being the subject of the animals’ curiosity</strong>... It also allowed the team to observe more closely some of the <strong>other creatures</strong> that form working associations with the honey badger, as these <strong>seemed to adopt the badgers’ relaxed attitude</strong> when near humans.\"<br><br><strong>Giải thích:</strong><br>- <strong>A đúng:</strong> Khi lửng mật quen với con người, chúng không còn tò mò về con người nữa (without being the subject of the animals' curiosity = lost interest in people).<br>- <strong>E đúng:</strong> Các loài động vật khác ở gần chúng cũng bắt đầu tỏ ra thư giãn và thoải mái hơn (adopt relaxed attitude = became more relaxed).<br>- B sai vì không nói chúng bớt hung hăng với các loài động vật khác.<br>- C sai vì bài đọc chỉ nói thói quen ăn uống của lửng mật trở lại bình thường (returned to normal), chứ không phải ăn nhiều hơn.<br>- D sai vì các loài vật khác đã có sẵn mối quan hệ hợp tác (that form working associations), chứ không phải bây giờ mới bắt đầu hợp tác." 
+              }
+            ]
+          }
+        ];
+
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            incorrectIds: [],
+            startTime: Date.now(),
+            endTime: null,
+            submitTime: null,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {},
+            expandedNotes: {},
+            showResetConfirm: false,
+            hasCapturedScreenshot: false,
+            showCompletedModal: false,
+            notes: {},
+            formattedPassage: null,
+            formattedPassageTrans: null,
+            formattedQuestions: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        window.saveFormatting = () => {
+            const passageEl = document.getElementById('passage-content');
+            if (passageEl) {
+                if (state.showPassageTranslation) {
+                    state.formattedPassageTrans = passageEl.innerHTML;
+                } else {
+                    state.formattedPassage = passageEl.innerHTML;
+                }
+            }
+            allQuestions.forEach(q => {
+                const qEl = document.getElementById(`q-text-${q.id}`);
+                if (qEl) {
+                    state.formattedQuestions[q.id] = qEl.innerHTML;
+                }
+            });
+        };
+
+        window.formatText = (command, value = null) => {
+            const targets = document.querySelectorAll('.format-target');
+            targets.forEach(t => t.setAttribute('contenteditable', 'true'));
+            document.execCommand(command, false, value);
+            targets.forEach(t => t.setAttribute('contenteditable', 'false'));
+            saveFormatting();
+        };
+
+        window.handleNoteChange = (qId, val) => {
+            state.notes[qId] = val;
+        };
+
+        window.handleCheckboxChange = (qId, val) => {
+            if (state.isSubmitted) return;
+            
+            if (!state.answers[qId]) state.answers[qId] = [];
+            let current = [...state.answers[qId]];
+            
+            if (current.includes(val)) {
+                // Bỏ chọn
+                current = current.filter(item => item !== val);
+            } else {
+                // Chọn mới (kiểm tra giới hạn 2 lựa chọn)
+                if (current.length < 2) {
+                    current.push(val);
+                } else {
+                    return; // Ngăn chặn chọn quá 2 đáp án
+                }
+            }
+            
+            state.answers[qId] = current;
+            saveFormatting();
+            updateProgress();
+            renderApp(); // Render lại để cập nhật màu sắc Checkbox
+        };
+
+        window.updateProgress = () => {
+            // Câu hỏi được coi là đã trả lời nếu mảng answers có ít nhất 1 phần tử
+            const answeredCount = Object.keys(state.answers).filter(k => {
+                const val = state.answers[k];
+                if (Array.isArray(val)) return val.length > 0;
+                return val && val.toString().trim() !== '';
+            }).length;
+            
+            const progressText = document.getElementById('progress-text');
+            if (progressText) progressText.innerText = `Đã làm: ${answeredCount} / ${totalQuestions}`;
+            
+            const submitBtnMain = document.getElementById('submit-btn-main');
+            const submitBtnNav = document.getElementById('submit-btn-nav');
+            
+            if (answeredCount > 0) {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = false;
+                    submitBtnMain.className = "px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = false;
+                    submitBtnNav.className = "px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors";
+                }
+            } else {
+                if (submitBtnMain) {
+                    submitBtnMain.disabled = true;
+                    submitBtnMain.className = "opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed";
+                }
+                if (submitBtnNav) {
+                    submitBtnNav.disabled = true;
+                    submitBtnNav.className = "opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed";
+                }
+            }
+
+            // Cập nhật màu các nút điều hướng bên dưới
+            allQuestions.forEach(q => {
+                const btn = document.getElementById(`nav-btn-${q.id}`);
+                const userAns = state.answers[q.id] || [];
+                const isAnswered = userAns.length > 0;
+                
+                if (btn && !state.isSubmitted) {
+                    btn.className = isAnswered 
+                        ? "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                        : "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                }
+
+                const container = document.getElementById(`question-${q.id}`);
+                if (container && !state.isSubmitted) {
+                    container.className = `p-4 md:p-5 rounded-xl border transition-all ${isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300'}`;
+                }
+            });
+        };
+
+        function renderApp() {
+            const app = document.getElementById('app');
+            
+            const answeredCount = Object.keys(state.answers).filter(k => {
+                const val = state.answers[k];
+                if (Array.isArray(val)) return val.length > 0;
+                return val && val.toString().trim() !== '';
+            }).length;
+
+            const currentSection = quizData[state.currentPartIndex];
+            
+            // Lưu vị trí cuộn của cả 2 cột
+            const qContainer = document.getElementById('questions-container');
+            const qScrollPos = qContainer ? qContainer.scrollTop : 0;
+            
+            const pContainer = document.getElementById('passage-container');
+            const pScrollPos = pContainer ? pContainer.scrollTop : 0;
+
+            let timeStr = "";
+            let dateStr = "";
+            if (state.isSubmitted && state.submitTime) {
+                const totalSeconds = Math.floor((state.endTime - state.startTime) / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timeStr = `${minutes} phút ${seconds} giây`;
+
+                const d = state.submitTime;
+                const hours = String(d.getHours()).padStart(2, '0');
+                const mins = String(d.getMinutes()).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const year = d.getFullYear();
+                dateStr = `${hours}:${mins} - ${day}/${month}/${year}`;
+            }
+
+            let passageHtml = state.showPassageTranslation 
+                ? (state.formattedPassageTrans || currentSection.passageTranslation) 
+                : (state.formattedPassage || currentSection.passage);
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-indigo-700 flex items-center gap-2">
+                            <i class="fa-brands fa-discourse text-indigo-600"></i>
+                            IELTS READING PRACTICE
+                        </h1>
+                        <p class="text-sm text-slate-500">Mô phỏng đề thi IELTS Reading</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div id="progress-text-container" class="text-sm font-medium bg-indigo-50 text-indigo-800 px-3 py-1 rounded-full border border-indigo-200 hidden md:block">
+                        <span id="progress-text">Đã làm: ${answeredCount} / ${totalQuestions}</span>
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted && state.hasCapturedScreenshot ? `
+                    <div class="flex-none bg-white p-5 md:p-6 rounded-xl border border-green-200 shadow-sm animate-in fade-in duration-500 mb-2">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-circle-check text-green-500 text-4xl md:text-5xl"></i>
+                                <div>
+                                    <h2 class="text-xl md:text-2xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
+                                    <p class="text-slate-600 mt-1">Tuyệt vời, bạn đã hoàn thành bài tập. Hãy xem kết quả chi tiết bên dưới.</p>
+                                </div>
+                            </div>
+                            <button onclick="resetQuiz()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow font-medium whitespace-nowrap">
+                                <i class="fa-solid fa-rotate-right mr-2"></i>Làm lại bài thi
+                            </button>
+                        </div>
+                        
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg overflow-hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-regular fa-clock text-indigo-500 mr-2"></i>Giờ, ngày nộp:</span>
+                                    <span class="font-bold text-slate-800">${dateStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center">
+                                    <span class="text-slate-600 font-medium"><i class="fa-solid fa-stopwatch text-indigo-500 mr-2"></i>Tổng thời gian làm:</span>
+                                    <span class="font-bold text-slate-800">${timeStr}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center bg-green-50/50">
+                                    <span class="text-green-700 font-medium"><i class="fa-solid fa-check text-green-600 mr-2"></i>Số câu đúng:</span>
+                                    <span class="font-bold text-green-700 text-lg">${state.score} / ${totalQuestions}</span>
+                                </div>
+                                <div class="p-4 flex justify-between items-center ${state.incorrectIds.length > 0 ? 'bg-red-50/50' : 'bg-slate-50'}">
+                                    <span class="${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-600'} font-medium"><i class="fa-solid fa-xmark text-red-500 mr-2"></i>Số câu sai/chưa làm:</span>
+                                    <span class="font-bold ${state.incorrectIds.length > 0 ? 'text-red-700' : 'text-slate-800'} text-lg">${state.incorrectIds.length} / ${totalQuestions}</span>
+                                </div>
+                            </div>
+                            ${state.incorrectIds.length > 0 ? `
+                            <div class="p-4 border-t border-slate-200 bg-white">
+                                <span class="text-slate-600 font-medium block mb-3"><i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>Các câu sai hoặc chưa trả lời:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    ${state.incorrectIds.map(id => `<button onclick="scrollToQuestion(${id})" class="px-4 py-1.5 bg-red-50 text-red-700 font-bold rounded-md border border-red-200 hover:bg-red-100 transition shadow-sm">Câu ${id}</button>`).join('')}
+                                </div>
+                            </div>
+                            ` : `
+                            <div class="p-4 border-t border-slate-200 bg-white text-center">
+                                <span class="text-green-600 font-bold"><i class="fa-solid fa-star text-yellow-400 mr-1"></i> Xuất sắc! Bạn đã trả lời đúng tất cả các câu hỏi.</span>
+                            </div>
+                            `}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-2.5 md:px-4 md:py-3 border-b border-slate-200 flex justify-between items-center">
+                            <div class="flex-1 pr-4">
+                                <h2 class="text-sm md:text-base font-bold text-indigo-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-xs md:text-sm text-slate-700 mt-1 font-medium bg-yellow-50 border-l-4 border-yellow-400 pl-3 py-1"><i class="fa-solid fa-circle-info mr-1"></i> ${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <div class="flex-none flex items-center gap-3">
+                                <button onclick="togglePassageTranslation()" class="text-xs font-bold px-3 py-1.5 rounded-md shadow-sm transition-colors ${state.showPassageTranslation ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-white text-slate-600 border border-slate-300 hover:bg-slate-50'}">
+                                    <i class="fa-solid fa-language mr-1"></i> ${state.showPassageTranslation ? 'Đang bật dịch' : 'Bật dịch VN'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Formatting Toolbar -->
+                        <div class="flex-none bg-white border-b border-slate-200 px-3 py-1.5 flex items-center gap-1 md:gap-2 z-40 text-sm overflow-x-auto custom-scrollbar shadow-sm">
+                            <span class="text-slate-500 font-bold px-2 whitespace-nowrap text-[11px] uppercase tracking-wide"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Bút đánh dấu</span>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('bold')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="In đậm (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('italic')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="In nghiêng (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('underline')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="Gạch chân (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('strikeThrough')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-700 transition" title="Gạch bỏ"><i class="fa-solid fa-strikethrough"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fef08a')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-yellow-50 transition text-yellow-500" title="Highlight Vàng"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#bbf7d0')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-green-50 transition text-green-500" title="Highlight Xanh lá"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fecaca')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-red-50 transition text-red-500" title="Highlight Đỏ"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#bae6fd')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-blue-50 transition text-blue-500" title="Highlight Xanh lam"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#e9d5ff')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-purple-50 transition text-purple-500" title="Highlight Tím"><i class="fa-solid fa-highlighter"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('backColor', '#fed7aa')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-orange-50 transition text-orange-500" title="Highlight Cam"><i class="fa-solid fa-highlighter"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#ef4444')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-red-50 transition text-red-500" title="Chữ Đỏ"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#3b82f6')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-blue-50 transition text-blue-500" title="Chữ Xanh dương"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#16a34a')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-green-50 transition text-green-600" title="Chữ Xanh lá"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#a855f7')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-purple-50 transition text-purple-500" title="Chữ Tím"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#f97316')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-orange-50 transition text-orange-500" title="Chữ Cam"><i class="fa-solid fa-font"></i></button>
+                            <button onmousedown="event.preventDefault(); formatText('foreColor', '#000000')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-200 transition text-black" title="Chữ Đen"><i class="fa-solid fa-font"></i></button>
+                            <div class="h-5 w-px bg-slate-300 mx-1 shrink-0"></div>
+                            <button onmousedown="event.preventDefault(); formatText('removeFormat')" class="shrink-0 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded hover:bg-slate-100 transition text-slate-500" title="Xóa định dạng"><i class="fa-solid fa-eraser"></i></button>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC TẠI ĐÂY -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/50 border-b-[3px] md:border-b-0 md:border-r-[3px] border-slate-200 p-5 md:p-8 shadow-inner custom-scrollbar relative">
+                                <div id="passage-content" class="format-target text-slate-800 leading-relaxed text-[15px] md:text-[17px] text-justify outline-none focus:outline-none" contenteditable="false">
+                                    ${passageHtml}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 bg-white custom-scrollbar">
+                                <div class="max-w-5xl mx-auto space-y-4">
+                                    ${currentSection.questions.map((q, idx) => renderQuestion(q, idx)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-6 pb-4">
+                                        <button id="submit-btn-main" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Danh sách câu hỏi</span>
+                            ${!state.isSubmitted ? `
+                            <button id="submit-btn-nav" onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-indigo-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                                const userAns = state.answers[q.id] || [];
+                                const isAnswered = userAns.length > 0;
+                                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+                                
+                                if (!state.isSubmitted) {
+                                    btnClass += isAnswered 
+                                    ? "bg-indigo-600 text-white border-indigo-600 shadow-sm" 
+                                    : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                                } else {
+                                    const isCorrect = [...userAns].sort().join(',') === [...q.correct].sort().join(',');
+                                    btnClass += isCorrect 
+                                    ? "bg-green-500 text-white border-green-500 shadow-sm" 
+                                    : "bg-red-500 text-white border-red-500 shadow-sm";
+                                }
+
+                                return `<button id="nav-btn-${q.id}" onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Confirmation Modal -->
+                ${state.showResetConfirm ? `
+                <div class="fixed inset-0 bg-slate-900/40 z-[100] flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-[pulse_0.2s_ease-in-out]">
+                        <div class="flex items-center gap-3 text-red-600 mb-4">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                            <h3 class="text-xl font-bold">Làm lại bài thi?</h3>
+                        </div>
+                        <p class="text-slate-600 mb-6 leading-relaxed">Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án, định dạng và kết quả hiện tại của bạn sẽ bị xoá.</p>
+                        <div class="flex justify-end gap-3">
+                            <button onclick="cancelReset()" class="px-5 py-2 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg font-bold transition-colors">Hủy</button>
+                            <button onclick="confirmReset()" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors shadow-sm">Đồng ý xoá</button>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Modal Báo Điểm & Yêu Cầu Chụp Ảnh -->
+                ${state.showCompletedModal ? `
+                <div class="fixed inset-0 bg-slate-900/70 z-[110] flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+                    <div id="capture-area" class="bg-white rounded-[24px] w-[380px] max-w-full flex flex-col relative overflow-hidden shrink-0 my-4 mx-auto border border-slate-200 bg-clip-padding">
+                        <div class="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-indigo-50/80 via-yellow-50/30 to-transparent pointer-events-none"></div>
+
+                        <div class="relative z-10 px-6 pt-8 pb-6 flex flex-col w-full">
+                            <div class="w-full text-center mb-3">
+                                <h1 class="text-[25px] font-black text-[#3730a3] tracking-tight uppercase m-0 p-0 leading-none">HOÀNG TRƯỜNG ENGLISH</h1>
+                            </div>
+                            
+                            <div class="w-full flex justify-center mb-6">
+                                <div id="title-box" class="bg-slate-50 text-slate-700 font-bold py-2 px-4 rounded-xl text-sm border border-slate-200/60 inline-block text-center">
+                                    ${currentSection.title}
+                                </div>
+                            </div>
+
+                            <div class="w-[60px] h-[60px] bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_15px_rgba(134,239,172,0.4)]">
+                                <i class="fa-solid fa-award text-[28px] text-green-600"></i>
+                            </div>
+                            
+                            <h2 class="text-[22px] font-black text-slate-800 mb-6 text-center leading-none">Hoàn thành bài thi!</h2>
+
+                            <div id="stats-box" class="border border-slate-200 rounded-[20px] p-4 bg-white mb-6 space-y-4 shadow-sm">
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-regular fa-calendar-check text-indigo-500 w-5 text-center"></i>
+                                        <span class="ml-2">Ngày giờ nộp:</span>
+                                    </div>
+                                    <div class="value-box text-slate-800 font-bold text-[14px] bg-white px-2.5 py-1 rounded border border-slate-200 inline-block leading-none">
+                                        ${dateStr}
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-stopwatch text-indigo-500 w-5 text-center"></i>
+                                        <span class="ml-2">Thời gian làm bài:</span>
+                                    </div>
+                                    <div class="value-box text-slate-800 font-bold text-[14px] bg-white px-2.5 py-1 rounded border border-slate-200 inline-block leading-none">
+                                        ${timeStr}
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-100 w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-check-circle text-green-500 w-5 text-center"></i>
+                                        <span class="ml-2">Số câu đúng:</span>
+                                    </div>
+                                    <div class="text-green-600 font-black text-xl leading-none flex items-baseline">
+                                        ${state.score} <span class="text-xs text-slate-400 font-bold ml-1">/ ${totalQuestions}</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center ${state.incorrectIds.length > 0 ? 'pb-3 border-b border-slate-100' : ''} w-full">
+                                    <div class="text-slate-600 font-medium text-[14px] flex items-center">
+                                        <i class="fa-solid fa-times-circle text-red-500 w-5 text-center"></i>
+                                        <span class="ml-2">Số câu sai/chưa làm:</span>
+                                    </div>
+                                    <div class="text-red-600 font-black text-xl leading-none flex items-baseline">
+                                        ${state.incorrectIds.length} <span class="text-xs text-slate-400 font-bold ml-1">/ ${totalQuestions}</span>
+                                    </div>
+                                </div>
+
+                                ${state.incorrectIds.length > 0 
+                                    ? `<div id="wrong-answers-box" class="w-full bg-[#fef2f2] rounded-xl p-3 border border-red-100 mt-2">
+                                        <div class="text-[13px] font-bold text-red-800 mb-2 flex items-center">
+                                            <i class="fa-solid fa-caret-right mr-2 text-red-600"></i><span>Sai ở các câu:</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${state.incorrectIds.map(id => `<div class="wrong-q-box bg-white text-red-600 text-[13px] font-bold px-3 py-1.5 rounded-md border border-red-200 leading-none shadow-sm">Câu ${id}</div>`).join('')}
+                                        </div>
+                                       </div>` 
+                                    : ''
+                                }
+                            </div>
+
+                            <button id="capture-btn" onclick="captureAndReveal()" class="w-full py-[14px] bg-[#4f46e5] hover:bg-indigo-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 text-[15px] border-none outline-none shadow-sm transition-opacity">
+                                <i id="capture-btn-icon" class="fa-solid fa-folder-open text-lg"></i> 
+                                <span id="capture-btn-text">Tải ảnh kết quả & Xem đáp án</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            app.innerHTML = html;
+
+            // Phục hồi vị trí cuộn cho các container mới được render
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = qScrollPos;
+
+            const newPContainer = document.getElementById('passage-container');
+            if (newPContainer) newPContainer.scrollTop = pScrollPos;
+        }
+
+        function renderQuestion(q, idx) {
+            const userAns = state.answers[q.id] || [];
+            const isAnswered = userAns.length > 0;
+            const showExp = state.expandedExplanations[q.id];
+            
+            const showFeedback = state.isSubmitted && state.hasCapturedScreenshot;
+            // Với dạng chọn 2, hệ thống sắp xếp và so sánh 2 mảng để xác định đúng/sai tuyệt đối.
+            const isCorrect = showFeedback && [...userAns].sort().join(',') === [...q.correct].sort().join(',');
+
+            let containerClass = `relative p-4 md:p-5 rounded-xl border transition-all mb-4 `;
+            if (state.isSubmitted) {
+                if (showFeedback) {
+                    containerClass += isCorrect ? 'bg-green-50/30 border-green-200' : 'bg-red-50/30 border-red-200';
+                } else {
+                    containerClass += 'bg-slate-50 border-slate-200 opacity-80';
+                }
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            let errorHtml = (showFeedback && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/60 p-3.5 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <div>
+                        <p class="mb-1 font-bold">Bạn đã trả lời sai hoặc chưa chọn đủ.</p>
+                        <p>Đáp án đúng là: <strong class="text-base uppercase text-red-800 tracking-wider">${q.correct.join(' và ')}</strong></p>
+                    </div>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (showFeedback && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/80 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-indigo-600 hover:text-indigo-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            const showNote = state.expandedNotes[q.id];
+            const hasNote = state.notes[q.id] && state.notes[q.id].trim() !== '';
+
+            let notesHtml = `
+                <div class="absolute top-3 right-3 z-10 flex flex-col items-end">
+                    <button onclick="toggleNote(${q.id})" class="text-slate-400 hover:text-amber-500 transition-colors p-1.5 rounded-md hover:bg-slate-100 relative" title="Ghi chú của giáo viên">
+                        <i class="fa-solid fa-comment-dots text-xl ${hasNote ? 'text-amber-500' : ''}"></i>
+                        ${hasNote ? '<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>' : ''}
+                    </button>
+                    
+                    ${showNote ? `
+                    <div class="mt-2 bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-xl w-64 md:w-80 relative animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                        <div class="absolute -top-2 right-3 w-4 h-4 bg-amber-50 border-t border-l border-amber-200 transform rotate-45"></div>
+                        <div class="relative z-10">
+                            <div class="text-xs font-bold text-amber-800 mb-2 flex items-center justify-between uppercase tracking-wider">
+                                <span><i class="fa-solid fa-pen-clip mr-1"></i> Ghi chú riêng</span>
+                                <button onclick="toggleNote(${q.id})" class="text-amber-600 hover:text-amber-800 bg-amber-100 hover:bg-amber-200 rounded-full w-5 h-5 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <textarea 
+                                class="w-full bg-white border border-amber-300 rounded p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-[90px] custom-scrollbar text-slate-700 transition-all shadow-inner" 
+                                placeholder="Nhập ghi chú, phân tích câu hỏi tại đây..."
+                                oninput="handleNoteChange(${q.id}, this.value)"
+                            >${state.notes[q.id] || ''}</textarea>
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // HTML của các Checkbox
+            let optionsHtml = q.options.map(opt => {
+                const isSelected = userAns.includes(opt.key);
+                let btnClass = "w-full text-left p-3 mb-2.5 border-2 rounded-xl flex items-start transition-all ";
+                let iconClass = "hidden";
+                let checkWrapClass = "w-6 h-6 rounded-md border-2 flex items-center justify-center mr-3 mt-0.5 shrink-0 transition-colors ";
+                
+                if (state.isSubmitted && showFeedback) {
+                    const isCorrectOption = q.correct.includes(opt.key);
+                    
+                    if (isCorrectOption) {
+                        // Đây là đáp án đúng (Bất kể user có chọn hay không)
+                        btnClass += "bg-green-50 border-green-500 text-green-900";
+                        checkWrapClass += "bg-green-500 border-green-500";
+                        iconClass = "fa-solid fa-check text-white";
+                    } else if (isSelected && !isCorrectOption) {
+                        // User chọn sai
+                        btnClass += "bg-red-50 border-red-500 text-red-900";
+                        checkWrapClass += "bg-red-500 border-red-500";
+                        iconClass = "fa-solid fa-xmark text-white";
+                    } else {
+                        // Không chọn & Không phải đáp án đúng
+                        btnClass += "bg-slate-50 border-slate-200 text-slate-400 opacity-60";
+                        checkWrapClass += "bg-slate-100 border-slate-300";
+                    }
+                } else if (state.isSubmitted && !showFeedback) {
+                    // Đã nộp nhưng chưa chụp ảnh (khoá)
+                    if (isSelected) {
+                        btnClass += "bg-indigo-50 border-indigo-400 text-indigo-700 opacity-80 cursor-not-allowed";
+                        checkWrapClass += "bg-indigo-400 border-indigo-400";
+                        iconClass = "fa-solid fa-check text-white";
+                    } else {
+                        btnClass += "bg-white border-slate-200 text-slate-400 opacity-60 cursor-not-allowed";
+                        checkWrapClass += "bg-slate-100 border-slate-300";
+                    }
+                } else {
+                    // Trạng thái đang làm bài
+                    if (isSelected) {
+                        btnClass += "bg-indigo-50 border-indigo-500 text-indigo-900 shadow-sm";
+                        checkWrapClass += "bg-indigo-500 border-indigo-500";
+                        iconClass = "fa-solid fa-check text-white";
+                    } else {
+                        // Checkbox bị vô hiệu hóa nếu user đã chọn đủ 2 cái mà cái này chưa được chọn
+                        if (userAns.length >= 2) {
+                            btnClass += "bg-white border-slate-200 text-slate-400 cursor-not-allowed";
+                            checkWrapClass += "bg-slate-100 border-slate-300";
+                        } else {
+                            btnClass += "bg-white border-slate-300 text-slate-700 hover:border-indigo-400 hover:bg-indigo-50/50 cursor-pointer shadow-sm";
+                            checkWrapClass += "bg-white border-slate-300";
+                        }
+                    }
+                }
+                
+                return `
+                    <button ${state.isSubmitted || (!isSelected && userAns.length >= 2 && !state.isSubmitted) ? 'disabled' : ''} onclick="handleCheckboxChange(${q.id}, '${opt.key}')" class="${btnClass}">
+                        <span class="${checkWrapClass}">
+                            <i class="${iconClass} text-sm"></i>
+                        </span>
+                        <div class="leading-relaxed"><strong class="mr-1">${opt.key}.</strong> ${opt.text}</div>
+                    </button>
+                `;
+            }).join('');
+
+            // Lồng Wrapper
+            let rawText = state.formattedQuestions[q.id] || q.text;
+
+            return `
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        <div class="flex items-start gap-3 pr-10 mb-4">
+                            <div class="mt-0.5 w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-black shrink-0 shadow-sm">${q.id}</div>
+                            <div class="w-full">
+                                <div id="q-text-${q.id}" class="format-target text-slate-800 text-[15px] md:text-[16px] leading-relaxed text-justify w-full outline-none font-bold" contenteditable="false">
+                                    ${rawText}
+                                </div>
+                                <span class="block text-sm font-normal text-indigo-600 mt-1 italic"><i class="fa-solid fa-hand-pointer mr-1"></i> (Chọn 2 đáp án A-E)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="pl-2 md:pl-10">
+                            ${optionsHtml}
+                        </div>
+                        
+                        ${errorHtml}
+                        ${explanationHtml}
+                        ${notesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        window.calculateScore = () => {
+            saveFormatting(); 
+            let currentScore = 0;
+            let incorrectIds = [];
+            
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    const userAns = state.answers[q.id] || [];
+                    const correctAns = q.correct || [];
+                    
+                    // So sánh 2 mảng bằng cách sắp xếp theo thứ tự chữ cái A-Z và ghép thành chuỗi
+                    const userStr = [...userAns].sort().join(',');
+                    const correctStr = [...correctAns].sort().join(',');
+                    
+                    if (userStr === correctStr) {
+                        currentScore += 1;
+                    } else {
+                        incorrectIds.push(q.id);
+                    }
+                });
+            });
+            
+            state.score = currentScore;
+            state.incorrectIds = incorrectIds;
+            state.endTime = Date.now();
+            state.submitTime = new Date();
+            state.isSubmitted = true;
+            state.showCompletedModal = true;
+            renderApp();
+        };
+
+        window.captureAndReveal = () => {
+            const captureArea = document.getElementById('capture-area');
+            const btn = document.getElementById('capture-btn');
+            const btnText = document.getElementById('capture-btn-text');
+            
+            if (!captureArea || !btn) return;
+
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            const originalText = btnText.innerText;
+            btnText.innerText = 'Đang xử lý...';
+
+            setTimeout(() => {
+                html2canvas(captureArea, {
+                    scale: 3,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false,
+                    onclone: function(clonedDoc) {
+                        const clonedBtnText = clonedDoc.getElementById('capture-btn-text');
+                        const clonedBtn = clonedDoc.getElementById('capture-btn');
+                        if (clonedBtnText) clonedBtnText.innerText = originalText;
+                        if (clonedBtn) {
+                            clonedBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                            clonedBtn.style.opacity = '1';
+                        }
+                        
+                        const clonedArea = clonedDoc.getElementById('capture-area');
+                        if (clonedArea) {
+                            clonedArea.style.transform = 'none'; 
+                            clonedArea.style.boxShadow = 'none'; 
+                            clonedArea.style.border = 'none'; 
+                        }
+                        
+                        const clonedTitleBox = clonedDoc.getElementById('title-box');
+                        if (clonedTitleBox) {
+                            clonedTitleBox.style.border = 'none';
+                            clonedTitleBox.style.background = 'transparent';
+                            clonedTitleBox.style.boxShadow = 'none';
+                            clonedTitleBox.style.padding = '0';
+                        }
+
+                        const clonedStatsBox = clonedDoc.getElementById('stats-box');
+                        if (clonedStatsBox) {
+                            clonedStatsBox.style.border = 'none';
+                            clonedStatsBox.style.background = 'transparent';
+                            clonedStatsBox.style.boxShadow = 'none';
+                        }
+                        
+                        const clonedWrongBox = clonedDoc.getElementById('wrong-answers-box');
+                        if (clonedWrongBox) {
+                            clonedWrongBox.style.border = 'none';
+                            clonedWrongBox.style.background = 'transparent';
+                            clonedWrongBox.style.boxShadow = 'none';
+                        }
+                        
+                        const valueBoxes = clonedDoc.querySelectorAll('.value-box, .wrong-q-box');
+                        valueBoxes.forEach(box => {
+                            box.style.border = 'none';
+                            box.style.background = 'transparent';
+                            box.style.boxShadow = 'none';
+                            box.style.padding = '0';
+                            box.style.margin = '0';
+                            
+                            if (box.classList.contains('wrong-q-box')) {
+                                box.style.marginRight = '10px';
+                                box.style.color = '#dc2626'; 
+                            } else {
+                                box.style.color = '#1e293b'; 
+                            }
+                        });
+                    }
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Ket_qua_IELTS_Reading_${new Date().getTime()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    state.hasCapturedScreenshot = true;
+                    state.showCompletedModal = false;
+                    renderApp();
+                    
+                }).catch(err => {
+                    console.error("Lỗi khi chụp ảnh:", err);
+                    alert("Có lỗi xảy ra khi lưu ảnh. Bạn có thể xem đáp án ngay.");
+                    state.hasCapturedScreenshot = true;
+                    state.showCompletedModal = false;
+                    renderApp();
+                });
+            }, 50);
+        };
+
+        window.resetQuiz = () => {
+            state.showResetConfirm = true;
+            renderApp();
+        };
+
+        window.cancelReset = () => {
+            state.showResetConfirm = false;
+            renderApp();
+        };
+
+        window.confirmReset = () => {
+            state.answers = {};
+            state.isSubmitted = false;
+            state.score = 0;
+            state.incorrectIds = [];
+            state.startTime = Date.now();
+            state.endTime = null;
+            state.submitTime = null;
+            state.expandedExplanations = {};
+            state.showResetConfirm = false;
+            state.hasCapturedScreenshot = false;
+            state.showCompletedModal = false;
+            state.notes = {};
+            state.formattedPassage = null;
+            state.formattedPassageTrans = null;
+            state.formattedQuestions = {};
+            
+            renderApp();
+        };
+
+        window.togglePassageTranslation = () => {
+            saveFormatting();
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            saveFormatting();
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.toggleNote = (qId) => {
+            saveFormatting();
+            state.expandedNotes[qId] = !state.expandedNotes[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+            
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                const targetScroll = currentScroll + (elTop - containerTop) - 20; 
+                
+                container.scrollTo({ top: targetScroll, behavior: "smooth" });
+
+                // Tạo hiệu ứng nhấp nháy vào thẻ cha của câu hỏi
+                el.classList.add('bg-indigo-50', 'border-indigo-500');
+                setTimeout(() => {
+                    if(!state.isSubmitted && (!state.answers[id] || state.answers[id].length === 0)){
+                        el.classList.remove('bg-indigo-50', 'border-indigo-500');
+                    } else if (!state.isSubmitted) {
+                        el.classList.remove('border-indigo-500'); // Trả về màu đã chọn
+                        el.classList.add('border-indigo-200');
+                    }
+                }, 1000);
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            performScroll(id);
+        };
+
+        // Start Application
+        renderApp();
+
+    </script>
+</body>
+</html>
