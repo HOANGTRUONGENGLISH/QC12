@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompleteSB 5-6.5 - U6 - Making money, spending money</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Commerce Vault Theme Colors */
+            --corp-dark: #0f172a; /* Slate 900 */
+            --corp-base: #1e293b; /* Slate 800 */
+            --wealth-green: #10b981; /* Emerald 500 */
+            --wealth-dark: #047857; /* Emerald 700 */
+            --gold-coin: #fbbf24; /* Amber 400 */
+            --gold-dark: #d97706; /* Amber 600 */
+            --alert-rose: #e11d48; /* Rose 600 */
+            --card-front: rgba(30, 41, 59, 0.85);
+            --card-back: rgba(15, 23, 42, 0.95);
+            --grid-color: rgba(16, 185, 129, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--corp-dark) 0%, #020617 50%, #064e3b 100%);
+            background-size: 200% 200%;
+            animation: vaultFlow 25s ease infinite;
+            color: #f8fafc;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @keyframes vaultFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .pattern-bg {
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.07) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            color: #e2e8f0;
+        }
+
+        .flip-card {
+            perspective: 3000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 550px; 
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            inset: 0; 
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(-180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            overflow: hidden;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .card-front { background: var(--card-front); }
+        .card-back { 
+            transform: rotateY(-180deg); 
+            border: 2px solid var(--gold-coin);
+            background: linear-gradient(145deg, #0f172a 0%, #064e3b 100%);
+            box-shadow: 0 0 35px rgba(251, 191, 36, 0.15);
+        }
+        
+        .flip-card.flipped .card-front { pointer-events: none; }
+        .flip-card:not(.flipped) .card-back { pointer-events: none; }
+
+        .card-top-bar {
+            height: 6px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--wealth-green) 0%, var(--gold-coin) 100%);
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .travel-input {
+            background: rgba(15, 23, 42, 0.8); 
+            border: 2px solid var(--wealth-dark); 
+            border-bottom: 4px solid var(--wealth-green); 
+            color: #f8fafc;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            padding: 0;
+            border-radius: 6px;
+        }
+        
+        .travel-input { width: 22px; height: 32px; font-size: 1.1rem; }
+        @media (min-width: 400px) { .travel-input { width: 26px; height: 36px; font-size: 1.25rem; } }
+        @media (min-width: 640px) { .travel-input { width: 32px; height: 42px; font-size: 1.4rem; } }
+
+        .travel-input:focus {
+            outline: none;
+            background: #022c22;
+            border-color: var(--gold-coin);
+            border-bottom-color: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(251, 191, 36, 0.3);
+            color: var(--gold-coin);
+        }
+        
+        .travel-input.hinted {
+            color: #0f172a; 
+            border-color: var(--wealth-green);
+            border-bottom-color: #059669; 
+            background: var(--wealth-green); 
+            pointer-events: none;
+        }
+        
+        .travel-input.error {
+            color: #ffffff; 
+            border-color: var(--alert-rose);
+            border-bottom-color: #be123c;
+            background: var(--alert-rose);
+            animation: shakeError 0.3s ease-in-out;
+        }
+
+        .fixed-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #64748b;
+            padding: 0 2px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px) rotate(-3deg); }
+            75% { transform: translateX(4px) rotate(3deg); }
+        }
+        .shake-error { animation: shakeError 0.3s ease-in-out; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--wealth-dark); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--wealth-green); }
+        
+        .btn-voyage {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 10px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+        }
+        .btn-voyage:active { transform: scale(0.96); }
+        .btn-voyage:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--wealth-green) 0%, #059669 100%);
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-primary:hover:not(:disabled) { 
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6); 
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #34d399 0%, var(--wealth-green) 100%);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(30, 41, 59, 0.8);
+            color: #e2e8f0;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-color: var(--wealth-green);
+            color: #ffffff;
+        }
+
+        .highlighter {
+            font-weight: 800;
+            color: #ffffff;
+            background-color: rgba(251, 191, 36, 0.2); 
+            padding: 2px 6px;
+            border-radius: 4px;
+            border-bottom: 2px solid var(--gold-coin);
+            text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+        }
+
+        .stamp-voyage {
+            position: absolute;
+            top: 30px;
+            right: 25px;
+            color: var(--wealth-green);
+            border: 3px solid var(--wealth-green);
+            padding: 8px 16px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            transform: rotate(15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.05);
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3), inset 0 0 10px rgba(16, 185, 129, 0.2);
+            text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+        }
+        .flipped .stamp-voyage { animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; animation-delay: 0.15s; }
+        
+        @keyframes stampSlam {
+            0% { transform: scale(1.5) rotate(30deg); opacity: 0; }
+            100% { transform: scale(1) rotate(15deg); opacity: 1; }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: rgba(148, 163, 184, 0.7); 
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 0;
+        }
+
+        .counter-badge {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(251, 191, 36, 0.5);
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 items-center justify-center pattern-bg">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[93vh] min-h-[550px] max-h-[900px]">
+
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                
+                <div class="mb-5 shrink-0 text-center pb-5 border-b border-slate-700">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-800 text-emerald-400 text-xs font-bold font-outfit tracking-widest border border-emerald-500/30 mb-3 uppercase rounded-full shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                        <span>💰</span> UNIT 6: MAKING MONEY, SPENDING MONEY
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-outfit text-white tracking-tight font-black uppercase drop-shadow-md">
+                        THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-400">COMMERCE VAULT</span>
+                    </h1>
+                    <p class="text-emerald-100/70 mt-2 font-medium text-sm sm:text-base font-inter">Master vocabulary about business, finance, shopping, and economics.</p>
+                </div>
+
+                <div class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-slate-900/50 border border-slate-700 relative rounded-xl shadow-inner">
+                    <table class="w-full min-w-[750px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-outfit text-xs text-emerald-200 bg-slate-800 border-b border-emerald-500/30 shadow-md">
+                            <tr>
+                                <th class="p-4 w-1/4 uppercase tracking-wider font-bold">VOCABULARY</th>
+                                <th class="p-4 w-1/5 text-center uppercase tracking-wider font-bold">TYPE / IPA</th>
+                                <th class="p-4 uppercase tracking-wider font-bold">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-300 divide-y divide-slate-700/50 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn-voyage btn-primary w-full sm:w-1/2 py-4 text-lg flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        OPEN VAULT
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+            
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-voyage btn-secondary px-4 py-2 text-xs shadow-sm" style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div class="flex items-center justify-between w-full mb-2 text-sm font-bold font-outfit uppercase tracking-widest px-1">
+                        <div class="flex items-center gap-1 bg-slate-800/80 px-3 py-1 rounded-md border border-slate-600 text-emerald-200 shadow-sm">
+                            ⏱ <span id="timer-display" class="text-amber-400">00:00</span>
+                        </div>
+                        
+                        <div class="counter-badge px-4 py-1.5 rounded-full flex items-center gap-2 transform hover:scale-105 transition-transform z-10 relative">
+                            <span class="text-amber-400 text-xs font-bold">ASSET:</span>
+                            <span id="progress-text" class="text-white text-base font-black drop-shadow-md">1/23</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-2 bg-slate-900 relative rounded-full overflow-hidden shadow-inner border border-slate-700">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-amber-400 transition-all duration-500 relative" style="width: 0%; box-shadow: 0 0 10px rgba(16,185,129,0.8);"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()" class="btn-voyage btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-lg rounded-md shadow-sm">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <div class="flex-1 w-full max-w-5xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+                        
+                        <!-- FRONT OF CARD -->
+                        <div class="card-front"> 
+                            <div class="card-top-bar"></div>
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                
+                                <div class="mb-4 shrink-0 flex flex-col items-center text-center">
+                                    <span class="inline-block px-4 py-1 bg-slate-800/80 text-amber-400 border border-amber-500/30 text-xs font-inter font-bold tracking-widest uppercase mb-3 rounded-md shadow-sm" id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight font-outfit drop-shadow-md" id="word-mean"></h2>
+                                </div>
+                                
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-2">
+                                    <div class="text-center mb-6 px-1 sm:px-6">
+                                        <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-medium" id="word-ex"></p>
+                                    </div>
+                                    
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-2 sm:gap-y-3 w-full px-0 sm:px-1 mb-6"></div>
+                                        
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-voyage bg-slate-800 text-emerald-200 hover:bg-slate-700 border border-slate-600 flex items-center justify-center rounded-lg" title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-voyage btn-secondary text-sm shadow-sm">DECODE 💡</button>
+                                            <button onclick="checkAnswer()" class="btn-voyage btn-primary px-8 sm:px-10 h-12 text-lg tracking-wider">
+                                                CONFIRM TRANSACTION ➔
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BACK OF CARD -->
+                        <div class="card-back">
+                            <div class="card-top-bar"></div>
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-6">
+                                <div class="stamp-voyage" id="result-seal">APPROVED</div>
+                                
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-outfit font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-200 drop-shadow-md" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)" class="text-amber-400 hover:text-amber-300 transition-colors p-2 bg-slate-800 border border-emerald-500/30 rounded-lg shadow-[0_0_10px_rgba(16,185,129,0.2)]" title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="text-emerald-100 mb-6 font-inter font-bold text-base tracking-widest bg-slate-800 px-4 py-1.5 rounded-md border border-slate-600 shadow-sm">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+                                    
+                                    <p class="text-xl sm:text-2xl text-slate-200 font-bold mb-6 font-inter" id="back-mean"></p>
+                                    
+                                    <div class="w-full max-w-3xl bg-slate-900/60 border-l-4 border-amber-400 p-5 text-left rounded-r-lg shadow-md relative border-y border-r border-slate-700 backdrop-blur-sm">
+                                        <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-medium" id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn" class="btn-voyage btn-primary px-8 py-4 text-lg w-full sm:w-2/3 flex items-center justify-center gap-2">
+                                        NEXT ASSET ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-slate-700 pb-5">
+                    <h2 class="text-3xl sm:text-5xl text-white font-outfit font-black uppercase tracking-wide drop-shadow-md">FINANCIAL REPORT GENERATED</h2>
+                    <p id="completion-datetime" class="text-xs font-inter text-emerald-400 mt-2 tracking-widest uppercase font-bold"></p>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-outfit text-lg">
+                    <div class="bg-slate-800 border border-slate-600 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-emerald-300 font-bold tracking-widest mb-1 font-inter">PROFIT MARGIN</p>
+                        <p class="text-3xl text-amber-400 font-black drop-shadow-sm" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-600 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-emerald-300 font-bold tracking-widest mb-1 font-inter">TIME INVESTED</p>
+                        <p class="text-3xl text-white font-black" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-emerald-500/30 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-emerald-400 font-bold tracking-widest mb-1 font-inter">CLEARED</p>
+                        <p class="text-3xl text-emerald-400 font-black" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-rose-950/30 border border-rose-500/30 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-rose-400 font-bold tracking-widest mb-1 font-inter">LIABILITIES</p>
+                        <p class="text-3xl text-rose-400 font-black" id="hint-count">-</p>
+                    </div>
+                </div>
+                
+                <div class="flex-grow overflow-auto custom-scrollbar border border-slate-700 w-full mb-5 shrink min-h-0 bg-slate-900/50 rounded-xl shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 bg-slate-800 text-emerald-200 font-outfit text-xs tracking-wider uppercase border-b border-emerald-500/30 shadow-sm">
+                            <tr>
+                                <th class="p-3 w-28 text-center">STATUS</th>
+                                <th class="p-3 w-1/3">VOCABULARY</th>
+                                <th class="p-3">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-slate-300 divide-y divide-slate-700/50 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()" class="btn-voyage btn-primary w-full sm:w-1/2 py-4 text-lg">
+                        RESTART AUDIT ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Permanent Copyright Anchor -->
+        <div class="shrink-0 mt-auto text-center relative z-40">
+            <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "afford", type: "verb", phonetic: "/əˈfɔːd/", mean: "có đủ tiền để mua/chi trả", ex: "Many students cannot afford expensive clothes, so they look for cheaper products." },
+            { word: "attract publicity", type: "verb phrase", phonetic: "/əˌtrækt pʌbˈlɪsəti/", mean: "thu hút sự chú ý của truyền thông/công chúng", ex: "A special event can attract publicity and help more people learn about a new business." },
+            { word: "bargain", type: "noun", phonetic: "/ˈbɑːɡɪn/", mean: "món hời, món đồ giá rẻ", ex: "This jacket is a real bargain because it is good quality but costs only half the usual price." },
+            { word: "become common", type: "verb phrase", phonetic: "/bɪˌkʌm ˈkɒmən/", mean: "trở nên phổ biến", ex: "Online shopping may become common in areas where more people have access to the Internet." },
+            { word: "boost sales", type: "verb phrase", phonetic: "/buːst seɪlz/", mean: "tăng doanh số", ex: "Shops can boost sales by offering discounts and advertising their products online." },
+            { word: "branded product", type: "noun phrase", phonetic: "/ˌbrændɪd ˈprɒdʌkt/", mean: "sản phẩm có thương hiệu", ex: "A branded product is often more expensive because it carries the name of a well-known company." },
+            { word: "efficient", type: "adjective", phonetic: "/ɪˈfɪʃənt/", mean: "hiệu quả, không lãng phí thời gian/năng lượng", ex: "An efficient delivery system can help a company send products to customers quickly." },
+            { word: "end up", type: "phrasal verb", phonetic: "/end ʌp/", mean: "cuối cùng lại, rốt cuộc", ex: "Shoppers may end up buying more than they need when there are many special offers." },
+            { word: "forecast", type: "verb", phonetic: "/ˈfɔːkɑːst/", mean: "dự báo, dự đoán", ex: "Business experts can forecast future sales by looking at customer demand and past results." },
+            { word: "go from shop to shop", type: "verb phrase", phonetic: "/ɡəʊ frəm ʃɒp tə ʃɒp/", mean: "đi từ cửa hàng này sang cửa hàng khác", ex: "Some customers go from shop to shop to compare prices before they buy an expensive item." },
+            { word: "highly profitable", type: "adjective phrase", phonetic: "/ˌhaɪli ˈprɒfɪtəbl/", mean: "có lợi nhuận rất cao", ex: "Online shopping can be highly profitable for companies with many customers and low operating costs." },
+            { word: "living standards", type: "plural noun", phonetic: "/ˈlɪvɪŋ ˌstændədz/", mean: "mức sống", ex: "Better jobs and higher incomes can improve living standards for many families." },
+            { word: "in the medium term", type: "phrase", phonetic: "/ɪn ðə ˌmiːdiəm ˈtɜːm/", mean: "trong trung hạn", ex: "In the medium term, the company hopes to open more stores and increase its sales." },
+            { word: "outweigh", type: "verb", phonetic: "/ˌaʊtˈweɪ/", mean: "quan trọng/lớn hơn, vượt hơn", ex: "For many customers, the benefits of online shopping outweigh the disadvantages." },
+            { word: "own-label product", type: "noun phrase", phonetic: "/ˌəʊn leɪbl ˈprɒdʌkt/", mean: "sản phẩm mang nhãn hiệu riêng của cửa hàng", ex: "An own-label product is often cheaper than a similar product from a famous brand." },
+            { word: "promotion", type: "noun", phonetic: "/prəˈməʊʃən/", mean: "hoạt động quảng bá, chương trình khuyến mãi", ex: "The supermarket has a special promotion to encourage customers to try its new products." },
+            { word: "purchase", type: "verb", phonetic: "/ˈpɜːtʃəs/", mean: "mua", ex: "Customers can purchase the product online and have it delivered directly to their homes." },
+            { word: "at a rate of", type: "phrase", phonetic: "/ət ə reɪt əv/", mean: "với tốc độ/tỷ lệ là", ex: "The company sells its new product at a rate of about one thousand units every month." },
+            { word: "reckon", type: "verb", phonetic: "/ˈrekən/", mean: "cho rằng, nghĩ rằng", ex: "Many shoppers reckon that online stores are more convenient than traditional shops." },
+            { word: "retailer", type: "noun", phonetic: "/ˈriːteɪlə(r)/", mean: "nhà bán lẻ, cửa hàng bán lẻ", ex: "A retailer buys products from suppliers and sells them directly to customers." },
+            { word: "take time", type: "verb phrase", phonetic: "/teɪk taɪm/", mean: "mất thời gian, cần thời gian", ex: "Finding the right product can take time when customers have many different choices." },
+            { word: "tempt", type: "verb", phonetic: "/tempt/", mean: "cám dỗ, khiến ai muốn mua/có thứ gì", ex: "Large discounts can tempt customers to buy products that they do not really need." },
+            { word: "think in terms of", type: "verb phrase", phonetic: "/θɪŋk ɪn tɜːmz əv/", mean: "suy nghĩ/xem xét theo khía cạnh", ex: "Business owners should think in terms of both price and quality when they choose new products." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false; 
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3'); 
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                const playTone = (oscType, freq1, freq2, vol, dur) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = oscType;
+                    osc.frequency.setValueAtTime(freq1, now);
+                    if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                    gain.gain.setValueAtTime(vol, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                    osc.start(now); osc.stop(now + dur);
+                };
+                if (type === 'start') playTone('sine', 440, 660, 0.1, 0.4); 
+                else if (type === 'success') { playTone('sine', 600, 800, 0.1, 0.1); setTimeout(()=>playTone('triangle', 800, 1200, 0.1, 0.2), 100); }
+                else if (type === 'error') playTone('sawtooth', 250, 150, 0.1, 0.3); 
+                else if (type === 'flip') playTone('sine', 350, 250, 0.05, 0.15); 
+            } catch (e) { console.log("Audio play error", e); }
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            try {
+                window.speechSynthesis.cancel();
+                let rawWord = flashcards[currentIndex].word;
+                
+                // Smart clean-up for natural TTS reading
+                let wordToSpeak = rawWord
+                    .replace(/-/g, ' ') // own-label -> own label
+                    .replace(/\//g, ' or ') 
+                    .replace(/[()]/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US'; 
+                utter.rate = 0.9;
+                
+                let voices = window.speechSynthesis.getVoices();
+                // Prioritize US Female Voices
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                
+                if(femaleUS) {
+                    utter.voice = femaleUS;
+                    window.speechSynthesis.speak(utter);
+                } else {
+                    // Fallback API if no local voice found
+                    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(wordToSpeak)}`;
+                    const audio = new Audio(audioUrl);
+                    audio.play().catch(() => window.speechSynthesis.speak(utter));
+                }
+            } catch (error) {
+                console.log("TTS Error:", error);
+            }
+        }
+
+        if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => {};
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, idx) => {
+                return `
+                <tr class="hover:bg-slate-700/50 transition-colors border-b border-slate-700/50">
+                    <td class="p-3 font-outfit font-bold text-white text-lg">
+                        <span class="text-emerald-500 text-xs mr-2 font-inter">#${idx+1}</span>${item.word}
+                    </td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 bg-slate-700 text-amber-300 border border-slate-600 text-xs font-bold font-inter uppercase tracking-widest rounded shadow-sm">${item.type}</span>
+                        <br><span class="text-xs text-emerald-300/70 mt-1 inline-block">${item.phonetic}</span>
+                    </td>
+                    <td class="p-3 text-slate-300 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+            if(window.speechSynthesis.getVoices().length === 0) window.speechSynthesis.onvoiceschanged = () => {};
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff/60).toString().padStart(2, '0');
+                const s = (diff%60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function isLetter(char) { return /[a-zA-Z]/.test(char); }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+            
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            
+            let displayEx = card.ex;
+            let matchStr = card.word;
+            
+            // Smart Blanking Logic
+            let simplifiedTarget = matchStr.replace(/\(.*?\)/g, '').replace(/\/.*/g, '').trim();
+            let cleanWord = simplifiedTarget.replace(/[^a-zA-Z]/g, '');
+            let letterCount = cleanWord.length;
+            
+            // Build a regex that tolerates hyphens and spaces in the text
+            let regex = new RegExp(`\\b${simplifiedTarget.replace(/[-]/g, '.?').replace(/\s+/g, '.?')}[a-z]*\\b`, 'gi');
+            
+            if (!displayEx.match(regex)) {
+                let firstWord = simplifiedTarget.split(' ')[0];
+                let shortTarget = firstWord.length > 4 ? firstWord.substring(0, 4) : firstWord;
+                regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+            }
+
+            let underlineWidth = letterCount < 5 ? 'w-16' : (letterCount < 10 ? 'w-24' : (letterCount < 18 ? 'w-36' : (letterCount < 25 ? 'w-48' : 'w-64')));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-[3px] border-emerald-400 mx-1 align-baseline bg-slate-800/50 rounded-sm shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>`;
+            
+            displayEx = displayEx.replace(regex, blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+            
+            // Input Generation handling extremely long phrases with spaces/hyphens
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+            
+            const wordsArray = matchStr.split(/(?=\s)|(?<=\s)|(?=-)|(?<=-)/); 
+            
+            const group = document.createElement('div');
+            group.className = 'flex flex-wrap gap-0.5 sm:gap-1 justify-center max-w-full leading-loose';
+            
+            for (let i = 0; i < matchStr.length; i++) {
+                let char = matchStr[i];
+                if (!isLetter(char)) {
+                    if (char === ' ') {
+                        const space = document.createElement('div'); 
+                        space.className = 'w-3 sm:w-5 flex items-center justify-center';
+                        space.innerHTML = ''; 
+                        group.appendChild(space);
+                    } else {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'fixed-symbol text-emerald-500';
+                        group.appendChild(symbol);
+                    }
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text'; input.maxLength = 1;
+                    input.className = 'travel-input editable-input';
+                    input.autocomplete = "off"; input.autocapitalize="off"; input.spellcheck = false;
+                    
+                    input.addEventListener('input', function() {
+                        this.value = this.value.toLowerCase();
+                        this.classList.remove('error');
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(this.value && idx < inputs.length - 1) {
+                            let next = idx + 1;
+                            while(next < inputs.length && inputs[next].readOnly) next++;
+                            if(next < inputs.length) inputs[next].focus();
+                        }
+                    });
+
+                    input.addEventListener('keydown', function(e) {
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(e.key === 'Backspace' && !this.value && idx > 0) {
+                            let prev = idx - 1;
+                            while(prev >= 0 && inputs[prev].readOnly) prev--;
+                            if(prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                        }
+                    });
+                    group.appendChild(input);
+                }
+            }
+            container.appendChild(group);
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+            
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            
+            if(currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if(hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            
+            const target = rawWord.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.travel-input.editable-input');
+            
+            let pool = [];
+            for(let i=0; i<inputs.length; i++) {
+                if(!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+            }
+            
+            if(pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4)); 
+            
+            for(let i=0; i<Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) { return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+
+        function checkAnswer() {
+            if(isTransitioning) return; 
+            
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+            
+            const target = normalizeString(rawWord.replace(/[^a-zA-Z]/g, ''));
+            const inputs = document.querySelectorAll('.travel-input.editable-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+            
+            if(user === target) {
+                playSound('success');
+                isTransitioning = true;
+                
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "LIABILITY";
+                    seal.style.color = "#fbbf24"; 
+                    seal.style.borderColor = "#fbbf24";
+                    seal.style.background = "rgba(251, 191, 36, 0.1)";
+                    seal.style.boxShadow = "0 0 15px rgba(251, 191, 36, 0.3), inset 0 0 10px rgba(251, 191, 36, 0.2)";
+                } else {
+                    seal.textContent = "CLEARED";
+                    seal.style.color = "#10b981"; 
+                    seal.style.borderColor = "#10b981";
+                    seal.style.background = "rgba(16, 185, 129, 0.05)";
+                    seal.style.boxShadow = "0 0 15px rgba(16, 185, 129, 0.3), inset 0 0 10px rgba(16, 185, 129, 0.2)";
+                }
+                
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+                
+                let backExStr = card.ex;
+                let simplifiedTarget = rawWord.replace(/\(.*?\)/g, '').replace(/\/.*/g, '').trim();
+                let regex = new RegExp(`\\b${simplifiedTarget.replace(/[-]/g, '.?').replace(/\s+/g, '.?')}[a-z]*\\b`, 'gi');
+                
+                if (!backExStr.match(regex)) {
+                    let firstWord = simplifiedTarget.split(' ')[0];
+                    let shortTarget = firstWord.length > 4 ? firstWord.substring(0, 4) : firstWord;
+                    regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+                }
+                
+                backExStr = backExStr.replace(regex, match => `<span class="highlighter">${match}</span>`);
+                document.getElementById('back-ex').innerHTML = backExStr;
+                
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // AUTO-PLAY TTS FEATURE (US Female Voice) - Triggered synchronously with click
+                speakCurrentWord();
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 750);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 300);
+                
+                inputs.forEach((input, idx) => {
+                    if(!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if(currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => { 
+                if(currentIndex > 0) { currentIndex--; renderCard(); } 
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec/60); const s = totalSec%60;
+            
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour:'2-digit', minute:'2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `LEDGER CLOSED: ${dateString}`;
+            
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) {
+                scoreEl.style.color = "var(--alert-rose)";
+                scoreEl.classList.replace('text-amber-400', 'text-rose-500');
+            }
+            
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+            
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint 
+                    ? '<span class="text-amber-400 font-bold font-inter uppercase text-[10px] border border-amber-500/50 px-2 py-1 rounded bg-amber-900/30 shadow-[0_0_8px_rgba(251,191,36,0.3)]">LIABILITY</span>' 
+                    : '<span class="text-emerald-400 font-bold font-inter uppercase text-[10px] border border-emerald-500/50 px-2 py-1 rounded bg-emerald-900/30 shadow-[0_0_8px_rgba(16,185,129,0.3)]">CLEARED</span>';
+                
+                return `
+                    <tr class="hover:bg-slate-800 border-b border-slate-700/50 transition-colors">
+                        <td class="p-3 text-center">${statusIcon}</td>
+                        <td class="p-3 font-bold text-white text-lg font-outfit">${item.word}</td>
+                        <td class="p-3 text-emerald-200/70 text-sm font-inter">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable(); 
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if(document.getElementById('main-content').style.display === 'none') return;
+            if(e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault(); 
+                if(isTransitioning) return; 
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard(); 
+                else checkAnswer(); 
+            }
+        });
+    </script>
+</body>
+</html>
