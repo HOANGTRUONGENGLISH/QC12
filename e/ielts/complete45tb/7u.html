@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompleteTB 4-5 - U7 - Literacy skills</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts: Merriweather for academic headings, Inter for readable text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --oxford-green: #064e3b; /* emerald-900 */
+            --antique-brass: #b45309; /* amber-700 */
+            --brass-light: #f59e0b; /* amber-500 */
+            --parchment: #fefce8; /* yellow-50 */
+            --card-front: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #022c22 0%, #064e3b 100%);
+            /* Library wallpaper effect */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(180, 83, 9, 0.15) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230f766e' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: #f8fafc;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .font-academic { font-family: 'Merriweather', serif; }
+
+        .glass-panel {
+            background: rgba(254, 252, 232, 0.95); /* Parchment with slight transparency */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(180, 83, 9, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 0 0 4px rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            color: #1e293b;
+        }
+
+        .flip-card {
+            perspective: 2500px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 520px; 
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            inset: 0; 
+            transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(-180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background: var(--card-front);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border: 1px solid #cbd5e1;
+            overflow: hidden;
+        }
+
+        .card-back { 
+            transform: rotateY(-180deg); 
+            border: 2px solid var(--antique-brass);
+            background: linear-gradient(145deg, #ffffff 0%, var(--parchment) 100%); 
+        }
+        
+        .flip-card.flipped .card-front { pointer-events: none; }
+        .flip-card:not(.flipped) .card-back { pointer-events: none; }
+
+        .card-top-bar {
+            height: 14px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--oxford-green) 0%, #047857 50%, var(--oxford-green) 100%);
+            border-bottom: 3px solid var(--antique-brass);
+        }
+
+        .academic-input {
+            background: #f1f5f9; 
+            border: 2px solid #94a3b8; 
+            border-bottom: 4px solid #64748b; 
+            color: var(--oxford-green);
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            text-transform: lowercase; /* Lowercase for academic reading */
+            padding: 0;
+            border-radius: 6px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        /* Auto-resize Input based on screen size */
+        .academic-input { width: 22px; height: 32px; font-size: 1.1rem; }
+        @media (min-width: 400px) { .academic-input { width: 26px; height: 36px; font-size: 1.25rem; } }
+        @media (min-width: 640px) { .academic-input { width: 32px; height: 42px; font-size: 1.4rem; } }
+
+        .academic-input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: var(--antique-brass);
+            border-bottom-color: var(--brass-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(180, 83, 9, 0.3);
+            color: var(--antique-brass);
+        }
+        
+        .academic-input.hinted {
+            color: #ffffff; 
+            border-color: #334155;
+            border-bottom-color: #1e293b; 
+            background: #475569; 
+            pointer-events: none;
+        }
+        
+        .academic-input.error {
+            color: #ffffff; 
+            border-color: #ef4444;
+            border-bottom-color: #b91c1c;
+            background: #ef4444;
+            animation: shakeError 0.3s ease-in-out;
+        }
+
+        /* Fixed symbols for hyphens and slashes */
+        .fixed-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #94a3b8;
+            padding: 0 4px;
+            font-family: 'Merriweather', serif;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px) rotate(-3deg); }
+            75% { transform: translateX(4px) rotate(3deg); }
+        }
+        .shake-error { animation: shakeError 0.3s ease-in-out; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--antique-brass); }
+        
+        .btn-academic {
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+        }
+        .btn-academic:active { transform: scale(0.96); }
+        .btn-academic:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--oxford-green) 0%, #0f766e 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(6, 78, 59, 0.4);
+            border: 1px solid #047857;
+        }
+        .btn-primary:hover:not(:disabled) { 
+            box-shadow: 0 6px 20px rgba(6, 78, 59, 0.6); 
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #0f766e 0%, var(--oxford-green) 100%);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.1);
+            color: #f1f5f9;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(255,255,255,0.2);
+            border-color: var(--brass-light);
+            color: var(--brass-light);
+        }
+
+        .highlighter {
+            font-weight: 800;
+            color: var(--oxford-green);
+            background-color: #d1fae5; 
+            padding: 2px 6px;
+            border-radius: 4px;
+            border-bottom: 2px solid var(--oxford-green);
+        }
+
+        .stamp-academic {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+            color: var(--oxford-green);
+            border: 3px solid var(--oxford-green);
+            padding: 6px 14px;
+            font-family: 'Merriweather', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            transform: rotate(15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            letter-spacing: 2px;
+            border-radius: 6px;
+            background: rgba(6, 78, 59, 0.05);
+            text-transform: uppercase;
+            box-shadow: inset 0 0 8px rgba(6, 78, 59, 0.2);
+        }
+        .flipped .stamp-academic { animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; animation-delay: 0.1s; }
+        
+        @keyframes stampSlam {
+            0% { transform: scale(1.5) rotate(30deg); opacity: 0; }
+            100% { transform: scale(1) rotate(15deg); opacity: 1; }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #94a3b8; 
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 10px 0;
+        }
+
+        /* Large Progress Badge */
+        .counter-badge {
+            background: linear-gradient(135deg, var(--antique-brass), #d97706);
+            border: 2px solid #fef3c7;
+            box-shadow: 0 4px 10px rgba(180, 83, 9, 0.4);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[92vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                
+                <div class="mb-5 shrink-0 text-center pb-5 border-b border-emerald-900/20">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold font-academic tracking-widest border border-emerald-300 mb-3 uppercase rounded-full shadow-sm">
+                        <span>🎓</span> UNIT 7: LITERACY SKILLS
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-academic text-emerald-950 tracking-tight font-black uppercase drop-shadow-sm">
+                        THE SCHOLAR'S <span class="text-amber-700">ARCHIVE</span>
+                    </h1>
+                    <p class="text-slate-600 mt-2 font-medium text-sm sm:text-base font-inter">Master vocabulary about education, university, and academic skills.</p>
+                </div>
+
+                <div class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white/60 border border-slate-300 relative rounded-xl shadow-inner">
+                    <table class="w-full min-w-[700px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-academic text-xs text-white bg-emerald-900 border-b border-emerald-700 shadow-md">
+                            <tr>
+                                <th class="p-4 w-1/4 uppercase tracking-wider font-bold">VOCABULARY</th>
+                                <th class="p-4 w-1/5 text-center uppercase tracking-wider font-bold">TYPE / IPA</th>
+                                <th class="p-4 uppercase tracking-wider font-bold">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-700 divide-y divide-slate-200 font-medium bg-white/40">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn-academic btn-primary w-full sm:w-1/2 py-4 text-lg flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                        OPEN ARCHIVE
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+            
+            <!-- Header elements (Timer, Progress, Controls) -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-academic btn-secondary px-4 py-2 text-xs shadow-sm" style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div class="flex items-center justify-between w-full mb-2 text-sm font-bold font-academic uppercase tracking-widest px-1">
+                        <div class="flex items-center gap-1 bg-emerald-900/80 px-3 py-1 rounded-md border border-emerald-700 text-emerald-100 shadow-sm">
+                            ⏱ <span id="timer-display" class="text-amber-400">00:00</span>
+                        </div>
+                        
+                        <!-- Extra large and visible Counter Badge -->
+                        <div class="counter-badge text-white px-4 py-1.5 rounded-md flex items-center gap-2 transform hover:scale-105 transition-transform">
+                            <span class="text-amber-100 text-xs">TERM:</span>
+                            <span id="progress-text" class="text-white text-base font-black drop-shadow-md">1/29</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-2 bg-emerald-950 relative rounded-full overflow-hidden shadow-inner border border-emerald-800">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-600 to-yellow-400 transition-all duration-500 relative" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()" class="btn-academic btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-lg rounded-md shadow-sm">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-5xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+                        
+                        <div class="card-front"> 
+                            <div class="card-top-bar"></div>
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                
+                                <div class="mb-5 shrink-0 flex flex-col items-center text-center">
+                                    <span class="inline-block px-4 py-1 bg-slate-100 text-slate-600 border border-slate-300 text-xs font-inter font-bold tracking-widest uppercase mb-4 rounded-md shadow-sm" id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-900 leading-tight font-academic" id="word-mean"></h2>
+                                </div>
+                                
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
+                                    <div class="text-center mb-8 px-1 sm:px-6">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium" id="word-ex"></p>
+                                    </div>
+                                    
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <!-- Container for flexible inputs (Handles long phrases gracefully) -->
+                                        <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-2 sm:gap-y-3 w-full px-0 sm:px-1 mb-8"></div>
+                                        
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-academic bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-300 flex items-center justify-center rounded-lg" title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-academic bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300 text-sm shadow-sm">HINT 💡</button>
+                                            <button onclick="checkAnswer()" class="btn-academic btn-primary px-8 sm:px-10 h-12 text-lg tracking-wider">
+                                                SUBMIT THESIS
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-back">
+                            <div class="card-top-bar"></div>
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-6">
+                                <div class="stamp-academic" id="result-seal">EXCELLENT</div>
+                                
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-academic font-black text-emerald-900 drop-shadow-sm" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)" class="text-amber-700 hover:text-amber-600 transition-colors p-2 bg-amber-50 border border-amber-200 rounded-lg shadow-sm" title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="text-slate-600 mb-6 font-inter font-bold text-base tracking-widest bg-emerald-50 px-4 py-1.5 rounded-md border border-emerald-200 shadow-sm">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+                                    
+                                    <p class="text-xl sm:text-2xl text-slate-800 font-bold mb-6 font-inter" id="back-mean"></p>
+                                    
+                                    <div class="w-full max-w-3xl bg-slate-50 border-l-4 border-amber-600 p-5 text-left rounded-r-lg shadow-md relative border-y border-r border-slate-200">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium" id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn" class="btn-academic btn-primary px-8 py-4 text-lg w-full sm:w-2/3 flex items-center justify-center gap-2">
+                                        NEXT PAGE ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= FINAL SCREEN ================= -->
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-slate-300 pb-5">
+                    <h2 class="text-3xl sm:text-5xl text-emerald-900 font-academic font-black uppercase tracking-wide drop-shadow-sm">GRADUATION CEREMONY</h2>
+                    <p id="completion-datetime" class="text-xs font-inter text-slate-500 mt-2 tracking-widest uppercase font-bold"></p>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-academic text-lg">
+                    <div class="bg-white border border-slate-300 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold tracking-widest mb-1 font-inter">GPA (SCORE)</p>
+                        <p class="text-3xl text-emerald-700 font-black" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-white border border-slate-300 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold tracking-widest mb-1 font-inter">STUDY TIME</p>
+                        <p class="text-3xl text-slate-800 font-black" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-emerald-700 font-bold tracking-widest mb-1 font-inter">MASTERY</p>
+                        <p class="text-3xl text-emerald-700 font-black" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-300 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold tracking-widest mb-1 font-inter">TUTORED</p>
+                        <p class="text-3xl text-amber-600 font-black" id="hint-count">-</p>
+                    </div>
+                </div>
+                
+                <div class="flex-grow overflow-auto custom-scrollbar border border-slate-300 w-full mb-5 shrink min-h-0 bg-white/80 rounded-xl shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 bg-emerald-900 text-white font-academic text-xs tracking-wider uppercase border-b border-emerald-700 shadow-sm">
+                            <tr>
+                                <th class="p-3 w-28 text-center">STATUS</th>
+                                <th class="p-3 w-1/3">VOCABULARY</th>
+                                <th class="p-3">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-slate-700 divide-y divide-slate-200 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()" class="btn-academic btn-primary w-full sm:w-1/2 py-4 text-lg">
+                        RETAKE COURSE ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Permanent Copyright Anchor -->
+        <div class="shrink-0 mt-auto text-center">
+            <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "additional qualifications", type: "plural noun", phonetic: "/əˌdɪʃənl ˌkwɒlɪfɪˈkeɪʃənz/", mean: "các bằng cấp/chứng chỉ bổ sung", ex: "Additional qualifications can help people find better jobs and show that they have extra skills." },
+            { word: "get into bad habits", type: "verb phrase", phonetic: "/ɡet ˌɪntuː bæd ˈhæbɪts/", mean: "hình thành/thói quen xấu", ex: "Students may get into bad habits if they stay up late and do not manage their time well." },
+            { word: "campus", type: "noun", phonetic: "/ˈkæmpəs/", mean: "khuôn viên trường đại học, cao đẳng", ex: "The university campus has classrooms, a library, a sports centre, and several cafés." },
+            { word: "colleague", type: "noun", phonetic: "/ˈkɒliːɡ/", mean: "đồng nghiệp", ex: "A good colleague can help you with difficult tasks and make work more enjoyable." },
+            { word: "concept", type: "noun", phonetic: "/ˈkɒnsept/", mean: "khái niệm, ý tưởng", ex: "The teacher uses a simple example to help students understand the new concept." },
+            { word: "do homework", type: "verb phrase", phonetic: "/duː ˈhəʊmwɜːk/", mean: "làm bài tập về nhà", ex: "Students should do homework after class to practise what they learn at school." },
+            { word: "enable somebody to do something", type: "verb phrase", phonetic: "/ɪˈneɪbl ˈsʌmbədi tə duː ˈsʌmθɪŋ/", mean: "giúp/cho phép ai có thể làm gì", ex: "Online courses can enable students to study at home when they cannot attend school." },
+            { word: "further education", type: "noun phrase", phonetic: "/ˌfɜːðər edʒuˈkeɪʃən/", mean: "giáo dục sau phổ thông, giáo dục nâng cao", ex: "Many young people choose further education to learn practical skills after they leave school." },
+            { word: "get a place", type: "verb phrase", phonetic: "/ɡet ə pleɪs/", mean: "giành/được một suất, vị trí", ex: "Students need good results to get a place at a popular college or university." },
+            { word: "get a qualification", type: "verb phrase", phonetic: "/ɡet ə ˌkwɒlɪfɪˈkeɪʃən/", mean: "lấy được bằng cấp, chứng chỉ", ex: "Young people can get a qualification after they successfully complete a training course." },
+            { word: "give priority to", type: "verb phrase", phonetic: "/ɡɪv praɪˈɒrəti tuː/", mean: "ưu tiên cho", ex: "Students should give priority to important schoolwork before they spend time on entertainment." },
+            { word: "have a chance", type: "verb phrase", phonetic: "/hæv ə tʃɑːns/", mean: "có cơ hội", ex: "Students can have a chance to practise English when they join international activities." },
+            { word: "institution", type: "noun", phonetic: "/ˌɪnstɪˈtjuːʃən/", mean: "tổ chức, cơ sở lớn như trường học/ngân hàng", ex: "A university is an educational institution where students can study many different subjects." },
+            { word: "keen to do something", type: "adjective phrase", phonetic: "/kiːn tə duː ˈsʌmθɪŋ/", mean: "rất muốn, háo hức làm gì", ex: "Many school leavers are keen to study at university and experience a new learning environment." },
+            { word: "level", type: "noun", phonetic: "/ˈlevl/", mean: "trình độ, mức độ", ex: "This English course is suitable for students at an intermediate level." },
+            { word: "make progress", type: "verb phrase", phonetic: "/meɪk ˈprəʊɡres/", mean: "tiến bộ", ex: "Students can make progress when they study regularly and learn from their mistakes." },
+            { word: "measure performance", type: "verb phrase", phonetic: "/ˈmeʒə pəˈfɔːməns/", mean: "đo lường, đánh giá hiệu suất/thành tích", ex: "Teachers can measure performance through tests, projects, and classroom activities." },
+            { word: "non-academic", type: "adjective", phonetic: "/ˌnɒn ækəˈdemɪk/", mean: "không thuộc học thuật; thiên về thực hành", ex: "Non-academic courses often teach practical skills that students can use in a job." },
+            { word: "one-to-one", type: "adjective", phonetic: "/ˌwʌn tə ˈwʌn/", mean: "một kèm một, cá nhân", ex: "One-to-one lessons give students more time to ask questions and practise difficult skills." },
+            { word: "participate in", type: "verb phrase", phonetic: "/pɑːˈtɪsɪpeɪt ɪn/", mean: "tham gia vào", ex: "Students should participate in group activities to improve their communication and teamwork skills." },
+            { word: "pressure", type: "noun", phonetic: "/ˈpreʃə(r)/", mean: "áp lực", ex: "Too much pressure can make students feel worried and tired before important exams." },
+            { word: "programme", type: "noun", phonetic: "/ˈprəʊɡræm/", mean: "chương trình, kế hoạch hoạt động", ex: "The training programme includes lessons, practical activities, and work experience." },
+            { word: "schedule", type: "noun", phonetic: "/ˈʃedjuːl/", mean: "lịch trình, thời gian biểu", ex: "A clear schedule can help students organise their classes, homework, and free time." },
+            { word: "self-discipline", type: "noun", phonetic: "/ˌself ˈdɪsəplɪn/", mean: "tính tự giác, kỷ luật bản thân", ex: "Self-discipline helps students continue studying even when they feel tired or bored." },
+            { word: "semester", type: "noun", phonetic: "/sɪˈmestə(r)/", mean: "học kỳ", ex: "Students usually take several different subjects during each semester at university." },
+            { word: "spare time", type: "noun phrase", phonetic: "/ˌspeə ˈtaɪm/", mean: "thời gian rảnh", ex: "In their spare time, students can play sports, read books, or meet their friends." },
+            { word: "take a course / subject", type: "verb phrase", phonetic: "/teɪk ə kɔːs/; /teɪk ə ˈsʌbdʒɪkt/", mean: "học một khóa học/môn học", ex: "Students can take a course in computer skills to prepare for future jobs." },
+            { word: "textbook", type: "noun", phonetic: "/ˈtekstbʊk/", mean: "sách giáo khoa, giáo trình", ex: "This textbook contains useful explanations, examples, and exercises for English learners." },
+            { word: "undergraduate", type: "noun", phonetic: "/ˌʌndəˈɡrædʒuət/", mean: "sinh viên đại học chưa tốt nghiệp", ex: "An undergraduate studies at university for their first degree before becoming a graduate." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false; 
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3'); 
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                const playTone = (oscType, freq1, freq2, vol, dur) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = oscType;
+                    osc.frequency.setValueAtTime(freq1, now);
+                    if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                    gain.gain.setValueAtTime(vol, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                    osc.start(now); osc.stop(now + dur);
+                };
+                if (type === 'start') playTone('sine', 440, 660, 0.1, 0.4); 
+                else if (type === 'success') { playTone('sine', 600, 800, 0.1, 0.1); setTimeout(()=>playTone('triangle', 800, 1200, 0.1, 0.2), 100); }
+                else if (type === 'error') playTone('sawtooth', 250, 150, 0.1, 0.3); 
+                else if (type === 'flip') playTone('sine', 350, 250, 0.05, 0.15); 
+            } catch (e) { console.log("Audio play error", e); }
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            try {
+                window.speechSynthesis.cancel();
+                let rawWord = flashcards[currentIndex].word;
+                
+                // Smart cleaning for TTS to read naturally
+                // Replace hyphens and slashes with spaces, handle " / " as " or " if applicable
+                let wordToSpeak = rawWord.replace(/\s\/\s/g, ' or ').replace(/[-/]/g, ' ').replace(/\s+/g, ' ').trim();
+                
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US'; 
+                utter.rate = 0.9;
+                
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                if(femaleUS) {
+                    utter.voice = femaleUS;
+                }
+                
+                window.speechSynthesis.speak(utter);
+            } catch (error) {
+                console.log("TTS Error:", error);
+            }
+        }
+
+        if(window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = () => {};
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, idx) => {
+                return `
+                <tr class="hover:bg-emerald-50 transition-colors border-b border-slate-200">
+                    <td class="p-3 font-academic font-bold text-emerald-900 text-lg">
+                        <span class="text-slate-400 text-xs mr-2 font-inter">#${idx+1}</span>${item.word}
+                    </td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-300 text-xs font-bold font-inter uppercase tracking-widest rounded shadow-sm">${item.type}</span>
+                        <br><span class="text-xs text-slate-500 mt-1 inline-block">${item.phonetic}</span>
+                    </td>
+                    <td class="p-3 text-slate-700 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+            
+            if(window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => {};
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff/60).toString().padStart(2, '0');
+                const s = (diff%60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function isLetter(char) {
+            return /[a-zA-Z]/.test(char);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+            
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            
+            // Highlight handling for complex phrases in Example sentence
+            let displayEx = card.ex;
+            
+            // Extract core words for regex matching (handling "take a course / subject")
+            let matchRegexStr = card.word.replace(/\s\/\s.*/, ''); // simplify if slash exists for regex
+            let cleanWord = matchRegexStr.replace(/[^a-zA-Z]/g, '');
+            let letterCount = cleanWord.length;
+            
+            // Try to find the exact match first
+            let regex = new RegExp(`\\b${matchRegexStr.replace(/[-/]/g, '.?')}\\b`, 'gi');
+            
+            // Fallback for tricky plurals/conjugated verbs if exact match fails
+            if (!displayEx.match(regex)) {
+                let shortTarget = matchRegexStr.length > 5 ? matchRegexStr.substring(0, 5) : matchRegexStr;
+                regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+            }
+
+            let underlineWidth = letterCount < 5 ? 'w-16' : (letterCount < 10 ? 'w-24' : (letterCount < 18 ? 'w-36' : (letterCount < 25 ? 'w-48' : 'w-64')));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-[3px] border-amber-500 mx-1 align-baseline bg-amber-50/50 rounded-sm shadow-sm"></span>`;
+            
+            displayEx = displayEx.replace(regex, blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+            
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+            
+            // Split by words to handle spaces correctly
+            const wordsArray = card.word.split(' ');
+            
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex flex-wrap gap-0.5 sm:gap-1 justify-center';
+                
+                w.split('').forEach((char) => {
+                    // Render static symbols for hyphens, slashes
+                    if (char === '-' || char === '/') {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'fixed-symbol';
+                        group.appendChild(symbol);
+                    } else if (isLetter(char)) {
+                        // Render inputs only for letters
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'academic-input editable-input';
+                        
+                        input.addEventListener('input', function() {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if(this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while(next < inputs.length && inputs[next].readOnly) next++;
+                                if(next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function(e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if(e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while(prev >= 0 && inputs[prev].readOnly) prev--;
+                                if(prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+                
+                container.appendChild(group);
+                // Render space blocks between words
+                if(wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div'); 
+                    space.className = 'w-3 sm:w-5'; // Wide gap for spaces
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+            
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            
+            if(currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if(hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            
+            const target = rawWord.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.academic-input.editable-input');
+            
+            let pool = [];
+            for(let i=0; i<inputs.length; i++) {
+                if(!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+            }
+            
+            if(pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4)); // 40% hint
+            
+            for(let i=0; i<Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+
+        function checkAnswer() {
+            if(isTransitioning) return; 
+            
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+            
+            // Compare only alphabetical letters
+            const target = normalizeString(rawWord.replace(/[^a-zA-Z]/g, ''));
+            const inputs = document.querySelectorAll('.academic-input.editable-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+            
+            if(user === target) {
+                playSound('success');
+                isTransitioning = true;
+                
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#475569"; // slate
+                    seal.style.borderColor = "#475569";
+                    seal.style.background = "rgba(71, 85, 105, 0.05)";
+                } else {
+                    seal.textContent = "EXCELLENT";
+                    seal.style.color = "#047857"; // emerald
+                    seal.style.borderColor = "#047857";
+                    seal.style.background = "rgba(4, 120, 87, 0.05)";
+                }
+                
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+                
+                // Highlight the word in the example sentence
+                let backExStr = card.ex;
+                let matchRegexStr = rawWord.replace(/\s\/\s.*/, ''); // simplification for highlight
+                let regex = new RegExp(`\\b${matchRegexStr.replace(/[-/]/g, '.?')}\\b`, 'gi');
+                
+                // Fallback for tricky plurals
+                if (!backExStr.match(regex)) {
+                    let shortTarget = matchRegexStr.length > 5 ? matchRegexStr.substring(0, 5) : matchRegexStr;
+                    regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+                }
+                
+                backExStr = backExStr.replace(regex, match => `<span class="highlighter">${match}</span>`);
+                document.getElementById('back-ex').innerHTML = backExStr;
+                
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // AUTO-PLAY TTS FEATURE (US Female Voice)
+                // Fires immediately when the card flips
+                speakCurrentWord();
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 700);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 300);
+                
+                inputs.forEach((input, idx) => {
+                    if(!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if(currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => { 
+                if(currentIndex > 0) { currentIndex--; renderCard(); } 
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec/60); const s = totalSec%60;
+            
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour:'2-digit', minute:'2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `PROGRAM COMPLETED: ${dateString}`;
+            
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#b45309"; // amber-700
+            
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+            
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint 
+                    ? '<span class="text-slate-500 font-bold font-inter uppercase text-[10px] border border-slate-300 px-2 py-1 rounded bg-slate-100 shadow-sm">ASSISTED</span>' 
+                    : '<span class="text-emerald-700 font-bold font-inter uppercase text-[10px] border border-emerald-300 px-2 py-1 rounded bg-emerald-50 shadow-sm">MASTERED</span>';
+                
+                return `
+                    <tr class="hover:bg-emerald-50 border-b border-slate-200 transition-colors">
+                        <td class="p-3 text-center">${statusIcon}</td>
+                        <td class="p-3 font-bold text-emerald-900 text-lg font-academic">${item.word}</td>
+                        <td class="p-3 text-slate-600 text-sm font-inter">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable(); 
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        // Global Event Listeners
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if(document.getElementById('main-content').style.display === 'none') return;
+            if(e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault(); 
+                if(isTransitioning) return; 
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard(); 
+                else checkAnswer(); 
+            }
+        });
+    </script>
+</body>
+</html>
