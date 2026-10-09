@@ -3,31 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CompleteTB 4-5 - U9 - Every drop counts</title>
+    <title>CompleteTB 4-5 - U10 - Building design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Fonts: Outfit for modern aqua feel, Inter for text readability -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Fonts: Outfit for geometric/architectural feel, Inter for readable text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --aqua-deep: #082f49; /* Sky 900 */
-            --aqua-mid: #0284c7; /* Sky 600 */
-            --aqua-bright: #06b6d4; /* Cyan 500 */
-            --aqua-light: #cffafe; /* Cyan 100 */
+            --blueprint-bg: #0b192c;
+            --blueprint-grid: rgba(6, 182, 212, 0.15);
+            --arch-cyan: #06b6d4;
+            --arch-cyan-dark: #0891b2;
+            --arch-yellow: #f59e0b;
+            --arch-yellow-dark: #d97706;
             --card-front: #ffffff;
-            --card-back: #f0f9ff; /* Sky 50 */
+            --card-back: #f8fafc;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #082f49 100%);
-            /* Water ripples/waves background */
+            background-color: var(--blueprint-bg);
+            /* Blueprint Grid Pattern */
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(2, 132, 199, 0.15) 0%, transparent 50%),
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5C15 5 5 15 5 30s10 25 25 25 25-10 25-25S45 5 30 5zm0 45C18.954 50 10 41.046 10 30S18.954 10 30 10s20 8.954 20 20-8.954 20-20 20z' fill='%2306b6d4' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+                linear-gradient(var(--blueprint-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--blueprint-grid) 1px, transparent 1px),
+                linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+            background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
             color: #f8fafc;
             margin: 0;
             overflow-x: hidden;
@@ -36,14 +41,14 @@
             min-height: 100vh;
         }
 
-        .font-aqua { font-family: 'Outfit', sans-serif; }
+        .font-arch { font-family: 'Outfit', sans-serif; }
 
         .glass-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 0 0 2px rgba(255, 255, 255, 0.5);
             display: flex;
             flex-direction: column;
             color: #1e293b;
@@ -75,17 +80,16 @@
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 2px solid #cbd5e1;
             overflow: hidden;
+            background: var(--card-front);
         }
-        
-        .card-front { background: var(--card-front); }
 
         .card-back { 
             transform: rotateY(-180deg); 
-            border: 2px solid var(--aqua-bright);
+            border: 3px solid var(--arch-cyan);
             background: linear-gradient(145deg, #ffffff 0%, var(--card-back) 100%); 
         }
         
@@ -93,9 +97,15 @@
         .flip-card:not(.flipped) .card-back { pointer-events: none; }
 
         .card-top-bar {
-            height: 16px;
+            height: 12px;
             width: 100%;
-            background: linear-gradient(90deg, var(--aqua-mid) 0%, var(--aqua-bright) 100%);
+            background: repeating-linear-gradient(
+                45deg,
+                var(--arch-yellow),
+                var(--arch-yellow) 15px,
+                #1e293b 15px,
+                #1e293b 30px
+            );
         }
 
         /* Input Styling */
@@ -103,14 +113,14 @@
             background: #f1f5f9; 
             border: 2px solid #94a3b8; 
             border-bottom: 4px solid #64748b; 
-            color: var(--aqua-deep);
+            color: var(--blueprint-bg);
             text-align: center;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-weight: 800;
             transition: all 0.2s ease;
             text-transform: lowercase;
             padding: 0;
-            border-radius: 8px;
+            border-radius: 6px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
         
@@ -121,11 +131,11 @@
         .travel-input:focus {
             outline: none;
             background: #ffffff;
-            border-color: var(--aqua-mid);
-            border-bottom-color: var(--aqua-bright);
+            border-color: var(--arch-cyan);
+            border-bottom-color: var(--arch-cyan-dark);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(6, 182, 212, 0.3);
-            color: var(--aqua-mid);
+            color: var(--arch-cyan-dark);
         }
         
         .travel-input.hinted {
@@ -144,15 +154,15 @@
             animation: shakeError 0.3s ease-in-out;
         }
 
-        /* Fixed symbols for hyphens and spaces */
+        /* Fixed symbols for spaces, hyphens, slashes, brackets */
         .fixed-symbol {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 900;
             color: #64748b;
-            padding: 0 4px;
+            padding: 0 3px;
             font-family: 'Outfit', sans-serif;
         }
 
@@ -164,33 +174,33 @@
         .shake-error { animation: shakeError 0.3s ease-in-out; }
 
         /* Custom Scrollbar */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--aqua-mid); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; border: 2px solid white; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--arch-cyan); }
         
         /* Buttons */
-        .btn-aqua {
+        .btn-arch {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
             letter-spacing: 0.5px;
-            border-radius: 10px;
+            border-radius: 8px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
         }
-        .btn-aqua:active { transform: scale(0.96); }
-        .btn-aqua:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-arch:active { transform: scale(0.96); }
+        .btn-arch:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
         .btn-primary { 
-            background: linear-gradient(135deg, var(--aqua-mid) 0%, var(--aqua-deep) 100%);
+            background: linear-gradient(135deg, var(--arch-cyan) 0%, var(--arch-cyan-dark) 100%);
             color: #ffffff;
-            box-shadow: 0 6px 15px rgba(2, 132, 199, 0.4);
-            border: 1px solid #075985;
+            box-shadow: 0 6px 15px rgba(6, 182, 212, 0.4);
+            border: 1px solid #0891b2;
         }
         .btn-primary:hover:not(:disabled) { 
-            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.6); 
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6); 
             transform: translateY(-2px);
-            background: linear-gradient(135deg, var(--aqua-bright) 0%, var(--aqua-mid) 100%);
+            background: linear-gradient(135deg, #22d3ee 0%, var(--arch-cyan) 100%);
         }
         
         .btn-secondary {
@@ -201,25 +211,25 @@
         }
         .btn-secondary:hover:not(:disabled) {
             background-color: rgba(255,255,255,0.25);
-            border-color: var(--aqua-light);
+            border-color: var(--arch-cyan);
             color: #ffffff;
         }
 
         .highlighter {
             font-weight: 800;
-            color: var(--aqua-deep);
-            background-color: var(--aqua-light); 
+            color: #0f172a;
+            background-color: #cffafe; 
             padding: 2px 6px;
             border-radius: 4px;
-            border-bottom: 2px solid var(--aqua-mid);
+            border-bottom: 2px solid var(--arch-cyan);
         }
 
-        .stamp-aqua {
+        .stamp-arch {
             position: absolute;
             top: 25px;
             right: 20px;
-            color: var(--aqua-mid);
-            border: 3px solid var(--aqua-mid);
+            color: var(--arch-cyan);
+            border: 3px solid var(--arch-cyan);
             padding: 6px 14px;
             font-family: 'Outfit', sans-serif;
             font-size: 1.4rem;
@@ -229,12 +239,12 @@
             pointer-events: none;
             z-index: 20;
             letter-spacing: 2px;
-            border-radius: 8px;
-            background: rgba(2, 132, 199, 0.05);
+            border-radius: 6px;
+            background: rgba(6, 182, 212, 0.05);
             text-transform: uppercase;
-            box-shadow: inset 0 0 8px rgba(2, 132, 199, 0.2);
+            box-shadow: inset 0 0 8px rgba(6, 182, 212, 0.2);
         }
-        .flipped .stamp-aqua { animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; animation-delay: 0.1s; }
+        .flipped .stamp-arch { animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; animation-delay: 0.1s; }
         
         @keyframes stampSlam {
             0% { transform: scale(1.5) rotate(30deg); opacity: 0; }
@@ -244,18 +254,17 @@
         .copyright-text {
             font-family: 'Inter', sans-serif;
             font-size: 13px;
-            color: #cbd5e1; 
+            color: #94a3b8; 
             text-align: center;
             font-weight: 500;
             letter-spacing: 0.5px;
             padding: 12px 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .counter-badge {
-            background: linear-gradient(135deg, var(--aqua-mid), var(--aqua-deep));
-            border: 2px solid var(--aqua-light);
-            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+            background: #1e293b;
+            border: 2px solid var(--arch-cyan);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
     </style>
 </head>
@@ -269,19 +278,19 @@
             
             <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
                 
-                <div class="mb-5 shrink-0 text-center pb-5 border-b border-sky-900/10">
-                    <div class="inline-flex items-center gap-2 px-4 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold font-aqua tracking-widest border border-cyan-300 mb-3 uppercase rounded-full shadow-sm">
-                        <span>💧</span> UNIT 9: EVERY DROP COUNTS
+                <div class="mb-5 shrink-0 text-center pb-5 border-b border-slate-300">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold font-arch tracking-widest border border-cyan-300 mb-3 uppercase rounded-full shadow-sm">
+                        <span>🏗️</span> UNIT 10: BUILDING DESIGN
                     </div>
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-aqua text-sky-900 tracking-tight font-black uppercase drop-shadow-sm">
-                        THE AQUA <span class="text-cyan-600">TRACKER</span>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-arch text-slate-800 tracking-tight font-black uppercase drop-shadow-sm">
+                        THE MASTER <span class="text-cyan-600">BUILDER</span>
                     </h1>
-                    <p class="text-slate-500 mt-2 font-medium text-sm sm:text-base font-inter">Master vocabulary about water, weather, resources, and the environment.</p>
+                    <p class="text-slate-500 mt-2 font-medium text-sm sm:text-base font-inter">Master vocabulary about architecture, construction, and urban planning.</p>
                 </div>
 
-                <div class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white/50 border border-slate-200 relative rounded-xl shadow-inner">
-                    <table class="w-full min-w-[700px] text-left text-sm sm:text-base border-collapse">
-                        <thead class="sticky top-0 z-20 font-aqua text-xs text-white bg-sky-800 border-b border-sky-900 shadow-md">
+                <div class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white/60 border border-slate-300 relative rounded-xl shadow-inner">
+                    <table class="w-full min-w-[750px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-arch text-xs text-white bg-slate-800 border-b border-slate-700 shadow-md">
                             <tr>
                                 <th class="p-4 w-1/4 uppercase tracking-wider font-bold">VOCABULARY</th>
                                 <th class="p-4 w-1/5 text-center uppercase tracking-wider font-bold">TYPE / IPA</th>
@@ -295,9 +304,9 @@
                 </div>
 
                 <div class="shrink-0 flex flex-col items-center pb-2">
-                    <button onclick="startStudy()" class="btn-aqua btn-primary w-full sm:w-1/2 py-4 text-lg flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                        INITIALIZE SYSTEM
+                    <button onclick="startStudy()" class="btn-arch btn-primary w-full sm:w-1/2 py-4 text-lg flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                        OPEN BLUEPRINT
                     </button>
                 </div>
             </div>
@@ -308,29 +317,28 @@
             
             <!-- Header elements -->
             <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
-                <button id="top-prev-btn" onclick="prevCard()" class="btn-aqua btn-secondary px-4 py-2 text-xs shadow-sm" style="display: none;">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-arch btn-secondary px-4 py-2 text-xs shadow-sm" style="display: none;">
                     ◀ PREV
                 </button>
                 <div id="top-prev-placeholder" class="w-[85px]"></div>
 
                 <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
-                    <div class="flex items-center justify-between w-full mb-2 text-sm font-bold font-aqua uppercase tracking-widest px-1">
-                        <div class="flex items-center gap-1 bg-sky-900/80 px-3 py-1 rounded-md border border-sky-700 text-sky-100 shadow-sm">
+                    <div class="flex items-center justify-between w-full mb-2 text-sm font-bold font-arch uppercase tracking-widest px-1">
+                        <div class="flex items-center gap-1 bg-slate-800/80 px-3 py-1 rounded-md border border-slate-600 text-slate-200 shadow-sm">
                             ⏱ <span id="timer-display" class="text-cyan-400">00:00</span>
                         </div>
                         
-                        <!-- Fixed counter badge visibility -->
                         <div class="counter-badge text-white px-4 py-1.5 rounded-md flex items-center gap-2 transform hover:scale-105 transition-transform z-10 relative">
-                            <span class="text-cyan-100 text-xs font-bold">DATA:</span>
+                            <span class="text-cyan-200 text-xs font-bold">PLAN:</span>
                             <span id="progress-text" class="text-white text-base font-black drop-shadow-md">1/29</span>
                         </div>
                     </div>
-                    <div class="w-full h-2.5 bg-sky-950/80 relative rounded-full overflow-hidden shadow-inner border border-sky-800">
-                        <div id="progress-bar" class="h-full bg-gradient-to-r from-sky-400 to-cyan-300 transition-all duration-500 relative" style="width: 0%;"></div>
+                    <div class="w-full h-2.5 bg-slate-800/80 relative rounded-full overflow-hidden shadow-inner border border-slate-700">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-blue-400 transition-all duration-500 relative" style="width: 0%;"></div>
                     </div>
                 </div>
 
-                <button onclick="toggleMusic()" class="btn-aqua btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-lg rounded-md shadow-sm">
+                <button onclick="toggleMusic()" class="btn-arch btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-lg rounded-md shadow-sm">
                     <span id="music-icon">🔇</span>
                 </button>
             </div>
@@ -346,8 +354,8 @@
                             <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
                                 
                                 <div class="mb-5 shrink-0 flex flex-col items-center text-center">
-                                    <span class="inline-block px-4 py-1 bg-sky-50 text-sky-700 border border-sky-200 text-xs font-inter font-bold tracking-widest uppercase mb-4 rounded-md shadow-sm" id="word-type"></span>
-                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-sky-950 leading-tight font-aqua" id="word-mean"></h2>
+                                    <span class="inline-block px-4 py-1 bg-slate-100 text-slate-700 border border-slate-300 text-xs font-inter font-bold tracking-widest uppercase mb-4 rounded-md shadow-sm" id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 leading-tight font-arch" id="word-mean"></h2>
                                 </div>
                                 
                                 <div class="flex flex-col flex-1 relative w-full justify-center pb-4">
@@ -360,12 +368,12 @@
                                         <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-2 sm:gap-y-3 w-full px-0 sm:px-1 mb-8"></div>
                                         
                                         <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
-                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-aqua bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-300 flex items-center justify-center rounded-lg" title="Listen Audio">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-arch bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-300 flex items-center justify-center rounded-lg" title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                                             </button>
-                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-aqua bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300 text-sm shadow-sm">HINT 💡</button>
-                                            <button onclick="checkAnswer()" class="btn-aqua btn-primary px-8 sm:px-10 h-12 text-lg tracking-wider">
-                                                ANALYZE SAMPLE
+                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-arch bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300 text-sm shadow-sm">HINT 💡</button>
+                                            <button onclick="checkAnswer()" class="btn-arch btn-primary px-8 sm:px-10 h-12 text-lg tracking-wider">
+                                                VERIFY STRUCTURE
                                             </button>
                                         </div>
                                     </div>
@@ -377,21 +385,21 @@
                         <div class="card-back">
                             <div class="card-top-bar"></div>
                             <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-6">
-                                <div class="stamp-aqua" id="result-seal">VERIFIED</div>
+                                <div class="stamp-arch" id="result-seal">APPROVED</div>
                                 
                                 <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
                                     <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
-                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-aqua font-black text-sky-900 drop-shadow-sm" id="back-word"></h2>
-                                        <button onclick="speakCurrentWord(event)" class="text-sky-600 hover:text-sky-500 transition-colors p-2 bg-sky-50 border border-sky-200 rounded-lg shadow-sm" title="Listen">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-arch font-black text-slate-800 drop-shadow-sm" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)" class="text-cyan-600 hover:text-cyan-500 transition-colors p-2 bg-cyan-50 border border-cyan-200 rounded-lg shadow-sm" title="Listen">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                                         </button>
                                     </div>
                                     
-                                    <div class="text-slate-600 mb-6 font-inter font-bold text-base tracking-widest bg-sky-100 px-4 py-1.5 rounded-md border border-sky-200 shadow-sm">
+                                    <div class="text-slate-600 mb-6 font-inter font-bold text-base tracking-widest bg-slate-100 px-4 py-1.5 rounded-md border border-slate-300 shadow-sm">
                                         <span id="back-phonetic"></span>
                                     </div>
                                     
-                                    <p class="text-xl sm:text-2xl text-slate-800 font-bold mb-6 font-inter" id="back-mean"></p>
+                                    <p class="text-xl sm:text-2xl text-slate-700 font-bold mb-6 font-inter" id="back-mean"></p>
                                     
                                     <div class="w-full max-w-3xl bg-slate-50 border-l-4 border-cyan-500 p-5 text-left rounded-r-lg shadow-md relative border-y border-r border-slate-200">
                                         <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium" id="back-ex"></p>
@@ -399,8 +407,8 @@
                                 </div>
 
                                 <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
-                                    <button onclick="nextCard()" id="next-btn" class="btn-aqua btn-primary px-8 py-4 text-lg w-full sm:w-2/3 flex items-center justify-center gap-2">
-                                        NEXT READING ➔
+                                    <button onclick="nextCard()" id="next-btn" class="btn-arch btn-primary px-8 py-4 text-lg w-full sm:w-2/3 flex items-center justify-center gap-2">
+                                        NEXT PLAN ➔
                                     </button>
                                 </div>
                             </div>
@@ -414,33 +422,33 @@
         <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
             
             <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
-                <div class="text-center mb-6 shrink-0 border-b border-slate-200 pb-5">
-                    <h2 class="text-3xl sm:text-5xl text-sky-900 font-aqua font-black uppercase tracking-wide drop-shadow-sm">ANALYSIS COMPLETE</h2>
+                <div class="text-center mb-6 shrink-0 border-b border-slate-300 pb-5">
+                    <h2 class="text-3xl sm:text-5xl text-slate-800 font-arch font-black uppercase tracking-wide drop-shadow-sm">PROJECT COMPLETE</h2>
                     <p id="completion-datetime" class="text-xs font-inter text-slate-500 mt-2 tracking-widest uppercase font-bold"></p>
                 </div>
                 
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-aqua text-lg">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-arch text-lg">
                     <div class="bg-white border border-slate-200 p-4 text-center rounded-xl shadow-sm">
                         <p class="text-xs text-slate-500 font-bold tracking-widest mb-1 font-inter">ACCURACY</p>
-                        <p class="text-3xl text-sky-700 font-black" id="score-percent">-</p>
+                        <p class="text-3xl text-cyan-600 font-black" id="score-percent">-</p>
                     </div>
                     <div class="bg-white border border-slate-200 p-4 text-center rounded-xl shadow-sm">
                         <p class="text-xs text-slate-500 font-bold tracking-widest mb-1 font-inter">DURATION</p>
                         <p class="text-3xl text-slate-800 font-black" id="elapsed-time">-</p>
                     </div>
-                    <div class="bg-sky-50 border border-sky-200 p-4 text-center rounded-xl shadow-sm">
-                        <p class="text-xs text-sky-700 font-bold tracking-widest mb-1 font-inter">MASTERED</p>
-                        <p class="text-3xl text-sky-700 font-black" id="correct-count">-</p>
-                    </div>
                     <div class="bg-cyan-50 border border-cyan-200 p-4 text-center rounded-xl shadow-sm">
-                        <p class="text-xs text-cyan-700 font-bold tracking-widest mb-1 font-inter">ASSISTED</p>
-                        <p class="text-3xl text-cyan-600 font-black" id="hint-count">-</p>
+                        <p class="text-xs text-cyan-700 font-bold tracking-widest mb-1 font-inter">BUILT</p>
+                        <p class="text-3xl text-cyan-700 font-black" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-amber-700 font-bold tracking-widest mb-1 font-inter">ASSISTED</p>
+                        <p class="text-3xl text-amber-600 font-black" id="hint-count">-</p>
                     </div>
                 </div>
                 
-                <div class="flex-grow overflow-auto custom-scrollbar border border-slate-200 w-full mb-5 shrink min-h-0 bg-white/80 rounded-xl shadow-inner">
+                <div class="flex-grow overflow-auto custom-scrollbar border border-slate-300 w-full mb-5 shrink min-h-0 bg-white/80 rounded-xl shadow-inner">
                     <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
-                        <thead class="sticky top-0 z-20 bg-sky-800 text-white font-aqua text-xs tracking-wider uppercase border-b border-sky-900 shadow-sm">
+                        <thead class="sticky top-0 z-20 bg-slate-800 text-white font-arch text-xs tracking-wider uppercase border-b border-slate-900 shadow-sm">
                             <tr>
                                 <th class="p-3 w-28 text-center">STATUS</th>
                                 <th class="p-3 w-1/3">VOCABULARY</th>
@@ -454,8 +462,8 @@
                 </div>
                 
                 <div class="shrink-0 flex flex-col items-center pb-2">
-                    <button onclick="resetQuizToSummary()" class="btn-aqua btn-primary w-full sm:w-1/2 py-4 text-lg">
-                        RESTART TRACKING ↺
+                    <button onclick="resetQuizToSummary()" class="btn-arch btn-primary w-full sm:w-1/2 py-4 text-lg">
+                        RESTART PROJECT ↺
                     </button>
                 </div>
             </div>
@@ -467,38 +475,37 @@
         </div>
     </div>
 
-    <!-- -->
     <script>
         const flashcards = [
-            { word: "bottled water", type: "noun phrase", phonetic: "/ˈbɒtld ˈwɔːtə(r)/", mean: "nước đóng chai", ex: "Many tourists carry bottled water when they travel because clean drinking water is not always available." },
-            { word: "cause damage", type: "verb phrase", phonetic: "/kɔːz ˈdæmɪdʒ/", mean: "gây thiệt hại, làm hư hỏng", ex: "Strong storms can cause damage to houses, roads, trees, and power lines." },
-            { word: "control", type: "verb", phonetic: "/kənˈtrəʊl/", mean: "kiểm soát, điều khiển", ex: "People cannot control the weather, but they can prepare for dangerous storms." },
-            { word: "drinkable", type: "adjective", phonetic: "/ˈdrɪŋkəbl/", mean: "có thể uống được, an toàn để uống", ex: "Water must be clean and drinkable before people can use it for drinking." },
-            { word: "depth", type: "noun", phonetic: "/depθ/", mean: "độ sâu", ex: "The depth of the swimming pool is two metres in the deepest part." },
-            { word: "evaporate", type: "verb", phonetic: "/ɪˈvæpəreɪt/", mean: "bay hơi", ex: "Water can evaporate quickly when the weather is very hot and sunny." },
-            { word: "extreme weather", type: "noun phrase", phonetic: "/ɪkˌstriːm ˈweðə(r)/", mean: "thời tiết cực đoan", ex: "Extreme weather can include very strong storms, floods, heatwaves, and heavy rain." },
-            { word: "faucet", type: "noun", phonetic: "/ˈfɔːsɪt/", mean: "vòi nước", ex: "You should turn off the faucet when you brush your teeth to save water." },
-            { word: "harbour", type: "noun", phonetic: "/ˈhɑːbə(r)/", mean: "bến cảng, cảng", ex: "Fishing boats stay in the harbour when the weather at sea becomes dangerous." },
-            { word: "heatwave", type: "noun", phonetic: "/ˈhiːtweɪv/", mean: "đợt nắng nóng", ex: "During a heatwave, people should drink plenty of water and avoid the midday sun." },
-            { word: "liquid", type: "noun", phonetic: "/ˈlɪkwɪd/", mean: "chất lỏng", ex: "Water, milk, and juice are types of liquid that people drink every day." },
-            { word: "mineral water", type: "noun phrase", phonetic: "/ˈmɪnərəl ˈwɔːtə(r)/", mean: "nước khoáng", ex: "Some people choose mineral water because it contains natural minerals from the ground." },
-            { word: "moisture", type: "noun", phonetic: "/ˈmɔɪstʃə(r)/", mean: "độ ẩm, hơi ẩm", ex: "Plants need moisture in the soil to grow well during hot weather." },
-            { word: "mudslide", type: "noun", phonetic: "/ˈmʌdslaɪd/", mean: "vụ sạt lở đất, bùn đất", ex: "A mudslide can happen after heavy rain in an area with steep hills." },
-            { word: "pouring with rain", type: "phrase", phonetic: "/ˌpɔːrɪŋ wɪð ˈreɪn/", mean: "mưa như trút nước, mưa rất lớn", ex: "It is pouring with rain, so we should stay inside until the weather becomes better." },
-            { word: "puddle", type: "noun", phonetic: "/ˈpʌdl/", mean: "vũng nước", ex: "Children sometimes enjoy jumping in a puddle after a heavy rainstorm." },
-            { word: "recede", type: "verb", phonetic: "/rɪˈsiːd/", mean: "rút xuống, rút đi", ex: "Flood water may recede slowly after the rain stops and the weather becomes dry." },
-            { word: "resource", type: "noun", phonetic: "/rɪˈzɔːs/", mean: "tài nguyên, nguồn lực", ex: "Clean water is an important natural resource that people should use carefully." },
-            { word: "shallow", type: "adjective", phonetic: "/ˈʃæləʊ/", mean: "nông, không sâu", ex: "This part of the river is quite shallow, so the water only reaches my knees." },
-            { word: "sewage", type: "noun", phonetic: "/ˈsuːɪdʒ/", mean: "nước thải, chất thải từ nhà vệ sinh", ex: "Sewage can pollute rivers and make the water unsafe for people and animals." },
-            { word: "sink", type: "verb", phonetic: "/sɪŋk/", mean: "chìm, làm chìm", ex: "Heavy objects may sink to the bottom when people put them into deep water." },
-            { word: "soaking wet", type: "adjective phrase", phonetic: "/ˌsəʊkɪŋ ˈwet/", mean: "ướt sũng, ướt hoàn toàn", ex: "We become soaking wet when we walk home in heavy rain without an umbrella." },
-            { word: "stream", type: "noun", phonetic: "/striːm/", mean: "suối, dòng nước nhỏ", ex: "A small stream runs through the forest and provides water for many animals." },
-            { word: "tank", type: "noun", phonetic: "/tæŋk/", mean: "bể, thùng chứa lớn", ex: "The house has a large water tank to store rainwater for the dry season." },
-            { word: "tide", type: "noun", phonetic: "/taɪd/", mean: "thủy triều", ex: "The tide changes the level of the sea several times during the day." },
-            { word: "typhoon signal", type: "noun phrase", phonetic: "/taɪˈfuːn ˈsɪɡnəl/", mean: "tín hiệu/cảnh báo bão", ex: "People should listen carefully to a typhoon signal and stay in a safe place." },
-            { word: "waterfall", type: "noun", phonetic: "/ˈwɔːtəfɔːl/", mean: "thác nước", ex: "The waterfall is a popular place because visitors can enjoy the beautiful natural scenery." },
-            { word: "water shortage", type: "noun phrase", phonetic: "/ˈwɔːtə ˌʃɔːtɪdʒ/", mean: "tình trạng thiếu nước", ex: "A long period without rain can cause a serious water shortage in a town." },
-            { word: "widespread", type: "adjective", phonetic: "/ˈwaɪdspred/", mean: "lan rộng, trên diện rộng", ex: "Widespread flooding can affect many homes, roads, farms, and local businesses." }
+            { word: "basement", type: "noun", phonetic: "/ˈbeɪsmənt/", mean: "tầng hầm", ex: "The family keeps old furniture, bicycles, and some boxes in the basement under the house." },
+            { word: "balcony", type: "noun", phonetic: "/ˈbælkəni/", mean: "ban công", ex: "Our apartment has a small balcony where we can sit and enjoy the fresh air." },
+            { word: "cave", type: "noun", phonetic: "/keɪv/", mean: "hang động", ex: "Tourists visit the cave to see interesting rocks and learn about the local area." },
+            { word: "collapse", type: "verb", phonetic: "/kəˈlæps/", mean: "sụp đổ, đổ xuống", ex: "An old building may collapse if people do not repair it and keep it safe." },
+            { word: "community", type: "noun", phonetic: "/kəˈmjuːnəti/", mean: "cộng đồng", ex: "People in our community often work together to keep the neighbourhood clean and safe." },
+            { word: "date back to", type: "verb phrase", phonetic: "/deɪt bæk tuː/", mean: "có từ, có niên đại từ", ex: "This old temple may date back to the nineteenth century and attract many visitors." },
+            { word: "demolish", type: "verb", phonetic: "/dɪˈmɒlɪʃ/", mean: "phá dỡ, phá hủy", ex: "The city may demolish the unsafe building and build a new one in its place." },
+            { word: "developer", type: "noun", phonetic: "/dɪˈveləpə(r)/", mean: "nhà phát triển bất động sản, công ty xây dựng", ex: "A developer can buy land and build houses, offices, or shopping centres on it." },
+            { word: "district", type: "noun", phonetic: "/ˈdɪstrɪkt/", mean: "quận, huyện; khu vực", ex: "This district has many schools, shops, parks, and apartment buildings for local residents." },
+            { word: "dominate the landscape", type: "verb phrase", phonetic: "/ˈdɒmɪneɪt ðə ˈlændskeɪp/", mean: "nổi bật/chiếm ưu thế trong cảnh quan", ex: "Several tall buildings dominate the landscape and can be seen from many parts of the city." },
+            { word: "engineering", type: "noun", phonetic: "/ˌendʒɪˈnɪərɪŋ/", mean: "ngành kỹ thuật, công việc kỹ thuật", ex: "Engineering is important for the design and construction of roads, bridges, and large buildings." },
+            { word: "ground floor", type: "noun phrase", phonetic: "/ˌɡraʊnd ˈflɔː(r)/", mean: "tầng trệt", ex: "The café is on the ground floor, so customers can enter it directly from the street." },
+            { word: "insulation", type: "noun", phonetic: "/ˌɪnsjuˈleɪʃən/", mean: "vật liệu/sự cách nhiệt, cách âm", ex: "Good insulation can keep a house warm in winter and cooler during hot weather." },
+            { word: "layout", type: "noun", phonetic: "/ˈleɪaʊt/", mean: "cách bố trí, sơ đồ bố trí", ex: "The layout of the apartment is simple, with two bedrooms next to the living room." },
+            { word: "neighbourhood", type: "noun", phonetic: "/ˈneɪbəhʊd/", mean: "khu phố, khu dân cư", ex: "Our neighbourhood is quiet and friendly, with a park and several small shops nearby." },
+            { word: "occupy a building", type: "verb phrase", phonetic: "/ˈɒkjupaɪ ə ˈbɪldɪŋ/", mean: "sử dụng, chiếm một tòa nhà", ex: "A large company may occupy a building with several floors for its offices and staff." },
+            { word: "(on the) outskirts", type: "plural noun", phonetic: "/ˈaʊtskɜːts/", mean: "vùng ngoại ô, rìa thành phố", ex: "Many families choose to live on the outskirts because houses are often larger and quieter there." },
+            { word: "private property", type: "noun phrase", phonetic: "/ˌpraɪvət ˈprɒpəti/", mean: "tài sản tư nhân, khu đất riêng", ex: "Visitors should not enter private property without permission from the owner." },
+            { word: "renovate", type: "verb", phonetic: "/ˈrenəveɪt/", mean: "cải tạo, sửa chữa", ex: "The owners want to renovate the old house and make it safer and more comfortable." },
+            { word: "X-storey building", type: "noun phrase", phonetic: "/ˈeks ˌstɔːri ˈbɪldɪŋ/", mean: "tòa nhà X tầng", ex: "A ten-storey building can provide homes for many families in a busy city." },
+            { word: "residential area", type: "noun phrase", phonetic: "/ˌrezɪˈdenʃəl ˈeəriə/", mean: "khu dân cư", ex: "This is a quiet residential area with houses, parks, and schools but few offices." },
+            { word: "skyscraper", type: "noun", phonetic: "/ˈskaɪskreɪpə(r)/", mean: "tòa nhà chọc trời", ex: "A skyscraper can contain offices, apartments, shops, and restaurants on many different floors." },
+            { word: "sports stadium", type: "noun phrase", phonetic: "/ˈspɔːts ˌsteɪdiəm/", mean: "sân vận động thể thao", ex: "Thousands of people can watch football matches and other events at the sports stadium." },
+            { word: "terrace", type: "noun", phonetic: "/ˈterəs/", mean: "dãy nhà liền kề", ex: "The street has a long terrace of houses that all have a similar design." },
+            { word: "terraced house", type: "noun phrase", phonetic: "/ˌterəst ˈhaʊs/", mean: "nhà liền kề, nhà trong dãy", ex: "A terraced house shares its side walls with the houses next to it." },
+            { word: "tile", type: "noun", phonetic: "/taɪl/", mean: "gạch lát, ngói", ex: "The kitchen floor has a white tile that is easy to clean." },
+            { word: "town planning", type: "noun", phonetic: "/ˈtaʊn ˌplænɪŋ/", mean: "quy hoạch đô thị", ex: "Good town planning can provide enough roads, parks, schools, and housing for local people." },
+            { word: "vacant", type: "adjective", phonetic: "/ˈveɪkənt/", mean: "bỏ trống, chưa được sử dụng", ex: "The apartment is vacant now, so a new family can move into it soon." },
+            { word: "veranda / verandah", type: "noun", phonetic: "/vəˈrændə/", mean: "hiên nhà có mái che", ex: "The family often sits on the veranda in the evening to relax and enjoy the cool air." }
         ];
 
         let currentIndex = 0;
@@ -509,7 +516,8 @@
         let isMusicPlaying = false;
         let isTransitioning = false; 
 
-        //        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Sound Engine
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3'); 
         bgMusic.loop = true; bgMusic.volume = 0.15;
 
@@ -541,8 +549,14 @@
                 window.speechSynthesis.cancel();
                 let rawWord = flashcards[currentIndex].word;
                 
-                // Smart filter to handle hyphens and slashes for natural TTS reading
-                let wordToSpeak = rawWord.replace(/[-/]/g, ' ').replace(/\s+/g, ' ').trim();
+                // Smart filter to handle special cases for natural TTS reading
+                let wordToSpeak = rawWord
+                    .replace(/X-storey/gi, 'X storey')
+                    .replace(/\(on the\)/gi, 'on the')
+                    .replace(/\//g, ' or ')
+                    .replace(/[-_]/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
                 
                 const utter = new SpeechSynthesisUtterance(wordToSpeak);
                 utter.lang = 'en-US'; 
@@ -565,22 +579,22 @@
             window.speechSynthesis.onvoiceschanged = () => {};
         }
 
-        //        function populateWelcomeTable() {
+        function populateWelcomeTable() {
             const tbody = document.getElementById('welcome-table-body');
             tbody.innerHTML = flashcards.map((item, idx) => {
                 return `
-                <tr class="hover:bg-sky-50 transition-colors border-b border-slate-200">
-                    <td class="p-3 font-aqua font-bold text-sky-900 text-lg">
+                <tr class="hover:bg-slate-100 transition-colors border-b border-slate-200">
+                    <td class="p-3 font-arch font-bold text-slate-800 text-lg">
                         <span class="text-slate-400 text-xs mr-2 font-inter">#${idx+1}</span>${item.word}
                     </td>
                     <td class="p-3 text-center">
-                        <span class="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-300 text-xs font-bold font-inter uppercase tracking-widest rounded shadow-sm">${item.type}</span>
+                        <span class="px-2 py-0.5 bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold font-inter uppercase tracking-widest rounded shadow-sm">${item.type}</span>
                         <br><span class="text-xs text-slate-500 mt-1 inline-block">${item.phonetic}</span>
                     </td>
-                    <td class="p-3 text-slate-700 text-sm">${item.mean}</td>
+                    <td class="p-3 text-slate-600 text-sm">${item.mean}</td>
                 </tr>
             `}).join('');
-        
+        }
 
         function startStudy() {
             playSound('start');
@@ -625,15 +639,21 @@
             document.getElementById('word-type').textContent = card.type;
             
             let displayEx = card.ex;
-            let matchRegexStr = card.word; 
-            let cleanWord = matchRegexStr.replace(/[^a-zA-Z]/g, '');
+            let matchStr = card.word;
+            
+            // Custom blanking logic for specific edge cases in this unit
+            if (matchStr === 'X-storey building') matchStr = 'ten-storey building';
+            if (matchStr === '(on the) outskirts') matchStr = 'on the outskirts';
+            if (matchStr === 'veranda / verandah') matchStr = 'veranda';
+            
+            let cleanWord = matchStr.replace(/[^a-zA-Z]/g, '');
             let letterCount = cleanWord.length;
             
             // Regex to match the target word and replace with blank
-            let regex = new RegExp(`\\b${matchRegexStr.replace(/[-]/g, '.?').replace(/\s+/g, '.?')}\\b`, 'gi');
+            let regex = new RegExp(`\\b${matchStr.replace(/[-/]/g, '.?').replace(/\s+/g, '.?').replace(/[()]/g, '\\.?')}\\b`, 'gi');
             
             if (!displayEx.match(regex)) {
-                let shortTarget = matchRegexStr.length > 5 ? matchRegexStr.substring(0, 5) : matchRegexStr;
+                let shortTarget = matchStr.length > 5 ? matchStr.substring(0, 5) : matchStr;
                 regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
             }
 
@@ -646,7 +666,7 @@
             const container = document.getElementById('letter-inputs-container');
             container.innerHTML = '';
             
-            // Split by space to handle gaps between words
+            // Generate inputs based on the original raw word structure
             const wordsArray = card.word.split(' ');
             
             wordsArray.forEach((w, wordIndex) => {
@@ -654,12 +674,14 @@
                 group.className = 'flex flex-wrap gap-0.5 sm:gap-1 justify-center';
                 
                 w.split('').forEach((char) => {
-                    if (char === '-') {
+                    // Fixed symbols
+                    if (!isLetter(char)) {
                         const symbol = document.createElement('span');
                         symbol.textContent = char;
                         symbol.className = 'fixed-symbol';
                         group.appendChild(symbol);
-                    } else if (isLetter(char)) {
+                    } else {
+                        // Editable letters
                         const input = document.createElement('input');
                         input.type = 'text'; input.maxLength = 1;
                         input.className = 'travel-input editable-input';
@@ -691,10 +713,9 @@
                 });
                 
                 container.appendChild(group);
-                // Add visual space between words
                 if(wordIndex < wordsArray.length - 1) {
                     const space = document.createElement('div'); 
-                    space.className = 'w-3 sm:w-5'; 
+                    space.className = 'w-2 sm:w-4'; 
                     container.appendChild(space);
                 }
             });
@@ -714,7 +735,7 @@
             }
         }
 
-        //        function giveHint() {
+        function giveHint() {
             if(hintUsedThisCard) return;
             const rawWord = flashcards[currentIndex].word;
             
@@ -739,7 +760,7 @@
             hintUsedThisCard = true;
             hintedWords.add(flashcards[currentIndex].word);
             document.getElementById('hint-btn').disabled = true;
-        
+        }
 
         function normalizeString(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -762,14 +783,14 @@
                 const seal = document.getElementById('result-seal');
                 if (hintUsedThisCard) {
                     seal.textContent = "ASSISTED";
-                    seal.style.color = "#475569"; 
-                    seal.style.borderColor = "#475569";
-                    seal.style.background = "rgba(71, 85, 105, 0.05)";
+                    seal.style.color = "#d97706"; 
+                    seal.style.borderColor = "#d97706";
+                    seal.style.background = "rgba(245, 158, 11, 0.05)";
                 } else {
-                    seal.textContent = "VERIFIED";
-                    seal.style.color = "var(--aqua-mid)"; 
-                    seal.style.borderColor = "var(--aqua-mid)";
-                    seal.style.background = "rgba(2, 132, 199, 0.05)";
+                    seal.textContent = "APPROVED";
+                    seal.style.color = "var(--arch-cyan)"; 
+                    seal.style.borderColor = "var(--arch-cyan)";
+                    seal.style.background = "rgba(6, 182, 212, 0.05)";
                 }
                 
                 document.getElementById('back-word').textContent = rawWord;
@@ -777,11 +798,16 @@
                 document.getElementById('back-mean').textContent = card.mean;
                 
                 let backExStr = card.ex;
-                let matchRegexStr = rawWord; 
-                let regex = new RegExp(`\\b${matchRegexStr.replace(/[-]/g, '.?').replace(/\s+/g, '.?')}\\b`, 'gi');
+                let matchStr = rawWord; 
+                // Custom logic for highlighting the blanked word in example
+                if (matchStr === 'X-storey building') matchStr = 'ten-storey building';
+                if (matchStr === '(on the) outskirts') matchStr = 'on the outskirts';
+                if (matchStr === 'veranda / verandah') matchStr = 'veranda';
+
+                let regex = new RegExp(`\\b${matchStr.replace(/[-/]/g, '.?').replace(/\s+/g, '.?').replace(/[()]/g, '\\.?')}\\b`, 'gi');
                 
                 if (!backExStr.match(regex)) {
-                    let shortTarget = matchRegexStr.length > 5 ? matchRegexStr.substring(0, 5) : matchRegexStr;
+                    let shortTarget = matchStr.length > 5 ? matchStr.substring(0, 5) : matchStr;
                     regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
                 }
                 
@@ -844,7 +870,7 @@
             
             const now = new Date();
             const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour:'2-digit', minute:'2-digit' }).toUpperCase();
-            document.getElementById('completion-datetime').textContent = `ANALYSIS COMPLETED: ${dateString}`;
+            document.getElementById('completion-datetime').textContent = `PROJECT COMPLETED: ${dateString}`;
             
             const scoreEl = document.getElementById('score-percent');
             scoreEl.textContent = `${scorePercentage}%`;
@@ -858,13 +884,13 @@
             tbody.innerHTML = flashcards.map(item => {
                 const usedHint = hintedWords.has(item.word);
                 const statusIcon = usedHint 
-                    ? '<span class="text-slate-500 font-bold font-inter uppercase text-[10px] border border-slate-300 px-2 py-1 rounded bg-slate-100 shadow-sm">ASSISTED</span>' 
-                    : '<span class="text-sky-700 font-bold font-inter uppercase text-[10px] border border-sky-300 px-2 py-1 rounded bg-sky-100 shadow-sm">MASTERED</span>';
+                    ? '<span class="text-amber-700 font-bold font-inter uppercase text-[10px] border border-amber-300 px-2 py-1 rounded bg-amber-100 shadow-sm">ASSISTED</span>' 
+                    : '<span class="text-cyan-700 font-bold font-inter uppercase text-[10px] border border-cyan-300 px-2 py-1 rounded bg-cyan-100 shadow-sm">BUILT</span>';
                 
                 return `
-                    <tr class="hover:bg-sky-50 border-b border-slate-200 transition-colors">
+                    <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
                         <td class="p-3 text-center">${statusIcon}</td>
-                        <td class="p-3 font-bold text-sky-900 text-lg font-aqua">${item.word}</td>
+                        <td class="p-3 font-bold text-slate-800 text-lg font-arch">${item.word}</td>
                         <td class="p-3 text-slate-600 text-sm font-inter">${item.mean}</td>
                     </tr>
                 `;
