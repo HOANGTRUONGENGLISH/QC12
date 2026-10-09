@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompleteSB 5-6.5 - U2 - It's good for you!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --eco-green: #10b981; /* Emerald 500 */
+            --eco-green-dark: #047857; /* Emerald 700 */
+            --harvest-gold: #f59e0b; /* Amber 500 */
+            --harvest-gold-dark: #d97706; /* Amber 600 */
+            --slate-base: #0f172a; /* Slate 900 */
+            --card-front: #ffffff;
+            --card-back: #f8fafc;
+            --leaf-pattern: rgba(16, 185, 129, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--slate-base) 0%, #064e3b 50%, #022c22 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            color: #f8fafc;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Subtle grid/leaf pattern for backgrounds */
+        .pattern-bg {
+            background-image: 
+                linear-gradient(var(--leaf-pattern) 1px, transparent 1px),
+                linear-gradient(90deg, var(--leaf-pattern) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            color: #1e293b;
+        }
+
+        .flip-card {
+            perspective: 3000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 550px; 
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            inset: 0; 
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(-180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            background: var(--card-front);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-back { 
+            transform: rotateY(-180deg); 
+            border: 2px solid var(--eco-green);
+            background: linear-gradient(145deg, #ffffff 0%, #ecfdf5 100%); /* slight emerald tint */
+        }
+        
+        .flip-card.flipped .card-front { pointer-events: none; }
+        .flip-card:not(.flipped) .card-back { pointer-events: none; }
+
+        /* Thematic Top Bar */
+        .card-top-bar {
+            height: 12px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--eco-green) 0%, var(--harvest-gold) 100%);
+        }
+
+        .travel-input {
+            background: #f1f5f9; 
+            border: 2px solid #cbd5e1; 
+            border-bottom: 4px solid #94a3b8; 
+            color: var(--slate-base);
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            padding: 0;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .travel-input { width: 22px; height: 32px; font-size: 1.1rem; }
+        @media (min-width: 400px) { .travel-input { width: 26px; height: 36px; font-size: 1.25rem; } }
+        @media (min-width: 640px) { .travel-input { width: 32px; height: 42px; font-size: 1.4rem; } }
+
+        .travel-input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: var(--eco-green);
+            border-bottom-color: var(--eco-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+            color: var(--eco-green-dark);
+        }
+        
+        .travel-input.hinted {
+            color: #ffffff; 
+            border-color: #059669;
+            border-bottom-color: #047857; 
+            background: var(--eco-green); 
+            pointer-events: none;
+        }
+        
+        .travel-input.error {
+            color: #ffffff; 
+            border-color: #ef4444;
+            border-bottom-color: #b91c1c;
+            background: #ef4444;
+            animation: shakeError 0.3s ease-in-out;
+        }
+
+        .fixed-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #64748b;
+            padding: 0 2px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px) rotate(-3deg); }
+            75% { transform: translateX(4px) rotate(3deg); }
+        }
+        .shake-error { animation: shakeError 0.3s ease-in-out; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--eco-green); }
+        
+        .btn-voyage {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+        }
+        .btn-voyage:active { transform: scale(0.96); }
+        .btn-voyage:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--eco-green) 0%, var(--eco-green-dark) 100%);
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            border: 1px solid #065f46;
+        }
+        .btn-primary:hover:not(:disabled) { 
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6); 
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #34d399 0%, var(--eco-green) 100%);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.1);
+            color: #f1f5f9;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(255,255,255,0.25);
+            border-color: var(--harvest-gold);
+            color: #ffffff;
+        }
+
+        .highlighter {
+            font-weight: 800;
+            color: #0f172a;
+            background-color: #fef3c7; 
+            padding: 2px 6px;
+            border-radius: 4px;
+            border-bottom: 2px solid var(--harvest-gold);
+        }
+
+        .stamp-voyage {
+            position: absolute;
+            top: 30px;
+            right: 25px;
+            color: var(--eco-green-dark);
+            border: 3px solid var(--eco-green-dark);
+            padding: 8px 16px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            transform: rotate(15deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            text-transform: uppercase;
+            box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+        .flipped .stamp-voyage { animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; animation-delay: 0.15s; }
+        
+        @keyframes stampSlam {
+            0% { transform: scale(1.5) rotate(30deg); opacity: 0; }
+            100% { transform: scale(1) rotate(15deg); opacity: 1; }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: rgba(248, 250, 252, 0.7); 
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 0;
+        }
+
+        .counter-badge {
+            background: linear-gradient(135deg, var(--harvest-gold), var(--harvest-gold-dark));
+            border: 2px solid #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[93vh] min-h-[550px] max-h-[900px]">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative pattern-bg">
+                
+                <div class="mb-5 shrink-0 text-center pb-5 border-b border-emerald-200">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold font-outfit tracking-widest border border-emerald-300 mb-3 uppercase rounded-full shadow-sm">
+                        <span>🌱</span> UNIT 2: IT'S GOOD FOR YOU!
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-outfit text-slate-800 tracking-tight font-black uppercase drop-shadow-sm">
+                        THE WELLNESS <span class="text-emerald-600">TRACKER</span>
+                    </h1>
+                    <p class="text-slate-500 mt-2 font-medium text-sm sm:text-base font-inter">Master vocabulary about food, nutrition, farming, and the environment.</p>
+                </div>
+
+                <div class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-white/70 border border-emerald-200 relative rounded-xl shadow-inner">
+                    <table class="w-full min-w-[750px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-outfit text-xs text-white bg-slate-800 border-b border-slate-700 shadow-md">
+                            <tr>
+                                <th class="p-4 w-1/4 uppercase tracking-wider font-bold">VOCABULARY</th>
+                                <th class="p-4 w-1/5 text-center uppercase tracking-wider font-bold">TYPE / IPA</th>
+                                <th class="p-4 uppercase tracking-wider font-bold">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-700 divide-y divide-emerald-100 font-medium bg-white/50">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn-voyage btn-primary w-full sm:w-1/2 py-4 text-lg flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        INITIATE TRACKER
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN CONTENT (FLASHCARD) ================= -->
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+            
+            <!-- Header elements -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-voyage btn-secondary px-4 py-2 text-xs shadow-sm" style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div class="flex items-center justify-between w-full mb-2 text-sm font-bold font-outfit uppercase tracking-widest px-1">
+                        <div class="flex items-center gap-1 bg-slate-800/80 px-3 py-1 rounded-md border border-slate-600 text-slate-200 shadow-sm">
+                            ⏱ <span id="timer-display" class="text-emerald-400">00:00</span>
+                        </div>
+                        
+                        <div class="counter-badge text-white px-4 py-1.5 rounded-full flex items-center gap-2 transform hover:scale-105 transition-transform z-10 relative">
+                            <span class="text-amber-100 text-xs font-bold">DATA:</span>
+                            <span id="progress-text" class="text-white text-base font-black drop-shadow-md">1/28</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-800/80 relative rounded-full overflow-hidden shadow-inner border border-slate-700">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-amber-400 transition-all duration-500 relative" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()" class="btn-voyage btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-lg rounded-md shadow-sm">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <!-- Card Container -->
+            <div class="flex-1 w-full max-w-5xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+                        
+                        <!-- FRONT OF CARD -->
+                        <div class="card-front pattern-bg"> 
+                            <div class="card-top-bar"></div>
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                
+                                <div class="mb-4 shrink-0 flex flex-col items-center text-center">
+                                    <span class="inline-block px-4 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-inter font-bold tracking-widest uppercase mb-3 rounded-md shadow-sm" id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 leading-tight font-outfit" id="word-mean"></h2>
+                                </div>
+                                
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-2">
+                                    <div class="text-center mb-6 px-1 sm:px-6">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium" id="word-ex"></p>
+                                    </div>
+                                    
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <!-- Flexible inputs for letters -->
+                                        <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 gap-y-2 sm:gap-y-3 w-full px-0 sm:px-1 mb-6"></div>
+                                        
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-voyage bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-300 flex items-center justify-center rounded-lg" title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-voyage bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300 text-sm shadow-sm">HINT 💡</button>
+                                            <button onclick="checkAnswer()" class="btn-voyage btn-primary px-8 sm:px-10 h-12 text-lg tracking-wider">
+                                                HARVEST DATA ➔
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BACK OF CARD -->
+                        <div class="card-back pattern-bg">
+                            <div class="card-top-bar"></div>
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-6">
+                                <div class="stamp-voyage" id="result-seal">VERIFIED</div>
+                                
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-4">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-outfit font-black text-slate-800 drop-shadow-sm" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)" class="text-emerald-600 hover:text-emerald-500 transition-colors p-2 bg-emerald-50 border border-emerald-200 rounded-lg shadow-sm" title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="text-slate-600 mb-6 font-inter font-bold text-base tracking-widest bg-slate-100 px-4 py-1.5 rounded-md border border-slate-300 shadow-sm">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+                                    
+                                    <p class="text-xl sm:text-2xl text-slate-700 font-bold mb-6 font-inter" id="back-mean"></p>
+                                    
+                                    <div class="w-full max-w-3xl bg-slate-50 border-l-4 border-harvest-gold p-5 text-left rounded-r-lg shadow-md relative border-y border-r border-slate-200">
+                                        <p class="text-lg sm:text-xl text-slate-700 leading-relaxed font-medium" id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn" class="btn-voyage btn-primary px-8 py-4 text-lg w-full sm:w-2/3 flex items-center justify-center gap-2">
+                                        NEXT SAMPLE ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= FINAL SCREEN ================= -->
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative pattern-bg">
+                <div class="text-center mb-6 shrink-0 border-b border-emerald-200 pb-5">
+                    <h2 class="text-3xl sm:text-5xl text-slate-800 font-outfit font-black uppercase tracking-wide drop-shadow-sm">ANALYSIS COMPLETE</h2>
+                    <p id="completion-datetime" class="text-xs font-inter text-slate-500 mt-2 tracking-widest uppercase font-bold"></p>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-outfit text-lg">
+                    <div class="bg-white border border-slate-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold tracking-widest mb-1 font-inter">ACCURACY</p>
+                        <p class="text-3xl text-emerald-600 font-black" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold tracking-widest mb-1 font-inter">DURATION</p>
+                        <p class="text-3xl text-slate-800 font-black" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-emerald-700 font-bold tracking-widest mb-1 font-inter">VERIFIED</p>
+                        <p class="text-3xl text-emerald-700 font-black" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-4 text-center rounded-xl shadow-sm">
+                        <p class="text-xs text-amber-700 font-bold tracking-widest mb-1 font-inter">ASSISTED</p>
+                        <p class="text-3xl text-amber-600 font-black" id="hint-count">-</p>
+                    </div>
+                </div>
+                
+                <div class="flex-grow overflow-auto custom-scrollbar border border-slate-300 w-full mb-5 shrink min-h-0 bg-white/80 rounded-xl shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 bg-slate-800 text-white font-outfit text-xs tracking-wider uppercase border-b border-slate-900 shadow-sm">
+                            <tr>
+                                <th class="p-3 w-28 text-center">STATUS</th>
+                                <th class="p-3 w-1/3">VOCABULARY</th>
+                                <th class="p-3">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-slate-700 divide-y divide-slate-200 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()" class="btn-voyage btn-primary w-full sm:w-1/2 py-4 text-lg">
+                        RESTART TRACKER ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Permanent Copyright Anchor -->
+        <div class="shrink-0 mt-auto text-center relative z-40">
+            <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "approach", type: "noun", phonetic: "/əˈprəʊtʃ/", mean: "cách tiếp cận, phương pháp", ex: "This new approach can help farmers grow more food while using less water." },
+            { word: "artificial", type: "adjective", phonetic: "/ˌɑːtɪˈfɪʃəl/", mean: "nhân tạo, không tự nhiên", ex: "Some farms use artificial light to help vegetables grow inside large buildings." },
+            { word: "attitudes towards", type: "plural noun", phonetic: "/ˈætɪtjuːdz təˈwɔːdz/", mean: "thái độ, quan điểm đối với", ex: "People’s attitudes towards healthy food can change when they learn more about nutrition." },
+            { word: "avoid", type: "verb", phonetic: "/əˈvɔɪd/", mean: "tránh", ex: "People should avoid food with too much sugar, salt, or unhealthy fat." },
+            { word: "conventional", type: "adjective", phonetic: "/kənˈvenʃənəl/", mean: "truyền thống, thông thường", ex: "Conventional farming often uses large areas of land to grow crops outside." },
+            { word: "create", type: "verb", phonetic: "/kriˈeɪt/", mean: "tạo ra", ex: "New technology can create better conditions for plants to grow throughout the year." },
+            { word: "crop yields", type: "plural noun", phonetic: "/ˈkrɒp jiːldz/", mean: "sản lượng cây trồng, năng suất mùa vụ", ex: "Good weather and better farming techniques can increase crop yields for local farmers." },
+            { word: "emit", type: "verb", phonetic: "/iˈmɪt/", mean: "thải ra, phát ra", ex: "Cars and factories can emit gases that are harmful to the environment." },
+            { word: "farming techniques", type: "plural noun", phonetic: "/ˈfɑːmɪŋ tekˌniːks/", mean: "kỹ thuật, phương pháp canh tác", ex: "Modern farming techniques can help farmers save water and produce more food." },
+            { word: "food stall", type: "noun phrase", phonetic: "/ˈfuːd stɔːl/", mean: "quầy hàng thức ăn", ex: "We often buy noodles and fresh fruit from a small food stall near our school." },
+            { word: "for one thing", type: "phrase", phonetic: "/fə wʌn θɪŋ/", mean: "thứ nhất là, một lý do là", ex: "I prefer local food. For one thing, it is usually fresher and easier to find." },
+            { word: "frozen food", type: "noun phrase", phonetic: "/ˈfrəʊzn fuːd/", mean: "thực phẩm đông lạnh", ex: "Frozen food can stay fresh for a longer time when people store it correctly." },
+            { word: "gain access to", type: "verb phrase", phonetic: "/ɡeɪn ˈækses tuː/", mean: "có cơ hội tiếp cận, có quyền sử dụng", ex: "Farmers can gain access to useful information through mobile phones and the Internet." },
+            { word: "greenhouse gases", type: "plural noun", phonetic: "/ˈɡriːnhaʊs ˌɡæsɪz/", mean: "khí nhà kính", ex: "Greenhouse gases make the Earth warmer and can affect weather around the world." },
+            { word: "hygiene", type: "noun", phonetic: "/ˈhaɪdʒiːn/", mean: "vệ sinh", ex: "Good food hygiene is important because it can help prevent illness and keep customers safe." },
+            { word: "influence", type: "verb", phonetic: "/ˈɪnfluəns/", mean: "ảnh hưởng, tác động đến", ex: "Advertising can influence what people choose to buy, eat, or drink." },
+            { word: "likely to", type: "phrase", phonetic: "/ˈlaɪkli tuː/", mean: "có khả năng, có thể sẽ", ex: "Food prices are likely to increase when there is a shortage of important products." },
+            { word: "locally", type: "adverb", phonetic: "/ˈləʊkəli/", mean: "tại địa phương, ở khu vực gần đó", ex: "Many restaurants buy vegetables locally because the food can be fresher and cheaper." },
+            { word: "luxury", type: "noun", phonetic: "/ˈlʌkʃəri/", mean: "thứ xa xỉ, điều không thật sự cần thiết", ex: "Eating at an expensive restaurant every week can be a luxury for many families." },
+            { word: "man-made", type: "adjective", phonetic: "/ˌmæn ˈmeɪd/", mean: "do con người tạo ra, nhân tạo", ex: "This lake is man-made, but it provides water for farms in the surrounding area." },
+            { word: "nutrition", type: "noun", phonetic: "/njuˈtrɪʃən/", mean: "dinh dưỡng", ex: "Good nutrition is important for children because they need healthy food to grow properly." },
+            { word: "point something out", type: "phrasal verb", phonetic: "/pɔɪnt ˈsʌmθɪŋ aʊt/", mean: "chỉ ra, lưu ý điều gì", ex: "Teachers can point mistakes out and explain how students can correct them." },
+            { word: "reject", type: "verb", phonetic: "/rɪˈdʒekt/", mean: "từ chối, không chấp nhận", ex: "Customers may reject food that does not look fresh, clean, or safe to eat." },
+            { word: "sound", type: "verb", phonetic: "/saʊnd/", mean: "nghe có vẻ", ex: "These new farming ideas sound useful, but farmers need to test them carefully first." },
+            { word: "trend", type: "noun", phonetic: "/trend/", mean: "xu hướng", ex: "Buying local and organic food is a growing trend among people who care about health." },
+            { word: "ultimately", type: "adverb", phonetic: "/ˈʌltɪmətli/", mean: "cuối cùng, xét cho cùng", ex: "Ultimately, people need to choose food that is healthy, affordable, and suitable for them." },
+            { word: "value", type: "noun", phonetic: "/ˈvæljuː/", mean: "giá trị, sự hữu ích/tầm quan trọng", ex: "Fresh vegetables have great value because they provide important vitamins and minerals." },
+            { word: "weather conditions", type: "plural noun", phonetic: "/ˈweðə kənˌdɪʃənz/", mean: "điều kiện thời tiết", ex: "Bad weather conditions can damage crops and make farming more difficult for local farmers." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false; 
+
+        // Sound Engine setup
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-study-112191.mp3'); 
+        bgMusic.loop = true; bgMusic.volume = 0.15;
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                const playTone = (oscType, freq1, freq2, vol, dur) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = oscType;
+                    osc.frequency.setValueAtTime(freq1, now);
+                    if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                    gain.gain.setValueAtTime(vol, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                    osc.start(now); osc.stop(now + dur);
+                };
+                if (type === 'start') playTone('sine', 440, 660, 0.1, 0.4); 
+                else if (type === 'success') { playTone('sine', 600, 800, 0.1, 0.1); setTimeout(()=>playTone('triangle', 800, 1200, 0.1, 0.2), 100); }
+                else if (type === 'error') playTone('sawtooth', 250, 150, 0.1, 0.3); 
+                else if (type === 'flip') playTone('sine', 350, 250, 0.05, 0.15); 
+            } catch (e) { console.log("Audio play error", e); }
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            try {
+                window.speechSynthesis.cancel();
+                let rawWord = flashcards[currentIndex].word;
+                
+                // Smart filter to handle special abbreviations and hyphens for natural TTS reading
+                let wordToSpeak = rawWord
+                    .replace(/sth\/sb/gi, 'something or somebody')
+                    .replace(/\bsth\b/gi, 'something')
+                    .replace(/\bsb\b/gi, 'somebody')
+                    .replace(/[()]/g, '')
+                    .replace(/\//g, ' or ')
+                    .replace(/[-_]/g, ' ') // Convert hyphens to spaces so TTS doesn't say "dash"
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US'; 
+                utter.rate = 0.9;
+                
+                // Enforce US Female Voice
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                if(femaleUS) {
+                    utter.voice = femaleUS;
+                }
+                
+                window.speechSynthesis.speak(utter);
+            } catch (error) {
+                console.log("TTS Error:", error);
+            }
+        }
+
+        // Pre-load voices to avoid delay on first TTS call
+        if(window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = () => {};
+        }
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, idx) => {
+                return `
+                <tr class="hover:bg-emerald-50 transition-colors border-b border-slate-200">
+                    <td class="p-3 font-outfit font-bold text-slate-800 text-lg">
+                        <span class="text-slate-400 text-xs mr-2 font-inter">#${idx+1}</span>${item.word}
+                    </td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold font-inter uppercase tracking-widest rounded shadow-sm">${item.type}</span>
+                        <br><span class="text-xs text-slate-500 mt-1 inline-block">${item.phonetic}</span>
+                    </td>
+                    <td class="p-3 text-slate-600 text-sm">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+            
+            // Ensure voices are loaded for Safari/Mobile
+            if(window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = () => {};
+            }
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff/60).toString().padStart(2, '0');
+                const s = (diff%60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function isLetter(char) {
+            return /[a-zA-Z]/.test(char);
+        }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+            
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            
+            let displayEx = card.ex;
+            let matchStr = card.word;
+            
+            // Smart Blanking Logic
+            let simplifiedTarget = matchStr.replace(/\(.*?\)/g, '').replace(/\/.*$/, '').replace(/sth\/sb/g, '').replace(/\bsth\b/g, '').replace(/\bsb\b/g, '').trim();
+            
+            let cleanWord = matchStr.replace(/[^a-zA-Z]/g, '');
+            let letterCount = cleanWord.length;
+            
+            let regex = new RegExp(`\\b${simplifiedTarget.replace(/[-/]/g, '.?').replace(/\s+/g, '.?').replace(/[()]/g, '\\.?')}[a-z]*\\b`, 'gi');
+            
+            if (!displayEx.match(regex)) {
+                // Fallback blanking
+                let firstWord = simplifiedTarget.split(' ')[0];
+                let shortTarget = firstWord.length > 4 ? firstWord.substring(0, 4) : firstWord;
+                regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+            }
+
+            let underlineWidth = letterCount < 5 ? 'w-16' : (letterCount < 10 ? 'w-24' : (letterCount < 18 ? 'w-36' : (letterCount < 25 ? 'w-48' : 'w-64')));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-5 border-b-[3px] border-amber-500 mx-1 align-baseline bg-amber-50/50 rounded-sm shadow-sm"></span>`;
+            
+            displayEx = displayEx.replace(regex, blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+            
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+            
+            // Generate inputs handling hyphens and spaces
+            const wordsArray = matchStr.split(' ');
+            
+            wordsArray.forEach((w, wordIndex) => {
+                const group = document.createElement('div');
+                group.className = 'flex flex-wrap gap-0.5 sm:gap-1 justify-center';
+                
+                w.split('').forEach((char) => {
+                    if (!isLetter(char)) {
+                        // Fixed symbols like hyphens
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'fixed-symbol';
+                        group.appendChild(symbol);
+                    } else {
+                        // Editable letters
+                        const input = document.createElement('input');
+                        input.type = 'text'; input.maxLength = 1;
+                        input.className = 'travel-input editable-input';
+                        input.autocomplete = "off"; input.autocapitalize="off"; input.spellcheck = false;
+                        
+                        input.addEventListener('input', function() {
+                            this.value = this.value.toLowerCase();
+                            this.classList.remove('error');
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if(this.value && idx < inputs.length - 1) {
+                                let next = idx + 1;
+                                while(next < inputs.length && inputs[next].readOnly) next++;
+                                if(next < inputs.length) inputs[next].focus();
+                            }
+                        });
+
+                        input.addEventListener('keydown', function(e) {
+                            const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                            const idx = inputs.indexOf(this);
+                            if(e.key === 'Backspace' && !this.value && idx > 0) {
+                                let prev = idx - 1;
+                                while(prev >= 0 && inputs[prev].readOnly) prev--;
+                                if(prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                            }
+                        });
+                        group.appendChild(input);
+                    }
+                });
+                
+                container.appendChild(group);
+                if(wordIndex < wordsArray.length - 1) {
+                    const space = document.createElement('div'); 
+                    space.className = 'w-2 sm:w-4 flex items-center justify-center font-bold text-slate-400';
+                    // Render visual space marker for better UX
+                    space.innerHTML = '&middot;'; 
+                    container.appendChild(space);
+                }
+            });
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+            
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            
+            if(currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if(hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            
+            const target = rawWord.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.travel-input.editable-input');
+            
+            let pool = [];
+            for(let i=0; i<inputs.length; i++) {
+                if(!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+            }
+            
+            if(pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4)); 
+            
+            for(let i=0; i<Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+
+        function checkAnswer() {
+            if(isTransitioning) return; 
+            
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+            
+            const target = normalizeString(rawWord.replace(/[^a-zA-Z]/g, ''));
+            const inputs = document.querySelectorAll('.travel-input.editable-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+            
+            if(user === target) {
+                playSound('success');
+                isTransitioning = true;
+                
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "#d97706"; 
+                    seal.style.borderColor = "#d97706";
+                    seal.style.background = "rgba(245, 158, 11, 0.05)";
+                } else {
+                    seal.textContent = "VERIFIED";
+                    seal.style.color = "#047857"; 
+                    seal.style.borderColor = "#047857";
+                    seal.style.background = "rgba(16, 185, 129, 0.1)";
+                }
+                
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+                
+                let backExStr = card.ex;
+                let simplifiedTarget = rawWord.replace(/\(.*?\)/g, '').replace(/\/.*$/, '').replace(/sth\/sb/g, '').replace(/\bsth\b/g, '').replace(/\bsb\b/g, '').trim();
+                
+                let regex = new RegExp(`\\b${simplifiedTarget.replace(/[-/]/g, '.?').replace(/\s+/g, '.?').replace(/[()]/g, '\\.?')}[a-z]*\\b`, 'gi');
+                
+                if (!backExStr.match(regex)) {
+                    let firstWord = simplifiedTarget.split(' ')[0];
+                    let shortTarget = firstWord.length > 4 ? firstWord.substring(0, 4) : firstWord;
+                    regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+                }
+                
+                backExStr = backExStr.replace(regex, match => `<span class="highlighter">${match}</span>`);
+                document.getElementById('back-ex').innerHTML = backExStr;
+                
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // AUTO-PLAY TTS FEATURE (US Female Voice)
+                // Guaranteed to run within user interaction context
+                speakCurrentWord();
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 750);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 300);
+                
+                inputs.forEach((input, idx) => {
+                    if(!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if(currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => { 
+                if(currentIndex > 0) { currentIndex--; renderCard(); } 
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec/60); const s = totalSec%60;
+            
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour:'2-digit', minute:'2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `LOGGED: ${dateString}`;
+            
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) scoreEl.style.color = "#0369a1"; 
+            
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+            
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint 
+                    ? '<span class="text-amber-700 font-bold font-inter uppercase text-[10px] border border-amber-300 px-2 py-1 rounded bg-amber-100 shadow-sm">ASSISTED</span>' 
+                    : '<span class="text-emerald-700 font-bold font-inter uppercase text-[10px] border border-emerald-300 px-2 py-1 rounded bg-emerald-100 shadow-sm">VERIFIED</span>';
+                
+                return `
+                    <tr class="hover:bg-slate-50 border-b border-slate-200 transition-colors">
+                        <td class="p-3 text-center">${statusIcon}</td>
+                        <td class="p-3 font-bold text-slate-800 text-lg font-outfit">${item.word}</td>
+                        <td class="p-3 text-slate-600 text-sm font-inter">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable(); 
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if(document.getElementById('main-content').style.display === 'none') return;
+            if(e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault(); 
+                if(isTransitioning) return; 
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard(); 
+                else checkAnswer(); 
+            }
+        });
+    </script>
+</body>
+</html>
