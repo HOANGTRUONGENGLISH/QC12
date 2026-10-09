@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompleteSB 5-6.5 - U7 - Relationships</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Psychology Dossier Theme Colors */
+            --bg-deep: #0f172a; /* Slate 900 */
+            --bg-panel: #1e293b; /* Slate 800 */
+            --psy-cyan: #06b6d4; /* Cyan 500 - Analytical */
+            --psy-dark: #0891b2; /* Cyan 600 */
+            --alert-amber: #f59e0b; /* Amber 500 - For Clues/Deception */
+            --alert-red: #ef4444; /* Red 500 - For Errors */
+            --card-front: rgba(30, 41, 59, 0.9);
+            --card-back: rgba(15, 23, 42, 0.95);
+            --grid-line: rgba(6, 182, 212, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #f8fafc;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Analytical Grid Background */
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            background-position: center center;
+        }
+
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top Dossier Tab Effect */
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 5%;
+            width: 30%;
+            height: 4px;
+            background: var(--psy-cyan);
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 0 15px var(--psy-cyan);
+        }
+
+        .flip-card {
+            perspective: 3000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 520px; 
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            inset: 0; 
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(-180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            overflow: hidden;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            background: var(--card-front);
+        }
+
+        .card-back { 
+            transform: rotateY(-180deg); 
+            border: 2px solid var(--alert-amber);
+            background: linear-gradient(145deg, #0f172a 0%, #1e3a8a 100%);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+        }
+        
+        .flip-card.flipped .card-front { pointer-events: none; }
+        .flip-card:not(.flipped) .card-back { pointer-events: none; }
+
+        .char-input {
+            background: rgba(15, 23, 42, 0.9); 
+            border: 1px solid var(--psy-dark); 
+            border-bottom: 3px solid var(--psy-cyan); 
+            color: #f8fafc;
+            text-align: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            padding: 0;
+            border-radius: 4px;
+        }
+        
+        /* Responsive sizes to handle long phrases like "blame (someone/something) for" */
+        .char-input { width: 16px; height: 26px; font-size: 0.9rem; }
+        @media (min-width: 400px) { .char-input { width: 20px; height: 30px; font-size: 1rem; } }
+        @media (min-width: 640px) { .char-input { width: 26px; height: 36px; font-size: 1.25rem; } }
+        @media (min-width: 1024px) { .char-input { width: 30px; height: 40px; font-size: 1.4rem; } }
+
+        .char-input:focus {
+            outline: none;
+            background: #164e63; /* Cyan 900 */
+            border-color: var(--alert-amber);
+            border-bottom-color: var(--alert-amber);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            color: var(--alert-amber);
+        }
+        
+        .char-input.hinted {
+            color: #0f172a; 
+            border-color: var(--psy-cyan);
+            border-bottom-color: #0891b2; 
+            background: var(--psy-cyan); 
+            pointer-events: none;
+        }
+        
+        .char-input.error {
+            color: #ffffff; 
+            border-color: var(--alert-red);
+            border-bottom-color: #b91c1c;
+            background: var(--alert-red);
+            animation: shakeError 0.3s ease-in-out;
+        }
+
+        .fixed-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #94a3b8;
+            padding: 0 1px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px) rotate(-3deg); }
+            75% { transform: translateX(4px) rotate(3deg); }
+        }
+        .shake-error { animation: shakeError 0.3s ease-in-out; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--psy-dark); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--psy-cyan); }
+        
+        .btn-dossier {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+        }
+        .btn-dossier:active { transform: scale(0.96); }
+        .btn-dossier:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--psy-dark) 0%, #0369a1 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-primary:hover:not(:disabled) { 
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6); 
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--psy-cyan) 0%, var(--psy-dark) 100%);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(30, 41, 59, 0.8);
+            color: #cbd5e1;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(6, 182, 212, 0.15);
+            border-color: var(--psy-cyan);
+            color: #ffffff;
+        }
+
+        .highlighter {
+            font-weight: 800;
+            color: #ffffff;
+            background-color: rgba(245, 158, 11, 0.2); 
+            padding: 2px 6px;
+            border-radius: 4px;
+            border-bottom: 2px dashed var(--alert-amber);
+            text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Result Stamp */
+        .stamp-status {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            padding: 6px 14px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            transform: rotate(12deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            letter-spacing: 2px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .flipped .stamp-status { animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; animation-delay: 0.15s; }
+        
+        @keyframes stampSlam {
+            0% { transform: scale(1.5) rotate(25deg); opacity: 0; }
+            100% { transform: scale(1) rotate(12deg); opacity: 1; }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: rgba(148, 163, 184, 0.7); 
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 0;
+        }
+
+        .scanner-line {
+            width: 100%;
+            height: 2px;
+            background: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 10px var(--psy-cyan);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 3s linear infinite;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[94vh] min-h-[550px] max-h-[900px]">
+
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                
+                <div class="mb-5 shrink-0 text-center pb-5 border-b border-slate-700/50">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 bg-slate-800 text-cyan-400 text-xs font-bold font-space tracking-widest border border-cyan-500/30 mb-3 uppercase rounded shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        UNIT 7: RELATIONSHIPS
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-space text-white tracking-tight font-black uppercase drop-shadow-md">
+                        THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">PSYCHOLOGY</span> DOSSIER
+                    </h1>
+                    <p class="text-cyan-100/70 mt-2 font-medium text-sm sm:text-base font-inter">Master vocabulary about behavior, investigation, science, and human connection.</p>
+                </div>
+
+                <div class="flex-grow overflow-auto custom-scrollbar mb-5 w-full shrink min-h-0 bg-slate-900/60 border border-slate-700 relative rounded-lg shadow-inner">
+                    <table class="w-full min-w-[750px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-space text-xs text-cyan-200 bg-slate-800 border-b border-cyan-500/30 shadow-md">
+                            <tr>
+                                <th class="p-4 w-1/4 uppercase tracking-wider font-bold">VOCABULARY</th>
+                                <th class="p-4 w-1/5 text-center uppercase tracking-wider font-bold">TYPE / IPA</th>
+                                <th class="p-4 uppercase tracking-wider font-bold">MEANING</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-slate-300 divide-y divide-slate-700/50 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn-dossier btn-primary w-full sm:w-1/2 py-4 text-lg flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        OPEN INVESTIGATION
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+            
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-dossier btn-secondary px-4 py-2 text-xs shadow-sm" style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div class="flex items-center justify-between w-full mb-2 text-xs font-bold font-space uppercase tracking-widest px-1">
+                        <div class="flex items-center gap-1 bg-slate-800 px-3 py-1 rounded border border-slate-600 text-cyan-200">
+                            ⏱ <span id="timer-display" class="text-white">00:00</span>
+                        </div>
+                        
+                        <div class="bg-slate-800 px-4 py-1.5 rounded flex items-center gap-2 border border-cyan-500/30 shadow-[0_0_8px_rgba(6,182,212,0.2)]">
+                            <span class="text-cyan-400 text-[10px]">SUBJECT:</span>
+                            <span id="progress-text" class="text-white text-sm font-black">1/29</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-1.5 bg-slate-800 relative rounded-full overflow-hidden border border-slate-700">
+                        <div id="progress-bar" class="h-full bg-cyan-400 transition-all duration-500 relative" style="width: 0%; box-shadow: 0 0 10px rgba(6,182,212,0.8);"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()" class="btn-dossier btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-lg rounded shadow-sm">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <!-- Flashcard Area -->
+            <div class="flex-1 w-full max-w-5xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+                        
+                        <!-- FRONT OF CARD -->
+                        <div class="card-front"> 
+                            <div class="scanner-line"></div>
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                
+                                <div class="mb-4 shrink-0 flex flex-col items-center text-center">
+                                    <span class="inline-block px-3 py-1 bg-slate-800 text-cyan-400 border border-cyan-500/30 text-[10px] font-space font-bold tracking-widest uppercase mb-3 rounded shadow-sm" id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight font-space drop-shadow-md" id="word-mean"></h2>
+                                </div>
+                                
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-2">
+                                    <div class="text-center mb-6 px-1 sm:px-4">
+                                        <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-medium" id="word-ex"></p>
+                                    </div>
+                                    
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <!-- Dynamic Inputs Go Here -->
+                                        <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-0.5 sm:gap-x-1 gap-y-2 sm:gap-y-3 w-full px-0 mb-6"></div>
+                                        
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-dossier bg-slate-800 text-cyan-200 hover:bg-slate-700 border border-slate-600 flex items-center justify-center rounded-lg" title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-dossier btn-secondary text-sm shadow-sm flex items-center gap-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                                DECRYPT
+                                            </button>
+                                            <button onclick="checkAnswer()" class="btn-dossier btn-primary px-8 sm:px-10 h-12 text-base tracking-wider">
+                                                ANALYZE DATA ➔
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BACK OF CARD -->
+                        <div class="card-back">
+                            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-8">
+                                <div class="stamp-status" id="result-seal">VERIFIED</div>
+                                
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-2">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-space font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-200 drop-shadow-md" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)" class="text-cyan-400 hover:text-cyan-300 transition-colors p-2 bg-slate-800 border border-cyan-500/30 rounded-lg shadow-[0_0_10px_rgba(6,182,212,0.2)]" title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="text-cyan-100 mb-6 font-inter font-bold text-sm tracking-widest bg-slate-800 px-4 py-1.5 rounded border border-slate-600 shadow-sm">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+                                    
+                                    <p class="text-lg sm:text-xl text-slate-200 font-bold mb-6 font-inter" id="back-mean"></p>
+                                    
+                                    <div class="w-full max-w-3xl bg-slate-900/80 border-l-4 border-alert-amber p-4 sm:p-5 text-left rounded-r shadow-md relative border-y border-r border-slate-700">
+                                        <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-medium" id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-6 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn" class="btn-dossier btn-primary px-8 py-3 text-base w-full sm:w-1/2 flex items-center justify-center gap-2">
+                                        NEXT PROFILE ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+            
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-6 shrink-0 border-b border-slate-700/50 pb-5">
+                    <h2 class="text-2xl sm:text-4xl text-white font-space font-black uppercase tracking-wide drop-shadow-md">DOSSIER COMPLETE</h2>
+                    <p id="completion-datetime" class="text-xs font-inter text-cyan-400 mt-2 tracking-widest uppercase font-bold"></p>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 shrink-0 font-space text-lg">
+                    <div class="bg-slate-800 border border-slate-600 p-4 text-center rounded-lg shadow-sm">
+                        <p class="text-[10px] text-cyan-300 font-bold tracking-widest mb-1 font-inter">ACCURACY</p>
+                        <p class="text-2xl sm:text-3xl text-cyan-400 font-black" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-600 p-4 text-center rounded-lg shadow-sm">
+                        <p class="text-[10px] text-cyan-300 font-bold tracking-widest mb-1 font-inter">DURATION</p>
+                        <p class="text-2xl sm:text-3xl text-white font-black" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-cyan-500/30 p-4 text-center rounded-lg shadow-sm">
+                        <p class="text-[10px] text-cyan-400 font-bold tracking-widest mb-1 font-inter">RESOLVED</p>
+                        <p class="text-2xl sm:text-3xl text-cyan-400 font-black" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-amber-500/30 p-4 text-center rounded-lg shadow-sm">
+                        <p class="text-[10px] text-alert-amber font-bold tracking-widest mb-1 font-inter">ASSISTED</p>
+                        <p class="text-2xl sm:text-3xl text-alert-amber font-black" id="hint-count">-</p>
+                    </div>
+                </div>
+                
+                <div class="flex-grow overflow-auto custom-scrollbar border border-slate-700 w-full mb-5 shrink min-h-0 bg-slate-900/50 rounded-lg shadow-inner">
+                    <table class="w-full min-w-[550px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 bg-slate-800 text-cyan-200 font-space text-xs tracking-wider uppercase border-b border-cyan-500/30 shadow-sm">
+                            <tr>
+                                <th class="p-3 w-28 text-center">STATUS</th>
+                                <th class="p-3 w-1/3">SUBJECT</th>
+                                <th class="p-3">ANALYSIS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-slate-300 divide-y divide-slate-700/50 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()" class="btn-dossier btn-primary w-full sm:w-1/2 py-4 text-lg">
+                        NEW INVESTIGATION ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Permanent Copyright Anchor -->
+        <div class="shrink-0 mt-auto text-center relative z-40">
+            <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            { word: "blame (someone/something) for", type: "verb", phonetic: "/bleɪm ... fɔː(r)/", mean: "đổ lỗi cho ai/cái gì về việc gì", ex: "People should not blame others for a problem before they know what really happened." },
+            { word: "broadcast", type: "verb", phonetic: "/ˈbrɔːdkɑːst/", mean: "phát sóng trên TV hoặc radio", ex: "The local station may broadcast the programme on television and radio this evening." },
+            { word: "clue", type: "noun", phonetic: "/kluː/", mean: "manh mối, dấu hiệu gợi ý", ex: "The police find an important clue that can help them understand what happened." },
+            { word: "confess", type: "verb", phonetic: "/kənˈfes/", mean: "thú nhận, thừa nhận đã làm sai", ex: "A person may confess when they know that telling the truth is the right thing to do." },
+            { word: "consistent", type: "adjective", phonetic: "/kənˈsɪstənt/", mean: "nhất quán, ổn định", ex: "Her answers are consistent, so they are almost the same every time people ask her." },
+            { word: "deal with", type: "verb phrase", phonetic: "/diːl wɪð/", mean: "xử lý, giải quyết", ex: "Teachers need to deal with classroom problems calmly and listen carefully to students." },
+            { word: "deception", type: "noun", phonetic: "/dɪˈsepʃən/", mean: "sự lừa dối", ex: "Deception can cause serious problems because people may lose trust in each other." },
+            { word: "detect", type: "verb", phonetic: "/dɪˈtekt/", mean: "phát hiện, nhận ra", ex: "Modern machines can detect very small changes that people cannot easily see or hear." },
+            { word: "display", type: "verb", phonetic: "/dɪˈspleɪ/", mean: "thể hiện, biểu lộ", ex: "Animals can display unusual behaviour when they feel afraid, angry, or excited." },
+            { word: "episode", type: "noun", phonetic: "/ˈepɪsəʊd/", mean: "sự việc, sự kiện; tập phim", ex: "This episode of the programme tells the story of an unusual event in a small town." },
+            { word: "globalisation", type: "noun", phonetic: "/ˌɡləʊbəlaɪˈzeɪʃən/", mean: "sự toàn cầu hóa", ex: "Globalisation helps businesses, cultures, and people from different countries become more connected." },
+            { word: "gorilla", type: "noun", phonetic: "/ɡəˈrɪlə/", mean: "khỉ đột", ex: "A gorilla is a large, strong animal that usually lives in forests in Africa." },
+            { word: "incident", type: "noun", phonetic: "/ˈɪnsɪdənt/", mean: "sự cố, vụ việc, sự kiện bất thường", ex: "The school reports the incident because several students see what happens in the playground." },
+            { word: "intentional", type: "adjective", phonetic: "/ɪnˈtenʃənəl/", mean: "có chủ ý, cố tình", ex: "The mistake is not intentional because the student does not know that the information is wrong." },
+            { word: "in the wild", type: "phrase", phonetic: "/ɪn ðə waɪld/", mean: "trong môi trường hoang dã, ngoài tự nhiên", ex: "Gorillas usually live in the wild, where they can find food and move freely." },
+            { word: "involve", type: "verb", phonetic: "/ɪnˈvɒlv/", mean: "bao gồm, liên quan đến; khiến ai tham gia", ex: "A research project can involve interviews, surveys, experiments, and practical work." },
+            { word: "journal", type: "noun", phonetic: "/ˈdʒɜːnəl/", mean: "tạp chí chuyên ngành, tạp chí học thuật", ex: "Students can read a science journal to find useful information about new research." },
+            { word: "laboratory", type: "noun", phonetic: "/ləˈbɒrətri/", mean: "phòng thí nghiệm", ex: "Scientists work in a laboratory where they can use special equipment for experiments." },
+            { word: "linguistic skills", type: "plural noun phrase", phonetic: "/lɪŋˈɡwɪstɪk skɪlz/", mean: "kỹ năng ngôn ngữ", ex: "Reading, writing, listening, and speaking are important linguistic skills for language learners." },
+            { word: "liar", type: "noun", phonetic: "/ˈlaɪə(r)/", mean: "người nói dối", ex: "People may call someone a liar if that person often says things that are not true." },
+            { word: "overview", type: "noun", phonetic: "/ˈəʊvəvjuː/", mean: "cái nhìn tổng quan, phần tóm tắt chung", ex: "The teacher gives an overview of the project before students begin their research." },
+            { word: "practical work", type: "noun phrase", phonetic: "/ˈpræktɪkəl wɜːk/", mean: "công việc thực hành, hoạt động thực tế", ex: "Science students often do practical work to understand ideas through real experiments." },
+            { word: "predict", type: "verb", phonetic: "/prɪˈdɪkt/", mean: "dự đoán", ex: "Scientists can predict some changes by studying information from earlier experiments." },
+            { word: "psychologically", type: "adverb", phonetic: "/ˌsaɪkəˈlɒdʒɪkli/", mean: "về mặt tâm lý", ex: "A difficult experience can affect someone psychologically and make them feel worried or afraid." },
+            { word: "research programme", type: "noun phrase", phonetic: "/rɪˈsɜːtʃ ˈprəʊɡræm/", mean: "chương trình nghiên cứu", ex: "The university starts a research programme to study animal behaviour and communication." },
+            { word: "set up", type: "phrasal verb", phonetic: "/set ʌp/", mean: "thiết lập, chuẩn bị, sắp xếp", ex: "Researchers need to set up the equipment carefully before they begin the experiment." },
+            { word: "survey", type: "noun", phonetic: "/ˈsɜːveɪ/", mean: "cuộc khảo sát", ex: "The school uses a survey to learn what students think about online learning." },
+            { word: "tell the difference", type: "verb phrase", phonetic: "/tel ðə ˈdɪfrəns/", mean: "phân biệt, nhận ra sự khác nhau", ex: "Some people cannot tell the difference between the two pictures because they look very similar." },
+            { word: "a version of", type: "noun phrase", phonetic: "/ə ˈvɜːʃən əv/", mean: "một phiên bản của", ex: "This film is a version of an older story, but it has different characters and a new ending." }
+        ];
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false; 
+
+        // Audio Context for UI Sounds
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/10/25/audio_5b38ed3d94.mp3?filename=ambient-piano-126284.mp3'); 
+        bgMusic.loop = true; bgMusic.volume = 0.12;
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                const playTone = (oscType, freq1, freq2, vol, dur) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = oscType;
+                    osc.frequency.setValueAtTime(freq1, now);
+                    if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                    gain.gain.setValueAtTime(vol, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                    osc.start(now); osc.stop(now + dur);
+                };
+                if (type === 'start') playTone('sine', 440, 660, 0.1, 0.4); 
+                else if (type === 'success') { playTone('sine', 600, 800, 0.1, 0.1); setTimeout(()=>playTone('triangle', 800, 1200, 0.1, 0.2), 100); }
+                else if (type === 'error') playTone('sawtooth', 200, 100, 0.1, 0.3); 
+                else if (type === 'flip') playTone('sine', 350, 250, 0.05, 0.15); 
+            } catch (e) { console.log("Audio play error", e); }
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            try {
+                window.speechSynthesis.cancel();
+                let rawWord = flashcards[currentIndex].word;
+                
+                // Smart clean-up for natural TTS reading (specifically for this unit's complex phrases)
+                let wordToSpeak = rawWord
+                    .replace(/\(someone\/something\)/g, ' someone or something ') // handle the specific case
+                    .replace(/\(something\)/g, ' something ')
+                    .replace(/\(somebody\)/g, ' somebody ')
+                    .replace(/\(sb\/sth\)/g, ' somebody or something ')
+                    .replace(/\//g, ' or ') 
+                    .replace(/[()]/g, '')
+                    .replace(/-/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US'; 
+                utter.rate = 0.85; // Slightly slower for clarity
+                
+                let voices = window.speechSynthesis.getVoices();
+                // Prioritize US Female Voices
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                
+                if(femaleUS) {
+                    utter.voice = femaleUS;
+                    window.speechSynthesis.speak(utter);
+                } else {
+                    // Fallback API if no local voice found
+                    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(wordToSpeak)}`;
+                    const audio = new Audio(audioUrl);
+                    audio.play().catch(() => window.speechSynthesis.speak(utter));
+                }
+            } catch (error) {
+                console.log("TTS Error:", error);
+            }
+        }
+
+        if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => {};
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, idx) => {
+                return `
+                <tr class="hover:bg-slate-700/50 transition-colors border-b border-slate-700/50">
+                    <td class="p-3 font-space font-bold text-white text-lg">
+                        <span class="text-cyan-500 text-xs mr-2 font-inter">#${(idx+1).toString().padStart(2, '0')}</span>${item.word}
+                    </td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 bg-slate-700 text-cyan-300 border border-slate-600 text-[10px] font-bold font-inter uppercase tracking-widest rounded shadow-sm">${item.type}</span>
+                        <br><span class="text-xs text-slate-400 mt-1 inline-block">${item.phonetic}</span>
+                    </td>
+                    <td class="p-3 text-slate-300 text-sm leading-relaxed">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+            if(window.speechSynthesis.getVoices().length === 0) window.speechSynthesis.onvoiceschanged = () => {};
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff/60).toString().padStart(2, '0');
+                const s = (diff%60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function isLetter(char) { return /[a-zA-Z]/.test(char); }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+            
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            
+            let displayEx = card.ex;
+            let matchStr = card.word;
+            
+            // Smart Blanking Logic to handle complex phrases
+            let simplifiedTarget = matchStr.replace(/\(.*?\)/g, '').replace(/\/.*/g, '').trim();
+            let cleanWord = simplifiedTarget.replace(/[^a-zA-Z]/g, '');
+            let letterCount = cleanWord.length;
+            
+            // Regex that tolerates hyphens and spaces
+            let regex = new RegExp(`\\b${simplifiedTarget.replace(/[-]/g, '.?').replace(/\s+/g, '.?')}[a-z]*\\b`, 'gi');
+            
+            if (!displayEx.match(regex)) {
+                let firstWord = simplifiedTarget.split(' ')[0];
+                let shortTarget = firstWord.length > 4 ? firstWord.substring(0, 4) : firstWord;
+                regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+            }
+
+            let underlineWidth = letterCount < 5 ? 'w-16' : (letterCount < 10 ? 'w-24' : (letterCount < 18 ? 'w-36' : (letterCount < 25 ? 'w-48' : 'w-64')));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-4 border-b-2 border-cyan-400 mx-1 align-baseline bg-slate-800/50 shadow-[0_0_8px_rgba(6,182,212,0.3)]"></span>`;
+            
+            displayEx = displayEx.replace(regex, blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+            
+            // Input Generation handling parentheses, slashes, and spaces perfectly
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+            
+            const group = document.createElement('div');
+            group.className = 'flex flex-wrap gap-[2px] sm:gap-1 justify-center max-w-full leading-loose items-center';
+            
+            for (let i = 0; i < matchStr.length; i++) {
+                let char = matchStr[i];
+                if (!isLetter(char)) {
+                    if (char === ' ') {
+                        const space = document.createElement('div'); 
+                        space.className = 'w-3 sm:w-4 flex items-center justify-center';
+                        space.innerHTML = ''; 
+                        group.appendChild(space);
+                    } else {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'fixed-symbol';
+                        group.appendChild(symbol);
+                    }
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text'; input.maxLength = 1;
+                    input.className = 'char-input editable-input';
+                    input.autocomplete = "off"; input.autocapitalize="off"; input.spellcheck = false;
+                    
+                    input.addEventListener('input', function() {
+                        this.value = this.value.toLowerCase();
+                        this.classList.remove('error');
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(this.value && idx < inputs.length - 1) {
+                            let next = idx + 1;
+                            while(next < inputs.length && inputs[next].readOnly) next++;
+                            if(next < inputs.length) inputs[next].focus();
+                        }
+                    });
+
+                    input.addEventListener('keydown', function(e) {
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(e.key === 'Backspace' && !this.value && idx > 0) {
+                            let prev = idx - 1;
+                            while(prev >= 0 && inputs[prev].readOnly) prev--;
+                            if(prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                        }
+                    });
+                    group.appendChild(input);
+                }
+            }
+            container.appendChild(group);
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+            
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            
+            if(currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if(hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            
+            const target = rawWord.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.char-input.editable-input');
+            
+            let pool = [];
+            for(let i=0; i<inputs.length; i++) {
+                if(!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+            }
+            
+            if(pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4)); 
+            
+            for(let i=0; i<Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) { return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+
+        function checkAnswer() {
+            if(isTransitioning) return; 
+            
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+            
+            const target = normalizeString(rawWord.replace(/[^a-zA-Z]/g, ''));
+            const inputs = document.querySelectorAll('.char-input.editable-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+            
+            if(user === target) {
+                playSound('success');
+                isTransitioning = true;
+                
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "var(--alert-amber)"; 
+                    seal.style.border = "2px solid var(--alert-amber)";
+                    seal.style.background = "rgba(245, 158, 11, 0.1)";
+                    seal.style.boxShadow = "0 0 15px rgba(245, 158, 11, 0.3)";
+                } else {
+                    seal.textContent = "VERIFIED";
+                    seal.style.color = "var(--psy-cyan)"; 
+                    seal.style.border = "2px solid var(--psy-cyan)";
+                    seal.style.background = "rgba(6, 182, 212, 0.1)";
+                    seal.style.boxShadow = "0 0 15px rgba(6, 182, 212, 0.3)";
+                }
+                
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+                
+                let backExStr = card.ex;
+                let simplifiedTarget = rawWord.replace(/\(.*?\)/g, '').replace(/\/.*/g, '').trim();
+                let regex = new RegExp(`\\b${simplifiedTarget.replace(/[-]/g, '.?').replace(/\s+/g, '.?')}[a-z]*\\b`, 'gi');
+                
+                if (!backExStr.match(regex)) {
+                    let firstWord = simplifiedTarget.split(' ')[0];
+                    let shortTarget = firstWord.length > 4 ? firstWord.substring(0, 4) : firstWord;
+                    regex = new RegExp(`\\b${shortTarget}[a-z]*\\b`, 'gi');
+                }
+                
+                backExStr = backExStr.replace(regex, match => `<span class="highlighter">${match}</span>`);
+                document.getElementById('back-ex').innerHTML = backExStr;
+                
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // AUTO-PLAY TTS FEATURE (US Female Voice) - Triggered synchronously with click
+                speakCurrentWord();
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 750);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 300);
+                
+                inputs.forEach((input, idx) => {
+                    if(!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if(currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => { 
+                if(currentIndex > 0) { currentIndex--; renderCard(); } 
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec/60); const s = totalSec%60;
+            
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour:'2-digit', minute:'2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `LOG CLOSED: ${dateString}`;
+            
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) {
+                scoreEl.style.color = "var(--alert-amber)";
+                scoreEl.classList.remove('text-cyan-400');
+            }
+            
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+            
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint 
+                    ? '<span class="text-amber-400 font-bold font-inter uppercase text-[10px] border border-amber-500/50 px-2 py-0.5 rounded bg-amber-900/30">ASSISTED</span>' 
+                    : '<span class="text-cyan-400 font-bold font-inter uppercase text-[10px] border border-cyan-500/50 px-2 py-0.5 rounded bg-cyan-900/30">VERIFIED</span>';
+                
+                return `
+                    <tr class="hover:bg-slate-800 border-b border-slate-700/50 transition-colors">
+                        <td class="p-3 text-center">${statusIcon}</td>
+                        <td class="p-3 font-bold text-white text-base font-space">${item.word}</td>
+                        <td class="p-3 text-slate-400 text-sm font-inter">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable(); 
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if(document.getElementById('main-content').style.display === 'none') return;
+            if(e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault(); 
+                if(isTransitioning) return; 
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard(); 
+                else checkAnswer(); 
+            }
+        });
+    </script>
+</body>
+</html>
