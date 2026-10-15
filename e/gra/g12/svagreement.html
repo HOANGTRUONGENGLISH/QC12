@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTE Grammar Quiz - Subjects & Verbs Agreement</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @keyframes pulseBorder {
+      0%, 100% { border-color: rgba(244, 63, 94, 0.8); box-shadow: 0 0 15px rgba(244, 63, 94, 0.3); }
+      50% { border-color: rgba(244, 63, 94, 0.2); box-shadow: 0 0 5px rgba(244, 63, 94, 0.0); }
+    }
+    .animate-pulse-border {
+      animation: pulseBorder 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    /* ANIMATIONS FOR LOTUS THEME */
+    @keyframes petalFall {
+      0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(110vh) translateX(30px) rotate(360deg); opacity: 0; }
+    }
+    
+    @keyframes ripple {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .petal { animation: petalFall var(--duration, 10s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
+    .ripple-effect { animation: ripple 4s linear infinite; animation-delay: var(--delay, 0s); }
+    .floating { animation: float 6s ease-in-out infinite; }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(244, 114, 182, 0.5); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(244, 114, 182, 0.8); }
+    body { margin: 0; padding: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-rose-100 to-pink-200">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // ----- BỘ ICON CHO GIAO DIỆN -----
+    const Flower = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 7.5a4.5 4.5 0 1 1 3.182-7.682A4.5 4.5 0 1 1 22.864 3 4.5 4.5 0 1 1 19.682 10.682 4.5 4.5 0 1 1 12 7.5z"/><path d="M12 7.5a4.5 4.5 0 1 0-3.182-7.682A4.5 4.5 0 1 0 1.136 3 4.5 4.5 0 1 0 4.318 10.682 4.5 4.5 0 1 0 12 7.5z"/><path d="M12 7.5V22"/></svg>;
+    const ArrowRight = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>;
+    const ArrowLeft = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>;
+    const CheckCircle2 = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>;
+    const XCircle = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>;
+    const Clock = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+    const Calendar = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
+    const User = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+    const HelpCircle = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>;
+    const Info = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>;
+
+    // ----- BACKGROUND HOA SEN (LOTUS POND) -----
+    const LotusBackground = () => {
+      const petals = Array.from({ length: 25 }).map((_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}vw`,
+        size: `${Math.random() * 1 + 0.5}rem`,
+        duration: `${Math.random() * 8 + 8}s`,
+        delay: `${Math.random() * -15}s`,
+        opacity: Math.random() * 0.6 + 0.3,
+        color: Math.random() > 0.5 ? 'text-pink-300' : 'text-rose-200'
+      }));
+
+      return (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+          
+          {/* Gợn sóng nước dưới đáy */}
+          <div className="absolute bottom-10 left-[20%] w-32 h-8 rounded-[100%] border-2 border-white/30 ripple-effect" style={{"--delay": "0s"}}></div>
+          <div className="absolute bottom-20 right-[30%] w-40 h-10 rounded-[100%] border-2 border-white/20 ripple-effect" style={{"--delay": "2s"}}></div>
+          <div className="absolute bottom-5 left-[60%] w-24 h-6 rounded-[100%] border-2 border-white/40 ripple-effect" style={{"--delay": "1s"}}></div>
+
+          {/* Hoa sen mờ nổi lên */}
+          <Flower size={150} className="absolute -bottom-10 -left-10 text-pink-300/20 floating" />
+          <Flower size={200} className="absolute -bottom-20 -right-10 text-rose-300/20 floating" style={{animationDelay: '1s'}} />
+          <Flower size={100} className="absolute top-[20%] -left-12 text-pink-200/30 floating" style={{animationDelay: '2s', transform: 'rotate(15deg)'}} />
+
+          {/* Cánh hoa rơi */}
+          {petals.map(petal => (
+            <div 
+              key={petal.id} 
+              className={`absolute top-0 petal ${petal.color}`}
+              style={{
+                left: petal.left,
+                '--duration': petal.duration,
+                '--delay': petal.delay,
+                opacity: petal.opacity
+              }}
+            >
+               <svg viewBox="0 0 24 24" width={petal.size} height={petal.size} fill="currentColor">
+                 <path d="M12 2C7 2 2 7 2 12c0 5 5 10 10 10s10-5 10-10C22 7 17 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                 <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+               </svg>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // ----- DỮ LIỆU CÂU HỎI (120 Câu - Sự hòa hợp Chủ ngữ & Động từ) -----
+    const QUESTIONS = [
+{ id: 1, text: "The new student ______ very hard to improve his English.", options: ["studies", "study", "studying", "have studied"], answer: 0, explanation: "'The new student' là chủ ngữ số ít -> Động từ chia số ít (thêm s/es).", translation: "Học sinh mới học rất chăm chỉ để cải thiện tiếng Anh." },
+{ id: 2, text: "The information in this report ______ extremely useful.", options: ["are", "have been", "is", "were"], answer: 2, explanation: "'Information' là danh từ không đếm được, luôn đi với động từ số ít.", translation: "Thông tin trong báo cáo này cực kỳ hữu ích." },
+{ id: 3, text: "Fresh air ______ an important role in maintaining good health.", options: ["play", "plays", "have played", "are playing"], answer: 1, explanation: "'Fresh air' không đếm được -> Động từ chia số ít.", translation: "Không khí trong lành đóng vai trò quan trọng trong việc duy trì sức khỏe tốt." },
+{ id: 4, text: "Money ______ not always bring happiness.", options: ["don't", "aren't", "haven't", "doesn't"], answer: 3, explanation: "'Money' là danh từ không đếm được -> Trợ động từ số ít 'doesn't'.", translation: "Tiền không phải lúc nào cũng mang lại hạnh phúc." },
+{ id: 5, text: "Bread and butter ______ my usual breakfast before school.", options: ["are", "is", "have been", "were"], answer: 1, explanation: "'Bread and butter' chỉ chung một món ăn (Bánh mì bơ) -> Động từ số ít.", translation: "Bánh mì bơ là bữa sáng thường ngày của tôi trước khi đến trường." },
+{ id: 6, text: "My teacher and mentor ______ going to give a speech tomorrow.", options: ["are", "have", "is", "were"], answer: 2, explanation: "'My teacher and mentor' chỉ CÙNG MỘT người (vừa là giáo viên vừa là người hướng dẫn) -> Động từ số ít.", translation: "Giáo viên kiêm người hướng dẫn của tôi sẽ phát biểu vào ngày mai." },
+{ id: 7, text: "Fish and chips ______ one of the most famous British dishes.", options: ["is", "are", "have", "were"], answer: 0, explanation: "'Fish and chips' là tên một món ăn duy nhất -> Số ít.", translation: "Cá tẩm bột chiên là một trong những món ăn nổi tiếng nhất của Anh." },
+{ id: 8, text: "The owner and manager of the restaurant ______ responsible for the decision.", options: ["have been", "are", "were", "is"], answer: 3, explanation: "Chỉ có 1 mạo từ 'The' trước 'owner', tức là 1 người kiêm 2 chức vụ -> Số ít.", translation: "Chủ sở hữu kiêm quản lý nhà hàng chịu trách nhiệm về quyết định này." },
+{ id: 9, text: "Every applicant ______ required to submit two photographs.", options: ["are", "is", "have", "were"], answer: 1, explanation: "'Every + Danh từ đếm được số ít' -> Động từ số ít.", translation: "Mỗi ứng viên được yêu cầu nộp hai bức ảnh." },
+{ id: 10, text: "Each participant ______ a certificate after completing the course.", options: ["receive", "have received", "receives", "receiving"], answer: 2, explanation: "'Each + Danh từ' luôn đi với động từ số ít.", translation: "Mỗi người tham gia nhận được một chứng chỉ sau khi hoàn thành khóa học." },
+{ id: 11, text: "Neither answer ______ correct.", options: ["is", "are", "have", "were"], answer: 0, explanation: "'Neither + Danh từ số ít' -> Động từ số ít.", translation: "Không có câu trả lời nào là đúng." },
+{ id: 12, text: "Either route ______ us to the city centre.", options: ["lead", "have led", "leading", "leads"], answer: 3, explanation: "'Either + Danh từ số ít' -> Động từ chia số ít.", translation: "Bất kỳ tuyến đường nào (trong hai tuyến) cũng dẫn chúng ta đến trung tâm thành phố." },
+{ id: 13, text: "Each of the students ______ responsible for completing the assignment.", options: ["are", "is", "have", "were"], answer: 1, explanation: "'Each of + Danh từ số nhiều' -> Động từ vẫn chia số ít.", translation: "Mỗi học sinh chịu trách nhiệm hoàn thành bài tập." },
+{ id: 14, text: "Every one of these machines ______ regular maintenance.", options: ["need", "are needing", "needs", "have needed"], answer: 2, explanation: "'Every one of + Danh từ số nhiều' -> Động từ số ít.", translation: "Mỗi một chiếc máy này đều cần bảo trì thường xuyên." },
+{ id: 15, text: "Either of the two proposals ______ acceptable to the board.", options: ["is", "are", "have", "were"], answer: 0, explanation: "'Either of + Danh từ số nhiều' -> Động từ số ít (chỉ 1 trong 2).", translation: "Một trong hai đề xuất đều được hội đồng quản trị chấp nhận." },
+{ id: 16, text: "Neither of those explanations ______ convincing.", options: ["sound", "have sounded", "sounding", "sounds"], answer: 3, explanation: "'Neither of + Danh từ số nhiều' -> Động từ số ít (không cái nào trong 2 cái).", translation: "Không có lời giải thích nào trong số đó nghe có vẻ thuyết phục." },
+{ id: 17, text: "One of my classmates ______ already finished the project.", options: ["have", "has", "are", "were"], answer: 1, explanation: "'One of + Danh từ số nhiều' -> Chủ ngữ chính là 'One' -> Số ít.", translation: "Một trong những người bạn cùng lớp của tôi đã hoàn thành dự án." },
+{ id: 18, text: "Any of these solutions ______ reasonable to me.", options: ["seem", "have seemed", "seems", "are seeming"], answer: 2, explanation: "'Any of + Danh từ số nhiều' thường dùng động từ số ít trong ngữ pháp chuẩn.", translation: "Bất kỳ giải pháp nào trong số này đều có vẻ hợp lý đối với tôi." },
+{ id: 19, text: "None of the information ______ relevant to this case.", options: ["is", "are", "have", "were"], answer: 0, explanation: "'None of + Danh từ không đếm được' -> Động từ số ít.", translation: "Không có thông tin nào liên quan đến vụ án này." },
+{ id: 20, text: "More than one student ______ complained about the new timetable.", options: ["have", "are", "were", "has"], answer: 3, explanation: "Cấu trúc 'More than one + Danh từ số ít' -> Động từ SỐ ÍT.", translation: "Hơn một học sinh đã phàn nàn về thời khóa biểu mới." },
+{ id: 21, text: "More than one employee ______ affected by the new policy last month.", options: ["were", "was", "have been", "are"], answer: 1, explanation: "'More than one + Danh từ số ít' -> Động từ số ít (Quá khứ: was).", translation: "Hơn một nhân viên bị ảnh hưởng bởi chính sách mới vào tháng trước." },
+{ id: 22, text: "Everyone ______ expected to follow the school regulations.", options: ["are", "have", "is", "were"], answer: 2, explanation: "Đại từ bất định (Everyone, someone...) luôn đi với động từ số ít.", translation: "Mọi người đều được kỳ vọng sẽ tuân theo nội quy nhà trường." },
+{ id: 23, text: "Somebody ______ left a message for you on the desk.", options: ["has", "have", "are", "were"], answer: 0, explanation: "Đại từ bất định 'Somebody' -> Động từ số ít.", translation: "Ai đó đã để lại một tin nhắn cho bạn trên bàn." },
+{ id: 24, text: "Nothing ______ impossible if you are determined enough.", options: ["seem", "have seemed", "are seeming", "seems"], answer: 3, explanation: "Đại từ bất định 'Nothing' -> Động từ số ít.", translation: "Không có gì có vẻ bất khả thi nếu bạn đủ quyết tâm." },
+{ id: 25, text: "Nobody ______ why the computer suddenly stopped working.", options: ["know", "knows", "have known", "are knowing"], answer: 1, explanation: "Đại từ bất định 'Nobody' -> Động từ số ít.", translation: "Không ai biết tại sao máy tính đột nhiên ngừng hoạt động." },
+{ id: 26, text: "Ten kilometres ______ too far for me to walk in this weather.", options: ["are", "have been", "is", "were"], answer: 2, explanation: "Khoảng cách (Ten kilometres) được xem là 1 tổng thể -> Động từ số ít.", translation: "Mười km là quá xa để tôi đi bộ trong thời tiết này." },
+{ id: 27, text: "Three hours ______ enough time to finish the examination.", options: ["is", "are", "have", "were"], answer: 0, explanation: "Khoảng thời gian (Three hours) -> Động từ số ít.", translation: "Ba giờ là đủ thời gian để hoàn thành bài thi." },
+{ id: 28, text: "Fifty dollars ______ too much for such a simple T-shirt.", options: ["cost", "have cost", "costing", "is"], answer: 3, explanation: "Số tiền (Fifty dollars) -> Động từ số ít.", translation: "Năm mươi đô la là quá nhiều cho một chiếc áo thun đơn giản như vậy." },
+{ id: 29, text: "Five kilograms of rice ______ enough for the whole family.", options: ["are", "is", "have", "were"], answer: 1, explanation: "Khối lượng/Đo lường (Five kilograms) -> Động từ số ít.", translation: "Năm kg gạo là đủ cho cả gia đình." },
+{ id: 30, text: "Two-thirds of the building ______ been destroyed by the fire.", options: ["have", "are", "has", "were"], answer: 2, explanation: "Phân số + Danh từ số ít (building) -> Động từ số ít.", translation: "Hai phần ba tòa nhà đã bị thiêu rụi bởi trận hỏa hoạn." },
+{ id: 31, text: "Two-thirds of the students ______ completed the survey.", options: ["have", "has", "is", "was"], answer: 0, explanation: "Phân số + Danh từ số nhiều (students) -> Động từ số nhiều.", translation: "Hai phần ba học sinh đã hoàn thành cuộc khảo sát." },
+{ id: 32, text: "One-fourth of the water ______ already evaporated.", options: ["have", "are", "were", "has"], answer: 3, explanation: "Phân số + Danh từ không đếm được (water) -> Động từ số ít.", translation: "Một phần tư lượng nước đã bốc hơi." },
+{ id: 33, text: "Three-fourths of the houses ______ damaged during the storm.", options: ["was", "were", "has", "is"], answer: 1, explanation: "Phân số + Danh từ số nhiều (houses) -> Động từ số nhiều.", translation: "Ba phần tư những ngôi nhà bị hư hại trong cơn bão." },
+{ id: 34, text: "Half of the equipment ______ being replaced this week.", options: ["are", "have", "is", "were"], answer: 2, explanation: "Half of + Danh từ không đếm được (equipment) -> Động từ số ít.", translation: "Một nửa số thiết bị đang được thay thế trong tuần này." },
+{ id: 35, text: "Romeo and Juliet ______ one of Shakespeare's most famous plays.", options: ["is", "are", "have", "were"], answer: 0, explanation: "Tên tác phẩm (Romeo and Juliet) -> Số ít.", translation: "Romeo và Juliet là một trong những vở kịch nổi tiếng nhất của Shakespeare." },
+{ id: 36, text: "The Chronicles of Narnia ______ popular among young readers.", options: ["remain", "have remained", "are remaining", "remains"], answer: 3, explanation: "Tên sách/phim dù có 's' vẫn là số ít.", translation: "Biên niên sử Narnia vẫn được độc giả trẻ yêu thích." },
+{ id: 37, text: "National Geographic ______ documentaries about nature and science.", options: ["produce", "produces", "producing", "have produced"], answer: 1, explanation: "Tên tổ chức/kênh truyền hình -> Động từ số ít.", translation: "National Geographic sản xuất phim tài liệu về thiên nhiên và khoa học." },
+{ id: 38, text: "Learning several languages ______ considerable effort.", options: ["require", "have required", "requires", "are requiring"], answer: 2, explanation: "Danh động từ V-ing làm chủ ngữ -> Động từ chia số ít.", translation: "Việc học nhiều ngôn ngữ đòi hỏi nỗ lực đáng kể." },
+{ id: 39, text: "Exercising regularly ______ good for both physical and mental health.", options: ["is", "are", "have", "were"], answer: 0, explanation: "Danh động từ V-ing (Exercising) làm chủ ngữ -> Động từ chia số ít.", translation: "Tập thể dục thường xuyên rất tốt cho cả sức khỏe thể chất và tinh thần." },
+{ id: 40, text: "Travelling to unfamiliar places ______ people become more independent.", options: ["help", "have helped", "helping", "helps"], answer: 3, explanation: "V-ing làm chủ ngữ (Travelling...) -> Động từ chia số ít.", translation: "Đi du lịch đến những nơi xa lạ giúp con người trở nên độc lập hơn." },
+{ id: 41, text: "What she said yesterday ______ completely true.", options: ["are", "is", "have", "were"], answer: 1, explanation: "Mệnh đề danh từ (What she said...) làm chủ ngữ -> Động từ chia số ít.", translation: "Những gì cô ấy nói ngày hôm qua là hoàn toàn đúng." },
+{ id: 42, text: "That the company lost so much money ______ everyone.", options: ["surprise", "have surprised", "surprises", "are surprising"], answer: 2, explanation: "Mệnh đề danh từ (That...) làm chủ ngữ -> Động từ chia số ít.", translation: "Việc công ty mất quá nhiều tiền khiến mọi người ngạc nhiên." },
+{ id: 43, text: "Why he refused the offer ______ still a mystery.", options: ["remains", "remain", "have remained", "are remaining"], answer: 0, explanation: "Mệnh đề danh từ (Why he refused...) làm chủ ngữ -> Động từ chia số ít.", translation: "Tại sao anh ta từ chối lời đề nghị vẫn là một bí ẩn." },
+{ id: 44, text: "Linguistics ______ the scientific study of language.", options: ["are", "have been", "were", "is"], answer: 3, explanation: "Tên môn học kết thúc bằng 'ics' (Linguistics) -> Số ít.", translation: "Ngôn ngữ học là nghiên cứu khoa học về ngôn ngữ." },
+{ id: 45, text: "Economics ______ an important subject for business students.", options: ["are", "is", "have", "were"], answer: 1, explanation: "Tên môn học (Economics) -> Số ít.", translation: "Kinh tế học là một môn học quan trọng đối với sinh viên kinh doanh." },
+{ id: 46, text: "Athletics ______ becoming increasingly popular among young people.", options: ["are", "have", "is", "were"], answer: 2, explanation: "Tên môn thể thao kết thúc bằng 'ics' (Athletics) -> Số ít.", translation: "Điền kinh đang ngày càng trở nên phổ biến trong giới trẻ." },
+{ id: 47, text: "Measles ______ a highly contagious disease.", options: ["is", "are", "have", "were"], answer: 0, explanation: "Tên bệnh có 's' (Measles - sởi) -> Số ít.", translation: "Bệnh sởi là một bệnh truyền nhiễm cao." },
+{ id: 48, text: "The Netherlands ______ famous for its canals and windmills.", options: ["are", "have been", "were", "is"], answer: 3, explanation: "Tên quốc gia có 's' (The Netherlands) -> Số ít.", translation: "Hà Lan nổi tiếng với các kênh đào và cối xay gió." },
+{ id: 49, text: "A large amount of money ______ invested in the new project last year.", options: ["were", "was", "have", "are"], answer: 1, explanation: "A large amount of + N(không đếm được) -> Động từ số ít.", translation: "Một số tiền lớn đã được đầu tư vào dự án mới vào năm ngoái." },
+{ id: 50, text: "A great deal of research ______ necessary before a final decision can be made.", options: ["are", "have been", "is", "were"], answer: 2, explanation: "A great deal of + N(không đếm được) -> Động từ số ít.", translation: "Cần rất nhiều nghiên cứu trước khi đưa ra quyết định cuối cùng." },
+{ id: 51, text: "These documents ______ important information about the case.", options: ["contain", "contains", "containing", "has contained"], answer: 0, explanation: "Chủ ngữ là danh từ số nhiều (These documents) -> Động từ số nhiều.", translation: "Những tài liệu này chứa thông tin quan trọng về vụ án." },
+{ id: 52, text: "The students in my class ______ very interested in artificial intelligence.", options: ["is", "has been", "was", "are"], answer: 3, explanation: "Chủ ngữ chính là 'The students' (số nhiều) -> Động từ are.", translation: "Các sinh viên trong lớp tôi rất quan tâm đến trí tuệ nhân tạo." },
+{ id: 53, text: "Several problems ______ occurred since the system was installed.", options: ["has", "have", "is", "was"], answer: 1, explanation: "'Several + N(số nhiều)' -> Động từ số nhiều.", translation: "Một vài vấn đề đã xảy ra kể từ khi hệ thống được cài đặt." },
+{ id: 54, text: "My brother and my sister ______ at the same university.", options: ["studies", "has studied", "study", "studying"], answer: 2, explanation: "Hai người khác nhau nối bằng 'and' -> Số nhiều.", translation: "Anh trai tôi và chị gái tôi học cùng một trường đại học." },
+{ id: 55, text: "The principal and the teachers ______ discussing the new school regulations.", options: ["are", "is", "has", "was"], answer: 0, explanation: "Chủ ngữ ghép nối bằng 'and' -> Số nhiều.", translation: "Hiệu trưởng và các giáo viên đang thảo luận về nội quy mới của trường." },
+{ id: 56, text: "Rice and beans ______ important sources of carbohydrates and protein.", options: ["provides", "has provided", "providing", "provide"], answer: 3, explanation: "Chỉ hai loại thực phẩm riêng biệt -> Số nhiều.", translation: "Gạo và đậu cung cấp nguồn carbohydrate và protein quan trọng." },
+{ id: 57, text: "The elderly ______ more vulnerable to certain diseases.", options: ["is", "are", "has", "was"], answer: 1, explanation: "The + Tính từ (chỉ một nhóm người) -> Động từ số nhiều.", translation: "Người cao tuổi dễ mắc một số bệnh hơn." },
+{ id: 58, text: "The rich ______ not necessarily happier than the poor.", options: ["is", "has been", "are", "was"], answer: 2, explanation: "The rich (Người giàu) -> Nhóm người -> Động từ số nhiều.", translation: "Người giàu chưa chắc đã hạnh phúc hơn người nghèo." },
+{ id: 59, text: "The unemployed ______ facing increasing financial difficulties.", options: ["are", "is", "has", "was"], answer: 0, explanation: "The unemployed (Người thất nghiệp) -> Số nhiều.", translation: "Người thất nghiệp đang phải đối mặt với khó khăn tài chính ngày càng tăng." },
+{ id: 60, text: "The committee ______ reached a final decision on the proposal.", options: ["have", "are", "were", "has"], answer: 3, explanation: "Tập hợp (committee) hành động như MỘT khối thống nhất (reach a decision) -> Số ít.", translation: "Ủy ban đã đưa ra quyết định cuối cùng về đề xuất." },
+{ id: 61, text: "The committee ______ arguing among themselves about the proposal.", options: ["is", "are", "has", "was"], answer: 1, explanation: "Tập hợp (committee) có hành động riêng rẽ (arguing among themselves) -> Số nhiều.", translation: "Các thành viên trong ủy ban đang tranh luận với nhau về đề xuất." },
+{ id: 62, text: "The audience ______ clapping, shouting, and taking photographs.", options: ["is", "has", "are", "was"], answer: 2, explanation: "Khán giả (audience) đang hành động riêng rẽ -> Động từ số nhiều.", translation: "Khán giả đang vỗ tay, hò hét và chụp ảnh." },
+{ id: 63, text: "The team ______ won the championship for the third consecutive year.", options: ["has", "have", "are", "were"], answer: 0, explanation: "Đội (team) chiến thắng như MỘT tập thể -> Số ít.", translation: "Đội đã giành chức vô địch năm thứ ba liên tiếp." },
+{ id: 64, text: "The staff ______ different opinions about the new working hours.", options: ["has", "is", "was", "have"], answer: 3, explanation: "Nhân viên (staff) có ý kiến khác nhau (từng cá nhân) -> Số nhiều.", translation: "Nhân viên có những ý kiến khác nhau về giờ làm việc mới." },
+{ id: 65, text: "The police ______ investigating the cause of the accident.", options: ["is", "are", "has", "was"], answer: 1, explanation: "'The police' luôn luôn đi với động từ SỐ NHIỀU.", translation: "Cảnh sát đang điều tra nguyên nhân vụ tai nạn." },
+{ id: 66, text: "Both the teacher and the students ______ satisfied with the results.", options: ["is", "has been", "are", "was"], answer: 2, explanation: "'Both A and B' luôn đi với động từ số nhiều.", translation: "Cả giáo viên và học sinh đều hài lòng với kết quả." },
+{ id: 67, text: "Both my father and my mother ______ working from home today.", options: ["are", "is", "has", "was"], answer: 0, explanation: "'Both... and...' -> Số nhiều.", translation: "Hôm nay cả bố và mẹ tôi đều làm việc ở nhà." },
+{ id: 68, text: "These scissors ______ too blunt to cut the cardboard.", options: ["is", "has been", "was", "are"], answer: 3, explanation: "Các vật có 2 phần (scissors, pants, glasses...) -> Số nhiều.", translation: "Cái kéo này quá cùn để cắt bìa cứng." },
+{ id: 69, text: "Many young people ______ social media every day.", options: ["uses", "use", "has used", "using"], answer: 1, explanation: "Many + N(số nhiều) -> Động từ số nhiều.", translation: "Nhiều người trẻ sử dụng mạng xã hội mỗi ngày." },
+{ id: 70, text: "A few students ______ volunteered to help organize the event.", options: ["has", "is", "have", "was"], answer: 2, explanation: "A few + N(số nhiều) -> Động từ số nhiều.", translation: "Một vài sinh viên đã tình nguyện giúp tổ chức sự kiện." },
+{ id: 71, text: "The teacher, along with her students, ______ preparing for the competition.", options: ["is", "are", "have", "were"], answer: 0, explanation: "S1 + along with + S2 -> Động từ chia theo S1 (The teacher - số ít).", translation: "Giáo viên, cùng với học sinh của mình, đang chuẩn bị cho cuộc thi." },
+{ id: 72, text: "My parents, together with my younger brother, ______ planning a holiday abroad.", options: ["is", "has", "was", "are"], answer: 3, explanation: "S1 + together with + S2 -> Động từ chia theo S1 (My parents - số nhiều).", translation: "Bố mẹ tôi, cùng với em trai tôi, đang lên kế hoạch cho một kỳ nghỉ ở nước ngoài." },
+{ id: 73, text: "The manager, as well as several employees, ______ responsible for the mistake.", options: ["are", "is", "have", "were"], answer: 1, explanation: "S1 + as well as + S2 -> Động từ chia theo S1 (The manager - số ít).", translation: "Quản lý, cũng như một số nhân viên, phải chịu trách nhiệm về sai sót này." },
+{ id: 74, text: "The students, together with their teacher, ______ visiting the museum tomorrow.", options: ["is", "has", "are", "was"], answer: 2, explanation: "S1 + together with + S2 -> Động từ chia theo S1 (The students - số nhiều).", translation: "Học sinh, cùng với giáo viên của họ, sẽ đến thăm bảo tàng vào ngày mai." },
+{ id: 75, text: "John, accompanied by his two assistants, ______ arriving this afternoon.", options: ["is", "are", "have", "were"], answer: 0, explanation: "S1 + accompanied by + S2 -> Động từ chia theo S1 (John - số ít).", translation: "John, cùng với hai trợ lý của mình, sẽ đến vào chiều nay." },
+{ id: 76, text: "The teachers, accompanied by the principal, ______ attending the conference.", options: ["is", "has", "was", "are"], answer: 3, explanation: "S1 + accompanied by + S2 -> Động từ chia theo S1 (The teachers - số nhiều).", translation: "Các giáo viên, cùng với hiệu trưởng, đang tham dự hội nghị." },
+{ id: 77, text: "The quality of these products ______ improved significantly.", options: ["have", "has", "are", "were"], answer: 1, explanation: "N1 + of + N2 -> Động từ chia theo N1 (The quality - số ít).", translation: "Chất lượng của những sản phẩm này đã được cải thiện đáng kể." },
+{ id: 78, text: "The effects of air pollution ______ becoming increasingly serious.", options: ["is", "has", "are", "was"], answer: 2, explanation: "N1 + of + N2 -> Động từ chia theo N1 (The effects - số nhiều).", translation: "Tác động của ô nhiễm không khí đang ngày càng trở nên nghiêm trọng." },
+{ id: 79, text: "The price of imported goods ______ risen considerably.", options: ["has", "have", "are", "were"], answer: 0, explanation: "N1 + of + N2 -> Động từ chia theo N1 (The price - số ít).", translation: "Giá hàng hóa nhập khẩu đã tăng đáng kể." },
+{ id: 80, text: "The students in this classroom ______ preparing for their final examination.", options: ["is", "has", "was", "are"], answer: 3, explanation: "N1 + in + N2 -> Động từ chia theo N1 (The students - số nhiều).", translation: "Các học sinh trong lớp học này đang chuẩn bị cho kỳ thi cuối kỳ." },
+{ id: 81, text: "My sister, with her two closest friends, ______ going to attend the concert.", options: ["are", "is", "have", "were"], answer: 1, explanation: "S1 + with + S2 -> Động từ chia theo S1 (My sister - số ít).", translation: "Chị gái tôi, cùng với hai người bạn thân nhất, sẽ tham dự buổi hòa nhạc." },
+{ id: 82, text: "The results of the recent surveys ______ shown considerable improvement.", options: ["has", "is", "have", "was"], answer: 2, explanation: "N1 + of + N2 -> Động từ chia theo N1 (The results - số nhiều).", translation: "Kết quả của các cuộc khảo sát gần đây đã cho thấy sự cải thiện đáng kể." },
+{ id: 83, text: "Either my parents or my brother ______ going to pick me up.", options: ["is", "are", "have", "were"], answer: 0, explanation: "Either S1 or S2 -> Động từ chia theo S2 (my brother - số ít).", translation: "Hoặc bố mẹ tôi hoặc anh trai tôi sẽ đón tôi." },
+{ id: 84, text: "Either the teacher or the students ______ responsible for decorating the classroom.", options: ["is", "has", "was", "are"], answer: 3, explanation: "Either S1 or S2 -> Động từ chia theo S2 (the students - số nhiều).", translation: "Hoặc giáo viên hoặc học sinh chịu trách nhiệm trang trí lớp học." },
+{ id: 85, text: "Neither the students nor their teacher ______ aware of the change.", options: ["are", "is", "have", "were"], answer: 1, explanation: "Neither S1 nor S2 -> Động từ chia theo S2 (their teacher - số ít).", translation: "Cả học sinh và giáo viên của họ đều không biết về sự thay đổi này." },
+{ id: 86, text: "Neither John nor his friends ______ interested in joining the club.", options: ["is", "has", "are", "was"], answer: 2, explanation: "Neither S1 nor S2 -> Động từ chia theo S2 (his friends - số nhiều).", translation: "Cả John và bạn bè của anh ấy đều không muốn tham gia câu lạc bộ." },
+{ id: 87, text: "Not only my parents but also my sister ______ supported my decision.", options: ["has", "have", "are", "were"], answer: 0, explanation: "Not only S1 but also S2 -> Động từ chia theo S2 (my sister - số ít).", translation: "Không chỉ bố mẹ tôi mà cả chị gái tôi cũng ủng hộ quyết định của tôi." },
+{ id: 88, text: "Not only the teacher but also the students ______ concerned about the examination.", options: ["is", "has", "was", "are"], answer: 3, explanation: "Not only S1 but also S2 -> Động từ chia theo S2 (the students - số nhiều).", translation: "Không chỉ giáo viên mà cả học sinh đều lo lắng về kỳ thi." },
+{ id: 89, text: "The manager or his assistants ______ usually responsible for opening the office.", options: ["is", "are", "has", "was"], answer: 1, explanation: "S1 or S2 -> Động từ chia theo S2 (his assistants - số nhiều).", translation: "Quản lý hoặc các trợ lý của ông ấy thường chịu trách nhiệm mở cửa văn phòng." },
+{ id: 90, text: "Not the students but the teacher ______ made the mistake.", options: ["have", "are", "has", "were"], answer: 2, explanation: "Not S1 but S2 -> Động từ chia theo S2 (the teacher - số ít).", translation: "Không phải học sinh mà chính là giáo viên đã mắc sai lầm." },
+{ id: 91, text: "Some of the cake ______ left in the refrigerator.", options: ["is", "are", "have", "were"], answer: 0, explanation: "Some of + N(số ít) -> Động từ số ít.", translation: "Một ít bánh ngọt vẫn còn trong tủ lạnh." },
+{ id: 92, text: "Some of the cakes ______ already been sold.", options: ["has", "is", "was", "have"], answer: 3, explanation: "Some of + N(số nhiều - cakes) -> Động từ số nhiều.", translation: "Một số chiếc bánh đã được bán." },
+{ id: 93, text: "All of the equipment ______ checked before use.", options: ["were", "was", "have", "are"], answer: 1, explanation: "All of + N(không đếm được) -> Động từ số ít.", translation: "Tất cả các thiết bị đã được kiểm tra trước khi sử dụng." },
+{ id: 94, text: "All of the participants ______ required to wear identification cards.", options: ["is", "has", "are", "was"], answer: 2, explanation: "All of + N(số nhiều) -> Động từ số nhiều.", translation: "Tất cả người tham gia đều được yêu cầu đeo thẻ tên." },
+{ id: 95, text: "Most of the information ______ available online.", options: ["is", "are", "have", "were"], answer: 0, explanation: "Most of + N(không đếm được) -> Động từ số ít.", translation: "Hầu hết thông tin đều có sẵn trên mạng." },
+{ id: 96, text: "Most of the students ______ completed the assignment.", options: ["has", "is", "was", "have"], answer: 3, explanation: "Most of + N(số nhiều) -> Động từ số nhiều.", translation: "Hầu hết các học sinh đã hoàn thành bài tập." },
+{ id: 97, text: "Half of the building ______ damaged by the earthquake.", options: ["were", "was", "have", "are"], answer: 1, explanation: "Half of + N(số ít) -> Động từ số ít.", translation: "Một nửa tòa nhà đã bị hư hại bởi trận động đất." },
+{ id: 98, text: "Half of the employees ______ working remotely this week.", options: ["is", "has", "are", "was"], answer: 2, explanation: "Half of + N(số nhiều) -> Động từ số nhiều.", translation: "Một nửa số nhân viên làm việc từ xa trong tuần này." },
+{ id: 99, text: "The majority of the voters ______ supported the proposal.", options: ["have", "has", "is", "was"], answer: 0, explanation: "The majority of + N(số nhiều) -> Động từ số nhiều.", translation: "Đa số cử tri đã ủng hộ đề xuất này." },
+{ id: 100, text: "None of the milk ______ suitable for drinking anymore.", options: ["are", "have", "were", "is"], answer: 3, explanation: "None of + N(không đếm được) -> Động từ số ít.", translation: "Không còn chút sữa nào thích hợp để uống nữa." },
+{ id: 101, text: "No student ______ allowed to use a mobile phone during the examination.", options: ["are", "is", "have", "were"], answer: 1, explanation: "No + N(số ít) -> Động từ số ít.", translation: "Không học sinh nào được phép sử dụng điện thoại di động trong giờ thi." },
+{ id: 102, text: "No students ______ allowed to enter the laboratory without permission.", options: ["is", "has", "are", "was"], answer: 2, explanation: "No + N(số nhiều) -> Động từ số nhiều.", translation: "Không học sinh nào được phép vào phòng thí nghiệm mà không có sự cho phép." },
+{ id: 103, text: "No information ______ been released to the public yet.", options: ["has", "have", "are", "were"], answer: 0, explanation: "No + N(không đếm được) -> Động từ số ít.", translation: "Chưa có thông tin nào được công bố ra công chúng." },
+{ id: 104, text: "My trousers are quite old, but yours ______ still in excellent condition.", options: ["is", "has", "was", "are"], answer: 3, explanation: "Đại từ sở hữu Yours = Your trousers (số nhiều) -> Động từ số nhiều.", translation: "Quần của tôi khá cũ, nhưng của bạn vẫn còn trong tình trạng tuyệt vời." },
+{ id: 105, text: "Her laptop is much faster than mine. Mine ______ nearly ten years old.", options: ["are", "is", "have", "were"], answer: 1, explanation: "Đại từ sở hữu Mine = My laptop (số ít) -> Động từ số ít.", translation: "Laptop của cô ấy nhanh hơn của tôi rất nhiều. Máy của tôi đã gần 10 năm tuổi rồi." },
+{ id: 106, text: "Our textbooks are on the shelf, but theirs ______ on the teacher's desk.", options: ["is", "has", "are", "was"], answer: 2, explanation: "Theirs = Their textbooks (số nhiều) -> Động từ số nhiều.", translation: "Sách giáo khoa của chúng tôi ở trên kệ, nhưng của họ ở trên bàn giáo viên." },
+{ id: 107, text: "The number of international students ______ increased significantly this year.", options: ["has", "have", "are", "were"], answer: 0, explanation: "The number of + N(số nhiều) -> Động từ luôn luôn số ÍT.", translation: "Số lượng sinh viên quốc tế đã tăng đáng kể trong năm nay." },
+{ id: 108, text: "A number of students ______ absent because of the heavy rain.", options: ["is", "has been", "was", "are"], answer: 3, explanation: "A number of + N(số nhiều) -> Động từ luôn luôn số NHIỀU.", translation: "Một số học sinh vắng mặt do trời mưa to." },
+{ id: 109, text: "The number of accidents on this road ______ fallen since the new traffic lights were installed.", options: ["have", "has", "are", "were"], answer: 1, explanation: "The number of + N(số nhiều) -> Động từ số ÍT.", translation: "Số vụ tai nạn trên con đường này đã giảm kể từ khi lắp đặt đèn giao thông mới." },
+{ id: 110, text: "A number of environmental organizations ______ called for stricter regulations.", options: ["has", "is", "have", "was"], answer: 2, explanation: "A number of + N(số nhiều) -> Động từ số NHIỀU.", translation: "Một số tổ chức môi trường đã kêu gọi các quy định nghiêm ngặt hơn." },
+{ id: 111, text: "The number of people using public transport ______ increasing steadily.", options: ["is", "are", "have", "were"], answer: 0, explanation: "The number of + N -> Động từ số ÍT.", translation: "Số lượng người sử dụng phương tiện giao thông công cộng đang tăng đều." },
+{ id: 112, text: "There ______ a serious problem with the computer system.", options: ["are", "have", "were", "is"], answer: 3, explanation: "There + be + Danh từ số ít (a serious problem) -> is.", translation: "Có một vấn đề nghiêm trọng với hệ thống máy tính." },
+{ id: 113, text: "There ______ several reasons why the project failed.", options: ["is", "are", "has", "was"], answer: 1, explanation: "There + be + Danh từ số nhiều (several reasons) -> are.", translation: "Có một vài lý do tại sao dự án thất bại." },
+{ id: 114, text: "Here ______ the document you asked me to print.", options: ["are", "have", "is", "were"], answer: 2, explanation: "Here + be + Danh từ số ít (the document) -> is.", translation: "Đây là tài liệu bạn yêu cầu tôi in." },
+{ id: 115, text: "Here ______ the keys to your new office.", options: ["are", "is", "has", "was"], answer: 0, explanation: "Here + be + Danh từ số nhiều (the keys) -> are.", translation: "Đây là chìa khóa văn phòng mới của bạn." },
+{ id: 116, text: "There ______ a book and several notebooks on the desk.", options: ["are", "have", "were", "is"], answer: 3, explanation: "Cấu trúc There be chia theo danh từ đứng ngay sau nó (a book - số ít).", translation: "Có một quyển sách và vài quyển vở trên bàn." },
+{ id: 117, text: "There ______ two computers and a printer in the office.", options: ["is", "are", "has", "was"], answer: 1, explanation: "Cấu trúc There be chia theo danh từ đứng ngay sau nó (two computers - số nhiều).", translation: "Có hai chiếc máy tính và một máy in trong văn phòng." },
+{ id: 118, text: "There ______ some useful information in this article.", options: ["are", "have", "is", "were"], answer: 2, explanation: "Danh từ đứng sau là 'information' (không đếm được) -> Số ít.", translation: "Có một số thông tin hữu ích trong bài viết này." },
+{ id: 119, text: "Here ______ your glasses. I found them under the sofa.", options: ["are", "is", "has", "was"], answer: 0, explanation: "Danh từ đứng sau là 'glasses' (số nhiều) -> are.", translation: "Kính của bạn đây. Tôi tìm thấy chúng dưới ghế sofa." },
+{ id: 120, text: "There ______ a number of possible solutions to this problem.", options: ["is", "has", "was", "are"], answer: 3, explanation: "Sau There be là 'a number of solutions' mang nghĩa số nhiều -> are.", translation: "Có một số giải pháp khả thi cho vấn đề này." }
+    ];
+
+    // ----- ÂM THANH (Web Audio API) -----
+    const playSound = (type) => {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        if (type === 'correct') {
+          // Tiếng chuông êm ái
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime); 
+          osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.15); 
+          
+          gain.gain.setValueAtTime(0, ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 0.15);
+          gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.17);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+        } else {
+          // Tiếng báo lỗi nhẹ nhàng
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(250, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0, ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+        }
+        
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 1.0);
+      } catch (e) {
+        console.error("Audio API not supported", e);
+      }
+    };
+
+    // ----- LOGIC ỨNG DỤNG -----
+    function App() {
+      const [gameState, setGameState] = useState('welcome');
+      const [userName, setUserName] = useState('');
+      const [currentIdx, setCurrentIdx] = useState(0);
+      const [answers, setAnswers] = useState({});
+      const [timeElapsed, setTimeElapsed] = useState(0);
+      const [finishDate, setFinishDate] = useState(null);
+      const [showHint, setShowHint] = useState(false);
+      
+      const inputRef = useRef(null);
+
+      useEffect(() => {
+        let timer;
+        if (gameState === 'playing') {
+          timer = setInterval(() => {
+            setTimeElapsed((prev) => prev + 1);
+          }, 1000);
+        }
+        return () => clearInterval(timer);
+      }, [gameState]);
+
+      useEffect(() => {
+        setShowHint(false); 
+      }, [currentIdx]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'Enter') {
+            if (gameState === 'welcome' && userName.trim() !== '') {
+              startQuiz();
+            } else if (gameState === 'playing') {
+              const currentAns = answers[currentIdx];
+              if (currentAns?.resolved) {
+                handleNext();
+              }
+            }
+          }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [gameState, userName, currentIdx, answers]);
+
+      const startQuiz = () => {
+        setGameState('playing');
+        setTimeElapsed(0);
+        setCurrentIdx(0);
+        setAnswers({});
+      };
+
+      const handleNext = () => {
+        if (currentIdx < QUESTIONS.length - 1) {
+          setCurrentIdx(currentIdx + 1);
+        } else {
+          finishQuiz();
+        }
+      };
+
+      const handleBack = () => {
+        if (currentIdx > 0) {
+          setCurrentIdx(currentIdx - 1);
+        }
+      };
+
+      const selectOption = (optIdx) => {
+        const currentQ = QUESTIONS[currentIdx];
+        const currentAns = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+        
+        if (currentAns.resolved || currentAns.attempts.includes(optIdx)) return;
+        
+        const newAttempts = [...currentAns.attempts, optIdx];
+        let isResolved = false;
+        let isFirstTryCorrect = false;
+
+        if (optIdx === currentQ.answer) {
+          playSound('correct'); 
+          isResolved = true;
+          if (newAttempts.length === 1) {
+            isFirstTryCorrect = true;
+          }
+        } else {
+          playSound('incorrect'); 
+          if (newAttempts.length >= 2) {
+            isResolved = true;
+          }
+        }
+
+        setAnswers({
+          ...answers,
+          [currentIdx]: {
+            attempts: newAttempts,
+            resolved: isResolved,
+            firstTryCorrect: isFirstTryCorrect
+          }
+        });
+      };
+
+      const finishQuiz = () => {
+        setFinishDate(new Date());
+        setGameState('summary');
+      };
+
+      const formatTime = (seconds) => {
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+      };
+
+      const calculateScore = () => {
+        let correct = 0;
+        QUESTIONS.forEach((q, idx) => {
+          if (answers[idx]?.firstTryCorrect) correct++;
+        });
+        return correct;
+      };
+
+      const optionLabels = ["A", "B", "C", "D"];
+
+      return (
+        <div className="min-h-screen font-sans text-slate-800 flex flex-col items-center justify-between p-4 sm:p-8 relative overflow-hidden">
+          
+          <LotusBackground />
+
+          <div className="w-full max-w-4xl z-10 flex-grow flex flex-col justify-center items-center">
+            
+            {/* MÀN HÌNH WELCOME */}
+            {gameState === 'welcome' && (
+              <div className="bg-white/40 backdrop-blur-xl border border-white/50 p-10 rounded-3xl shadow-[0_10px_40px_rgba(244,114,182,0.15)] w-full max-w-md text-center transform transition-all">
+                <div className="flex justify-center mb-6 text-pink-500 drop-shadow-[0_0_15px_rgba(244,114,182,0.4)]">
+                  <Flower size={64} className="floating" />
+                </div>
+                <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-400 mb-2 drop-shadow-sm">
+                  Welcome to HTE
+                </h1>
+                <p className="text-rose-600/80 mb-8 font-medium tracking-wide uppercase text-sm">Subject - Verb Agreement</p>
+                
+                <div className="mb-8">
+                  <label className="block text-left text-sm font-semibold text-rose-700 mb-2">Please enter your name:</label>
+                  <input 
+                    ref={inputRef}
+                    type="text" 
+                    autoFocus
+                    className="w-full px-5 py-4 rounded-xl bg-white/60 border border-pink-300 text-slate-800 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-400/30 transition-all text-lg shadow-inner placeholder-slate-400"
+                    placeholder="Your name..."
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && userName.trim() !== '' && startQuiz()}
+                  />
+                </div>
+
+                <button 
+                  onClick={startQuiz}
+                  disabled={userName.trim() === ''}
+                  className={`w-full py-4 rounded-xl font-bold text-lg flex justify-center items-center gap-2 transition-all duration-300 shadow-lg ${userName.trim() !== '' ? 'bg-gradient-to-r from-pink-400 to-rose-400 text-white hover:shadow-[0_0_20px_rgba(244,114,182,0.4)] hover:scale-[1.02]' : 'bg-gray-300/50 text-gray-500 cursor-not-allowed'}`}
+                >
+                  Start <ArrowRight size={20} />
+                </button>
+              </div>
+            )}
+
+            {}
+            {gameState === 'playing' && (
+              <div className="w-full">
+                
+                {/* Tiêu đề Nổi bật */}
+                <div className="text-center mb-8 relative z-10">
+                  <h2 className="inline-flex items-center justify-center gap-3 text-lg sm:text-2xl md:text-3xl font-extrabold uppercase tracking-widest bg-white/40 backdrop-blur-xl px-12 py-4 rounded-full border border-white/60 shadow-[0_10px_30px_rgba(244,114,182,0.2)]">
+                    <Flower size={32} className="text-pink-500 drop-shadow-md" />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-500 drop-shadow-sm">
+                      SUBJECT - VERB AGREEMENT
+                    </span>
+                  </h2>
+                </div>
+
+                {/* Thanh trạng thái */}
+                <div className="flex flex-wrap justify-between items-center bg-white/40 backdrop-blur-md border border-white/50 p-4 rounded-2xl mb-6 text-slate-700 shadow-lg font-medium">
+                  <div className="flex items-center gap-2">
+                    <User size={18} className="text-pink-500" /> 
+                    <span className="truncate max-w-[150px] sm:max-w-xs">{userName}</span>
+                  </div>
+                  <div className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-500">
+                    Question {currentIdx + 1} / {QUESTIONS.length}
+                  </div>
+                  <div className="flex items-center gap-2 font-mono text-pink-600 bg-white/60 px-4 py-1.5 rounded-lg border border-pink-200 shadow-inner">
+                    <Clock size={18} className="animate-pulse text-pink-500" /> {formatTime(timeElapsed)}
+                  </div>
+                </div>
+
+                {/* Thanh tiến độ */}
+                <div className="w-full bg-white/50 h-2.5 rounded-full mb-8 overflow-hidden border border-white/40 shadow-inner">
+                  <div 
+                    className="h-full bg-gradient-to-r from-pink-300 to-rose-400 transition-all duration-300 ease-out relative"
+                    style={{ width: `${((currentIdx + 1) / QUESTIONS.length) * 100}%` }}
+                  >
+                     <div className="absolute top-0 bottom-0 right-0 w-6 bg-white/40 animate-pulse rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* Khung Câu hỏi */}
+                <div className="bg-white/50 backdrop-blur-xl border border-white/60 rounded-3xl p-6 sm:p-10 shadow-xl mb-4 relative">
+                  
+                  <h2 className="text-2xl sm:text-3xl font-semibold text-slate-800 mb-8 leading-relaxed relative z-10">
+                    <span className="text-pink-500 mr-2">{currentIdx + 1}.</span> 
+                    {QUESTIONS[currentIdx].text}
+                  </h2>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                    {QUESTIONS[currentIdx].options.map((opt, idx) => {
+                      const currentQ = QUESTIONS[currentIdx];
+                      const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false };
+                      const isSelected = currentAnsInfo.attempts.includes(idx);
+                      const isCorrectAns = idx === currentQ.answer;
+
+                      let btnClass = "flex items-center p-4 rounded-2xl text-left border-2 transition-all duration-200 group font-medium ";
+                      let iconClass = "w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl mr-4 text-lg transition-colors shadow-inner font-bold ";
+                      let textClass = "text-lg transition-colors ";
+
+                      if (currentAnsInfo.resolved && isCorrectAns) {
+                        btnClass += "bg-emerald-100/80 border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+                        iconClass += "bg-emerald-500 text-white";
+                        textClass += "text-emerald-800";
+                      } else if (isSelected && !isCorrectAns) {
+                        btnClass += "bg-rose-100/50 border-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.3)] animate-pulse-border cursor-not-allowed";
+                        iconClass += "bg-rose-500 text-white";
+                        textClass += "text-rose-500 line-through opacity-70";
+                      } else {
+                        btnClass += "bg-white/60 border-pink-200 hover:bg-pink-50 hover:border-pink-400 cursor-pointer shadow-sm";
+                        iconClass += "bg-pink-100 text-pink-600 group-hover:bg-pink-200 border border-pink-200";
+                        textClass += "text-slate-700";
+                      }
+
+                      return (
+                        <button key={idx} onClick={() => selectOption(idx)} disabled={currentAnsInfo.resolved || isSelected} className={btnClass}>
+                          <div className={iconClass}>{optionLabels[idx]}</div>
+                          <span className={textClass}>{opt}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {}
+                  <div className="mt-5 text-center min-h-[24px] z-10 relative">
+                    {(() => {
+                      const currentAnsInfo = answers[currentIdx] || { attempts: [], resolved: false, firstTryCorrect: false };
+                      if (currentAnsInfo.resolved) {
+                        return currentAnsInfo.firstTryCorrect 
+                          ? <span className="text-emerald-600 font-bold bg-emerald-100 border border-emerald-300 px-4 py-1.5 rounded-full inline-block shadow-sm">Excellent! Correct answer.</span>
+                          : <span className="text-amber-600 font-bold bg-amber-100 border border-amber-300 px-4 py-1.5 rounded-full inline-block shadow-sm">The correct answer has been revealed.</span>;
+                      } else if (currentAnsInfo.attempts.length > 0) {
+                        return <span className="text-rose-600 font-bold bg-rose-100 border border-rose-300 px-4 py-1.5 rounded-full inline-block shadow-sm">Incorrect. Try again! (Attempts left: {2 - currentAnsInfo.attempts.length})</span>;
+                      }
+                      return null;
+                    })()}
+                  </div>
+
+                  {/* Hint Bubble tinh tế */}
+                  <div className="mt-6 flex flex-col items-center relative z-50">
+                    <button 
+                      onClick={() => setShowHint(!showHint)} 
+                      className={`px-4 py-2 rounded-full text-sm font-semibold shadow-sm border transition-all flex items-center gap-2 ${showHint ? 'bg-pink-100 border-pink-300 text-pink-600' : 'bg-white/60 border-pink-200 text-pink-500 hover:bg-pink-50'}`}
+                    >
+                       <HelpCircle size={16} />
+                       {showHint ? 'Hide Hint' : 'Show Hint'}
+                    </button>
+                    
+                    {showHint && (
+                       <div className="absolute top-full mt-3 w-max max-w-[90vw] sm:max-w-md p-4 bg-white/95 backdrop-blur-xl border border-pink-200 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] text-slate-700 text-left z-50">
+                           <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-white/95 border-t border-l border-pink-200 rotate-45 rounded-tl-sm"></div>
+                           
+                           <div className="relative z-10">
+                             <div className="flex items-center gap-1.5 mb-1">
+                               <span className="text-[10px] uppercase font-bold text-pink-500 tracking-wider">Translation</span>
+                             </div>
+                             <p className="font-medium text-[14px] leading-relaxed text-slate-800 mb-3">{QUESTIONS[currentIdx].translation}</p>
+                             
+                             {answers[currentIdx]?.resolved ? (
+                                 <div className="pt-3 border-t border-pink-100">
+                                    <div className="flex items-center gap-1.5 mb-1">
+                                      <span className="text-[10px] uppercase font-bold text-emerald-500 tracking-wider">Grammar Rule</span>
+                                    </div>
+                                    <p className="text-[13px] text-slate-600 leading-relaxed"><strong className="font-semibold text-emerald-600">Rule:</strong> {QUESTIONS[currentIdx].explanation}</p>
+                                 </div>
+                             ) : (
+                                 <div className="mt-1 pt-2 border-t border-pink-100">
+                                   <p className="text-pink-400/80 italic text-[11px] font-medium text-center">* Please select an answer to reveal the grammar rule.</p>
+                                 </div>
+                             )}
+                           </div>
+                       </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Điều hướng Next / Back */}
+                <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 sm:gap-0 mt-4 w-full">
+                  <button 
+                    onClick={handleBack} disabled={currentIdx === 0}
+                    className={`flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-4 sm:py-3 rounded-xl font-semibold transition-all shadow-sm ${currentIdx === 0 ? 'opacity-0 cursor-default hidden sm:flex' : 'bg-white/50 text-pink-600 hover:bg-white border border-pink-200'}`}
+                  >
+                    <ArrowLeft size={20} /> Back
+                  </button>
+                  
+                  <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
+                    <button 
+                      onClick={handleNext} disabled={!(answers[currentIdx]?.resolved)}
+                      className={`flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg
+                        ${answers[currentIdx]?.resolved 
+                          ? 'bg-gradient-to-r from-pink-400 to-rose-400 text-white hover:shadow-[0_0_20px_rgba(244,114,182,0.4)] hover:scale-105 cursor-pointer border border-pink-200' 
+                          : 'bg-white/40 text-pink-300 border border-white/50 cursor-not-allowed'}`}
+                    >
+                      {currentIdx === QUESTIONS.length - 1 ? 'Finish Quiz' : 'Next'} 
+                      {currentIdx === QUESTIONS.length - 1 ? <CheckCircle2 size={20} /> : <ArrowRight size={20} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {}
+            {gameState === 'summary' && (
+              <div className="w-full bg-white/60 backdrop-blur-xl border border-white/60 p-6 sm:p-10 rounded-3xl shadow-2xl relative">
+                <div className="text-center mb-10">
+                  <div className="inline-flex justify-center items-center w-20 h-20 bg-gradient-to-tr from-pink-300 to-rose-400 rounded-full mb-4 shadow-[0_0_30px_rgba(244,114,182,0.4)] border-4 border-white">
+                    <Flower size={36} className="text-white" />
+                  </div>
+                  <h1 className="text-4xl font-extrabold text-slate-800 mb-2 tracking-tight">Quiz Summary</h1>
+                  <p className="text-xl text-pink-600 font-semibold">Great effort, {userName}!</p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                  <div className="bg-white/60 p-4 rounded-2xl border border-pink-100 flex flex-col items-center justify-center text-center shadow-sm">
+                    <Calendar className="text-pink-500 mb-2" size={24}/>
+                    <div className="text-xs text-slate-500 mb-1 font-semibold uppercase tracking-wider">Date</div>
+                    <div className="text-sm font-bold text-slate-800">{finishDate?.toLocaleDateString('vi-VN')} {finishDate?.toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})}</div>
+                  </div>
+                  <div className="bg-white/60 p-4 rounded-2xl border border-pink-100 flex flex-col items-center justify-center text-center shadow-sm">
+                    <Clock className="text-rose-400 mb-2" size={24}/>
+                    <div className="text-xs text-slate-500 mb-1 font-semibold uppercase tracking-wider">Time Taken</div>
+                    <div className="text-lg font-black text-slate-800">{formatTime(timeElapsed)}</div>
+                  </div>
+                  <div className="bg-white/60 p-4 rounded-2xl border border-pink-100 flex flex-col items-center justify-center text-center shadow-sm">
+                    <CheckCircle2 className="text-emerald-500 mb-2" size={24}/>
+                    <div className="text-xs text-slate-500 mb-1 font-semibold uppercase tracking-wider">1st Try Correct</div>
+                    <div className="text-2xl font-black text-emerald-600">{calculateScore()}</div>
+                  </div>
+                  <div className="bg-white/60 p-4 rounded-2xl border border-pink-100 flex flex-col items-center justify-center text-center shadow-sm">
+                    <XCircle className="text-rose-500 mb-2" size={24}/>
+                    <div className="text-xs text-slate-500 mb-1 font-semibold uppercase tracking-wider">Mistakes</div>
+                    <div className="text-2xl font-black text-rose-600">{QUESTIONS.length - calculateScore()}</div>
+                  </div>
+                </div>
+
+                <div className="mb-10 text-center">
+                  <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-rose-400 mb-4 drop-shadow-sm">
+                    {Math.round((calculateScore() / QUESTIONS.length) * 100)}%
+                  </div>
+                  <div className="w-full max-w-md mx-auto bg-pink-100 h-4 rounded-full overflow-hidden shadow-inner border border-pink-200">
+                    <div 
+                      className="h-full bg-gradient-to-r from-rose-400 via-pink-400 to-emerald-400 transition-all duration-1000"
+                      style={{ width: `${(calculateScore() / QUESTIONS.length) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className="mt-8 border-t border-pink-200 pt-8">
+                  <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><Info size={24} className="text-pink-500"/> Detailed Review</h3>
+                  <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    {QUESTIONS.map((q, idx) => {
+                      const ansInfo = answers[idx] || { attempts: [], firstTryCorrect: false };
+                      const isCorrect = ansInfo.firstTryCorrect;
+                      const firstGuessIdx = ansInfo.attempts[0];
+                      const isUnanswered = ansInfo.attempts.length === 0;
+
+                      return (
+                        <div key={idx} className={`p-5 rounded-2xl border shadow-sm ${isCorrect ? 'bg-emerald-50/80 border-emerald-200' : 'bg-rose-50/80 border-rose-200'} flex flex-col gap-4`}>
+                          <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                            <div className="flex-shrink-0 mt-1">
+                              {isCorrect ? <div className="bg-emerald-200/50 p-2 rounded-xl text-emerald-600"><CheckCircle2 size={24} /></div> 
+                                         : <div className="bg-rose-200/50 p-2 rounded-xl text-rose-600"><XCircle size={24} /></div>}
+                            </div>
+                            <div className="flex-grow">
+                              <p className="text-slate-800 font-bold text-[17px] mb-1 leading-snug"><span className="text-pink-500 mr-1">{q.id}.</span> {q.text}</p>
+                              <p className="text-slate-500 text-[14px] mb-4 italic font-medium">"{q.translation}"</p>
+                              
+                              <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                                <div className="bg-white/80 p-3 rounded-xl border border-slate-200 shadow-sm">
+                                  <span className="text-slate-500 text-xs font-bold uppercase block mb-1">Your First Try:</span> 
+                                  <span className={`font-bold text-[15px] ${isCorrect ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                    {isUnanswered ? "None" : `${optionLabels[firstGuessIdx]}. ${q.options[firstGuessIdx]}`}
+                                 </span>
+                                </div>
+                                {!isCorrect && (
+                                  <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">
+                                    <span className="text-emerald-700 text-xs font-bold uppercase block mb-1">Correct Answer:</span> 
+                                    <span className="font-bold text-[15px] text-emerald-700">
+                                      {optionLabels[q.answer]}. {q.options[q.answer]}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {q.explanation && (
+                            <div className={`mt-1 p-4 rounded-xl border flex items-start gap-3 text-[14px] font-medium shadow-sm ${isCorrect ? 'bg-emerald-100/50 border-emerald-200 text-emerald-800' : 'bg-rose-100/50 border-rose-200 text-rose-800'}`}>
+                              <Info size={20} className="flex-shrink-0 mt-0.5 opacity-60" />
+                              <p className="leading-relaxed"><strong className="font-bold opacity-80 uppercase text-xs mr-2">Rule:</strong> {q.explanation}</p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                
+                <div className="mt-10 flex justify-center">
+                   <button 
+                      onClick={() => window.location.reload()}
+                      className="px-8 py-4 rounded-xl font-bold bg-white hover:bg-pink-50 text-pink-600 shadow-lg transition-all flex items-center gap-3 group border border-pink-200"
+                    >
+                      <Clock size={20} className="group-hover:-rotate-90 transition-transform duration-500" /> Retake Quiz
+                    </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <footer className="w-full text-center py-6 mt-auto z-20 relative">
+            <p className="text-slate-700 text-sm font-semibold tracking-wide bg-white/60 backdrop-blur-md inline-block px-6 py-2.5 rounded-full border border-pink-200 shadow-[0_5px_15px_rgba(244,114,182,0.15)]">
+              © Copyright by <span className="text-pink-600 font-bold">Hoang Truong English</span>
+            </p>
+          </footer>
+        </div>
+      );
+    }
+
+    // Render App
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
