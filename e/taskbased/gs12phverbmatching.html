@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phrasal Verbs Matching</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e2e8f0; }
+        .galaxy-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        }
+        .stars {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: stars-animation 4s infinite alternate;
+        }
+        @keyframes stars-animation {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+        .glass-panel { 
+            background: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+        }
+        .neon-text { text-shadow: 0 0 8px rgba(139, 92, 246, 0.8), 0 0 20px rgba(139, 92, 246, 0.4); }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; display: none; } }
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-200">
+    <div class="galaxy-bg"><div class="stars"></div></div>
+    <div id="root"></div>
+
+    <!-- Dòng Copyright cố định ở đáy màn hình -->
+    <div class="fixed bottom-3 w-full text-center text-gray-400/50 text-sm font-medium tracking-wider z-20 pointer-events-none fade-in">
+        Copyright &copy; 2026 Hoàng Trường English
+    </div>
+
+    <script type="text/babel">
+        const phrasalVerbsData = [
+            { id: 1, verb: 'carry', prep: 'out', meaning: 'tiến hành' },
+            { id: 2, verb: 'look', prep: 'for', meaning: 'tìm kiếm' },
+            { id: 3, verb: 'give', prep: 'up', meaning: 'từ bỏ' },
+            { id: 4, verb: 'make', prep: 'of', meaning: 'làm bằng' },
+            { id: 5, verb: 'turn', prep: 'on', meaning: 'bật' },
+            { id: 6, verb: 'work', prep: 'out', meaning: 'tìm ra, giải quyết' },
+            { id: 7, verb: 'look', prep: 'after', meaning: 'chăm sóc' },
+            { id: 8, verb: 'turn', prep: 'off', meaning: 'tắt' },
+            { id: 9, verb: 'take care', prep: 'of', meaning: 'chăm sóc' },
+            { id: 10, verb: 'ask', prep: 'about', meaning: 'hỏi về' },
+            { id: 11, verb: 'care', prep: 'about', meaning: 'quan tâm đến' },
+            { id: 12, verb: 'talk', prep: 'about', meaning: 'nói về' },
+            { id: 13, verb: 'ask', prep: 'for', meaning: 'yêu cầu' },
+            { id: 14, verb: 'apply', prep: 'for', meaning: 'ứng tuyển / xin' },
+            { id: 15, verb: 'wait', prep: 'for', meaning: 'chờ đợi' },
+            { id: 16, verb: 'agree', prep: 'on', meaning: 'đồng ý về' },
+            { id: 17, verb: 'base', prep: 'on', meaning: 'dựa trên' },
+            { id: 18, verb: 'rely', prep: 'on', meaning: 'phụ thuộc / dựa vào' },
+            { id: 19, verb: 'introduce', prep: 'to', meaning: 'giới thiệu với' },
+            { id: 20, verb: 'refer', prep: 'to', meaning: 'đề cập / tham khảo' },
+            { id: 21, verb: 'respond', prep: 'to', meaning: 'phản hồi / trả lời' }
+        ];
+
+        function App() {
+            const [gameState, setGameState] = React.useState('start'); 
+            const [playerName, setPlayerName] = React.useState('');
+            const [unsolvedItems, setUnsolvedItems] = React.useState([...phrasalVerbsData]);
+            const [currentItem, setCurrentItem] = React.useState(null);
+            
+            const [selectedVerb, setSelectedVerb] = React.useState(null);
+            const [selectedPrep, setSelectedPrep] = React.useState(null);
+            
+            const [attempts, setAttempts] = React.useState(0);
+            const [feedback, setFeedback] = React.useState({ type: '', message: '' });
+            const [isChecking, setIsChecking] = React.useState(false);
+            const [shake, setShake] = React.useState(false);
+            const [score, setScore] = React.useState(0);
+            const [failedItems, setFailedItems] = React.useState(new Set());
+            const [successBubble, setSuccessBubble] = React.useState(null);
+            const [typingCompleted, setTypingCompleted] = React.useState(false);
+            const [hasSeenUnikeyWarning, setHasSeenUnikeyWarning] = React.useState(false);
+            
+            const [hintCount, setHintCount] = React.useState(0);
+            const [highlightVerb, setHighlightVerb] = React.useState(false);
+            const [highlightPrep, setHighlightPrep] = React.useState(false);
+            const [verbHintUsed, setVerbHintUsed] = React.useState(false);
+            const [prepHintUsed, setPrepHintUsed] = React.useState(false);
+            
+            const [typedSpelling, setTypedSpelling] = React.useState('');
+            const inputRef = React.useRef(null);
+            const [voices, setVoices] = React.useState([]);
+
+            React.useEffect(() => {
+                const loadVoices = () => setVoices(window.speechSynthesis.getVoices());
+                loadVoices();
+                if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                    window.speechSynthesis.onvoiceschanged = loadVoices;
+                }
+            }, []);
+
+            const playTTS = (enText, viText, callback) => {
+                if (!('speechSynthesis' in window)) {
+                    if (callback) callback();
+                    return;
+                }
+                window.speechSynthesis.cancel();
+                const enUtterance = new SpeechSynthesisUtterance(enText);
+                enUtterance.lang = 'en-US';
+                enUtterance.rate = 0.9;
+                enUtterance.pitch = 1.1;
+
+                const preferredVoices = ['Google US English', 'Samantha', 'Microsoft Zira', 'Victoria'];
+                let selectedVoice = null;
+                for (let name of preferredVoices) {
+                    selectedVoice = voices.find(v => v.name.includes(name) && v.lang.includes('en-US'));
+                    if (selectedVoice) break;
+                }
+                if (!selectedVoice) selectedVoice = voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman')));
+                if (!selectedVoice) selectedVoice = voices.find(v => v.lang === 'en-US' || v.lang === 'en_US');
+                if (selectedVoice) enUtterance.voice = selectedVoice;
+
+                enUtterance.onend = () => { if (callback) setTimeout(callback, 500); };
+                window.speechSynthesis.speak(enUtterance);
+            };
+
+            const startGame = () => setGameState('review');
+
+            const startPlaying = () => {
+                setGameState('playing');
+                setScore(0);
+                setFailedItems(new Set());
+                setHintCount(0);
+                setHasSeenUnikeyWarning(false);
+                pickNextQuestion([...phrasalVerbsData]);
+            };
+
+            const pickNextQuestion = (remainingList) => {
+                if (remainingList.length === 0) {
+                    setGameState('finished');
+                    return;
+                }
+                const randomIndex = Math.floor(Math.random() * remainingList.length);
+                setCurrentItem(remainingList[randomIndex]);
+                setUnsolvedItems(remainingList);
+                setSelectedVerb(null);
+                setSelectedPrep(null);
+                setAttempts(0);
+                setFeedback({ type: '', message: '' });
+                setIsChecking(false);
+                setHighlightVerb(false);
+                setHighlightPrep(false);
+                setVerbHintUsed(false);
+                setPrepHintUsed(false);
+            };
+
+            const handleVerbHint = () => {
+                if (isChecking || highlightVerb || !currentItem || verbHintUsed) return;
+                setHintCount(prev => prev + 1);
+                setHighlightVerb(true);
+                setVerbHintUsed(true);
+                setTimeout(() => setHighlightVerb(false), 2000);
+            };
+
+            const handlePrepHint = () => {
+                if (isChecking || highlightPrep || !currentItem || prepHintUsed) return;
+                setHintCount(prev => prev + 1);
+                setHighlightPrep(true);
+                setPrepHintUsed(true);
+                setTimeout(() => setHighlightPrep(false), 2000);
+            };
+
+            const handleCheckAnswer = () => {
+                setIsChecking(true);
+                const isCorrect = (selectedVerb === currentItem?.verb && selectedPrep === currentItem?.prep) ||
+                                  phrasalVerbsData.some(item => item.meaning === currentItem?.meaning && item.verb === selectedVerb && item.prep === selectedPrep);
+
+                if (isCorrect) {
+                    const correctFullVerbs = `${selectedVerb} ${selectedPrep}`;
+                    setFeedback({ type: 'success', message: `✨ Chính xác: ${correctFullVerbs} = ${currentItem?.meaning} ✨` });
+                    setScore(prev => prev + 1);
+                    setTypedSpelling('');
+                    setSuccessBubble({ verb: correctFullVerbs, meaning: currentItem?.meaning, earnedPoint: true });
+                    playTTS(correctFullVerbs, null, null); 
+                } else {
+                    setFailedItems(prev => {
+                        const newSet = new Set(prev);
+                        if(currentItem) newSet.add(currentItem.id);
+                        return newSet;
+                    });
+                    const newAttempts = attempts + 1;
+                    setAttempts(newAttempts);
+                    setShake(true);
+                    setTimeout(() => setShake(false), 400);
+
+                    if (newAttempts >= 3) {
+                        const correctFullVerbs = `${currentItem?.verb} ${currentItem?.prep}`;
+                        setFeedback({ type: 'error', message: `Sai quá 3 lần! Đáp án: ${correctFullVerbs}` });
+                        setSelectedVerb(currentItem?.verb);
+                        setSelectedPrep(currentItem?.prep);
+                        setTypedSpelling('');
+                        setSuccessBubble({ verb: correctFullVerbs, meaning: currentItem?.meaning, earnedPoint: false });
+                        playTTS(correctFullVerbs, null, null);
+                    } else {
+                        setFeedback({ type: 'warning', message: `Sai rồi! Vui lòng chọn lại (Bạn còn ${3 - newAttempts} lần thử)` });
+                        setTimeout(() => {
+                            setSelectedVerb(null);
+                            setSelectedPrep(null);
+                            setIsChecking(false);
+                            setFeedback({ type: '', message: '' });
+                        }, 1500);
+                    }
+                }
+            };
+
+            React.useEffect(() => {
+                if (selectedVerb && selectedPrep && !isChecking) {
+                    handleCheckAnswer();
+                }
+            }, [selectedVerb, selectedPrep, isChecking]);
+
+            React.useEffect(() => {
+                if (successBubble) {
+                    const targetStr = successBubble.verb.replace(/\s+/g, '');
+                    if (typedSpelling.toLowerCase() === targetStr.toLowerCase()) {
+                    setTypingCompleted(true);
+                    setTimeout(() => {
+                        setSuccessBubble(null);
+                        setTypedSpelling('');
+                        setTypingCompleted(false);
+                        setHasSeenUnikeyWarning(true);
+                        
+                        let newRemaining = unsolvedItems;
+                        if (successBubble.earnedPoint && currentItem) {
+                                newRemaining = unsolvedItems.filter(item => item.id !== currentItem.id);
+                            }
+                            pickNextQuestion(newRemaining);
+                        }, 1500); 
+                    }
+                }
+            }, [typedSpelling, successBubble, unsolvedItems, currentItem]);
+
+            React.useEffect(() => {
+                if (successBubble && inputRef.current) {
+                    setTimeout(() => {
+                        if (inputRef.current) inputRef.current.focus();
+                    }, 100);
+                }
+            }, [successBubble]);
+
+            React.useEffect(() => {
+                const handleGlobalEnter = (e) => {
+                    if (e.key === 'Enter') {
+                        if (gameState === 'start' && playerName.trim()) {
+                            e.preventDefault(); 
+                            startGame(); 
+                        }
+                        // Đã xóa lệnh bắt phím Enter ở màn hình Review
+                        // Bắt buộc người học phải tự bấm nút "Sẵn sàng"
+                    }
+                };
+                window.addEventListener('keyup', handleGlobalEnter);
+                return () => window.removeEventListener('keyup', handleGlobalEnter);
+            }, [gameState, playerName]);
+
+            const handleTyping = (e) => {
+                if (!successBubble) return;
+                const targetStr = successBubble.verb.replace(/\s+/g, ''); 
+                const val = e.target.value.replace(/[^a-zA-Z]/g, '').slice(0, targetStr.length);
+                setTypedSpelling(val);
+            };
+
+            const handleKeyDown = (e) => {
+                if (!successBubble) return;
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const targetStr = successBubble.verb.replace(/\s+/g, '');
+                    setTypedSpelling(targetStr);
+                } else if (e.key === ' ') {
+                    e.preventDefault(); 
+                }
+            };
+
+            if (gameState === 'start') {
+                return (
+                    <div className="flex items-center justify-center min-h-screen relative z-10">
+                        <div className="glass-panel p-6 md:p-10 rounded-3xl text-center max-w-lg mx-4 fade-in w-full">
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-6 neon-text">Phrasal Verbs</h1>
+                            <p className="text-gray-300 mb-8 text-base md:text-lg">Chinh phục từ vựng tiếng Anh</p>
+                            <div className="mb-8">
+                                <input 
+                                    type="text" 
+                                    placeholder="Nhập tên của bạn..." 
+                                    value={playerName}
+                                    onChange={(e) => setPlayerName(e.target.value)}
+                                    className="w-full bg-gray-800 bg-opacity-70 border-2 border-purple-500 text-white rounded-full py-3 px-6 outline-none focus:border-pink-500 focus:shadow-[0_0_15px_rgba(236,72,153,0.5)] transition text-center text-lg placeholder-gray-400"
+                                />
+                            </div>
+                            <button 
+                                onClick={startGame} 
+                                disabled={!playerName.trim()}
+                                className={`font-bold py-3 px-10 rounded-full transition transform text-lg w-full md:w-auto
+                                    ${playerName.trim() 
+                                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.7)] hover:scale-110' 
+                                        : 'bg-gray-700 text-gray-500 cursor-not-allowed opacity-60'}`}
+                            >
+                                Bắt đầu hành trình
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'review') {
+                return (
+                    <div className="min-h-screen py-6 md:py-10 px-4 relative z-10 flex flex-col items-center justify-center">
+                        <div className="max-w-4xl w-full glass-panel p-6 md:p-8 rounded-3xl fade-in flex flex-col max-h-[90vh]">
+                            <h2 className="text-2xl md:text-4xl font-bold text-center text-purple-400 mb-4 neon-text shrink-0">Phrasal Verbs</h2>
+                            <p className="text-center text-gray-300 mb-6 shrink-0">Nạp dữ liệu vào bộ nhớ trước khi khởi hành!</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-6 overflow-y-auto p-4 bg-gray-900 bg-opacity-50 rounded-2xl border border-gray-700 flex-grow h-[60vh] md:h-[55vh]">
+                                {phrasalVerbsData.map((item) => (
+                                    <div key={item.id} className="p-3 md:p-4 border border-gray-700 bg-gray-800 bg-opacity-60 rounded-xl hover:shadow-[0_0_10px_rgba(168,85,247,0.4)] hover:border-purple-500 transition">
+                                        <div className="font-bold text-base md:text-lg text-blue-400">{item.verb} <span className="text-pink-400">{item.prep}</span></div>
+                                        <div className="text-gray-400 text-xs md:text-sm mt-1">{item.meaning}</div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex justify-center shrink-0 mt-2">
+                                <button onClick={startPlaying} className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold py-3 px-12 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.7)] transition transform hover:scale-110 text-lg w-full md:w-auto">
+                                    Sẵn sàng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'finished') {
+                const retriedCount = failedItems.size;
+                const firstTryCount = phrasalVerbsData.length - retriedCount;
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('vi-VN');
+                const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+
+                return (
+                    <div className="flex items-center justify-center min-h-screen relative z-10 py-10">
+                        <div className="glass-panel p-8 md:p-12 rounded-3xl text-center max-w-2xl mx-4 fade-in w-full border-2 border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.2)]">
+                            <div className="text-7xl mb-4 animate-bounce drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">🏆</div>
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 mb-2 neon-text">Hoàn tất!</h1>
+                            <p className="text-gray-300 mb-8 text-lg">Hệ thống đã lưu lại thành tích của bạn.</p>
+                            <div className="bg-gray-900/60 rounded-2xl p-6 border border-gray-700/50 mb-8 text-left space-y-5 shadow-inner">
+                                <div className="flex flex-col md:flex-row md:justify-between md:items-center border-b border-gray-700/50 pb-3 gap-2">
+                                    <span className="text-gray-400 font-medium text-lg flex items-center gap-2">My name:</span>
+                                    <span className="text-pink-400 font-bold text-xl">{playerName}</span>
+                                </div>
+                                <div className="flex flex-col md:flex-row md:justify-between md:items-center border-b border-gray-700/50 pb-3 gap-2">
+                                    <span className="text-gray-400 font-medium text-lg flex items-center gap-2">⏱ Thời gian:</span>
+                                    <span className="text-blue-400 font-bold text-lg">{timeStr} - {dateStr}</span>
+                                </div>
+                                <div className="flex flex-col md:flex-row md:justify-between md:items-center border-b border-gray-700/50 pb-3 gap-2">
+                                    <span className="text-gray-400 font-medium text-lg flex items-center gap-2">🎯 Đúng ngay lần 1:</span>
+                                    <span className="text-emerald-400 font-extrabold text-2xl">{firstTryCount} / {phrasalVerbsData.length}</span>
+                                </div>
+                                <div className="flex flex-col md:flex-row md:justify-between md:items-center border-b border-gray-700/50 pb-3 gap-2">
+                                    <span className="text-gray-400 font-medium text-lg flex items-center gap-2">🔄 Số từ phải làm lại:</span>
+                                    <span className="text-yellow-400 font-extrabold text-2xl">{retriedCount}</span>
+                                </div>
+                                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+                                    <span className="text-gray-400 font-medium text-lg flex items-center gap-2">💡 Số lần dùng gợi ý:</span>
+                                    <span className="text-purple-400 font-extrabold text-2xl">{hintCount}</span>
+                                </div>
+                            </div>
+                            <button onClick={() => { setGameState('start'); setPlayerName(''); setUnsolvedItems([...phrasalVerbsData]); setFailedItems(new Set()); setHintCount(0); }} className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-4 px-12 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.5)] transition transform hover:scale-105 text-lg w-full md:w-auto tracking-wide uppercase">
+                                Làm lại
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            const availableVerbs = [...new Set(unsolvedItems.map(item => item.verb))].sort();
+            const availablePreps = [...new Set(unsolvedItems.map(item => item.prep))].sort();
+
+            return (
+                <div className="min-h-screen flex flex-col pt-8 px-4 pb-20 fade-in relative z-10">
+                    
+                    {/* Bubble khổng lồ hiển thị khi trả lời đúng / hiển thị đáp án */}
+                    {successBubble && (
+                        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gray-900 bg-opacity-90 fade-in backdrop-blur-md" onClick={() => inputRef.current && inputRef.current.focus()}>
+                            <div className="glass-panel p-6 md:p-10 rounded-3xl text-center transform transition-transform shadow-[0_0_50px_rgba(16,185,129,0.4)] border-2 border-emerald-500 max-w-4xl w-[95%] flex flex-col items-center cursor-pointer relative overflow-hidden">
+                                
+                                {typingCompleted && successBubble.earnedPoint && (
+                                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gray-900/95 backdrop-blur-md fade-in rounded-3xl">
+                                        <div className="text-7xl md:text-8xl mb-6 animate-bounce drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">🎉✨🎊</div>
+                                        <div className="text-5xl md:text-6xl font-extrabold text-white mb-8 tracking-wider shadow-black drop-shadow-lg">{successBubble.verb}</div>
+                                        <div className="text-4xl font-extrabold text-yellow-400 bg-yellow-900/30 px-6 py-2 rounded-full border border-yellow-500/50 shadow-[0_0_20px_rgba(250,204,21,0.5)] animate-pulse">+1 Điểm</div>
+                                    </div>
+                                )}
+                                {typingCompleted && !successBubble.earnedPoint && (
+                                    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gray-900/95 backdrop-blur-md fade-in rounded-3xl">
+                                        <div className="text-6xl mb-4">🧠</div>
+                                        <div className="text-3xl md:text-4xl font-bold text-blue-400 neon-text mb-2">Đã ghi nhớ!</div>
+                                        <div className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-wider shadow-black drop-shadow-lg">{successBubble.verb}</div>
+                                        <div className="text-xl font-bold text-gray-300">Từ này sẽ được ôn lại sau</div>
+                                    </div>
+                                )}
+
+                                <div className="text-5xl md:text-6xl mb-4 animate-pulse">🌟</div>
+                                <div className="text-4xl md:text-5xl font-extrabold text-emerald-400 mb-2 neon-text tracking-wide">{successBubble.verb}</div>
+                                <div className="text-2xl md:text-3xl font-bold text-gray-200 mb-8">{successBubble.meaning}</div>
+                                
+                                <input 
+                                    ref={inputRef}
+                                    type="text"
+                                    value={typedSpelling}
+                                    onChange={handleTyping}
+                                    onKeyDown={handleKeyDown}
+                                    className="absolute opacity-0 w-10 h-10 top-0 left-0 -z-10"
+                                    autoFocus
+                                    autoComplete="off"
+                                    autoCorrect="off"
+                                    spellCheck="false"
+                                    autoCapitalize="none"
+                                />
+
+                                <div className="flex flex-wrap justify-center gap-1 md:gap-3 mb-6">
+                                    {successBubble.verb.split('').map((char, index) => {
+                                        if (char === ' ') return <div key={index} className="w-3 md:w-6"></div>;
+                                        
+                                        const letterIndex = successBubble.verb.substring(0, index).replace(/\s+/g, '').length;
+                                        const typedChar = typedSpelling[letterIndex] || '';
+                                        const isCorrect = typedChar.toLowerCase() === char.toLowerCase();
+                                        const isFilled = typedChar !== '';
+                                        const isCurrentFocus = typedSpelling.length === letterIndex;
+
+                                        return (
+                                            <div key={index} className={`w-8 h-12 md:w-16 md:h-20 rounded-xl border-2 flex items-center justify-center text-xl md:text-4xl font-bold transition-all duration-300 relative
+                                                ${isFilled && isCorrect ? 'border-emerald-500 bg-emerald-900/80 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.8)]' : ''}
+                                                ${isFilled && !isCorrect ? 'border-red-500 bg-red-900/80 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.8)]' : ''}
+                                                ${!isFilled ? 'border-purple-500/50 bg-gray-800/80 text-white shadow-[inset_0_0_15px_rgba(139,92,246,0.3)]' : ''}
+                                                ${isCurrentFocus ? 'ring-2 ring-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.7)] scale-110 z-10' : ''}
+                                            `}>
+                                                {typedChar.toUpperCase()}
+                                                {isCurrentFocus && <div className="absolute w-[2px] h-3/5 bg-pink-400 animate-pulse"></div>}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                
+                                {/* Bubble nhắc nhở tắt bộ gõ tiếng Việt */}
+                                {!hasSeenUnikeyWarning && (
+                                    <div className="bg-yellow-900/60 border border-yellow-500/60 text-yellow-300 text-xs md:text-sm px-4 py-2 rounded-full mb-3 shadow-[0_0_10px_rgba(234,179,8,0.3)] flex items-center gap-2 animate-bounce">
+                                        <span className="text-lg">⚠️</span> Lưu ý: Tắt Unikey / chuyển sang bàn phím Tiếng Anh (US) để gõ chính xác nhất!
+                                    </div>
+                                )}
+
+                                <div className="text-pink-400 text-sm md:text-base animate-pulse mt-1 font-semibold text-center">
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="max-w-5xl mx-auto w-full">
+                        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                            <h2 className="text-xl md:text-2xl font-bold text-purple-400 neon-text">
+                                You're: <span className="text-pink-400">{playerName}</span>
+                            </h2>
+                            <div className="flex gap-3 text-sm md:text-base">
+                                <div className="glass-panel px-5 py-2 rounded-full font-bold text-gray-300">
+                                    Điểm: <span className="text-emerald-400 ml-1">{score}</span>
+                                </div>
+                                <div className="glass-panel px-5 py-2 rounded-full font-bold text-gray-300">
+                                    Mục tiêu: <span className="text-cyan-400 ml-1">{unsolvedItems.length}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Meaning Display Box */}
+                        <div className="glass-panel p-6 md:p-8 rounded-3xl border-t-4 border-purple-500 text-center mb-8 relative min-h-[160px] flex flex-col items-center justify-center">
+                            <div className="bg-purple-900/40 border-2 border-purple-400/80 rounded-2xl px-6 md:px-10 py-4 md:py-5 mb-5 shadow-[0_0_30px_rgba(168,85,247,0.5)] relative overflow-hidden w-full md:w-auto">
+                                <div className="text-2xl md:text-4xl font-extrabold text-white fade-in tracking-wide drop-shadow-[0_2px_10px_rgba(168,85,247,0.8)] neon-text">
+                                    "{currentItem?.meaning}"
+                                </div>
+                            </div>
+                            <div className="text-base md:text-lg font-medium text-gray-400 fade-in mt-2">
+                                Match <span className="text-blue-400 font-bold">a Verb</span> with <span className="text-pink-400 font-bold">a Preposition</span>
+                            </div>
+
+                            {feedback.message && (
+                                <div className={`absolute top-0 transform -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 md:px-8 py-2 rounded-full text-xs md:text-sm font-bold shadow-lg fade-in border whitespace-nowrap
+                                    ${feedback.type === 'success' ? 'bg-emerald-900 border-emerald-500 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : ''}
+                                    ${feedback.type === 'warning' ? 'bg-yellow-900 border-yellow-500 text-yellow-300 shadow-[0_0_10px_rgba(234,179,8,0.5)]' : ''}
+                                    ${feedback.type === 'error' ? 'bg-red-900 border-red-500 text-red-300 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : ''}
+                                `}>
+                                    {feedback.message}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Columns Setup */}
+                        <div className={`grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-8 ${shake ? 'shake' : ''}`}>
+                            <div className="glass-panel rounded-2xl p-4 md:p-6">
+                                <div className="flex justify-between items-center mb-3 md:mb-6 border-b border-gray-700 pb-2 md:pb-3">
+                                    <h3 className="text-lg md:text-xl font-bold text-blue-400 neon-text">Verbs</h3>
+                                    <button 
+                                        onClick={handleVerbHint} 
+                                        disabled={verbHintUsed || isChecking}
+                                        title={verbHintUsed ? "Đã dùng gợi ý" : "Gợi ý Verb"} 
+                                        className={`text-2xl md:text-3xl transition ${verbHintUsed ? 'opacity-30 grayscale cursor-not-allowed' : 'hover:scale-125 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)] active:scale-95'}`}
+                                    >💡</button>
+                                </div>
+                                <div className="flex flex-wrap gap-2 md:gap-3 justify-center">
+                                    {availableVerbs.map(v => (
+                                        <button 
+                                            key={v}
+                                            onClick={() => !isChecking && setSelectedVerb(v)}
+                                            disabled={isChecking}
+                                            className={`px-3 py-2 md:px-5 md:py-3 rounded-lg md:rounded-xl font-bold text-sm md:text-lg transition-all duration-200 border-2 flex-grow sm:flex-grow-0
+                                                ${selectedVerb === v 
+                                                    ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)] scale-105' 
+                                                    : 'bg-gray-800 text-blue-300 border-gray-600 hover:border-blue-500 hover:bg-gray-700 hover:shadow-[0_0_10px_rgba(59,130,246,0.3)]'}
+                                                ${highlightVerb && v === currentItem?.verb ? 'bg-yellow-500 text-black border-yellow-300 shadow-[0_0_25px_rgba(253,224,71,1)] animate-pulse scale-110 z-10' : ''}
+                                                ${isChecking ? 'cursor-not-allowed opacity-70' : ''}
+                                            `}
+                                        >
+                                            {v}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="glass-panel rounded-2xl p-4 md:p-6">
+                                <div className="flex justify-between items-center mb-3 md:mb-6 border-b border-gray-700 pb-2 md:pb-3">
+                                    <h3 className="text-lg md:text-xl font-bold text-pink-400 neon-text">Prepositions</h3>
+                                    <button 
+                                        onClick={handlePrepHint} 
+                                        disabled={prepHintUsed || isChecking}
+                                        title={prepHintUsed ? "Đã dùng gợi ý" : "Gợi ý Preposition"} 
+                                        className={`text-2xl md:text-3xl transition ${prepHintUsed ? 'opacity-30 grayscale cursor-not-allowed' : 'hover:scale-125 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)] active:scale-95'}`}
+                                    >💡</button>
+                                </div>
+                                <div className="flex flex-wrap gap-2 md:gap-3 justify-center">
+                                    {availablePreps.map(p => (
+                                        <button 
+                                            key={p}
+                                            onClick={() => !isChecking && setSelectedPrep(p)}
+                                            disabled={isChecking}
+                                            className={`px-3 py-2 md:px-5 md:py-3 rounded-lg md:rounded-xl font-bold text-sm md:text-lg transition-all duration-200 border-2 flex-grow sm:flex-grow-0
+                                                ${selectedPrep === p 
+                                                    ? 'bg-pink-600 text-white border-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.6)] scale-105' 
+                                                    : 'bg-gray-800 text-pink-300 border-gray-600 hover:border-pink-500 hover:bg-gray-700 hover:shadow-[0_0_10px_rgba(236,72,153,0.3)]'}
+                                                ${highlightPrep && p === currentItem?.prep ? 'bg-yellow-500 text-black border-yellow-300 shadow-[0_0_25px_rgba(253,224,71,1)] animate-pulse scale-110 z-10' : ''}
+                                                ${isChecking ? 'cursor-not-allowed opacity-70' : ''}
+                                            `}
+                                        >
+                                            {p}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
