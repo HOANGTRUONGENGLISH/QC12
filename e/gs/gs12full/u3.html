@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GS12 - U3 - Green Living Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #f0fdf4; /* Light green background */
+            --panel-bg: #ffffff;
+            --accent-primary: #16a34a; /* Leaf Green */
+            --accent-secondary: #0ea5e9; /* Aqua Blue */
+            --accent-tertiary: #d97706; /* Earthy Amber */
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --alert-red: #ef4444;
+            --card-border: rgba(22, 163, 74, 0.2);
+            --grid-line: rgba(22, 163, 74, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-dark);
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .font-theme { font-family: 'Outfit', sans-serif; }
+        .font-academic { font-family: 'Lora', serif; }
+
+        .glass-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px -10px rgba(22, 163, 74, 0.15);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 520px; 
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            inset: 0; 
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(-180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: var(--panel-bg);
+            border: 2px solid var(--card-border);
+            overflow: hidden;
+        }
+
+        .card-back { 
+            transform: rotateY(-180deg); 
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+        }
+        
+        .flip-card.flipped .card-front { pointer-events: none; }
+        .flip-card:not(.flipped) .card-back { pointer-events: none; }
+
+        .char-input {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            color: var(--accent-primary);
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            padding: 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        .char-input { width: 16px; height: 30px; font-size: 1rem; }
+        @media (min-width: 400px) { .char-input { width: 22px; height: 36px; font-size: 1.2rem; } }
+        @media (min-width: 640px) { .char-input { width: 26px; height: 42px; font-size: 1.4rem; } }
+        @media (min-width: 1024px) { .char-input { width: 32px; height: 48px; font-size: 1.6rem; } }
+
+        .char-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(22, 163, 74, 0.15);
+        }
+        
+        .char-input.hinted {
+            color: #fff; 
+            border-color: var(--accent-primary); 
+            background: var(--accent-primary); 
+            pointer-events: none;
+        }
+        
+        .char-input.error {
+            color: var(--alert-red); 
+            border-color: var(--alert-red);
+            background: #fef2f2;
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        .fixed-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent-secondary);
+            padding: 0 4px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
+        }
+        .shake-error { animation: shakeError 0.4s ease-in-out; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+        
+        .btn-global {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+        }
+        .btn-global:active { transform: scale(0.96); }
+        .btn-global:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-primary { 
+            background: var(--accent-primary);
+            color: #ffffff;
+            box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3);
+            border: 2px solid transparent;
+        }
+        .btn-primary:hover:not(:disabled) { 
+            background: #15803d;
+            box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #f0fdf4;
+            transform: translateY(-2px);
+        }
+
+        .highlighter {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            color: var(--accent-primary);
+            padding: 2px 6px;
+            background: #dcfce7;
+            border-radius: 6px;
+            border-bottom: 2px solid var(--accent-primary);
+        }
+
+        .stamp-status {
+            position: absolute;
+            top: 30px; right: 30px;
+            padding: 8px 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            border: 3px solid;
+            border-radius: 8px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            text-transform: uppercase;
+        }
+        .flipped .stamp-status { animation: stampFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 0.3s; }
+        
+        @keyframes stampFadeIn {
+            0% { transform: scale(1.5) rotate(15deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--text-muted); 
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 16px 0;
+        }
+
+        .badge {
+            background: #dcfce7;
+            color: var(--accent-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border: 1px solid rgba(22, 163, 74, 0.2);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[94vh] min-h-[550px] max-h-[900px]">
+
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="mb-6 shrink-0 text-center pb-6 border-b border-gray-200">
+                    <div class="inline-flex items-center gap-3 mb-3">
+                        <span class="w-12 h-[3px] rounded-full" style="background-color: var(--accent-primary);"></span>
+                        <span class="text-[12px] font-bold font-inter tracking-[0.2em] uppercase" style="color: var(--accent-primary);">GS12 - UNIT 3</span>
+                        <span class="w-12 h-[3px] rounded-full" style="background-color: var(--accent-primary);"></span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-theme text-gray-900 tracking-tight font-extrabold uppercase">
+                        THE ECO <span style="color: var(--accent-tertiary);">GUARDIAN</span>
+                    </h1>
+                    <p class="text-gray-500 mt-3 font-medium text-sm sm:text-base font-inter">Explore the vocabulary of green living, ecology, and saving the Earth.</p>
+                </div>
+
+                <div class="flex-grow overflow-auto custom-scrollbar mb-6 w-full shrink min-h-0 border border-gray-200 rounded-xl bg-gray-50 relative shadow-inner">
+                    <table class="w-full min-w-[700px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-theme text-[13px] text-gray-600 bg-white border-b border-gray-200 shadow-sm">
+                            <tr>
+                                <th class="p-4 w-1/4 uppercase tracking-[0.1em] font-extrabold">Eco Vocabulary</th>
+                                <th class="p-4 w-1/5 text-center uppercase tracking-[0.1em] font-extrabold">IPA / Type</th>
+                                <th class="p-4 uppercase tracking-[0.1em] font-extrabold">Vietnamese Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-gray-700 divide-y divide-gray-200 bg-white font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn-global btn-primary w-full sm:w-1/2 py-4 text-sm tracking-[0.15em] shadow-lg">
+                        INITIATE TRACKER ➔
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-global btn-secondary px-4 py-2 text-[11px]" style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div class="flex items-center justify-between w-full mb-2 text-[12px] font-bold font-inter tracking-[0.1em] px-1 text-gray-500">
+                        <div class="flex items-center gap-1">
+                            LOG TIME: <span id="timer-display" style="color: var(--accent-tertiary);" class="ml-1">00:00</span>
+                        </div>
+                        <div class="badge" id="progress-text">1/53</div>
+                    </div>
+                    <div class="w-full h-[8px] bg-gray-200 rounded-full relative overflow-hidden shadow-inner">
+                        <div id="progress-bar" class="h-full transition-all duration-500 relative rounded-full" style="width: 0%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()" class="btn-global btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-sm shadow-sm rounded-full">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <div class="flex-1 w-full max-w-5xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+                        
+                        <!-- FRONT OF CARD -->
+                        <div class="card-front"> 
+                            <div class="p-6 sm:p-8 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                <div class="mb-6 shrink-0 flex flex-col items-center text-center">
+                                    <span class="inline-block px-4 py-1.5 bg-green-50 border border-green-200 rounded-full text-[11px] font-theme font-extrabold tracking-[0.15em] uppercase mb-4" style="color: var(--accent-primary);" id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight font-academic" id="word-mean"></h2>
+                                </div>
+                                
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-2">
+                                    <div class="text-center mb-8 px-2 sm:px-6">
+                                        <p class="text-base sm:text-lg text-gray-700 leading-relaxed font-medium font-inter" id="word-ex"></p>
+                                    </div>
+                                    
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-[2px] sm:gap-x-[4px] gap-y-3 sm:gap-y-4 w-full px-0 mb-8"></div>
+                                        
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-global btn-secondary rounded-full flex items-center justify-center" title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-global btn-secondary text-[12px] flex items-center gap-2">
+                                                HINT
+                                            </button>
+                                            <button onclick="checkAnswer()" class="btn-global btn-primary px-8 sm:px-10 h-12 text-[14px]">
+                                                SAVE THE PLANET ➔
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BACK OF CARD -->
+                        <div class="card-back">
+                            <div class="p-6 sm:p-8 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-10">
+                                <div class="stamp-status" id="result-seal">COMPLETED</div>
+                                
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-2">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-theme font-extrabold tracking-tight" style="color: var(--accent-primary);" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)" class="text-gray-400 hover:text-green-700 transition-colors p-2 bg-gray-50 rounded-full border border-gray-200" title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mb-8 font-inter font-bold text-sm tracking-[0.1em] px-5 py-2 rounded-full border shadow-sm" style="color: var(--accent-tertiary); background-color: #fffbeb; border-color: #fef3c7;">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+                                    
+                                    <p class="text-lg sm:text-xl text-gray-800 font-bold mb-8 font-academic" id="back-mean"></p>
+                                    
+                                    <div class="w-full max-w-3xl border-t-2 border-b-2 border-gray-100 py-6 text-center relative bg-gray-50 rounded-2xl px-6 shadow-inner">
+                                        <p class="text-base sm:text-lg text-gray-700 leading-relaxed font-medium font-inter" id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-8 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn" class="btn-global btn-primary px-8 py-4 text-[14px] w-full sm:w-1/2 tracking-[0.1em]">
+                                        NEXT MISSION ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+            <div class="p-6 sm:p-8 md:p-10 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-8 shrink-0 border-b border-gray-200 pb-6">
+                    <h2 class="text-2xl sm:text-4xl text-gray-900 font-theme font-extrabold uppercase tracking-wide">MISSION ACCOMPLISHED</h2>
+                    <p id="completion-datetime" class="text-[12px] font-inter text-gray-500 mt-3 tracking-[0.15em] uppercase font-bold"></p>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 shrink-0 font-inter text-lg">
+                    <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] text-gray-500 tracking-[0.15em] mb-2 uppercase font-bold">ACCURACY</p>
+                        <p class="text-2xl sm:text-3xl text-gray-900 font-bold font-theme" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] text-gray-500 tracking-[0.15em] mb-2 uppercase font-bold">TIME</p>
+                        <p class="text-2xl sm:text-3xl text-gray-900 font-bold font-theme" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] tracking-[0.15em] mb-2 uppercase font-bold" style="color: var(--accent-primary);">VERIFIED</p>
+                        <p class="text-2xl sm:text-3xl font-bold font-theme" style="color: var(--accent-primary);" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] text-alert-red tracking-[0.15em] mb-2 uppercase font-bold">ASSISTED</p>
+                        <p class="text-2xl sm:text-3xl text-alert-red font-bold font-theme" id="hint-count">-</p>
+                    </div>
+                </div>
+                
+                <div class="flex-grow overflow-auto custom-scrollbar border border-gray-200 rounded-xl w-full mb-6 shrink min-h-0 bg-white shadow-inner">
+                    <table class="w-full min-w-[600px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 bg-gray-50 text-gray-600 font-theme text-[12px] font-bold tracking-[0.15em] uppercase border-b border-gray-200">
+                            <tr>
+                                <th class="p-4 w-28 text-center">STATUS</th>
+                                <th class="p-4 w-1/3">VOCABULARY</th>
+                                <th class="p-4">DEFINITION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-gray-700 divide-y divide-gray-100 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()" class="btn-global btn-primary w-full sm:w-1/2 py-4 text-[14px] tracking-[0.1em] shadow-lg">
+                        RESTART TRACKER ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="shrink-0 mt-auto text-center relative z-40">
+            <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+        </div>
+    </div>
+
+    <script>
+        const rawVocab = `
+bookmark | /ˈbʊkˌmɑːk/ | (n) | kẹp sách | I use a handmade bookmark so I don't lose my page.
+cap | /ˈkæp/ | (n) | nắp (chai) | Please make sure to put the cap back on the bottle.
+cardboard | /ˈkɑːdbɔːd/ | (n) | bìa cứng, làm bằng bìa cứng | We keep old things in a large cardboard box in the garage.
+compost | /ˈkɒmpɒst/ | (n) | phân hữu cơ | We use organic compost to help our garden grow beautifully.
+concern | /kənˈsɜːn/ | (n) | mối bận tâm | Air pollution is a major concern for many people today.
+container | /kənˈteɪnə/ | (n) | thùng, hộp | Keep your food fresh by storing it in a plastic container.
+ecotour | /ˈiːkəʊtʊə/ | (n) | du lịch sinh thái | We went on an ecotour to explore the natural beauty of the forest.
+grocery | /ˈɡrəʊsᵊri/ | (n) | đồ tạp hoá | I need to go to the store to buy some grocery items for dinner.
+ground | /ɡraʊnd/ | (n) | mặt đất | The leaves fell from the trees and covered the wet ground.
+jug | /ʤʌɡ/ | (n) | cái bình | She poured some fresh milk from a large glass jug.
+landfill | /ˈlændfɪl/ | (n) | bãi rác | Too much plastic waste ends up in the local landfill.
+layer | /ˈleɪə/ | (n) | lớp | A thick layer of snow covered the roof of the house.
+leaflet | /ˈliːflɪt/ | (n) | tờ rơi | A young man handed me a leaflet about saving energy.
+leftover | /ˈleftˌəʊ.vər/ | (n) | thức ăn thừa | We can eat the leftover chicken for lunch tomorrow.
+litter | /ˈlɪtə/ | (n/v) | rác/ xả rác | Please do not drop litter on the street.
+notice | /ˈnəʊtɪs/ | (n/v) | thông báo/ chú ý | Did you notice the sign about recycling your plastic bottles?
+packaging | /ˈpækɪʤɪŋ/ | (n) | bao bì | Try to buy products with less plastic packaging to save the environment.
+pile | /paɪl/ | (n) | chồng, đống | There is a huge pile of old newspapers in the corner.
+process | /ˈprəʊses/ | (n) | quá trình | Recycling paper is a simple process that saves many trees.
+skin | /skɪn/ | (n) | vỏ | You can eat the apple skin because it is very healthy.
+takeaway | /ˈteɪkəweɪ/ | (n) | đồ ăn mang đi | We were too tired to cook, so we ordered a takeaway.
+waste | /weɪst/ | (n) | sự lãng phí/ rác thải | Leaving the lights on all night is a terrible waste of electricity.
+automatic | /ˌɔːtəˈmætɪk/ | (adj) | tự động | The automatic doors open when you walk towards them.
+bottled | /ˈbɒtᵊld/ | (adj) | đóng chai | Many people buy bottled water when they go on a trip.
+coloured | /ˈkʌləd/ | (adj) | có màu sắc | The children drew pictures using brightly coloured pencils.
+eco-friendly | /ˈiːkəʊ/-/ˈfrendli/ | (adj) | thân thiện với môi trường | We should use eco-friendly products to protect the environment.
+leaking | /ˈliːkɪŋ/ | (adj) | rò rỉ | We need to fix the leaking pipe in the bathroom immediately.
+single-use | /ˈsɪŋɡᵊl/-/juːz/ | (adj) | sử dụng một lần | The government wants to ban single-use plastic bags in supermarkets.
+sustainable | /səˈsteɪnəbᵊl/ | (adj) | bền vững | We must find sustainable energy sources to replace fossil fuels.
+decompose | /ˌdiːkəmˈpəʊz/ | (v) | phân hủy | It takes a long time for plastic bags to decompose in the ground.
+judge | /ˈʤʌʤ/ | (v) | đánh giá | You should not judge a person simply by looking at their clothes.
+pack | /pæk/ | (v) | đóng gói | I need to pack my suitcase tonight before my flight tomorrow.
+propose | /prəˈpəʊz/ | (v) | đề nghị | The committee will propose a new plan to reduce traffic noise.
+recommend | /ˌrekəˈmend/ | (v) | gợi ý | I highly recommend this restaurant if you like traditional food.
+refill | /ˈriːfɪl/ | (v) | đổ đầy lại | Please refill your water bottle instead of buying a new one.
+release | /rɪˈliːs/ | (v) | thải ra | Factories should not release toxic chemicals into the local river.
+remove | /rɪˈmuːv/ | (v) | bỏ đi | You must remove your shoes before entering the temple.
+sort | /sɔːt/ | (v) | phân loại | We have to sort the rubbish into paper, plastic, and glass.
+store | /stɔːr/ | (v) | lưu trữ | You should store these vegetables in the fridge to keep them fresh.
+contaminate | /kənˈtæmɪneɪt/ | (v) | gây ô nhiễm | Industrial waste can contaminate the river and kill the fish.
+contaminated | /kənˈtæmɪneɪtɪd/ | (adj) | bị ô nhiễm | The drinking water was contaminated with dangerous bacteria.
+efficient | /ɪˈfɪʃᵊnt/ | (adj) | có hiệu quả | Modern LED lights are much more energy efficient than old bulbs.
+efficiently | /ɪˈfɪʃᵊntlɪ/ | (adv) | một cách có hiệu quả | The new machine works very efficiently and saves a lot of time.
+pollutant | /pəˈluːtᵊnt/ | (n) | chất gây ô nhiễm | Carbon dioxide is a major pollutant that causes global warming.
+pollute | /pəˈluːt/ | (v) | gây ô nhiễm | Heavy traffic and old factories seriously pollute the city air.
+pollution | /pəˈluːʃən/ | (n) | sự ô nhiễm | Air pollution can cause serious health problems for people living in cities.
+recyclable | /ˌriːˈsaɪkᵊləbᵊl/ | (n/v) | đồ có thể tái chế/ có thể tái chế | Glass and paper are highly recyclable materials.
+recycle | /ˌriːˈsaɪkᵊl/ | (v) | tái chế | We should always recycle our old newspapers and glass bottles.
+recycled | /ˌriːˈsaɪkᵊld/ | (adj) | được tái chế | These notebooks are made from 100% recycled paper.
+remind | /rɪˈmaɪnd/ | (v) | nhắc nhở | Please remind me to turn off the lights before we leave.
+reminder | /rɪˈmaɪndə/ | (n) | lời nhắc nhở | The alarm clock is a good reminder for me to wake up early.
+reusable | /riːˈjuːzəbᵊl/ | (adj) | tái sử dụng được | I always carry a reusable shopping bag when I go to the supermarket.
+reuse | /riːˈjuːz/ | (v) | tái sử dụng | We can reuse these old glass jars to store our homemade jam.
+        `;
+
+        function parseData(raw) {
+            const lines = raw.trim().split('\n');
+            const result = [];
+            lines.forEach(line => {
+                if(!line.trim()) return;
+                const parts = line.split('|');
+                if (parts.length >= 5) {
+                    result.push({
+                        word: parts[0].trim(),
+                        phonetic: parts[1].trim(),
+                        type: parts[2].trim(),
+                        mean: parts[3].trim(),
+                        ex: parts[4].trim()
+                    });
+                }
+            });
+            return result;
+        }
+
+        const flashcards = parseData(rawVocab);
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false; 
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=cinematic-documentary-115669.mp3'); 
+        bgMusic.loop = true; bgMusic.volume = 0.1;
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                const playTone = (oscType, freq1, freq2, vol, dur) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = oscType;
+                    osc.frequency.setValueAtTime(freq1, now);
+                    if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                    gain.gain.setValueAtTime(vol, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                    osc.start(now); osc.stop(now + dur);
+                };
+                if (type === 'start') playTone('sine', 440, 660, 0.1, 0.4); 
+                else if (type === 'success') { playTone('sine', 600, 800, 0.1, 0.1); setTimeout(()=>playTone('triangle', 800, 1200, 0.1, 0.2), 100); }
+                else if (type === 'error') playTone('sawtooth', 200, 100, 0.1, 0.3); 
+                else if (type === 'flip') playTone('sine', 350, 250, 0.05, 0.15); 
+            } catch (e) { console.log("Audio play error", e); }
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            try {
+                window.speechSynthesis.cancel();
+                let rawWord = flashcards[currentIndex].word;
+                
+                // Smart filter to replace hyphens for smooth reading
+                let wordToSpeak = rawWord.replace(/[-]/g, ' ').trim();
+                
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US'; 
+                utter.rate = 0.85; 
+                
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                
+                if(femaleUS) {
+                    utter.voice = femaleUS;
+                    window.speechSynthesis.speak(utter);
+                } else {
+                    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(wordToSpeak)}`;
+                    const audio = new Audio(audioUrl);
+                    audio.play().catch(() => window.speechSynthesis.speak(utter));
+                }
+            } catch (error) {
+                console.log("TTS Error:", error);
+            }
+        }
+
+        if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => {};
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, idx) => {
+                return `
+                <tr class="hover:bg-green-50 transition-colors border-b border-gray-100">
+                    <td class="p-4 font-theme text-gray-900 text-[15px] font-bold">
+                        <span class="text-gray-400 text-xs mr-2 font-inter">#${(idx+1).toString().padStart(2, '0')}</span>${item.word}
+                    </td>
+                    <td class="p-4 text-center">
+                        <span class="px-2 py-0.5 bg-green-100 text-green-800 border border-green-200 text-[10px] font-inter uppercase tracking-[0.1em] rounded-full">${item.type}</span>
+                        <br><span class="text-[11px] text-gray-500 mt-1 inline-block font-medium">${item.phonetic}</span>
+                    </td>
+                    <td class="p-4 text-gray-600 text-sm leading-relaxed">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+            if(window.speechSynthesis.getVoices().length === 0) window.speechSynthesis.onvoiceschanged = () => {};
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff/60).toString().padStart(2, '0');
+                const s = (diff%60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function isLetter(char) { return /[a-zA-Z]/.test(char); }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+            
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            
+            let displayEx = card.ex;
+            let matchStr = card.word;
+            
+            let cleanTarget = matchStr.replace(/[-]/g, ' ').replace(/[^a-zA-Z\s]/g, '').trim();
+            let wordsToHide = cleanTarget.split(' ').filter(w => w.length > 0);
+            
+            let regexStr = wordsToHide.map(w => w + '[a-z]*').join('\\s*[-]?\\s*');
+            let regex = new RegExp(`\\b${regexStr}\\b`, 'gi');
+            
+            if (!displayEx.match(regex)) {
+                let firstWord = wordsToHide[0];
+                regex = new RegExp(`\\b${firstWord}[a-z]*\\b`, 'gi');
+            }
+
+            let letterCount = matchStr.replace(/[^a-zA-Z]/g, '').length;
+            let underlineWidth = letterCount < 5 ? 'w-16' : (letterCount < 10 ? 'w-24' : (letterCount < 18 ? 'w-40' : (letterCount < 25 ? 'w-56' : 'w-72')));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-4 border-b-2 mx-1 align-baseline opacity-50" style="border-color: var(--accent-primary);"></span>`;
+            
+            displayEx = displayEx.replace(regex, blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+            
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+            
+            const group = document.createElement('div');
+            group.className = 'flex flex-wrap gap-[2px] sm:gap-[4px] justify-center max-w-full leading-loose items-center';
+            
+            for (let i = 0; i < matchStr.length; i++) {
+                let char = matchStr[i];
+                if (!isLetter(char)) {
+                    if (char === ' ') {
+                        const space = document.createElement('div'); 
+                        space.className = 'w-3 sm:w-4 flex items-center justify-center';
+                        group.appendChild(space);
+                    } else {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'fixed-symbol';
+                        group.appendChild(symbol);
+                    }
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text'; input.maxLength = 1;
+                    input.className = 'char-input editable-input';
+                    input.autocomplete = "off"; input.autocapitalize="off"; input.spellcheck = false;
+                    
+                    input.addEventListener('input', function() {
+                        this.value = this.value.toLowerCase();
+                        this.classList.remove('error');
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(this.value && idx < inputs.length - 1) {
+                            let next = idx + 1;
+                            while(next < inputs.length && inputs[next].readOnly) next++;
+                            if(next < inputs.length) inputs[next].focus();
+                        }
+                    });
+
+                    input.addEventListener('keydown', function(e) {
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(e.key === 'Backspace' && !this.value && idx > 0) {
+                            let prev = idx - 1;
+                            while(prev >= 0 && inputs[prev].readOnly) prev--;
+                            if(prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                        }
+                    });
+                    group.appendChild(input);
+                }
+            }
+            container.appendChild(group);
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+            
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            
+            if(currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if(hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            
+            const target = rawWord.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.char-input.editable-input');
+            
+            let pool = [];
+            for(let i=0; i<inputs.length; i++) {
+                if(!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+            }
+            
+            if(pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4)); 
+            
+            for(let i=0; i<Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) { return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+
+        function checkAnswer() {
+            if(isTransitioning) return; 
+            
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+            
+            const target = normalizeString(rawWord.replace(/[^a-zA-Z]/g, ''));
+            const inputs = document.querySelectorAll('.char-input.editable-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+            
+            if(user === target) {
+                playSound('success');
+                isTransitioning = true;
+                
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "var(--alert-red)"; 
+                    seal.style.borderColor = "var(--alert-red)";
+                } else {
+                    seal.textContent = "VERIFIED";
+                    seal.style.color = "var(--accent-primary)"; 
+                    seal.style.borderColor = "var(--accent-primary)";
+                }
+                
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+                
+                let backExStr = card.ex;
+                let cleanTarget = rawWord.replace(/[-]/g, ' ').replace(/[^a-zA-Z\s]/g, '').trim();
+                let wordsToHide = cleanTarget.split(' ').filter(w => w.length > 0);
+                
+                let regexStr = wordsToHide.map(w => w + '[a-z]*').join('\\s*[-]?\\s*');
+                let regex = new RegExp(`\\b${regexStr}\\b`, 'gi');
+                
+                if (!backExStr.match(regex)) {
+                    let firstWord = wordsToHide[0];
+                    regex = new RegExp(`\\b${firstWord}[a-z]*\\b`, 'gi');
+                }
+                
+                backExStr = backExStr.replace(regex, match => `<span class="highlighter">${match}</span>`);
+                document.getElementById('back-ex').innerHTML = backExStr;
+                
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // Auto-play TTS on exact flip logic execution
+                speakCurrentWord();
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 750);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+                
+                inputs.forEach((input, idx) => {
+                    if(!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if(currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => { 
+                if(currentIndex > 0) { currentIndex--; renderCard(); } 
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec/60); const s = totalSec%60;
+            
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour:'2-digit', minute:'2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `TRACKING COMPLETED: ${dateString}`;
+            
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) {
+                scoreEl.style.color = "var(--alert-red)";
+            }
+            
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+            
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint 
+                    ? '<span class="text-alert-red font-bold font-inter uppercase text-[10px] tracking-[0.1em] border border-red-200 bg-red-50 px-2 py-0.5 rounded-full">ASSISTED</span>' 
+                    : '<span class="font-bold font-inter uppercase text-[10px] tracking-[0.1em] border border-green-200 bg-green-50 px-2 py-0.5 rounded-full" style="color: var(--accent-primary);">VERIFIED</span>';
+                
+                return `
+                    <tr class="hover:bg-gray-50 border-b border-gray-100 transition-colors">
+                        <td class="p-4 text-center">${statusIcon}</td>
+                        <td class="p-4 font-bold text-gray-900 text-[15px] font-theme">${item.word}</td>
+                        <td class="p-4 text-gray-600 text-sm font-inter font-medium">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable(); 
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if(document.getElementById('main-content').style.display === 'none') return;
+            if(e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault(); 
+                if(isTransitioning) return; 
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard(); 
+                else checkAnswer(); 
+            }
+        });
+    </script>
+</body>
+</html>
