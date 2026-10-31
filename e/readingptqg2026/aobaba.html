@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading - Ao Ba Ba - Silk Heritage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #fffbf7; /* Warm Silk Cream */
+            --panel-bg: #ffffff;
+            --accent-primary: #be185d; /* Deep Lotus Pink */
+            --accent-secondary: #115e59; /* Deep River Teal */
+            --accent-tertiary: #d97706; /* Silk Gold */
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --alert-red: #ef4444;
+            --card-border: rgba(190, 24, 93, 0.2);
+            --grid-line: rgba(190, 24, 93, 0.03);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-dark);
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .font-theme { font-family: 'Outfit', sans-serif; }
+        .font-academic { font-family: 'Playfair Display', serif; }
+
+        .glass-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px -10px rgba(17, 94, 89, 0.15);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .flip-card {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            flex: 1;
+            min-height: 520px; 
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            inset: 0; 
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(-180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: var(--panel-bg);
+            border: 2px solid var(--card-border);
+            overflow: hidden;
+        }
+
+        .card-back { 
+            transform: rotateY(-180deg); 
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, #ffffff 0%, #fdf2f8 100%);
+        }
+        
+        .flip-card.flipped .card-front { pointer-events: none; }
+        .flip-card:not(.flipped) .card-back { pointer-events: none; }
+
+        .char-input {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            color: var(--accent-primary);
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            text-transform: lowercase;
+            padding: 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        .char-input { width: 16px; height: 30px; font-size: 1rem; }
+        @media (min-width: 400px) { .char-input { width: 22px; height: 36px; font-size: 1.2rem; } }
+        @media (min-width: 640px) { .char-input { width: 26px; height: 42px; font-size: 1.4rem; } }
+        @media (min-width: 1024px) { .char-input { width: 32px; height: 48px; font-size: 1.6rem; } }
+
+        .char-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(190, 24, 93, 0.15);
+        }
+        
+        .char-input.hinted {
+            color: #fff; 
+            border-color: var(--accent-primary); 
+            background: var(--accent-primary); 
+            pointer-events: none;
+        }
+        
+        .char-input.error {
+            color: var(--alert-red); 
+            border-color: var(--alert-red);
+            background: #fef2f2;
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        .fixed-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent-secondary);
+            padding: 0 4px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
+        }
+        .shake-error { animation: shakeError 0.4s ease-in-out; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+        
+        .btn-global {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+        }
+        .btn-global:active { transform: scale(0.96); }
+        .btn-global:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-primary { 
+            background: var(--accent-primary);
+            color: #ffffff;
+            box-shadow: 0 6px 16px rgba(190, 24, 93, 0.3);
+            border: 2px solid transparent;
+        }
+        .btn-primary:hover:not(:disabled) { 
+            background: #9f1239;
+            box-shadow: 0 8px 25px rgba(190, 24, 93, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #fdf2f8;
+            transform: translateY(-2px);
+        }
+
+        .highlighter {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            color: var(--accent-primary);
+            padding: 2px 6px;
+            background: #fce7f3;
+            border-radius: 6px;
+            border-bottom: 2px solid var(--accent-primary);
+        }
+
+        .stamp-status {
+            position: absolute;
+            top: 30px; right: 30px;
+            padding: 8px 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            border: 3px solid;
+            border-radius: 8px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            text-transform: uppercase;
+        }
+        .flipped .stamp-status { animation: stampFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 0.3s; }
+        
+        @keyframes stampFadeIn {
+            0% { transform: scale(1.5) rotate(15deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .copyright-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--text-muted); 
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 16px 0;
+        }
+
+        .badge {
+            background: #fdf2f8;
+            color: var(--accent-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border: 1px solid rgba(190, 24, 93, 0.2);
+        }
+    </style>
+</head>
+
+<body class="p-2 sm:p-4 md:p-6 items-center justify-center">
+
+    <div class="max-w-5xl w-full mx-auto relative z-30 flex flex-col h-[94vh] min-h-[550px] max-h-[900px]">
+
+        <div id="welcome-screen" class="glass-panel flex-1 flex flex-col" style="display: flex;">
+            <div class="p-4 sm:p-6 md:p-8 flex flex-col flex-1 min-h-0 relative">
+                <div class="mb-6 shrink-0 text-center pb-6 border-b border-gray-200">
+                    <div class="inline-flex items-center gap-3 mb-3">
+                        <span class="w-12 h-[3px] rounded-full" style="background-color: var(--accent-primary);"></span>
+                        <span class="text-[12px] font-bold font-inter tracking-[0.2em] uppercase" style="color: var(--accent-primary);">READING VOCABULARY</span>
+                        <span class="w-12 h-[3px] rounded-full" style="background-color: var(--accent-primary);"></span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-theme text-gray-900 tracking-tight font-extrabold uppercase">
+                        THE LOTUS & <span style="color: var(--accent-tertiary);">SILK HERITAGE</span>
+                    </h1>
+                    <p class="text-gray-500 mt-3 font-medium text-sm sm:text-base font-inter">Explore the vocabulary of traditional Ao Ba Ba, riverine culture, and artisanal tailoring.</p>
+                </div>
+
+                <div class="flex-grow overflow-auto custom-scrollbar mb-6 w-full shrink min-h-0 border border-gray-200 rounded-xl bg-gray-50 relative shadow-inner">
+                    <table class="w-full min-w-[700px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 font-theme text-[13px] text-gray-600 bg-white border-b border-gray-200 shadow-sm">
+                            <tr>
+                                <th class="p-4 w-1/4 uppercase tracking-[0.1em] font-extrabold">Cultural Vocabulary</th>
+                                <th class="p-4 w-1/5 text-center uppercase tracking-[0.1em] font-extrabold">IPA / Type</th>
+                                <th class="p-4 uppercase tracking-[0.1em] font-extrabold">Vietnamese Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welcome-table-body" class="text-gray-700 divide-y divide-gray-200 bg-white font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="startStudy()" class="btn-global btn-primary w-full sm:w-1/2 py-4 text-sm tracking-[0.15em] shadow-lg">
+                        OPEN THE ATELIER ➔
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content" class="flex-1 flex flex-col min-h-0" style="display: none;">
+            <div class="flex justify-between items-center mb-4 w-full shrink-0 px-2">
+                <button id="top-prev-btn" onclick="prevCard()" class="btn-global btn-secondary px-4 py-2 text-[11px]" style="display: none;">
+                    ◀ PREV
+                </button>
+                <div id="top-prev-placeholder" class="w-[85px]"></div>
+
+                <div class="flex-grow flex flex-col items-center mx-3 max-w-md">
+                    <div class="flex items-center justify-between w-full mb-2 text-[12px] font-bold font-inter tracking-[0.1em] px-1 text-gray-500">
+                        <div class="flex items-center gap-1">
+                            LOG TIME: <span id="timer-display" style="color: var(--accent-tertiary);" class="ml-1">00:00</span>
+                        </div>
+                        <div class="badge" id="progress-text">1/96</div>
+                    </div>
+                    <div class="w-full h-[8px] bg-gray-200 rounded-full relative overflow-hidden shadow-inner">
+                        <div id="progress-bar" class="h-full transition-all duration-500 relative rounded-full" style="width: 0%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));"></div>
+                    </div>
+                </div>
+
+                <button onclick="toggleMusic()" class="btn-global btn-secondary w-10 h-10 flex items-center justify-center shrink-0 p-0 text-sm shadow-sm rounded-full">
+                    <span id="music-icon">🔇</span>
+                </button>
+            </div>
+
+            <div class="flex-1 w-full max-w-5xl mx-auto pb-4 relative flex flex-col min-h-0">
+                <div class="flip-card" id="flashcard">
+                    <div class="flip-card-inner">
+                        
+                        <!-- FRONT OF CARD -->
+                        <div class="card-front"> 
+                            <div class="p-6 sm:p-8 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar">
+                                <div class="mb-6 shrink-0 flex flex-col items-center text-center">
+                                    <span class="inline-block px-4 py-1.5 bg-pink-50 border border-pink-200 rounded-full text-[11px] font-theme font-extrabold tracking-[0.15em] uppercase mb-4" style="color: var(--accent-primary);" id="word-type"></span>
+                                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight font-academic" id="word-mean"></h2>
+                                </div>
+                                
+                                <div class="flex flex-col flex-1 relative w-full justify-center pb-2">
+                                    <div class="text-center mb-8 px-2 sm:px-6">
+                                        <p class="text-base sm:text-lg text-gray-700 leading-relaxed font-medium font-inter" id="word-ex"></p>
+                                    </div>
+                                    
+                                    <div class="w-full flex flex-col items-center mt-auto shrink-0">
+                                        <div id="letter-inputs-container" class="flex flex-wrap justify-center gap-x-[2px] sm:gap-x-[4px] gap-y-3 sm:gap-y-4 w-full px-0 mb-8"></div>
+                                        
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4 w-full flex-wrap">
+                                            <button onclick="speakCurrentWord(event)" class="w-12 h-12 btn-global btn-secondary rounded-full flex items-center justify-center" title="Listen Audio">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            </button>
+                                            <button id="hint-btn" onclick="giveHint()" class="px-5 sm:px-6 h-12 btn-global btn-secondary text-[12px] flex items-center gap-2">
+                                                HINT
+                                            </button>
+                                            <button onclick="checkAnswer()" class="btn-global btn-primary px-8 sm:px-10 h-12 text-[14px]">
+                                                COMPLETE WEAVING ➔
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BACK OF CARD -->
+                        <div class="card-back">
+                            <div class="p-6 sm:p-8 md:p-10 flex flex-col flex-1 relative z-10 overflow-y-auto custom-scrollbar pt-10">
+                                <div class="stamp-status" id="result-seal">COMPLETED</div>
+                                
+                                <div class="flex flex-col flex-1 items-center justify-center text-center pb-4 pt-2">
+                                    <div class="flex items-center justify-center gap-4 mb-4 w-full flex-wrap">
+                                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-theme font-extrabold tracking-tight" style="color: var(--accent-primary);" id="back-word"></h2>
+                                        <button onclick="speakCurrentWord(event)" class="text-gray-400 hover:text-pink-700 transition-colors p-2 bg-gray-50 rounded-full border border-gray-200" title="Listen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mb-8 font-inter font-bold text-sm tracking-[0.1em] px-5 py-2 rounded-full border shadow-sm" style="color: var(--accent-tertiary); background-color: #fffbeb; border-color: #fef3c7;">
+                                        <span id="back-phonetic"></span>
+                                    </div>
+                                    
+                                    <p class="text-lg sm:text-xl text-gray-800 font-bold mb-8 font-academic" id="back-mean"></p>
+                                    
+                                    <div class="w-full max-w-3xl border-t-2 border-b-2 border-gray-100 py-6 text-center relative bg-gray-50 rounded-2xl px-6 shadow-inner">
+                                        <p class="text-base sm:text-lg text-gray-700 leading-relaxed font-medium font-inter" id="back-ex"></p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto pt-8 flex justify-center w-full shrink-0">
+                                    <button onclick="nextCard()" id="next-btn" class="btn-global btn-primary px-8 py-4 text-[14px] w-full sm:w-1/2 tracking-[0.1em]">
+                                        NEXT CRAFT ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="final-screen" class="glass-panel flex-1 flex flex-col" style="display: none;">
+            <div class="p-6 sm:p-8 md:p-10 flex flex-col flex-1 min-h-0 relative">
+                <div class="text-center mb-8 shrink-0 border-b border-gray-200 pb-6">
+                    <h2 class="text-2xl sm:text-4xl text-gray-900 font-theme font-extrabold uppercase tracking-wide">ATELIER COMPLETED</h2>
+                    <p id="completion-datetime" class="text-[12px] font-inter text-gray-500 mt-3 tracking-[0.15em] uppercase font-bold"></p>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 shrink-0 font-inter text-lg">
+                    <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] text-gray-500 tracking-[0.15em] mb-2 uppercase font-bold">ACCURACY</p>
+                        <p class="text-2xl sm:text-3xl text-gray-900 font-bold font-theme" id="score-percent">-</p>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] text-gray-500 tracking-[0.15em] mb-2 uppercase font-bold">TIME</p>
+                        <p class="text-2xl sm:text-3xl text-gray-900 font-bold font-theme" id="elapsed-time">-</p>
+                    </div>
+                    <div class="bg-pink-50 border border-pink-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] tracking-[0.15em] mb-2 uppercase font-bold" style="color: var(--accent-primary);">VERIFIED</p>
+                        <p class="text-2xl sm:text-3xl font-bold font-theme" style="color: var(--accent-primary);" id="correct-count">-</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-2xl p-4 text-center shadow-sm">
+                        <p class="text-[11px] text-alert-red tracking-[0.15em] mb-2 uppercase font-bold">ASSISTED</p>
+                        <p class="text-2xl sm:text-3xl text-alert-red font-bold font-theme" id="hint-count">-</p>
+                    </div>
+                </div>
+                
+                <div class="flex-grow overflow-auto custom-scrollbar border border-gray-200 rounded-xl w-full mb-6 shrink min-h-0 bg-white shadow-inner">
+                    <table class="w-full min-w-[600px] text-left text-sm sm:text-base border-collapse">
+                        <thead class="sticky top-0 z-20 bg-gray-50 text-gray-600 font-theme text-[12px] font-bold tracking-[0.15em] uppercase border-b border-gray-200">
+                            <tr>
+                                <th class="p-4 w-28 text-center">STATUS</th>
+                                <th class="p-4 w-1/3">VOCABULARY</th>
+                                <th class="p-4">DEFINITION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-review-table-body" class="text-gray-700 divide-y divide-gray-100 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="shrink-0 flex flex-col items-center pb-2">
+                    <button onclick="resetQuizToSummary()" class="btn-global btn-primary w-full sm:w-1/2 py-4 text-[14px] tracking-[0.1em] shadow-lg">
+                        RESTART ATELIER ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="shrink-0 mt-auto text-center relative z-40">
+            <div class="copyright-text">Copyright &copy; 2026 Hoàng Trường English</div>
+        </div>
+    </div>
+
+    <script>
+        const rawVocab = `
+silk | /sɪlk/ | noun | lụa | Silk is a soft and smooth material that people often use to make traditional clothes.
+represent | /ˌreprɪˈzent/ | verb | đại diện cho, tượng trưng cho | Traditional clothes can represent the history and culture of a local community.
+simplicity | /sɪmˈplɪsəti/ | noun | sự đơn giản, giản dị | The simplicity of the design makes the outfit easy to wear every day.
+modesty | /ˈmɒdəsti/ | noun | sự kín đáo, giản dị | The long and simple design can show modesty and respect for traditional values.
+resilient | /rɪˈzɪliənt/ | adjective | bền bỉ, có khả năng phục hồi tốt | Local communities are resilient and can continue their traditions after difficult times.
+plain | /pleɪn/ | adjective | đơn giản, không trang trí | The shirt looks plain, but its simple design makes it comfortable and practical.
+collarless | /ˈkɒlələs/ | adjective | không có cổ áo | A collarless shirt can feel comfortable in warm and humid weather.
+shirt split at the sides | /ʃɜːt splɪt æt ðə saɪdz/ | noun phrase | áo xẻ hai bên | A shirt split at the sides allows the wearer to move more easily.
+paired with loose silk trousers | /peəd wɪð luːs sɪlk ˈtraʊzəz/ | phrase | được phối với quần lụa rộng | The traditional shirt is often paired with loose silk trousers for comfort and easy movement.
+symbolize | /ˈsɪmbəlaɪz/ | verb | tượng trưng cho | Traditional colours can symbolize local culture, family values, or important beliefs.
+agrarian life | /əˈɡreəriən laɪf/ | noun phrase | đời sống nông nghiệp | Traditional clothing often reflects agrarian life in villages where people work on farms.
+domestic warmth | /dəˌmestɪk ˈwɔːmθ/ | noun phrase | sự ấm áp của gia đình | Simple handmade clothes can create a feeling of domestic warmth and family tradition.
+dominate | /ˈdɒmɪneɪt/ | verb | chiếm ưu thế, nổi bật | Bright colours may dominate the market during festivals and special celebrations.
+wardrobe | /ˈwɔːdrəʊb/ | noun | tủ quần áo; bộ sưu tập quần áo | Traditional clothes can still have an important place in a family’s wardrobe.
+a distinctive image of | /ə dɪˈstɪŋktɪv ˈɪmɪdʒ əv/ | noun phrase | hình ảnh đặc trưng của | The outfit has become a distinctive image of rural life in the region.
+gentleness | /ˈdʒentlnəs/ | noun | sự dịu dàng | The soft fabric and simple colours give the clothes a feeling of gentleness.
+rural pride | /ˌrʊərəl ˈpraɪd/ | noun phrase | niềm tự hào nông thôn | Traditional clothing can express rural pride and a strong connection to local culture.
+custom-tailored | /ˌkʌstəm ˈteɪləd/ | adjective | được may đo riêng | A custom-tailored shirt usually fits the customer better than a ready-made one.
+rustic orchard | /ˌrʌstɪk ˈɔːtʃəd/ | noun phrase | vườn cây ăn trái mộc mạc, đậm chất quê | Tourists can visit a rustic orchard and enjoy fresh fruit in a peaceful setting.
+floating market | /ˈfləʊtɪŋ ˌmɑːkɪt/ | noun phrase | chợ nổi | A floating market allows local people to sell fruit, food, and other goods from boats.
+week-long tailoring turnaround | /ˌwiːk lɒŋ ˈteɪlərɪŋ ˈtɜːnəraʊnd/ | noun phrase | thời gian hoàn thành may đo kéo dài một tuần | A week-long tailoring turnaround may be too slow for tourists who stay only a few days.
+impractical | /ɪmˈpræktɪkl/ | adjective | không thực tế, bất tiện | A long waiting time can be impractical for visitors with a short travel schedule.
+address | /əˈdres/ | verb | giải quyết, xử lý | Local tailors need to address the problem of long waiting times for tourists.
+family-run tailoring ateliers | /ˌfæməli rʌn ˈteɪlərɪŋ əˈtelieɪz/ | plural noun phrase | các xưởng may gia đình | Family-run tailoring ateliers often pass sewing skills from one generation to the next.
+wharf | /wɔːf/ | noun | cầu cảng, bến tàu | Tourists can meet their boat guide at the wharf early in the morning.
+configure | /kənˈfɪɡə(r)/ | verb | sắp xếp, thiết lập | Shop owners can configure the service to suit visitors with different travel schedules.
+excursionist | /ɪkˈskɜːʃənɪst/ | noun | khách đi tham quan ngắn ngày | An excursionist may visit the town for only one day and return in the evening.
+place an order | /pleɪs ən ˈɔːdə(r)/ | verb phrase | đặt hàng | Visitors can place an order in the morning and collect the clothes later that day.
+waterway | /ˈwɔːtəweɪ/ | noun | đường thủy, tuyến đường sông nước | Boats travel along the waterway to carry people and goods between villages.
+finished bespoke garments | /ˈfɪnɪʃt bɪˈspəʊk ˈɡɑːmənts/ | plural noun phrase | quần áo may đo hoàn chỉnh | Customers can collect their finished bespoke garments after the tailor completes the final check.
+boutique shop | /buːˈtiːk ʃɒp/ | noun phrase | cửa hàng thời trang nhỏ, cao cấp | A boutique shop may sell handmade clothes and special local designs.
+the central riverfront area | /ðə ˌsentrəl ˈrɪvəfrʌnt ˈeəriə/ | noun phrase | khu vực trung tâm ven sông | Many visitors walk around the central riverfront area to shop, eat, and enjoy the view.
+this express garment craft | /ðɪs ɪkˌspres ˈɡɑːmənt krɑːft/ | noun phrase | nghề may quần áo nhanh này | This express garment craft can attract tourists who want custom clothes in a short time.
+a veteran seamstress | /ə ˈvetərən ˈsiːmstrəs/ | noun phrase | nữ thợ may lâu năm, giàu kinh nghiệm | A veteran seamstress can make traditional clothes quickly because she has many years of experience.
+operate | /ˈɒpəreɪt/ | verb | vận hành, hoạt động | Small family businesses can operate near the riverfront and serve both locals and tourists.
+customize | /ˈkʌstəmaɪz/ | verb | tùy chỉnh, làm theo yêu cầu | Tailors can customize the colour, size, and design for each customer.
+the tailoring charge | /ðə ˈteɪlərɪŋ tʃɑːdʒ/ | noun phrase | phí may đo | The tailoring charge may depend on the fabric, design, and amount of work required.
+substantial | /səbˈstænʃəl/ | adjective | đáng kể, khá lớn | A substantial increase in tourist numbers can bring more income to local businesses.
+patron | /ˈpeɪtrən/ | noun | khách hàng; người bảo trợ | A regular patron may return to the same tailor because of good service and quality.
+hail | /heɪl/ | verb | ca ngợi, tôn vinh là | Visitors may hail the service as a creative way to experience local culture.
+natural linen | /ˈnætʃrəl ˈlɪnɪn/ | noun phrase | vải lanh tự nhiên | Natural linen is light and comfortable, so it is suitable for hot weather.
+soft silk textiles | /sɒft sɪlk ˈtekstaɪlz/ | plural noun phrase | các loại vải lụa mềm | Local shops may sell soft silk textiles in many colours and traditional patterns.
+adorned with | /əˈdɔːnd wɪð/ | adjective phrase | được trang trí bằng | The dress is adorned with small flowers and hand-painted traditional designs.
+representative | /ˌreprɪˈzentətɪv/ | adjective | tiêu biểu, đại diện | This outfit is representative of the traditional clothing of the region.
+tailoring model | /ˈteɪlərɪŋ ˈmɒdl/ | noun phrase | mô hình may đo | A fast tailoring model can help shops serve tourists who have limited time.
+artisan | /ˌɑːtɪˈzæn/ | noun | thợ thủ công lành nghề | An artisan can create beautiful products by using traditional hand techniques.
+elevate | /ˈelɪveɪt/ | verb | nâng cao, đưa lên tầm cao hơn | Tourism can elevate traditional tailoring and make it more valuable to younger generations.
+household earnings | /ˈhaʊshəʊld ˈɜːnɪŋz/ | plural noun phrase | thu nhập hộ gia đình | Tourism can increase household earnings for families that make and sell traditional clothes.
+regional seamstresses | /ˈriːdʒənl ˈsiːmstrɪsɪz/ | plural noun | các nữ thợ may trong vùng | Regional seamstresses can share skills and produce clothes for local shops and tourists.
+fabric weaver | /ˈfæbrɪk ˈwiːvə(r)/ | noun phrase | thợ dệt vải | A fabric weaver uses traditional methods to produce cloth for local tailors.
+cultural hub | /ˈkʌltʃərəl hʌb/ | noun phrase | trung tâm văn hóa | The riverside town can become a cultural hub for traditional crafts, food, and tourism.
+ancestral attire | /ænˈsestrəl əˈtaɪə(r)/ | noun phrase | trang phục truyền thống của tổ tiên | Young people may wear ancestral attire during festivals and important family events.
+vibrant | /ˈvaɪbrənt/ | adjective | sôi động, đầy sức sống | The market is vibrant in the morning, with colourful boats, food stalls, and many visitors.
+contemporary commerce | /kənˌtempərəri ˈkɒmɜːs/ | noun phrase | thương mại hiện đại | Traditional crafts can become part of contemporary commerce through online shops and tourism.
+encapsulate | /ɪnˈkæpsjuleɪt/ | verb | thể hiện cô đọng, bao hàm | Traditional clothes can encapsulate the history, lifestyle, and values of a community.
+riverine communities | /ˈrɪvəraɪn kəˈmjuːnətiz/ | plural noun phrase | các cộng đồng sống ven sông | Riverine communities often depend on boats, fishing, markets, and waterways in daily life.
+a timeless hallmark | /ə ˈtaɪmləs ˈhɔːlmɑːk/ | noun phrase | nét đặc trưng vượt thời gian | Handmade silk clothing remains a timeless hallmark of the region’s traditional culture.
+repackaged | /ˌriːˈpækɪdʒd/ | adjective | được làm mới, đóng gói/giới thiệu lại | Traditional clothing can be repackaged as a modern tourist product without losing its cultural meaning.
+mass-produced | /ˌmæs prəˈdjuːst/ | adjective | được sản xuất hàng loạt | Mass-produced clothes are usually cheaper than handmade or custom-made garments.
+custom-made | /ˌkʌstəm ˈmeɪd/ | adjective | được làm theo yêu cầu, may đo riêng | A custom-made dress can fit the customer better than a ready-made one.
+hand-painted lotus motifs | /ˌhænd peɪntɪd ˈləʊtəs məʊˈtiːfs/ | plural noun phrase | họa tiết hoa sen vẽ tay | The silk dress has hand-painted lotus motifs that make each piece look special.
+livelihoods | /ˈlaɪvlihʊdz/ | plural noun | sinh kế | Traditional crafts provide livelihoods for many families in rural communities.
+tourism appeal | /ˈtʊərɪzəm əˈpiːl/ | noun phrase | sức hấp dẫn du lịch | Local food and traditional clothing can increase the tourism appeal of a small town.
+revitalize | /ˌriːˈvaɪtəlaɪz/ | verb | làm hồi sinh, khôi phục sức sống | Tourism can revitalize an old craft by creating new jobs and attracting younger workers.
+heritage attire | /ˈherɪtɪdʒ əˈtaɪə(r)/ | noun phrase | trang phục di sản, trang phục truyền thống | Heritage attire can help visitors understand the history and identity of a community.
+mandate | /ˈmændeɪt/ | verb | bắt buộc, quy định | Local authorities may mandate safety rules for boats that carry tourists.
+hand techniques | /hænd tekˈniːks/ | plural noun phrase | kỹ thuật thủ công | Skilled artisans use hand techniques to sew, paint, and decorate traditional garments.
+revenue | /ˈrevənjuː/ | noun | doanh thu, nguồn thu | Tourism can bring extra revenue to tailors, boat operators, and local shops.
+overseas | /ˌəʊvəˈsiːz/ | adverb/adjective | ở nước ngoài, ra nước ngoài | Local businesses can sell handmade clothing overseas through online platforms.
+riverside ateliers | /ˈrɪvəsaɪd əˈtelieɪz/ | plural noun phrase | các xưởng thủ công/may bên sông | Tourists can visit riverside ateliers to watch local people make traditional clothes.
+solely | /ˈsəʊlli/ | adverb | chỉ, hoàn toàn chỉ | Some families depend solely on traditional craft work for their income.
+weaving families | /ˈwiːvɪŋ ˈfæməliz/ | plural noun phrase | các gia đình làm nghề dệt | Weaving families often teach traditional skills to their children and grandchildren.
+vulnerable | /ˈvʌlnərəbl/ | adjective | dễ bị tổn thương, dễ gặp rủi ro | Small traditional businesses can be vulnerable when tourism decreases suddenly.
+sturdy | /ˈstɜːdi/ | adjective | chắc chắn, bền | A sturdy fabric can last for many years even with regular use.
+vigorous | /ˈvɪɡərəs/ | adjective | mạnh mẽ, đầy sức sống | The town has a vigorous craft industry with many active shops and skilled workers.
+embark on | /ɪmˈbɑːk ɒn/ | phrasal verb | bắt đầu, bắt tay vào | Visitors can embark on a morning boat trip before they visit the tailoring shops.
+assemble | /əˈsembl/ | verb | lắp ráp, tập hợp, ghép lại | Workers can assemble the different parts of a garment after they cut the fabric.
+exclusively | /ɪkˈskluːsɪvli/ | adverb | hoàn toàn, chỉ dành riêng | Some small shops sell exclusively handmade products from local artisans.
+in favor of | /ɪn ˈfeɪvər əv/ | phrase | ủng hộ, thiên về | Many visitors are in favor of handmade clothing because it supports local workers.
+be required to | /bi rɪˈkwaɪəd tuː/ | verb phrase | được yêu cầu, bắt buộc phải | Boat operators may be required to follow safety rules before they carry tourists.
+take a morning boat excursion | /teɪk ə ˈmɔːnɪŋ bəʊt ɪkˈskɜːʃən/ | verb phrase | tham gia chuyến tham quan bằng thuyền buổi sáng | Visitors can take a morning boat excursion and explore the local waterways before lunch.
+qualify for | /ˈkwɒlɪfaɪ fɔː(r)/ | verb phrase | đủ điều kiện cho | Small businesses may qualify for financial support if they protect traditional crafts.
+afternoon garment pickup | /ˌɑːftəˈnuːn ˈɡɑːmənt ˌpɪkʌp/ | noun phrase | việc nhận quần áo vào buổi chiều | Afternoon garment pickup allows tourists to collect their clothes before leaving the town.
+ready-made attire | /ˌredi meɪd əˈtaɪə(r)/ | noun phrase | quần áo may sẵn | Ready-made attire is usually quicker to buy than clothing made specially for one customer.
+canal | /kəˈnæl/ | noun | kênh đào | A narrow canal connects the village with the larger river and nearby markets.
+a canal excursion | /ə kəˈnæl ɪkˈskɜːʃən/ | noun phrase | chuyến tham quan trên kênh | A canal excursion gives tourists a chance to see riverside homes and local businesses.
+retrieve | /rɪˈtriːv/ | verb | lấy lại, nhận lại | Customers can retrieve their finished clothes from the shop in the afternoon.
+cruise | /kruːz/ | verb | đi du ngoạn bằng thuyền | Visitors can cruise along the canal and enjoy the peaceful riverside scenery.
+competitive | /kəmˈpetətɪv/ | adjective | có tính cạnh tranh; có giá cạnh tranh | Local tailors need competitive prices if they want to attract more tourists.
+cherish | /ˈtʃerɪʃ/ | verb | trân trọng, gìn giữ | Local families cherish traditional clothing because it connects them with their history.
+synthetic imported fibers | /sɪnˌθetɪk ɪmˈpɔːtɪd ˈfaɪbəz/ | plural noun phrase | sợi tổng hợp nhập khẩu | Some factories use synthetic imported fibers because they can be cheaper than natural silk.
+high tailoring expenses | /haɪ ˈteɪlərɪŋ ɪkˌspensɪz/ | plural noun phrase | chi phí may đo cao | High tailoring expenses can make custom-made clothing too expensive for some customers.
+the primary draw for | /ðə ˈpraɪməri drɔː fɔː(r)/ | noun phrase | điểm thu hút chính đối với | Traditional tailoring can be the primary draw for tourists who want a unique cultural experience.
+The Ultimate Travel Attraction | /ði ˈʌltɪmət ˈtrævl əˌtrækʃən/ | noun phrase / title | điểm thu hút du lịch tuyệt vời nhất | The floating market may become the ultimate travel attraction for visitors who enjoy local culture.
+A Historical Evolution | /ə hɪˈstɒrɪkl ˌiːvəˈluːʃən/ | noun phrase / title | một quá trình phát triển lịch sử | A Historical Evolution can describe how traditional clothing changes over many generations.
+        `;
+
+        function parseData(raw) {
+            const lines = raw.trim().split('\n');
+            const result = [];
+            lines.forEach(line => {
+                if(!line.trim()) return;
+                const parts = line.split('|');
+                if (parts.length >= 5) {
+                    result.push({
+                        word: parts[0].trim(),
+                        phonetic: parts[1].trim(),
+                        type: parts[2].trim(),
+                        mean: parts[3].trim(),
+                        ex: parts[4].trim()
+                    });
+                }
+            });
+            return result;
+        }
+
+        const flashcards = parseData(rawVocab);
+
+        let currentIndex = 0;
+        let hintedWords = new Set();
+        let hintUsedThisCard = false;
+        let startTime = null;
+        let timerId = null;
+        let isMusicPlaying = false;
+        let isTransitioning = false; 
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=cinematic-documentary-115669.mp3'); 
+        bgMusic.loop = true; bgMusic.volume = 0.1;
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                const playTone = (oscType, freq1, freq2, vol, dur) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = oscType;
+                    osc.frequency.setValueAtTime(freq1, now);
+                    if (freq1 !== freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+                    gain.gain.setValueAtTime(vol, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+                    osc.start(now); osc.stop(now + dur);
+                };
+                if (type === 'start') playTone('sine', 440, 660, 0.1, 0.4); 
+                else if (type === 'success') { playTone('sine', 600, 800, 0.1, 0.1); setTimeout(()=>playTone('triangle', 800, 1200, 0.1, 0.2), 100); }
+                else if (type === 'error') playTone('sawtooth', 200, 100, 0.1, 0.3); 
+                else if (type === 'flip') playTone('sine', 350, 250, 0.05, 0.15); 
+            } catch (e) { console.log("Audio play error", e); }
+        }
+
+        function speakCurrentWord(e) {
+            if (e) e.stopPropagation();
+            try {
+                window.speechSynthesis.cancel();
+                let rawWord = flashcards[currentIndex].word;
+                
+                // Smart filter to replace hyphens and slashes for smooth reading
+                let wordToSpeak = rawWord.replace(/[-]/g, ' ').replace(/\//g, ' or ').trim();
+                
+                const utter = new SpeechSynthesisUtterance(wordToSpeak);
+                utter.lang = 'en-US'; 
+                utter.rate = 0.85; 
+                
+                let voices = window.speechSynthesis.getVoices();
+                let femaleUS = voices.find(v => v.lang.startsWith('en-US') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')));
+                
+                if(femaleUS) {
+                    utter.voice = femaleUS;
+                    window.speechSynthesis.speak(utter);
+                } else {
+                    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(wordToSpeak)}`;
+                    const audio = new Audio(audioUrl);
+                    audio.play().catch(() => window.speechSynthesis.speak(utter));
+                }
+            } catch (error) {
+                console.log("TTS Error:", error);
+            }
+        }
+
+        if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => {};
+
+        function populateWelcomeTable() {
+            const tbody = document.getElementById('welcome-table-body');
+            tbody.innerHTML = flashcards.map((item, idx) => {
+                return `
+                <tr class="hover:bg-pink-50 transition-colors border-b border-gray-100">
+                    <td class="p-4 font-theme text-gray-900 text-[15px] font-bold">
+                        <span class="text-gray-400 text-xs mr-2 font-inter">#${(idx+1).toString().padStart(2, '0')}</span>${item.word}
+                    </td>
+                    <td class="p-4 text-center">
+                        <span class="px-2 py-0.5 bg-pink-100 text-pink-800 border border-pink-200 text-[10px] font-inter uppercase tracking-[0.1em] rounded-full">${item.type}</span>
+                        <br><span class="text-[11px] text-gray-500 mt-1 inline-block font-medium">${item.phonetic}</span>
+                    </td>
+                    <td class="p-4 text-gray-600 text-sm leading-relaxed">${item.mean}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function startStudy() {
+            playSound('start');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            startTimer();
+            renderCard();
+            if(window.speechSynthesis.getVoices().length === 0) window.speechSynthesis.onvoiceschanged = () => {};
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) { bgMusic.pause(); icon.textContent = '🔇'; }
+            else { bgMusic.play().catch(e => console.log(e)); icon.textContent = '🎵'; }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startTimer() {
+            if (timerId) clearInterval(timerId);
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime) / 1000);
+                const m = Math.floor(diff/60).toString().padStart(2, '0');
+                const s = (diff%60).toString().padStart(2, '0');
+                document.getElementById('timer-display').textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function isLetter(char) { return /[a-zA-Z]/.test(char); }
+
+        function renderCard() {
+            const card = flashcards[currentIndex];
+            hintUsedThisCard = false;
+            document.getElementById('hint-btn').disabled = false;
+            
+            document.getElementById('word-mean').textContent = card.mean;
+            document.getElementById('word-type').textContent = card.type;
+            
+            let displayEx = card.ex;
+            let matchStr = card.word;
+            
+            let cleanTarget = matchStr.replace(/[-/()]/g, ' ').replace(/[^a-zA-Z\s]/g, '').trim();
+            let wordsToHide = cleanTarget.split(' ').filter(w => w.length > 0);
+            
+            let regexStr = wordsToHide.map(w => w + '[a-z]*').join('\\s*[-/]?\\s*');
+            let regex = new RegExp(`\\b${regexStr}\\b`, 'gi');
+            
+            if (!displayEx.match(regex)) {
+                let firstWord = wordsToHide[0];
+                regex = new RegExp(`\\b${firstWord}[a-z]*\\b`, 'gi');
+            }
+
+            let letterCount = matchStr.replace(/[^a-zA-Z]/g, '').length;
+            let underlineWidth = letterCount < 5 ? 'w-16' : (letterCount < 10 ? 'w-24' : (letterCount < 18 ? 'w-40' : (letterCount < 25 ? 'w-56' : 'w-72')));
+            let blankHtml = `<span class="inline-block ${underlineWidth} h-4 border-b-2 mx-1 align-baseline opacity-50" style="border-color: var(--accent-primary);"></span>`;
+            
+            displayEx = displayEx.replace(regex, blankHtml);
+            document.getElementById('word-ex').innerHTML = displayEx;
+            
+            const container = document.getElementById('letter-inputs-container');
+            container.innerHTML = '';
+            
+            const group = document.createElement('div');
+            group.className = 'flex flex-wrap gap-[2px] sm:gap-[4px] justify-center max-w-full leading-loose items-center';
+            
+            for (let i = 0; i < matchStr.length; i++) {
+                let char = matchStr[i];
+                if (!isLetter(char)) {
+                    if (char === ' ') {
+                        const space = document.createElement('div'); 
+                        space.className = 'w-3 sm:w-4 flex items-center justify-center';
+                        group.appendChild(space);
+                    } else {
+                        const symbol = document.createElement('span');
+                        symbol.textContent = char;
+                        symbol.className = 'fixed-symbol';
+                        group.appendChild(symbol);
+                    }
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text'; input.maxLength = 1;
+                    input.className = 'char-input editable-input';
+                    input.autocomplete = "off"; input.autocapitalize="off"; input.spellcheck = false;
+                    
+                    input.addEventListener('input', function() {
+                        this.value = this.value.toLowerCase();
+                        this.classList.remove('error');
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(this.value && idx < inputs.length - 1) {
+                            let next = idx + 1;
+                            while(next < inputs.length && inputs[next].readOnly) next++;
+                            if(next < inputs.length) inputs[next].focus();
+                        }
+                    });
+
+                    input.addEventListener('keydown', function(e) {
+                        const inputs = Array.from(document.querySelectorAll('.editable-input'));
+                        const idx = inputs.indexOf(this);
+                        if(e.key === 'Backspace' && !this.value && idx > 0) {
+                            let prev = idx - 1;
+                            while(prev >= 0 && inputs[prev].readOnly) prev--;
+                            if(prev >= 0) { inputs[prev].focus(); inputs[prev].value = ''; }
+                        }
+                    });
+                    group.appendChild(input);
+                }
+            }
+            container.appendChild(group);
+
+            setTimeout(() => document.querySelector('.editable-input')?.focus(), 150);
+            
+            const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1}/${flashcards.length}`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            
+            if(currentIndex === 0) {
+                document.getElementById('top-prev-btn').style.display = 'none';
+                document.getElementById('top-prev-placeholder').style.display = 'block';
+            } else {
+                document.getElementById('top-prev-btn').style.display = 'flex';
+                document.getElementById('top-prev-placeholder').style.display = 'none';
+            }
+        }
+
+        function giveHint() {
+            if(hintUsedThisCard) return;
+            const rawWord = flashcards[currentIndex].word;
+            
+            const target = rawWord.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            const inputs = document.querySelectorAll('.char-input.editable-input');
+            
+            let pool = [];
+            for(let i=0; i<inputs.length; i++) {
+                if(!inputs[i].readOnly && inputs[i].value.toLowerCase() !== target[i]) pool.push(i);
+            }
+            
+            if(pool.length === 0) return;
+            const count = Math.max(1, Math.floor(target.length * 0.4)); 
+            
+            for(let i=0; i<Math.min(count, pool.length); i++) {
+                const rand = Math.floor(Math.random() * pool.length);
+                const idx = pool.splice(rand, 1)[0];
+                inputs[idx].value = target[idx];
+                inputs[idx].readOnly = true;
+                inputs[idx].classList.add('hinted');
+            }
+            hintUsedThisCard = true;
+            hintedWords.add(flashcards[currentIndex].word);
+            document.getElementById('hint-btn').disabled = true;
+        }
+
+        function normalizeString(str) { return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+
+        function checkAnswer() {
+            if(isTransitioning) return; 
+            
+            const card = flashcards[currentIndex];
+            const rawWord = card.word;
+            
+            const target = normalizeString(rawWord.replace(/[^a-zA-Z]/g, ''));
+            const inputs = document.querySelectorAll('.char-input.editable-input');
+            const user = normalizeString(Array.from(inputs).map(i => i.value).join(''));
+            
+            if(user === target) {
+                playSound('success');
+                isTransitioning = true;
+                
+                const seal = document.getElementById('result-seal');
+                if (hintUsedThisCard) {
+                    seal.textContent = "ASSISTED";
+                    seal.style.color = "var(--alert-red)"; 
+                    seal.style.borderColor = "var(--alert-red)";
+                } else {
+                    seal.textContent = "VERIFIED";
+                    seal.style.color = "var(--accent-primary)"; 
+                    seal.style.borderColor = "var(--accent-primary)";
+                }
+                
+                document.getElementById('back-word').textContent = rawWord;
+                document.getElementById('back-phonetic').textContent = card.phonetic;
+                document.getElementById('back-mean').textContent = card.mean;
+                
+                let backExStr = card.ex;
+                let cleanTarget = rawWord.replace(/[-/()]/g, ' ').replace(/[^a-zA-Z\s]/g, '').trim();
+                let wordsToHide = cleanTarget.split(' ').filter(w => w.length > 0);
+                
+                let regexStr = wordsToHide.map(w => w + '[a-z]*').join('\\s*[-/]?\\s*');
+                let regex = new RegExp(`\\b${regexStr}\\b`, 'gi');
+                
+                if (!backExStr.match(regex)) {
+                    let firstWord = wordsToHide[0];
+                    regex = new RegExp(`\\b${firstWord}[a-z]*\\b`, 'gi');
+                }
+                
+                backExStr = backExStr.replace(regex, match => `<span class="highlighter">${match}</span>`);
+                document.getElementById('back-ex').innerHTML = backExStr;
+                
+                document.getElementById('flashcard').classList.add('flipped');
+
+                // Auto-play TTS on exactly the moment it flips
+                speakCurrentWord();
+
+                setTimeout(() => { document.getElementById('next-btn').focus(); isTransitioning = false; }, 750);
+            } else {
+                playSound('error');
+                const container = document.getElementById('letter-inputs-container');
+                container.classList.add('shake-error');
+                setTimeout(() => container.classList.remove('shake-error'), 400);
+                
+                inputs.forEach((input, idx) => {
+                    if(!input.readOnly && input.value && normalizeString(input.value) !== target[idx]) {
+                        input.classList.add('error');
+                    }
+                });
+            }
+        }
+
+        function nextCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                if(currentIndex < flashcards.length - 1) { currentIndex++; renderCard(); }
+                else showFinal();
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function prevCard() {
+            if(isTransitioning) return;
+            isTransitioning = true; playSound('flip');
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => { 
+                if(currentIndex > 0) { currentIndex--; renderCard(); } 
+                isTransitioning = false;
+            }, 500);
+        }
+
+        function showFinal() {
+            clearInterval(timerId);
+            const totalSec = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(totalSec/60); const s = totalSec%60;
+            
+            const totalWords = flashcards.length;
+            const correctWords = totalWords - hintedWords.size;
+            const scorePercentage = Math.round((correctWords / totalWords) * 100);
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'flex';
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour:'2-digit', minute:'2-digit' }).toUpperCase();
+            document.getElementById('completion-datetime').textContent = `TRACKING COMPLETED: ${dateString}`;
+            
+            const scoreEl = document.getElementById('score-percent');
+            scoreEl.textContent = `${scorePercentage}%`;
+            if (scorePercentage < 100) {
+                scoreEl.style.color = "var(--alert-red)";
+            }
+            
+            document.getElementById('elapsed-time').textContent = (m > 0 ? `${m}m ` : '') + `${s}s`;
+            document.getElementById('correct-count').textContent = `${correctWords}/${totalWords}`;
+            document.getElementById('hint-count').textContent = hintedWords.size;
+            
+            const tbody = document.getElementById('final-review-table-body');
+            tbody.innerHTML = flashcards.map(item => {
+                const usedHint = hintedWords.has(item.word);
+                const statusIcon = usedHint 
+                    ? '<span class="text-alert-red font-bold font-inter uppercase text-[10px] tracking-[0.1em] border border-red-200 bg-red-50 px-2 py-0.5 rounded-full">ASSISTED</span>' 
+                    : '<span class="font-bold font-inter uppercase text-[10px] tracking-[0.1em] border border-pink-200 bg-pink-50 px-2 py-0.5 rounded-full" style="color: var(--accent-primary);">VERIFIED</span>';
+                
+                return `
+                    <tr class="hover:bg-gray-50 border-b border-gray-100 transition-colors">
+                        <td class="p-4 text-center">${statusIcon}</td>
+                        <td class="p-4 font-bold text-gray-900 text-[15px] font-theme">${item.word}</td>
+                        <td class="p-4 text-gray-600 text-sm font-inter font-medium">${item.mean}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetQuizToSummary() {
+            currentIndex = 0; hintedWords.clear();
+            document.getElementById('final-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'flex';
+            populateWelcomeTable(); 
+            document.querySelector('#welcome-screen .overflow-auto').scrollTop = 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { populateWelcomeTable(); });
+
+        document.addEventListener('keydown', e => {
+            if(document.getElementById('main-content').style.display === 'none') return;
+            if(e.altKey && e.key.toLowerCase() === 'h') { e.preventDefault(); giveHint(); }
+            if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); speakCurrentWord(); }
+            if(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault(); 
+                if(isTransitioning) return; 
+                if (document.getElementById('flashcard').classList.contains('flipped')) nextCard(); 
+                else checkAnswer(); 
+            }
+        });
+    </script>
+</body>
+</html>
