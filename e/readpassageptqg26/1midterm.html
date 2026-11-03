@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KỲ THI THPTQG 2026 - PASSAGE 1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS cho thanh cuộn */
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        #passage-container::-webkit-scrollbar, #questions-container::-webkit-scrollbar { width: 8px; }
+        #passage-container::-webkit-scrollbar-track, #questions-container::-webkit-scrollbar-track { background: transparent; }
+        #passage-container::-webkit-scrollbar-thumb, #questions-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; border: 2px solid white; }
+    </style>
+</head>
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+    
+    <div id="app" class="flex flex-col h-full w-full"></div>
+
+    <script>
+        const quizData = [
+          {
+            title: "Reading Comprehension - Cultural Traditions in Vietnam",
+            instruction: "Read the passage and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions.",
+            passage: "In Vietnam, various ethnic groups celebrate unique cultural traditions that strengthen their sense of solidarity and cultural identity.\n\nThe Tet festival, widely celebrated by the Kinh ethnic group, marks the Vietnamese New Year and is a time for family reunions and paying respects to ancestors. The Hmong ethnic group celebrates its New Year, known as “Tet Hmong,” with vibrant festivities including traditional dances and rituals to scare away evil spirits. Meanwhile, the Tay ethnic group celebrates “Long Tong” to honour the rice harvest, emphasising community spirit and gratitude towards nature.\n\nThese celebrations serve as vital occasions for ethnic groups to reaffirm their cultural heritage and strengthen bonds within their communities. Through the preservation and continuation of these celebrations, Vietnam’s ethnic groups maintain a deep connection to their roots and contribute to the richness of cultural diversity in the country.",
+            passageTranslation: "Ở Việt Nam, các nhóm dân tộc khác nhau tổ chức các truyền thống văn hóa độc đáo giúp củng cố ý thức đoàn kết và bản sắc văn hóa của họ.\n\nTết Nguyên đán, được tổ chức rộng rãi bởi dân tộc Kinh, đánh dấu Năm mới của Việt Nam và là thời gian để đoàn tụ gia đình và bày tỏ lòng thành kính với tổ tiên. Dân tộc Mông tổ chức Năm mới của họ, được gọi là “Tết Mông”, với các lễ hội sôi động bao gồm các điệu múa truyền thống và các nghi lễ để xua đuổi tà ma. Trong khi đó, dân tộc Tày tổ chức lễ hội “Lồng Tồng” để tôn vinh vụ thu hoạch lúa, nhấn mạnh tinh thần cộng đồng và lòng biết ơn đối với thiên nhiên.\n\nNhững lễ kỷ niệm này đóng vai trò là những dịp quan trọng để các nhóm dân tộc tái khẳng định di sản văn hóa của họ và củng cố các mối quan hệ trong cộng đồng. Thông qua việc bảo tồn và duy trì những lễ hội này, các nhóm dân tộc của Việt Nam duy trì mối liên hệ sâu sắc với cội nguồn của họ và góp phần vào sự phong phú của đa dạng văn hóa ở đất nước.",
+            questions: [
+              { id: 91, text: "Question 91. The word “marks” in paragraph 2 mostly means ________.", options: ["appreciates", "blends", "indicates", "overcomes"], correct: 2, explanation: "Từ 'marks' trong ngữ cảnh này mang nghĩa là đánh dấu, biểu thị. Đồng nghĩa với 'indicates' (chỉ ra, biểu thị)." },
+              { id: 92, text: "Question 92. According to paragraph 2, how does the Hmong ethnic group celebrate its New Year?", options: ["They have a small family gathering only.", "They hold a rice-cooking contest.", "They visit pagodas to worship their ancestors.", "They have traditional dances and rituals."], correct: 3, explanation: "Đoạn 2 nêu rõ: 'The Hmong ethnic group celebrates its New Year... with vibrant festivities including traditional dances and rituals...' (Dân tộc Mông tổ chức Năm mới... với các điệu múa truyền thống và nghi lễ)." },
+              { id: 93, text: "Question 93. The word “their” in paragraph 3 refers to ________.", options: ["occasions", "ethnic groups", "celebrations", "communities"], correct: 1, explanation: "Trong câu: 'These celebrations serve as vital occasions for ethnic groups to reaffirm their cultural heritage...', từ 'their' thay thế cho 'ethnic groups' (các nhóm dân tộc)." },
+              { id: 94, text: "Question 94. How can Vietnam’s ethnic groups maintain a deep connection to their roots?", options: ["By destroying the celebrations.", "By stopping the festivals.", "Through the preservation and continuation of the celebrations.", "Through the cancellation of the celebrations."], correct: 2, explanation: "Đoạn cuối nêu rõ: 'Through the preservation and continuation of these celebrations, Vietnam’s ethnic groups maintain a deep connection to their roots...'" },
+              { id: 95, text: "Question 95. Which of the following is NOT true according to the passage?", options: ["Long Tong honours the rice harvest.", "The Hmong New Year includes traditional dances and rituals.", "These celebrations weaken bonds within ethnic communities.", "Tet is a time for family reunions and paying respects to ancestors."], correct: 2, explanation: "Đoạn 3 nói rằng: 'These celebrations serve as vital occasions for ethnic groups to... strengthen bonds within their communities'. Do đó, việc nói 'làm suy yếu các mối quan hệ' (weaken bonds) là KHÔNG đúng." }
+            ]
+          }
+        ];
+
+        // State quản lý
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        // Hàm render giao diện chính
+        function renderApp() {
+            const app = document.getElementById('app');
+            const answeredCount = Object.keys(state.answers).length;
+            const currentSection = quizData[state.currentPartIndex];
+            
+            // Lưu vị trí cuộn
+            const qContainer = document.getElementById('questions-container');
+            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+                            <i class="fa-regular fa-file-lines text-blue-600"></i>
+                            Bài Đọc Hiểu - Cultural Traditions
+                        </h1>
+                        <p class="text-sm text-slate-500">Mã đề: 03 | Thời gian làm bài: 15 phút</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200 hidden md:block">
+                        Đã làm: ${answeredCount} / ${totalQuestions}
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted ? `
+                    <div class="flex-none bg-white p-4 rounded-xl border border-green-200 shadow-sm flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-4 animate-in fade-in duration-500">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-circle-check text-green-500 text-4xl"></i>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
+                                <p class="text-slate-600 text-sm">
+                                    Số câu đúng: <strong class="text-green-600 text-lg">${state.score}</strong> / ${totalQuestions} &nbsp;—&nbsp; 
+                                    <span class="italic hidden md:inline">Nhấn "Xem giải thích chi tiết" ở mỗi câu để tự học nhé.</span>
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="resetQuiz()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow font-medium">
+                            Làm lại bài thi
+                        </button>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-sm md:text-base font-bold text-blue-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-[11px] md:text-xs text-slate-600 mt-0.5 italic line-clamp-1">${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <span class="flex-none text-[11px] md:text-xs font-bold text-slate-700 bg-white border border-slate-300 px-2 py-1 rounded shadow-sm whitespace-nowrap ml-2">
+                                Phần ${state.currentPartIndex + 1}/${quizData.length}
+                            </span>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC TẠI ĐÂY -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/80 border-b-[3px] md:border-b-0 md:border-r-[3px] border-blue-200 p-4 md:p-6 lg:p-8 shadow-inner">
+                                <div class="text-slate-800 leading-relaxed whitespace-pre-wrap text-[15px] md:text-base font-medium text-justify ${state.showPassageTranslation ? 'italic' : ''}">
+                                    ${state.showPassageTranslation ? currentSection.passageTranslation : currentSection.passage}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 lg:p-8 bg-white">
+                                <div class="max-w-5xl mx-auto space-y-5">
+                                    ${currentSection.questions.map(q => renderQuestion(q)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-8 pb-8">
+                                        <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-blue-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-none flex justify-between items-center bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                            <button onclick="changePart(${Math.max(0, state.currentPartIndex - 1)})" ${state.currentPartIndex === 0 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-white text-slate-700 border border-slate-300 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition font-medium text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                &larr; Quay lại
+                            </button>
+                            <button onclick="changePart(${Math.min(quizData.length - 1, state.currentPartIndex + 1)})" ${state.currentPartIndex === quizData.length - 1 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-blue-600 text-white border border-blue-600 rounded hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition font-bold text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                Tiếp theo &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Tiến độ (${answeredCount}/${totalQuestions})</span>
+                            ${!state.isSubmitted ? `
+                            <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-blue-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                                const isAnswered = state.answers[q.id] !== undefined;
+                                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+                                
+                                if (!state.isSubmitted) {
+                                    btnClass += isAnswered 
+                                    ? "bg-blue-600 text-white border-blue-600 shadow-sm" 
+                                    : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                                } else {
+                                    const isCorrect = state.answers[q.id] === q.correct;
+                                    btnClass += isCorrect 
+                                    ? "bg-green-500 text-white border-green-500 shadow-sm" 
+                                    : "bg-red-500 text-white border-red-500 shadow-sm";
+                                }
+
+                                return `<button onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
+
+            // Phục hồi scroll
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = scrollPos;
+        }
+
+        // Render từng câu hỏi
+        function renderQuestion(q) {
+            const isAnswered = state.answers[q.id] !== undefined;
+            const isCorrect = state.answers[q.id] === q.correct;
+            const showExp = state.expandedExplanations[q.id];
+
+            let containerClass = `p-4 md:p-5 rounded-xl border transition-all `;
+            if (state.isSubmitted) {
+                containerClass += isCorrect ? 'bg-green-50/50 border-green-200' : 'bg-red-50/50 border-red-200';
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-blue-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            let optionsHtml = q.options.map((option, optIdx) => {
+                const isSelected = state.answers[q.id] === optIdx;
+                const isOptionCorrect = optIdx === q.correct;
+                
+                let optionClass = "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ";
+                let iconHtml = '';
+
+                if (!state.isSubmitted) {
+                    optionClass += isSelected 
+                    ? "bg-blue-50 border-blue-400 shadow-sm" 
+                    : "bg-white border-slate-200 hover:bg-slate-50";
+                } else {
+                    optionClass += "cursor-default ";
+                    if (isOptionCorrect) {
+                        optionClass += "bg-green-100 border-green-500 font-medium ";
+                        iconHtml = `<i class="fa-solid fa-check text-green-600 mt-1"></i>`;
+                    } else if (isSelected && !isOptionCorrect) {
+                        optionClass += "bg-red-100 border-red-400 ";
+                        iconHtml = `<i class="fa-solid fa-xmark text-red-500 mt-1"></i>`;
+                    } else {
+                        optionClass += "bg-white/50 border-slate-200 opacity-60 ";
+                    }
+                }
+
+                let circleClass = `w-6 h-6 shrink-0 rounded-full border-2 flex items-center justify-center text-xs font-bold mt-0.5 transition-colors bg-white `;
+                if (isSelected) {
+                    circleClass += (state.isSubmitted && !isOptionCorrect) ? 'border-red-500 text-red-500' : 'border-blue-500 text-blue-500';
+                } else {
+                    circleClass += 'border-slate-300 text-slate-400';
+                }
+                if (state.isSubmitted && isOptionCorrect) circleClass += ' border-green-600 text-green-600';
+
+                // Lọc bỏ ký hiệu (*) và các ký tự A, B, C, D thừa ở đầu option nếu có
+                let cleanOption = option.replace(/\(\*\)/g, '').trim();
+                
+                return `
+                    <label class="${optionClass}">
+                        <input type="radio" name="question-${q.id}" class="hidden" ${isSelected ? 'checked' : ''} ${state.isSubmitted ? 'disabled' : ''} onchange="handleOptionChange(${q.id}, ${optIdx})">
+                        <div class="${circleClass}">${String.fromCharCode(65 + optIdx)}</div>
+                        <span class="flex-1 text-slate-700 leading-relaxed pt-[2px] text-sm md:text-base text-justify">${cleanOption}</span>
+                        ${iconHtml}
+                    </label>
+                `;
+            }).join('');
+
+            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/50 p-3 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <p>Bạn đã chọn sai. Đáp án đúng là <strong>${String.fromCharCode(65 + q.correct)}</strong>.</p>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (state.isSubmitted && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/60 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-blue-600 hover:text-blue-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                            ${q.translation ? `
+                            <div class="mt-4 pt-4 border-t border-indigo-200/60">
+                                <div class="flex items-center gap-1.5 font-bold text-indigo-900 mb-2">
+                                    <i class="fa-solid fa-language"></i> Bản dịch tham khảo:
+                                </div>
+                                <div class="whitespace-pre-wrap leading-relaxed italic text-slate-700 text-justify">${q.translation}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            // Tiền xử lý chữ Question X để tránh lặp từ
+            let rawText = q.text || '';
+            let prefix = 'Question ' + q.id;
+            if (rawText.startsWith(prefix)) {
+                rawText = rawText.substring(prefix.length).replace(/^[\\.\\:\\-\\s]+/, '').trim();
+            }
+            
+            // Xóa dấu (*) trong text nếu có
+            rawText = rawText.replace(/\(\*\)/g, '');
+            
+            let questionTextHtml = `<p class="text-slate-800 whitespace-pre-wrap mb-4 text-sm md:text-base leading-relaxed text-justify"><strong>Question ${q.id}.</strong> ${rawText}</p>`;
+
+            return `
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        ${questionTextHtml}
+                        <div class="space-y-2.5">
+                            ${optionsHtml}
+                        </div>
+                        ${errorHtml}
+                        ${explanationHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event Handlers
+        window.handleOptionChange = (qId, optIdx) => {
+            if (state.isSubmitted) return;
+            state.answers[qId] = optIdx;
+            renderApp();
+        };
+
+        window.calculateScore = () => {
+            let currentScore = 0;
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    if (state.answers[q.id] === q.correct) {
+                        currentScore += 1;
+                    }
+                });
+            });
+            state.score = currentScore;
+            state.isSubmitted = true;
+            renderApp();
+        };
+
+        window.changePart = (newIndex) => {
+            state.currentPartIndex = newIndex;
+            state.showPassageTranslation = false; // Reset dịch khi đổi bài
+            renderApp();
+            setTimeout(() => {
+                const qContainer = document.getElementById('questions-container');
+                if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                const pContainer = document.getElementById('passage-container');
+                if (pContainer) pContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 50);
+        };
+
+        window.resetQuiz = () => {
+            if (confirm('Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án hiện tại sẽ bị xóa.')) {
+                state.answers = {};
+                state.isSubmitted = false;
+                state.score = 0;
+                state.expandedExplanations = {};
+                changePart(0);
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+            
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                const targetScroll = currentScroll + (elTop - containerTop) - 16; 
+                
+                container.scrollTo({
+                    top: targetScroll,
+                    behavior: "smooth"
+                });
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            const targetPartIndex = quizData.findIndex(section => 
+                section.questions.some(q => q.id === id)
+            );
+
+            if (targetPartIndex !== -1 && targetPartIndex !== state.currentPartIndex) {
+                state.currentPartIndex = targetPartIndex;
+                state.showPassageTranslation = false;
+                renderApp();
+                setTimeout(() => performScroll(id), 100);
+            } else {
+                performScroll(id);
+            }
+        };
+
+        // Khởi chạy lần đầu
+        renderApp();
+
+        // ==========================================
+        // TÍNH NĂNG QUÉT KHỐI - TỰ ĐỘNG DỊCH VÀ ĐỌC TO (GIỌNG NỮ MIỀN NAM)
+        // ==========================================
+        
+        // Nạp danh sách các giọng nói có sẵn trên hệ thống
+        let availableVoices = [];
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+            }
+        }
+        
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+        }
+
+        document.addEventListener('mouseup', handleSelection);
+        document.addEventListener('touchend', (e) => {
+            setTimeout(() => handleSelection(e), 150);
+        });
+
+        async function handleSelection() {
+            const selection = window.getSelection();
+            const text = selection.toString().trim();
+
+            if (text.length > 0 && text.length < 1500) {
+                try {
+                    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+                    const data = await res.json();
+                    const currentViText = data[0].map(item => item[0]).join('');
+                    speakText(currentViText);
+                } catch (err) {
+                    console.error("Lỗi dịch thuật:", err);
+                }
+            } else if (text.length === 0) {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            }
+        }
+
+        // Hàm sử dụng Web Speech API để tìm và đọc giọng miền Nam
+        function speakText(text) {
+            if (!text || !('speechSynthesis' in window)) return;
+            
+            window.speechSynthesis.cancel(); 
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            if (availableVoices.length === 0) loadVoices();
+            
+            const viVoices = availableVoices.filter(v => v.lang.includes('vi'));
+            let selectedVoice = null;
+            
+            if (viVoices.length > 0) {
+                selectedVoice = viVoices.find(v => 
+                    v.name.includes('HoaiMy') || 
+                    v.name.includes('Linh') || 
+                    v.name.toLowerCase().includes('southern') ||
+                    v.name.toLowerCase().includes('nam')
+                );
+                
+                if (!selectedVoice) {
+                    selectedVoice = viVoices[0];
+                }
+                utterance.voice = selectedVoice;
+            } else {
+                utterance.lang = 'vi-VN'; 
+            }
+
+            utterance.rate = 1.5; // Tốc độ đọc nhanh hơn (1.5x)
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
