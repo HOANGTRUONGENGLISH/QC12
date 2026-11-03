@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KỲ THI THPTQG 2026 - PASSAGE 2</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS cho thanh cuộn bên trong ứng dụng đẹp hơn */
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        #passage-container::-webkit-scrollbar, #questions-container::-webkit-scrollbar { width: 8px; }
+        #passage-container::-webkit-scrollbar-track, #questions-container::-webkit-scrollbar-track { background: transparent; }
+        #passage-container::-webkit-scrollbar-thumb, #questions-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; border: 2px solid white; }
+    </style>
+</head>
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+    
+    <div id="app" class="flex flex-col h-full w-full"></div>
+
+    <script>
+        const quizData = [
+          {
+            title: "Reading Comprehension - Steve Jobs",
+            instruction: "Read the passage and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions.",
+            passage: "Steve Jobs, a genius in the world of technology, was born in 1955 and adopted by a working-class family. He dropped out of college, taking a leap into the unknown, where he found his passion for technology and creativity.\n\nIn 1976, Jobs met Steve Wozniak, and together they founded Apple, a company that would revolutionise the computer industry with cutting-edge innovations. Apple’s Macintosh computer and the iconic iPhone are testaments to Jobs’ commitment to cutting-edge design and user-friendly technology.\n\nApart from his work at Apple, Jobs also played a significant role in the success of Pixar Animation Studios, where he contributed to the creation of the first fully computer-animated feature film, Toy Story. Despite facing setbacks, such as being diagnosed with cancer, Jobs continued to play a leading role at Apple until shortly before his death in 2011.\n\nHis legacy lives on through the products and innovations that have shaped the way people live and work in the digital age.",
+            passageTranslation: "Steve Jobs, một thiên tài trong thế giới công nghệ, sinh năm 1955 và được một gia đình thuộc tầng lớp lao động nhận nuôi. Ông đã bỏ học đại học, dấn thân vào những điều chưa biết, nơi ông tìm thấy niềm đam mê với công nghệ và sự sáng tạo.\n\nNăm 1976, Jobs gặp Steve Wozniak, và cùng nhau họ đã thành lập Apple, một công ty sẽ tạo ra cuộc cách mạng trong ngành công nghiệp máy tính với những đổi mới tiên tiến. Máy tính Macintosh của Apple và chiếc iPhone mang tính biểu tượng là minh chứng cho cam kết của Jobs đối với thiết kế tiên tiến và công nghệ thân thiện với người dùng.\n\nNgoài công việc tại Apple, Jobs còn đóng vai trò quan trọng trong thành công của Pixar Animation Studios, nơi ông góp phần tạo ra bộ phim hoạt hình đồ họa vi tính đầu tiên, Toy Story. Bất chấp việc phải đối mặt với những trở ngại, chẳng hạn như được chẩn đoán mắc bệnh ung thư, Jobs vẫn tiếp tục đóng vai trò lãnh đạo tại Apple cho đến ngay trước khi ông qua đời vào năm 2011.\n\nDi sản của ông vẫn tiếp tục sống qua các sản phẩm và đổi mới đã định hình cách mọi người sống và làm việc trong kỷ nguyên kỹ thuật số.",
+            questions: [
+              { id: 96, text: "Question 96. According to paragraph 1, which of the following is NOT stated about Steve Jobs?", options: ["He was adopted by a working-class family.", "He found a passion for technology from childhood.", "He did not finish his college education.", "He was a genius in the world of technology."], correct: 1, explanation: "Đoạn 1 nêu rõ ông được nhận nuôi bởi gia đình lao động (A), bỏ học đại học (C), là thiên tài công nghệ (D). Không có thông tin ông tìm thấy niềm đam mê công nghệ 'từ thời thơ ấu' (from childhood), mà đam mê này được tìm thấy sau khi ông bỏ học đại học (taking a leap into the unknown, where he found his passion...)." },
+              { id: 97, text: "Question 97. The word “they” in paragraph 2 refers to ________.", options: ["cutting-edge innovations", "Apple’s Macintosh computer and iPhone", "Jobs and Steve Wozniak", "design and technology"], correct: 2, explanation: "Trong câu: 'In 1976, Jobs met Steve Wozniak, and together they founded Apple...', đại từ 'they' (họ) thay thế cho 'Jobs and Steve Wozniak'." },
+              { id: 98, text: "Question 98. The word “setbacks” in paragraph 3 is OPPOSITE in meaning to ________.", options: ["difficulties", "advantages", "results", "influences"], correct: 1, explanation: "Từ 'setbacks' mang nghĩa là trở ngại, khó khăn, thất bại. Trái nghĩa của nó là 'advantages' (lợi thế, thuận lợi)." },
+              { id: 99, text: "Question 99. Which of the following is TRUE about Steve Jobs?", options: ["He contributed to the success of Pixar Animation Studios.", "He established Apple without the help of Steve Wozniak.", "He did not lead Apple after he was diagnosed with cancer.", "The passage states that his childhood ambition was to shape the way people lived and worked."], correct: 0, explanation: "Đoạn 3 nêu rõ: 'Jobs also played a significant role in the success of Pixar Animation Studios, where he contributed...' (Jobs cũng đóng vai trò quan trọng trong thành công của Pixar Animation Studios, nơi ông đóng góp...)." },
+              { id: 100, text: "Question 100. What does the passage mainly discuss?", options: ["Steve Jobs’ academic achievements", "Steve Jobs’ life and achievements", "Steve Jobs’ rare disease", "Steve Jobs’ first company"], correct: 1, explanation: "Toàn bộ đoạn văn tóm tắt lại tiểu sử, cuộc đời (life) và những thành tựu nổi bật (achievements) của Steve Jobs từ khi bỏ học, thành lập Apple, tham gia Pixar cho đến khi qua đời." }
+            ]
+          }
+        ];
+
+        // State quản lý
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        // Hàm render giao diện chính
+        function renderApp() {
+            const app = document.getElementById('app');
+            const answeredCount = Object.keys(state.answers).length;
+            const currentSection = quizData[state.currentPartIndex];
+            
+            // Lưu vị trí cuộn
+            const qContainer = document.getElementById('questions-container');
+            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+                            <i class="fa-regular fa-file-lines text-blue-600"></i>
+                            Bài Đọc Hiểu - Steve Jobs
+                        </h1>
+                        <p class="text-sm text-slate-500">Kỹ năng Reading Comprehension | Thời gian: Tự do</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200 hidden md:block">
+                        Đã làm: ${answeredCount} / ${totalQuestions}
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted ? `
+                    <div class="flex-none bg-white p-4 rounded-xl border border-green-200 shadow-sm flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-4 animate-in fade-in duration-500">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-circle-check text-green-500 text-4xl"></i>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-800">Hoàn thành bài thi!</h2>
+                                <p class="text-slate-600 text-sm">
+                                    Số câu đúng: <strong class="text-green-600 text-lg">${state.score}</strong> / ${totalQuestions} &nbsp;—&nbsp; 
+                                    <span class="italic hidden md:inline">Nhấn "Xem giải thích chi tiết" ở mỗi câu để tự học nhé.</span>
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="resetQuiz()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow font-medium">
+                            Làm lại bài thi
+                        </button>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-sm md:text-base font-bold text-blue-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-[11px] md:text-xs text-slate-600 mt-0.5 italic line-clamp-1">${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <span class="flex-none text-[11px] md:text-xs font-bold text-slate-700 bg-white border border-slate-300 px-2 py-1 rounded shadow-sm whitespace-nowrap ml-2">
+                                Bài ${state.currentPartIndex + 1}/${quizData.length}
+                            </span>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC (TỈ LỆ 60/40) -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/80 border-b-[3px] md:border-b-0 md:border-r-[3px] border-blue-200 p-4 md:p-6 lg:p-8 shadow-inner relative">
+                                <!-- Nút Xem bản dịch được đặt nổi góc trên phải của khung đọc -->
+                                ${state.isSubmitted && currentSection.passageTranslation ? `
+                                <div class="sticky top-0 w-full flex justify-end mb-2 z-10">
+                                    <button onclick="togglePassageTranslation()" class="text-xs px-3 py-1.5 rounded flex items-center gap-1.5 font-bold transition-colors border shadow-sm ${state.showPassageTranslation ? 'bg-indigo-100 text-indigo-700 border-indigo-200' : 'bg-white text-blue-600 border-blue-200 hover:bg-blue-50'}">
+                                        <i class="fa-solid fa-language text-sm"></i>
+                                        ${state.showPassageTranslation ? 'Đang xem Tiếng Việt' : 'Xem bản dịch'}
+                                    </button>
+                                </div>
+                                ` : ''}
+                                
+                                <div class="text-slate-800 leading-relaxed whitespace-pre-wrap text-[15px] md:text-base font-medium text-justify ${state.showPassageTranslation ? 'italic' : ''}">
+                                    ${state.showPassageTranslation ? currentSection.passageTranslation : currentSection.passage}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 lg:p-8 bg-white">
+                                <div class="max-w-5xl mx-auto space-y-5">
+                                    ${currentSection.questions.map(q => renderQuestion(q)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-8 pb-8">
+                                        <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-blue-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-none flex justify-between items-center bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                            <button onclick="changePart(${Math.max(0, state.currentPartIndex - 1)})" ${state.currentPartIndex === 0 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-white text-slate-700 border border-slate-300 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition font-medium text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                &larr; Quay lại
+                            </button>
+                            <button onclick="changePart(${Math.min(quizData.length - 1, state.currentPartIndex + 1)})" ${state.currentPartIndex === quizData.length - 1 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-blue-600 text-white border border-blue-600 rounded hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition font-bold text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                Tiếp theo &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Tiến độ (${answeredCount}/${totalQuestions})</span>
+                            ${!state.isSubmitted ? `
+                            <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-blue-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                                const isAnswered = state.answers[q.id] !== undefined;
+                                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+                                
+                                if (!state.isSubmitted) {
+                                    btnClass += isAnswered 
+                                    ? "bg-blue-600 text-white border-blue-600 shadow-sm" 
+                                    : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                                } else {
+                                    const isCorrect = state.answers[q.id] === q.correct;
+                                    btnClass += isCorrect 
+                                    ? "bg-green-500 text-white border-green-500 shadow-sm" 
+                                    : "bg-red-500 text-white border-red-500 shadow-sm";
+                                }
+
+                                return `<button onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
+
+            // Phục hồi scroll
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = scrollPos;
+        }
+
+        // Render từng câu hỏi
+        function renderQuestion(q) {
+            const isAnswered = state.answers[q.id] !== undefined;
+            const isCorrect = state.answers[q.id] === q.correct;
+            const showExp = state.expandedExplanations[q.id];
+
+            let containerClass = `p-4 md:p-5 rounded-xl border transition-all `;
+            if (state.isSubmitted) {
+                containerClass += isCorrect ? 'bg-green-50/50 border-green-200' : 'bg-red-50/50 border-red-200';
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-blue-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            let optionsHtml = q.options.map((option, optIdx) => {
+                const isSelected = state.answers[q.id] === optIdx;
+                const isOptionCorrect = optIdx === q.correct;
+                
+                let optionClass = "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ";
+                let iconHtml = '';
+
+                if (!state.isSubmitted) {
+                    optionClass += isSelected 
+                    ? "bg-blue-50 border-blue-400 shadow-sm" 
+                    : "bg-white border-slate-200 hover:bg-slate-50";
+                } else {
+                    optionClass += "cursor-default ";
+                    if (isOptionCorrect) {
+                        optionClass += "bg-green-100 border-green-500 font-medium ";
+                        iconHtml = `<i class="fa-solid fa-check text-green-600 mt-1"></i>`;
+                    } else if (isSelected && !isOptionCorrect) {
+                        optionClass += "bg-red-100 border-red-400 ";
+                        iconHtml = `<i class="fa-solid fa-xmark text-red-500 mt-1"></i>`;
+                    } else {
+                        optionClass += "bg-white/50 border-slate-200 opacity-60 ";
+                    }
+                }
+
+                let circleClass = `w-6 h-6 shrink-0 rounded-full border-2 flex items-center justify-center text-xs font-bold mt-0.5 transition-colors bg-white `;
+                if (isSelected) {
+                    circleClass += (state.isSubmitted && !isOptionCorrect) ? 'border-red-500 text-red-500' : 'border-blue-500 text-blue-500';
+                } else {
+                    circleClass += 'border-slate-300 text-slate-400';
+                }
+                if (state.isSubmitted && isOptionCorrect) circleClass += ' border-green-600 text-green-600';
+
+                // Lọc bỏ ký hiệu (*) và các ký tự A, B, C, D thừa ở đầu option nếu có
+                let cleanOption = option.replace(/\(\*\)/g, '').trim();
+                
+                return `
+                    <label class="${optionClass}">
+                        <input type="radio" name="question-${q.id}" class="hidden" ${isSelected ? 'checked' : ''} ${state.isSubmitted ? 'disabled' : ''} onchange="handleOptionChange(${q.id}, ${optIdx})">
+                        <div class="${circleClass}">${String.fromCharCode(65 + optIdx)}</div>
+                        <span class="flex-1 text-slate-700 leading-relaxed pt-[2px] text-sm md:text-base text-justify">${cleanOption}</span>
+                        ${iconHtml}
+                    </label>
+                `;
+            }).join('');
+
+            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/50 p-3 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <p>Bạn đã chọn sai. Đáp án đúng là <strong>${String.fromCharCode(65 + q.correct)}</strong>.</p>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (state.isSubmitted && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/60 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-blue-600 hover:text-blue-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            // Tiền xử lý chữ Question X để tránh lặp từ và tối ưu hiển thị
+            let rawText = q.text || '';
+            let prefix = 'Question ' + q.id;
+            if (rawText.startsWith(prefix)) {
+                rawText = rawText.substring(prefix.length).replace(/^[\\.\\:\\-\\s]+/, '').trim();
+            }
+            
+            // Xóa dấu (*) trong text nếu có
+            rawText = rawText.replace(/\(\*\)/g, '');
+            
+            let questionTextHtml = `<p class="text-slate-800 whitespace-pre-wrap mb-4 text-sm md:text-base leading-relaxed text-justify"><strong>Câu ${q.id}.</strong> ${rawText}</p>`;
+
+            return `
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        ${questionTextHtml}
+                        <div class="space-y-2.5">
+                            ${optionsHtml}
+                        </div>
+                        ${errorHtml}
+                        ${explanationHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event Handlers
+        window.handleOptionChange = (qId, optIdx) => {
+            if (state.isSubmitted) return;
+            state.answers[qId] = optIdx;
+            renderApp();
+        };
+
+        window.calculateScore = () => {
+            let currentScore = 0;
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    if (state.answers[q.id] === q.correct) {
+                        currentScore += 1;
+                    }
+                });
+            });
+            state.score = currentScore;
+            state.isSubmitted = true;
+            renderApp();
+        };
+
+        window.changePart = (newIndex) => {
+            state.currentPartIndex = newIndex;
+            state.showPassageTranslation = false; // Reset dịch khi đổi bài
+            renderApp();
+            setTimeout(() => {
+                const qContainer = document.getElementById('questions-container');
+                if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                const pContainer = document.getElementById('passage-container');
+                if (pContainer) pContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 50);
+        };
+
+        window.resetQuiz = () => {
+            if (confirm('Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án hiện tại sẽ bị xóa.')) {
+                state.answers = {};
+                state.isSubmitted = false;
+                state.score = 0;
+                state.expandedExplanations = {};
+                changePart(0);
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+            
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                const targetScroll = currentScroll + (elTop - containerTop) - 16; 
+                
+                container.scrollTo({
+                    top: targetScroll,
+                    behavior: "smooth"
+                });
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            const targetPartIndex = quizData.findIndex(section => 
+                section.questions.some(q => q.id === id)
+            );
+
+            if (targetPartIndex !== -1 && targetPartIndex !== state.currentPartIndex) {
+                state.currentPartIndex = targetPartIndex;
+                state.showPassageTranslation = false;
+                renderApp();
+                setTimeout(() => performScroll(id), 100);
+            } else {
+                performScroll(id);
+            }
+        };
+
+        // Khởi chạy lần đầu
+        renderApp();
+
+        // ==========================================
+        // TÍNH NĂNG QUÉT KHỐI - TỰ ĐỘNG DỊCH VÀ ĐỌC TO (GIỌNG NỮ MIỀN NAM)
+        // ==========================================
+        
+        // Nạp danh sách các giọng nói có sẵn trên hệ thống
+        let availableVoices = [];
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+            }
+        }
+        
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+        }
+
+        document.addEventListener('mouseup', handleSelection);
+        document.addEventListener('touchend', (e) => {
+            setTimeout(() => handleSelection(e), 150);
+        });
+
+        async function handleSelection() {
+            const selection = window.getSelection();
+            const text = selection.toString().trim();
+
+            if (text.length > 0 && text.length < 1500) {
+                try {
+                    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+                    const data = await res.json();
+                    const currentViText = data[0].map(item => item[0]).join('');
+                    speakText(currentViText);
+                } catch (err) {
+                    console.error("Lỗi dịch thuật:", err);
+                }
+            } else if (text.length === 0) {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            }
+        }
+
+        // Hàm sử dụng Web Speech API để tìm và đọc giọng miền Nam
+        function speakText(text) {
+            if (!text || !('speechSynthesis' in window)) return;
+            
+            window.speechSynthesis.cancel(); 
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            if (availableVoices.length === 0) loadVoices();
+            
+            const viVoices = availableVoices.filter(v => v.lang.includes('vi'));
+            let selectedVoice = null;
+            
+            if (viVoices.length > 0) {
+                selectedVoice = viVoices.find(v => 
+                    v.name.includes('HoaiMy') || 
+                    v.name.includes('Linh') || 
+                    v.name.toLowerCase().includes('southern') ||
+                    v.name.toLowerCase().includes('nam')
+                );
+                
+                if (!selectedVoice) {
+                    selectedVoice = viVoices[0];
+                }
+                utterance.voice = selectedVoice;
+            } else {
+                utterance.lang = 'vi-VN'; 
+            }
+
+            utterance.rate = 1.5; // Tốc độ đọc nhanh hơn (1.5x)
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
