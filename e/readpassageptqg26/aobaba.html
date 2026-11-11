@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KỲ THI THPTQG 2026 - Reading - Áo Bà Ba</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS cho thanh cuộn bên trong ứng dụng đẹp hơn */
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        #passage-container::-webkit-scrollbar, #questions-container::-webkit-scrollbar { width: 8px; }
+        #passage-container::-webkit-scrollbar-track, #questions-container::-webkit-scrollbar-track { background: transparent; }
+        #passage-container::-webkit-scrollbar-thumb, #questions-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; border: 2px solid white; }
+    </style>
+</head>
+<body class="h-screen flex flex-col bg-slate-100 text-slate-800 font-sans overflow-hidden">
+    
+    <div id="app" class="flex flex-col h-full w-full"></div>
+
+    <script>
+        const quizData = [
+          {
+            title: "Reading Comprehension - Áo Bà Ba",
+            instruction: "Read the following passage about cultural heritage preservation and mark the letter A, B, C or D on your answer sheet to indicate the best answer to each of the following questions from 31 to 40.",
+            passage: "The Áo Bà Ba, often referred to as the traditional silk shirt of Southern Vietnam, represents simplicity, modesty, and the resilient spirit of the Mekong Delta people. Historically consisting of a plain, collarless shirt split at the sides and paired with loose silk trousers, it has symbolized agrarian life and domestic warmth for generations. [I] Even as Western clothing styles dominate modern urban wardrobes, the Áo Bà Ba preserves a distinctive image of Southern gentleness and rural pride. [II]\n\nIn recent years, an increasing number of international travelers visiting Can Tho and neighboring provinces have expressed a keen interest in owning custom-tailored Áo Bà Ba. [III] However, most vacationers only spend one or two days exploring floating markets and rustic orchards, making the traditional week-long tailoring turnaround completely impractical. To address this challenge, family-run tailoring ateliers near Ninh Kieu Wharf have introduced rapid three-hour tailoring services specifically configured for excursionists. Foreign tourists can place an order, take a morning boat tour along the waterways, and collect their finished bespoke garments by early afternoon. [IV]\n\nCurrently, more than 80 boutique shops across the central riverfront area offer this express garment craft. Mrs. Le Thi Mai, a veteran seamstress operating a boutique on Hai Ba Trung Street, reported that her workshop customizes roughly 25 to 35 garments daily during the tourist season from November to February. The tailoring charge ranges around 280,000 VND for children and 320,000 VND for adults. She noted that a substantial proportion of her patrons hail from France, Australia, and Japan, frequently favoring natural linen or soft silk textiles adorned with hand-painted lotus blossoms.\n\nMr. Pham Hoang Nam, a representative from the local tourism department, highlighted that the rapid tailoring model illustrates how local artisans flexibly adapt to the requirements of the global tourism sector. He observed that this service not only substantially elevates household earnings for regional seamstresses and fabric weavers, but also transforms the riverfront into an engaging cultural hub while keeping ancestral attire vibrant and relevant in contemporary commerce.",
+            passageTranslation: "Áo Bà Ba, thường được gọi là chiếc áo lụa truyền thống của miền Nam Việt Nam, tượng trưng cho sự giản dị, khiêm tốn và tinh thần kiên cường của người dân Đồng bằng sông Cửu Long. Trong lịch sử bao gồm một chiếc áo trơn, không cổ, xẻ ở hai bên và kết hợp với quần lụa rộng, nó đã tượng trưng cho cuộc sống nông nghiệp và sự ấm áp của gia đình qua nhiều thế hệ. [I] Ngay cả khi các phong cách quần áo phương Tây thống trị tủ đồ đô thị hiện đại, Áo Bà Ba vẫn giữ được hình ảnh đặc trưng của sự dịu dàng miền Nam và niềm tự hào nông thôn. [II]\n\nTrong những năm gần đây, ngày càng có nhiều du khách quốc tế đến thăm Cần Thơ và các tỉnh lân cận bày tỏ sự quan tâm sâu sắc đến việc sở hữu một chiếc Áo Bà Ba may đo tùy chỉnh. [III] Tuy nhiên, hầu hết những người đi nghỉ mát chỉ dành một hoặc hai ngày để khám phá các chợ nổi và miệt vườn mộc mạc, khiến thời gian may đo truyền thống kéo dài một tuần trở nên hoàn toàn không khả thi. Để giải quyết thách thức này, các xưởng may gia đình gần bến Ninh Kiều đã giới thiệu các dịch vụ may nhanh trong ba giờ được thiết kế đặc biệt cho người đi dã ngoại. Du khách nước ngoài có thể đặt hàng, tham gia chuyến tham quan bằng thuyền buổi sáng dọc theo các tuyến đường thủy, và nhận trang phục may đo hoàn thiện của họ vào đầu giờ chiều. [IV]\n\nHiện tại, hơn 80 cửa hàng quanh khu vực bờ sông trung tâm cung cấp dịch vụ may mặc tốc hành này. Bà Lê Thị Mai, một thợ may kỳ cựu điều hành một cửa hàng trên đường Hai Bà Trưng, báo cáo rằng xưởng của bà tùy chỉnh khoảng 25 đến 35 bộ trang phục mỗi ngày trong mùa du lịch từ tháng 11 đến tháng 2. Phí may đo dao động khoảng 280.000 VNĐ cho trẻ em và 320.000 VNĐ cho người lớn. Bà lưu ý rằng một tỷ lệ đáng kể khách hàng của bà đến từ Pháp, Úc và Nhật Bản, thường ưa chuộng vải lanh tự nhiên hoặc lụa mềm được trang trí bằng hoa sen vẽ tay.\n\nÔng Phạm Hoàng Nam, một đại diện từ sở du lịch địa phương, nhấn mạnh rằng mô hình may nhanh minh họa cách các nghệ nhân địa phương linh hoạt thích ứng với các yêu cầu của ngành du lịch toàn cầu. Ông quan sát thấy rằng dịch vụ này không chỉ nâng cao đáng kể thu nhập hộ gia đình cho các thợ may và người dệt vải trong khu vực, mà còn biến khu vực bờ sông thành một trung tâm văn hóa hấp dẫn trong khi vẫn giữ cho trang phục của tổ tiên luôn sống động và phù hợp trong thương mại đương đại.",
+            questions: [
+              { id: 31, text: "Question 31. Where in the passage does the following sentence best fit?\n“It encapsulates the serene beauty of riverine communities and remains a timeless hallmark of Southern folk culture.”", options: ["[I]", "[II]", "[III]", "[IV]"], correct: 1, explanation: "Câu này có nghĩa 'Nó gói gọn vẻ đẹp thanh bình của cộng đồng ven sông và vẫn là một dấu ấn vượt thời gian của văn hóa dân gian miền Nam.' Đại từ 'It' thay thế cho Áo Bà Ba. Nó phù hợp nhất ở vị trí [II] để tiếp nối ý 'giữ được hình ảnh đặc trưng...' ở câu trước, khép lại trọn vẹn đoạn văn mở đầu." },
+              { id: 32, text: "Question 32. The word bespoke in paragraph 2 is closest in meaning to ______.", options: ["pre-packaged", "mass-produced", "custom-made", "low-cost"], correct: 2, explanation: "Từ 'bespoke' có nghĩa là làm theo yêu cầu, may đo riêng (custom-made). Nó đồng nghĩa với 'custom-tailored' được nhắc đến ở đầu đoạn 2." },
+              { id: 33, text: "Question 33. The word it in paragraph 1 refers to ______.", options: ["modesty", "modern urban wardrobe", "the Áo Bà Ba", "rural pride"], correct: 2, explanation: "Đại từ 'it' trong câu '...it has symbolized agrarian life...' thay thế cho chủ thể đang được miêu tả ở phần đầu câu, đó là chiếc áo truyền thống - the Áo Bà Ba." },
+              { id: 34, text: "Question 34. According to paragraph 3, which of the following is NOT true regarding Mrs. Le Thi Mai’s atelier?", options: ["A significant proportion of her clients arrive from European and Asian countries.", "Her workshop produces hundreds of custom outfits each afternoon during peak months.", "Adult outfits typically cost approximately 320,000 VND each.", "Many visitors choose textiles decorated with hand-painted lotus motifs."], correct: 1, explanation: "Đoạn 3 cho biết xưởng của bà tùy chỉnh 'roughly 25 to 35 garments daily' (khoảng 25 đến 35 trang phục mỗi ngày). Do đó, thông tin 'produces hundreds of custom outfits each afternoon' (sản xuất hàng trăm bộ mỗi chiều) là KHÔNG ĐÚNG (NOT true)." },
+              { id: 35, text: "Question 35. Which of the following best summarizes paragraph 4?", options: ["Express tailoring services support local artisans' livelihoods, enhance tourism appeal, and revitalize heritage attire.", "Tourism authorities have mandated that all riverfront shops must sell traditional clothing to international travelers.", "Traditional Mekong Delta tailors have abandoned hand techniques to maximize revenue from overseas clients.", "The expansion of riverside ateliers focuses solely on increasing household income for weaving families."], correct: 0, explanation: "Đoạn 4 tóm tắt rằng dịch vụ may nhanh vừa giúp nâng cao thu nhập (support livelihoods), biến bờ sông thành trung tâm văn hóa (enhance tourism appeal), và giữ cho trang phục truyền thống luôn sống động (revitalize heritage attire). Phương án A là bản tóm tắt hoàn hảo nhất." },
+              { id: 36, text: "Question 36. The word resilient in paragraph 1 is OPPOSITE in meaning to ______.", options: ["vulnerable", "adaptable", "sturdy", "vigorous"], correct: 0, explanation: "Từ 'resilient' có nghĩa là kiên cường, mau phục hồi, chống chịu tốt. Trái nghĩa với nó là 'vulnerable' (dễ bị tổn thương)." },
+              { id: 37, text: "Question 37. Which of the following is TRUE according to the passage?", options: ["Travelers must wait at least seven working days to obtain garments from Ninh Kieu riverside shops.", "Rapid tailoring allows excursionists to embark on river tours while their garments are being assembled.", "The Áo Bà Ba is exclusively worn by farmers during harvesting periods.", "Modern residents in major cities avoid wearing Western attire in favor of the Áo Bà Ba."], correct: 1, explanation: "Đoạn 2 nêu rõ: Du khách có thể đặt hàng, đi tham quan bằng thuyền (embark on river tours), và nhận đồ vào đầu giờ chiều. Vậy B là đáp án ĐÚNG." },
+              { id: 38, text: "Question 38. Which of the following best paraphrases the highlighted sentence in paragraph 2?\n(Foreign tourists can place an order, take a morning boat tour along the waterways, and collect their finished bespoke garments by early afternoon.)", options: ["Visitors are required to take a morning boat excursion in order to qualify for afternoon garment pickup.", "After buying ready-made attire in the morning, tourists spend the afternoon sailing along the canals.", "Tourists can order garments, enjoy a canal excursion, and retrieve their completed clothes a few hours later.", "Tailors personally deliver custom-made clothes directly to tour boats cruising on the river in the afternoon."], correct: 2, explanation: "Câu gốc mô tả quy trình: Khách nước ngoài đặt hàng, đi tour thuyền buổi sáng, và nhận trang phục may đo vào đầu giờ chiều. Phương án C diễn đạt lại chính xác nhất ý này ('enjoy a canal excursion, and retrieve their completed clothes a few hours later')." },
+              { id: 39, text: "Question 39. What can be inferred from the passage?", options: ["Faster artisan production models help traditional cultural attire remain competitive and cherished in the modern tourist economy.", "Foreign visitors only value Vietnamese garments if they are made from synthetic imported fibers.", "The popularity of the Áo Bà Ba is declining among Western travelers due to high tailoring expenses.", "Riverfront tailoring workshops are gradually replacing floating markets as the primary draw for tourists."], correct: 0, explanation: "Từ toàn bộ bài đọc, đặc biệt là đoạn cuối, ta có thể suy luận rằng các mô hình sản xuất nhanh nhẹn (faster artisan production models) đang giúp trang phục truyền thống duy trì tính cạnh tranh, sống động và có giá trị trong ngành du lịch hiện đại. Vậy A là suy luận hợp lý nhất." },
+              { id: 40, text: "Question 40. Which of the following serves as the best title for the entire passage?", options: ["The Economic Decline of Handcrafted Garments in Southern Vietnam", "Floating Markets: The Ultimate Travel Attraction in the Mekong Delta", "The Áo Bà Ba: Preserving Southern Attire Through Fast, Tourist-Friendly Tailoring", "A Historical Evolution of Modern Western Fashion across Can Tho City"], correct: 2, explanation: "Bài đọc tập trung nói về chiếc Áo Bà Ba và cách mà dịch vụ may đo nhanh (fast tailoring) thân thiện với du khách đang giúp bảo tồn loại trang phục truyền thống này của miền Nam. Phương án C là tiêu đề khái quát và phản ánh đúng nhất nội dung toàn bài." }
+            ]
+          }
+        ];
+
+        // State quản lý
+        const state = {
+            answers: {},
+            isSubmitted: false,
+            score: 0,
+            currentPartIndex: 0,
+            showPassageTranslation: false,
+            expandedExplanations: {}
+        };
+
+        const totalQuestions = quizData.reduce((acc, curr) => acc + curr.questions.length, 0);
+        const allQuestions = quizData.flatMap(s => s.questions);
+
+        // Hàm render giao diện chính
+        function renderApp() {
+            const app = document.getElementById('app');
+            const answeredCount = Object.keys(state.answers).length;
+            const currentSection = quizData[state.currentPartIndex];
+            
+            // Lưu vị trí cuộn
+            const qContainer = document.getElementById('questions-container');
+            const scrollPos = qContainer ? qContainer.scrollTop : 0;
+
+            let html = `
+                <!-- Header -->
+                <div id="main-header" class="flex-none bg-white border-b border-slate-200 shadow-sm px-4 py-3 flex justify-between items-center z-30">
+                    <div>
+                        <h1 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+                            <i class="fa-regular fa-file-lines text-blue-600"></i>
+                            Bài Đọc Hiểu - Steve Jobs
+                        </h1>
+                        <p class="text-sm text-slate-500">Kỹ năng Reading Comprehension | Thời gian: Tự do</p>
+                    </div>
+                    ${!state.isSubmitted ? `
+                    <div class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200 hidden md:block">
+                        Đã làm: ${answeredCount} / ${totalQuestions}
+                    </div>
+                    ` : `
+                    <div class="text-sm font-bold bg-green-100 text-green-800 px-4 py-2 rounded-full border border-green-300 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Điểm: ${state.score} / ${totalQuestions}
+                    </div>
+                    `}
+                </div>
+
+                <!-- Main Body -->
+                <div class="flex-1 flex flex-col min-h-0 w-full max-w-[1600px] mx-auto px-2 md:px-6 py-1.5 md:py-2 gap-2">
+                    
+                    ${state.isSubmitted ? `
+                    <div class="flex-none bg-white p-4 rounded-xl border border-green-200 shadow-sm flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-4 animate-in fade-in duration-500">
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-circle-check text-green-500 text-4xl"></i>
+                            <div>
+                                <h1 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+                                    <i class="fa-regular fa-file-lines text-blue-600"></i>
+                                    Bài Đọc Hiểu - Áo Bà Ba
+                                </h1>
+                                <p class="text-sm text-slate-500">Mã đề: 04 | Thời gian làm bài: 15 phút</p>
+                            </div>
+                        </div>
+                        <button onclick="resetQuiz()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow font-medium">
+                            Làm lại bài thi
+                        </button>
+                    </div>
+                    ` : ''}
+
+                    <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden min-h-0 relative">
+                        <div class="flex-none bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-sm md:text-base font-bold text-blue-900">${currentSection.title}</h2>
+                                ${currentSection.instruction ? `<p class="text-[11px] md:text-xs text-slate-600 mt-0.5 italic line-clamp-1">${currentSection.instruction}</p>` : ''}
+                            </div>
+                            <span class="flex-none text-[11px] md:text-xs font-bold text-slate-700 bg-white border border-slate-300 px-2 py-1 rounded shadow-sm whitespace-nowrap ml-2">
+                                Bài ${state.currentPartIndex + 1}/${quizData.length}
+                            </span>
+                        </div>
+                        
+                        <!-- CHIA CỘT DỌC (TỈ LỆ 60/40) -->
+                        <div class="flex-1 flex flex-col md:flex-row min-h-0">
+                            ${currentSection.passage ? `
+                            <div id="passage-container" class="flex-none w-full h-[40%] md:h-full md:w-[55%] lg:w-[60%] overflow-y-auto bg-slate-50/80 border-b-[3px] md:border-b-0 md:border-r-[3px] border-blue-200 p-4 md:p-6 lg:p-8 shadow-inner relative">
+                                <!-- Nút Xem bản dịch được đặt nổi góc trên phải của khung đọc -->
+                                ${state.isSubmitted && currentSection.passageTranslation ? `
+                                <div class="sticky top-0 w-full flex justify-end mb-2 z-10">
+                                    <button onclick="togglePassageTranslation()" class="text-xs px-3 py-1.5 rounded flex items-center gap-1.5 font-bold transition-colors border shadow-sm ${state.showPassageTranslation ? 'bg-indigo-100 text-indigo-700 border-indigo-200' : 'bg-white text-blue-600 border-blue-200 hover:bg-blue-50'}">
+                                        <i class="fa-solid fa-language text-sm"></i>
+                                        ${state.showPassageTranslation ? 'Đang xem Tiếng Việt' : 'Xem bản dịch'}
+                                    </button>
+                                </div>
+                                ` : ''}
+                                
+                                <div class="text-slate-800 leading-relaxed whitespace-pre-wrap text-[15px] md:text-base font-medium text-justify ${state.showPassageTranslation ? 'italic' : ''}">
+                                    ${state.showPassageTranslation ? currentSection.passageTranslation : currentSection.passage}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div id="questions-container" class="flex-1 w-full ${currentSection.passage ? 'md:w-[45%] lg:w-[40%]' : 'w-full'} overflow-y-auto p-4 md:p-6 lg:p-8 bg-white">
+                                <div class="max-w-5xl mx-auto space-y-5">
+                                    ${currentSection.questions.map(q => renderQuestion(q)).join('')}
+
+                                    ${!state.isSubmitted && state.currentPartIndex === quizData.length - 1 ? `
+                                    <div class="flex justify-center pt-8 pb-8">
+                                        <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-8 py-3.5 bg-blue-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 text-lg cursor-not-allowed"' : 'class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 text-lg"'} >
+                                            <i class="fa-solid fa-circle-check"></i> Nộp Bài Ngay
+                                        </button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-none flex justify-between items-center bg-slate-50 px-3 py-1.5 md:px-4 md:py-2 border-t border-slate-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                            <button onclick="changePart(${Math.max(0, state.currentPartIndex - 1)})" ${state.currentPartIndex === 0 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-white text-slate-700 border border-slate-300 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition font-medium text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                &larr; Quay lại
+                            </button>
+                            <button onclick="changePart(${Math.min(quizData.length - 1, state.currentPartIndex + 1)})" ${state.currentPartIndex === quizData.length - 1 ? 'disabled' : ''} class="px-3 py-1 md:px-4 md:py-1.5 bg-blue-600 text-white border border-blue-600 rounded hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition font-bold text-xs md:text-sm flex items-center gap-1.5 shadow-sm">
+                                Tiếp theo &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="flex-none bg-white border-t border-slate-200 shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.1)] z-50 px-2 py-1.5 md:px-4 md:py-2 relative">
+                    <div class="max-w-[1600px] mx-auto">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wide">Tiến độ (${answeredCount}/${totalQuestions})</span>
+                            ${!state.isSubmitted ? `
+                            <button onclick="calculateScore()" ${answeredCount === 0 ? 'disabled class="opacity-50 px-4 py-1 bg-blue-600 text-white text-xs md:text-sm font-bold rounded shadow cursor-not-allowed"' : 'class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold rounded shadow transition-colors"'} >
+                                Nộp Bài
+                            </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar items-center">
+                            ${allQuestions.map(q => {
+                                const isAnswered = state.answers[q.id] !== undefined;
+                                let btnClass = "shrink-0 w-7 h-7 md:w-8 md:h-8 rounded text-xs md:text-sm font-bold flex items-center justify-center transition-all border cursor-pointer ";
+                                
+                                if (!state.isSubmitted) {
+                                    btnClass += isAnswered 
+                                    ? "bg-blue-600 text-white border-blue-600 shadow-sm" 
+                                    : "bg-slate-50 text-slate-600 border-slate-300 hover:bg-slate-200";
+                                } else {
+                                    const isCorrect = state.answers[q.id] === q.correct;
+                                    btnClass += isCorrect 
+                                    ? "bg-green-500 text-white border-green-500 shadow-sm" 
+                                    : "bg-red-500 text-white border-red-500 shadow-sm";
+                                }
+
+                                return `<button onclick="scrollToQuestion(${q.id})" class="${btnClass}" title="Đi tới câu ${q.id}">${q.id}</button>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
+
+            // Phục hồi scroll
+            const newQContainer = document.getElementById('questions-container');
+            if (newQContainer) newQContainer.scrollTop = scrollPos;
+        }
+
+        // Render từng câu hỏi
+        function renderQuestion(q) {
+            const isAnswered = state.answers[q.id] !== undefined;
+            const isCorrect = state.answers[q.id] === q.correct;
+            const showExp = state.expandedExplanations[q.id];
+
+            let containerClass = `p-4 md:p-5 rounded-xl border transition-all `;
+            if (state.isSubmitted) {
+                containerClass += isCorrect ? 'bg-green-50/50 border-green-200' : 'bg-red-50/50 border-red-200';
+            } else {
+                containerClass += isAnswered ? 'bg-slate-50 border-blue-200' : 'bg-white border-slate-200 hover:border-slate-300';
+            }
+
+            let optionsHtml = q.options.map((option, optIdx) => {
+                const isSelected = state.answers[q.id] === optIdx;
+                const isOptionCorrect = optIdx === q.correct;
+                
+                let optionClass = "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ";
+                let iconHtml = '';
+
+                if (!state.isSubmitted) {
+                    optionClass += isSelected 
+                    ? "bg-blue-50 border-blue-400 shadow-sm" 
+                    : "bg-white border-slate-200 hover:bg-slate-50";
+                } else {
+                    optionClass += "cursor-default ";
+                    if (isOptionCorrect) {
+                        optionClass += "bg-green-100 border-green-500 font-medium ";
+                        iconHtml = `<i class="fa-solid fa-check text-green-600 mt-1"></i>`;
+                    } else if (isSelected && !isOptionCorrect) {
+                        optionClass += "bg-red-100 border-red-400 ";
+                        iconHtml = `<i class="fa-solid fa-xmark text-red-500 mt-1"></i>`;
+                    } else {
+                        optionClass += "bg-white/50 border-slate-200 opacity-60 ";
+                    }
+                }
+
+                let circleClass = `w-6 h-6 shrink-0 rounded-full border-2 flex items-center justify-center text-xs font-bold mt-0.5 transition-colors bg-white `;
+                if (isSelected) {
+                    circleClass += (state.isSubmitted && !isOptionCorrect) ? 'border-red-500 text-red-500' : 'border-blue-500 text-blue-500';
+                } else {
+                    circleClass += 'border-slate-300 text-slate-400';
+                }
+                if (state.isSubmitted && isOptionCorrect) circleClass += ' border-green-600 text-green-600';
+
+                // Lọc bỏ ký hiệu (*) và các ký tự A, B, C, D thừa ở đầu option nếu có
+                let cleanOption = option.replace(/\(\*\)/g, '').trim();
+                
+                return `
+                    <label class="${optionClass}">
+                        <input type="radio" name="question-${q.id}" class="hidden" ${isSelected ? 'checked' : ''} ${state.isSubmitted ? 'disabled' : ''} onchange="handleOptionChange(${q.id}, ${optIdx})">
+                        <div class="${circleClass}">${String.fromCharCode(65 + optIdx)}</div>
+                        <span class="flex-1 text-slate-700 leading-relaxed pt-[2px] text-sm md:text-base text-justify">${cleanOption}</span>
+                        ${iconHtml}
+                    </label>
+                `;
+            }).join('');
+
+            let errorHtml = (state.isSubmitted && !isCorrect) ? `
+                <div class="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-100/50 p-3 rounded-lg border border-red-200">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 text-lg"></i>
+                    <p>Bạn đã chọn sai. Đáp án đúng là <strong>${String.fromCharCode(65 + q.correct)}</strong>.</p>
+                </div>
+            ` : '';
+
+            let explanationHtml = '';
+            if (state.isSubmitted && q.explanation) {
+                explanationHtml = `
+                    <div class="mt-5 border-t border-slate-200/60 pt-4">
+                        <button onclick="toggleExplanation(${q.id})" class="flex items-center gap-2 text-sm font-bold transition-colors ${showExp ? 'text-indigo-700' : 'text-blue-600 hover:text-blue-800'}">
+                            <i class="fa-solid fa-book-open"></i>
+                            ${showExp ? 'Ẩn giải thích' : 'Xem giải thích chi tiết'}
+                            <i class="fa-solid ${showExp ? 'fa-chevron-up' : 'fa-chevron-down'} ml-1"></i>
+                        </button>
+                        
+                        ${showExp ? `
+                        <div class="mt-4 bg-indigo-50/70 p-4 md:p-5 rounded-xl border border-indigo-100 text-sm text-slate-800 shadow-inner">
+                            <div class="whitespace-pre-wrap leading-relaxed text-justify">${q.explanation}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            // Tiền xử lý chữ Question X để tránh lặp từ và tối ưu hiển thị
+            let rawText = q.text || '';
+            let prefix = 'Question ' + q.id;
+            if (rawText.startsWith(prefix)) {
+                rawText = rawText.substring(prefix.length).replace(/^[\\.\\:\\-\\s]+/, '').trim();
+            }
+            
+            // Xóa dấu (*) trong text nếu có
+            rawText = rawText.replace(/\(\*\)/g, '');
+            
+            let questionTextHtml = `<p class="text-slate-800 whitespace-pre-wrap mb-4 text-sm md:text-base leading-relaxed text-justify"><strong>Câu ${q.id}.</strong> ${rawText}</p>`;
+
+            return `
+                <div id="question-${q.id}" class="${containerClass}">
+                    <div class="w-full">
+                        ${questionTextHtml}
+                        <div class="space-y-2.5">
+                            ${optionsHtml}
+                        </div>
+                        ${errorHtml}
+                        ${explanationHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event Handlers
+        window.handleOptionChange = (qId, optIdx) => {
+            if (state.isSubmitted) return;
+            state.answers[qId] = optIdx;
+            renderApp();
+        };
+
+        window.calculateScore = () => {
+            let currentScore = 0;
+            quizData.forEach(section => {
+                section.questions.forEach(q => {
+                    if (state.answers[q.id] === q.correct) {
+                        currentScore += 1;
+                    }
+                });
+            });
+            state.score = currentScore;
+            state.isSubmitted = true;
+            renderApp();
+        };
+
+        window.changePart = (newIndex) => {
+            state.currentPartIndex = newIndex;
+            state.showPassageTranslation = false; // Reset dịch khi đổi bài
+            renderApp();
+            setTimeout(() => {
+                const qContainer = document.getElementById('questions-container');
+                if (qContainer) qContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                const pContainer = document.getElementById('passage-container');
+                if (pContainer) pContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 50);
+        };
+
+        window.resetQuiz = () => {
+            if (confirm('Bạn có chắc chắn muốn làm lại từ đầu? Mọi đáp án hiện tại sẽ bị xóa.')) {
+                state.answers = {};
+                state.isSubmitted = false;
+                state.score = 0;
+                state.expandedExplanations = {};
+                changePart(0);
+            }
+        };
+
+        window.togglePassageTranslation = () => {
+            state.showPassageTranslation = !state.showPassageTranslation;
+            renderApp();
+        };
+
+        window.toggleExplanation = (qId) => {
+            state.expandedExplanations[qId] = !state.expandedExplanations[qId];
+            renderApp();
+        };
+
+        window.performScroll = (id) => {
+            const container = document.getElementById('questions-container');
+            const el = document.getElementById(`question-${id}`);
+            
+            if (container && el) {
+                const containerTop = container.getBoundingClientRect().top;
+                const elTop = el.getBoundingClientRect().top;
+                const currentScroll = container.scrollTop;
+                const targetScroll = currentScroll + (elTop - containerTop) - 16; 
+                
+                container.scrollTo({
+                    top: targetScroll,
+                    behavior: "smooth"
+                });
+            }
+        };
+
+        window.scrollToQuestion = (id) => {
+            const targetPartIndex = quizData.findIndex(section => 
+                section.questions.some(q => q.id === id)
+            );
+
+            if (targetPartIndex !== -1 && targetPartIndex !== state.currentPartIndex) {
+                state.currentPartIndex = targetPartIndex;
+                state.showPassageTranslation = false;
+                renderApp();
+                setTimeout(() => performScroll(id), 100);
+            } else {
+                performScroll(id);
+            }
+        };
+
+        // Khởi chạy lần đầu
+        renderApp();
+
+        // ==========================================
+        // TÍNH NĂNG QUÉT KHỐI - TỰ ĐỘNG DỊCH VÀ ĐỌC TO (GIỌNG NỮ MIỀN NAM)
+        // ==========================================
+        
+        // Nạp danh sách các giọng nói có sẵn trên hệ thống
+        let availableVoices = [];
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+            }
+        }
+        
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+        }
+
+        document.addEventListener('mouseup', handleSelection);
+        document.addEventListener('touchend', (e) => {
+            setTimeout(() => handleSelection(e), 150);
+        });
+
+        async function handleSelection() {
+            const selection = window.getSelection();
+            const text = selection.toString().trim();
+
+            if (text.length > 0 && text.length < 1500) {
+                try {
+                    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+                    const data = await res.json();
+                    const currentViText = data[0].map(item => item[0]).join('');
+                    speakText(currentViText);
+                } catch (err) {
+                    console.error("Lỗi dịch thuật:", err);
+                }
+            } else if (text.length === 0) {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            }
+        }
+
+        // Hàm sử dụng Web Speech API để tìm và đọc giọng miền Nam
+        function speakText(text) {
+            if (!text || !('speechSynthesis' in window)) return;
+            
+            window.speechSynthesis.cancel(); 
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            if (availableVoices.length === 0) loadVoices();
+            
+            const viVoices = availableVoices.filter(v => v.lang.includes('vi'));
+            let selectedVoice = null;
+            
+            if (viVoices.length > 0) {
+                selectedVoice = viVoices.find(v => 
+                    v.name.includes('HoaiMy') || 
+                    v.name.includes('Linh') || 
+                    v.name.toLowerCase().includes('southern') ||
+                    v.name.toLowerCase().includes('nam')
+                );
+                
+                if (!selectedVoice) {
+                    selectedVoice = viVoices[0];
+                }
+                utterance.voice = selectedVoice;
+            } else {
+                utterance.lang = 'vi-VN'; 
+            }
+
+            utterance.rate = 1.5; // Tốc độ đọc nhanh hơn (1.5x)
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
