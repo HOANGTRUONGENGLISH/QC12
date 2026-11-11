@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Vocab Cloze-text 2-3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+    <title>Test Vocab Cloze Text 2-3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        h1, h2, h3, .heading-font {
+            font-family: 'Comfortaa', cursive;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            background-color: #831843; /* Rose 900 */
+        }
+
+        /* Animations */
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-20vh) rotate(180deg) scale(1.2); opacity: 0; }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2rem;
+            animation: float-up linear infinite;
+            z-index: 0;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0px 0px 8px rgba(244, 114, 182, 0.6));
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .glass-panel {
+            background: rgba(131, 24, 67, 0.75); /* Rose 900 with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(244, 114, 182, 0.3); /* Pink 400 */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(244, 114, 182, 0.05);
+        }
+        
+        .question-text strong {
+            color: #f472b6; /* Pink 400 */
+            font-weight: 800;
+            font-size: 1.15em;
+            background: rgba(159, 18, 57, 0.5);
+            padding: 0 6px;
+            border-radius: 6px;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #831843; }
+        ::-webkit-scrollbar-thumb { background: #f472b6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #db2777; }
+    </style>
+</head>
+<body class="text-pink-50 min-h-screen relative flex items-center justify-center p-4">
+
+    <div id="background-layer" class="fixed inset-0 overflow-hidden" style="z-index: 0; pointer-events: none;">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#4a044e] via-[#701a75] to-[#831843] opacity-90"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] opacity-20"></div>
+        <div id="floating-container"></div>
+    </div>
+
+    <div id="main-content" class="relative w-full max-w-4xl transition-all duration-500" style="z-index: 10; pointer-events: auto;">
+        
+        <!-- START SCREEN -->
+        <div id="screen-start" class="glass-panel rounded-3xl p-8 md:p-12 text-center transform hover:scale-[1.02] transition-transform duration-300">
+            <div class="text-5xl md:text-6xl mb-6">🪷🌸✨</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-pink-400 heading-font tracking-tight drop-shadow-md">
+                Test - Cloze-text 2-3
+            </h1>
+            <p class="text-lg md:text-xl text-pink-100/80 mb-8 font-medium">
+                <span id="total-count" class="font-bold text-pink-300 bg-pink-900/50 px-3 py-1 rounded border border-pink-500/30"></span> câu hỏi 🌸
+            </p>
+            <button id="btn-start" class="px-8 py-4 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 text-white font-bold rounded-full text-lg md:text-xl shadow-[0_0_20px_rgba(244,114,182,0.4)] transition-all cursor-pointer transform hover:-translate-y-1 heading-font tracking-wide">
+                Bắt Đầu
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-pink-300/80 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-6 md:p-10 hidden border-t-4 border-t-pink-500">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-4 border-b border-pink-800/50 pb-4">
+                <span id="progress-text" class="text-pink-400 font-bold tracking-widest uppercase text-sm md:text-base heading-font">
+                    CÂU HỎI 1
+                </span>
+                <span id="score-text" class="bg-pink-950/80 border border-pink-700/50 px-4 py-1.5 rounded-full text-amber-300 font-bold text-sm md:text-base shadow-inner">
+                    Điểm: 0
+                </span>
+            </div>
+
+            <!-- Instruction Text -->
+            <div id="instruction-text" class="text-pink-200/80 text-sm md:text-base mb-3 italic font-medium"></div>
+
+            <!-- Question -->
+            <div class="mb-6 bg-pink-950/40 p-6 rounded-xl border border-pink-800/30">
+                <h2 id="question-text" class="text-xl md:text-2xl font-semibold leading-relaxed question-text text-pink-50 whitespace-pre-wrap"></h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-8">
+                <!-- Buttons will be injected here by JS -->
+            </div>
+
+            <!-- Explanation & Next Button -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-pink-900/40 border-l-4 border-amber-400 rounded-r-xl p-5 md:p-6 mb-6 shadow-md relative overflow-hidden">
+                    <div id="rationale-text" class="hidden text-base md:text-lg">
+                        <span id="rationale-content" class="block text-pink-50 font-medium"></span>
+                    </div>
+                </div>
+                
+                <button id="btn-next" class="w-full py-4 bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-white font-bold rounded-xl text-lg md:text-xl shadow-[0_4px_15px_rgba(244,114,182,0.3)] transition-all flex justify-center items-center gap-2 cursor-pointer transform hover:-translate-y-0.5 heading-font tracking-wide">
+                    Tiếp Tục
+                </button>
+            </div>
+            <div class="mt-6 text-center text-xs md:text-sm text-pink-300/80 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end" class="glass-panel rounded-3xl p-8 md:p-10 text-center transform hover:scale-105 transition-transform duration-300 hidden">
+            <div class="text-6xl md:text-7xl mb-6">🌸🏆</div>
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-pink-400 heading-font tracking-tight drop-shadow-md">
+                Bảng tổng kết
+            </h1>
+            <p id="final-message" class="text-base md:text-lg text-pink-100/80 mb-8 font-medium"></p>
+
+            <!-- Bảng Tổng Kết -->
+            <div class="max-w-md mx-auto bg-pink-950/60 border border-pink-700/50 rounded-2xl p-6 text-left shadow-xl mb-8 relative overflow-hidden backdrop-blur-sm">
+                <div class="absolute top-0 left-0 w-1.5 h-full bg-pink-500"></div>
+                <h3 class="text-xl font-bold text-pink-300 mb-5 border-b border-pink-800/50 pb-3 text-center heading-font">Kết quả</h3>
+                <ul class="space-y-4 text-pink-50 text-sm md:text-base font-medium">
+                    <li class="flex justify-between items-center border-b border-pink-900 pb-2">
+                        <span class="flex items-center gap-2">🕒 Thời gian:</span> 
+                        <span id="end-time" class="text-pink-300 text-xs md:text-sm font-mono"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-pink-900 pb-2">
+                        <span class="flex items-center gap-2">✅ Trả lời đúng (lần 1):</span> 
+                        <span id="stat-correct" class="font-bold text-pink-400 text-xl heading-font"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-pink-900 pb-2">
+                        <span class="flex items-center gap-2">⚠️ Sửa sai thành công:</span> 
+                        <span id="stat-second" class="font-bold text-amber-400 text-xl heading-font"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2">❌ Lạc đường (sai 2 lần):</span> 
+                        <span id="stat-wrong" class="font-bold text-rose-500 text-xl heading-font"></span>
+                    </li>
+                </ul>
+            </div>
+            
+            <button id="btn-restart" class="px-8 py-4 bg-transparent hover:bg-pink-900/50 border-2 border-pink-500/70 text-pink-400 hover:text-pink-300 font-bold rounded-full text-lg transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-sm heading-font tracking-wide">
+                🔄 Trở Lại Bờ Hồ
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-pink-300/80 font-semibold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Database 41 Từ vựng và Cụm từ mới
+        const rawVocab = [
+            ["schedule", "n", "/ˈʃedjuːl/", "lịch trình", "The manager prepares a new schedule so every employee knows when to start and finish work."],
+            ["Reunification Day", "phrase", "/riːˌjuːnɪfɪˈkeɪʃən deɪ/", "Ngày Giải phóng miền Nam", "Many offices and schools close on Reunification Day, which is a public holiday in Vietnam."],
+            ["International Workers' Day", "phrase", "/ˌɪntəˈnæʃənəl ˈwɜːkəz deɪ/", "Ngày Quốc tế Lao động", "Employees usually have a public holiday on International Workers' Day on May 1."],
+            ["make up for", "phrasal verb", "/meɪk ʌp fɔː(r)/", "bù đắp cho", "Employees may work an extra day to make up for time away from work."],
+            ["compensate for", "verb phrase", "/ˈkɒmpenseɪt fɔː(r)/", "bù đắp, đền bù cho", "Extra rest days can compensate for long hours of work during a busy period."],
+            ["the extended break", "phrase", "/ði ɪkˌstendɪd ˈbreɪk/", "kỳ nghỉ kéo dài", "Many families use the extended break to travel, visit relatives, or spend time together."],
+            ["employee", "n", "/ɪmˈplɔɪiː/", "nhân viên, người lao động", "Every employee needs to follow the company rules and complete their work on time."],
+            ["Hung Kings Commemoration Day", "phrase", "/hʌŋ kɪŋz kəˌmeməˈreɪʃən deɪ/", "Ngày Giỗ Tổ Hùng Vương", "Hung Kings' Commemoration Day is an important public holiday in Vietnam."],
+            ["due to", "phrase", "/ˈdjuː tuː/", "do, bởi vì", "The office closes early due to a problem with the electricity system."],
+            ["organization", "n", "/ˌɔːɡənaɪˈzeɪʃən/", "tổ chức", "A large organization may have many departments and hundreds of employees."],
+            ["adjust", "v", "/əˈdʒʌst/", "điều chỉnh", "Managers can adjust the work schedule when employees need extra time off."],
+            ["align with", "phrase", "/əˈlaɪn wɪð/", "phù hợp với, thống nhất với", "Company policies should align with national laws and the needs of employees."],
+            ["adequate", "Adj", "/ˈædɪkwət/", "đầy đủ", "Workers need adequate rest after long shifts to stay healthy and work safely."],
+            ["be entitled to", "phrase", "/bi ɪnˈtaɪtld tuː/", "có quyền được hưởng", "Employees may be entitled to extra pay when they work more than their normal hours."],
+            ["overtime pay", "phrase", "/ˈəʊvətaɪm peɪ/", "tiền làm thêm giờ", "Workers can receive overtime pay when they work beyond their normal working hours."],
+            ["outline", "v", "/ˈaʊtlaɪn/", "trình bày khái quát, nêu rõ", "Managers should outline the new working arrangements before the holiday begins."],
+            ["day shifts", "phrase", "/deɪ ʃɪfts/", "ca ngày", "Some employees prefer day shifts because they can spend the evening with their families."],
+            ["night shifts", "phrase", "/naɪt ʃɪfts/", "ca đêm", "Night shifts can be tiring, so workers need enough rest during the daytime."],
+            ["wage", "n", "/weɪdʒ/", "tiền công, tiền lương", "A worker usually receives a wage based on the number of hours or days they work."],
+            ["arrange", "v", "/əˈreɪndʒ/", "sắp xếp", "Employers can arrange different shifts so that the business can operate all day."],
+            ["extension", "n", "/ɪkˈstenʃən/", "sự gia hạn, kéo dài", "The company gives an extension of the deadline because several employees are on holiday."],
+            ["extendable", "Adj", "/ɪkˈstendəbl/", "có thể gia hạn, có thể kéo dài", "The contract is extendable, so the employee may continue working after the first year."],
+            ["extend", "v", "/ɪkˈstend/", "kéo dài, gia hạn", "The company may extend the holiday period if there is a special situation."],
+            ["non-standard", "Adj", "/ˌnɒn ˈstændəd/", "không theo tiêu chuẩn", "Non-standard working hours may include night shifts, weekends, or public holidays."],
+            ["undergo", "v", "/ˌʌndəˈɡəʊ/", "trải qua", "The library system may undergo maintenance to improve its online services."],
+            ["upgrade", "n", "/ˈʌpɡreɪd/", "sự nâng cấp", "The system upgrade can make the website faster and easier to use."],
+            ["catalogue", "n", "/ˈkætəlɒɡ/", "danh mục, mục lục", "Students can use the online catalogue to find books and other library materials."],
+            ["electronic", "adj", "/ɪˌlekˈtrɒnɪk/", "điện tử", "The library provides many electronic books and journals for students to read online."],
+            ["temporarily", "adv", "/ˌtempəˈrerəli/", "tạm thời", "The website is temporarily unavailable while technicians repair the system."],
+            ["unavailable", "adj", "/ˌʌnəˈveɪləbl/", "không có sẵn", "Some online services may be unavailable during the system upgrade."],
+            ["appreciate", "v", "/əˈpriːʃieɪt/", "đánh giá cao, cảm kích", "Staff appreciate your patience while they work to improve the service."],
+            ["remain open", "phrase", "/rɪˌmeɪn ˈəʊpən/", "vẫn mở cửa", "The library can remain open during the upgrade, but some online services may not work."],
+            ["regular hours", "phrase", "/ˈreɡjələ ˌaʊəz/", "giờ hoạt động bình thường", "The library operates during its regular hours from Monday to Saturday."],
+            ["article", "n", "/ˈɑːtɪkl/", "bài báo, bài viết", "Students can read an article online to find useful information for their assignments."],
+            ["in advance", "phrase", "/ɪn ədˈvɑːns/", "trước, từ trước", "Students should download important documents in advance before the system becomes unavailable."],
+            ["be expected to", "phrase", "/bi ɪkˈspektɪd tuː/", "được dự kiến sẽ, được mong đợi sẽ", "The online system may be expected to return to normal by Monday morning."],
+            ["restore", "v", "/rɪˈstɔː(r)/", "khôi phục", "Technicians hope to restore all online services after the upgrade is complete."],
+            ["for any further updates", "phrase", "/fər ˌeni ˈfɜːðər ʌpˌdeɪts/", "để biết thêm các cập nhật tiếp theo", "Please check the university website for any further updates about the library service."],
+            ["patience", "n", "/ˈpeɪʃəns/", "sự kiên nhẫn", "We appreciate your patience while the system is temporarily unavailable."],
+            ["endure", "v", "/ɪnˈdjʊə(r)/", "chịu đựng", "Users may need to endure a short delay while technicians complete the upgrade."],
+            ["confront", "v", "/kənˈfrʌnt/", "đối mặt với", "Staff may confront technical problems during a major system upgrade."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        // Sinh Quiz Động và Xáo trộn
+        const quizData = rawVocab.map((item, index) => {
+            const word = item[0];
+            const type = item[1];
+            const ipa = item[2];
+            const meaning = item[3];
+            const example = item[4];
+
+            let wrongMeanings = [];
+            
+            // Random 3 đáp án nhiễu
+            while(wrongMeanings.length < 3) {
+                const randomItem = rawVocab[Math.floor(Math.random() * rawVocab.length)];
+                if(randomItem[3] !== meaning && !wrongMeanings.includes(randomItem[3])) {
+                    wrongMeanings.push(randomItem[3]);
+                }
+            }
+            
+            const options = [
+                { text: meaning, isCorrect: true },
+                { text: wrongMeanings[0], isCorrect: false },
+                { text: wrongMeanings[1], isCorrect: false },
+                { text: wrongMeanings[2], isCorrect: false }
+            ];
+
+            return {
+                questionNumber: index + 1,
+                word: word,
+                question: `Nghĩa của từ/cụm từ **${word}** là gì?`,
+                answerOptions: options,
+                rationale: `
+                    <div class="flex items-center flex-wrap gap-2 md:gap-3 mb-2 md:mb-3">
+                        <span class="text-2xl md:text-3xl font-extrabold text-pink-400 heading-font">${word}</span>
+                        <span class="bg-pink-950/80 border border-pink-600/50 px-2 py-0.5 rounded text-pink-200 text-sm md:text-base">${type}</span>
+                        <span class="text-pink-300 tracking-wide font-medium text-base md:text-lg">${ipa}</span>
+                        <button onclick="speakWord('${word.replace(/'/g, "\\'")}')" class="p-2 bg-pink-800 hover:bg-pink-700 text-pink-50 rounded-full transition-colors flex items-center justify-center w-8 h-8 md:w-10 md:h-10 shadow-sm" title="Nghe phát âm">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-pink-100 font-medium text-base md:text-lg leading-relaxed mt-2 border-t border-pink-800/50 pt-2">
+                        <span class="text-pink-400">📝</span> <span class="font-normal italic">${example}</span>
+                    </div>`
+            };
+        });
+
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['🪷', '🌸', '✨', '💮', '💖', '🌺'];
+            for (let i = 0; i < 25; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item text-pink-200/50';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+                
+                const duration = Math.random() * 15 + 10;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 20}s`;
+                
+                const scale = Math.random() * 0.5 + 0.5;
+                item.style.transform = `scale(${scale})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        // Biến trạng thái
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0; 
+        let hasAnswered = false;
+        let currentShuffledOptions = []; 
+
+        // DOM Elements
+        const screenStart = document.getElementById('screen-start');
+        const screenPlaying = document.getElementById('screen-playing');
+        const screenEnd = document.getElementById('screen-end');
+        
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const instructionText = document.getElementById('instruction-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        
+        const rationaleText = document.getElementById('rationale-text');
+        const rationaleContent = document.getElementById('rationale-content');
+        const btnNext = document.getElementById('btn-next');
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatMarkdownBold(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            hasAnswered = false;
+            
+            screenStart.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenPlaying.classList.remove('hidden');
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+            
+            const currentQ = quizData[currentQuestionIndex];
+            
+            progressText.innerText = `CÂU ${currentQuestionIndex + 1} / ${quizData.length}`;
+            scoreText.innerText = `Điểm: ${score}`;
+            
+            if(instructionText) instructionText.innerText = "";
+            
+            questionText.innerHTML = formatMarkdownBold(currentQ.question);
+            
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+            
+            optionsContainer.innerHTML = '';
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "text-left p-4 md:p-5 rounded-xl border border-pink-700/60 transition-all duration-300 text-base md:text-lg bg-pink-950/60 hover:bg-pink-900/80 hover:border-pink-400/60 text-pink-100 cursor-pointer shadow-sm font-medium";
+                btn.innerText = option.text;
+                btn.onclick = () => handleAnswer(index, option.isCorrect);
+                optionsContainer.appendChild(btn);
+            });
+
+            explanationContainer.classList.remove('max-h-[800px]', 'opacity-100');
+            explanationContainer.classList.add('max-h-0', 'opacity-0');
+            rationaleText.className = "hidden"; 
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                btnNext.innerText = 'Tiếp Tục';
+            } else {
+                btnNext.innerText = 'Kết Thúc Hành Trình 🏁';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    score++; 
+                    scoreText.innerText = `Điểm: ${score}`;
+                } else if (attempts === 1) {
+                    correctSecondTry++; 
+                }
+                
+                btn.className = "text-left p-4 md:p-5 rounded-xl border border-pink-400 transition-all duration-300 text-base md:text-lg bg-pink-800/60 text-pink-50 shadow-[0_0_20px_rgba(244,114,182,0.3)] font-bold";
+                
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-900/60')) {
+                        buttons[i].className += " opacity-40 cursor-not-allowed";
+                    }
+                }
+                
+                speakWord(currentQ.word);
+                showRationale(currentQ);
+            } else {
+                attempts++;
+                
+                btn.className = "text-left p-4 md:p-5 rounded-xl border border-rose-600/80 transition-all duration-300 text-base md:text-lg bg-rose-900/60 text-rose-300 animate-shake";
+                btn.disabled = true; 
+                
+                setTimeout(() => {
+                    btn.classList.remove('animate-shake');
+                }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    failedQuestions++; 
+                    
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            buttons[i].className = "text-left p-4 md:p-5 rounded-xl border border-pink-400 transition-all duration-300 text-base md:text-lg bg-pink-800/60 text-pink-50 shadow-[0_0_20px_rgba(244,114,182,0.3)] font-bold";
+                        } else if (!buttons[i].classList.contains('bg-rose-900/60')) {
+                            buttons[i].className += " opacity-40 cursor-not-allowed";
+                        }
+                    }
+                    speakWord(currentQ.word);
+                    showRationale(currentQ);
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            rationaleContent.innerHTML = currentQ.rationale;
+            rationaleText.className = "block text-base md:text-lg";
+            
+            explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            explanationContainer.classList.add('max-h-[800px]', 'opacity-100');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            screenPlaying.classList.add('hidden');
+            screenEnd.classList.remove('hidden');
+            
+            const finalMessage = document.getElementById('final-message');
+            if (score >= quizData.length * 0.9) {
+                finalMessage.innerText = "Học, Học nữa, Học mãi!";
+            } else if (score >= quizData.length * 0.5) {
+                finalMessage.innerText = "Nền tảng của bạn rất vững chắc, hãy tiếp tục khám phá nhé!";
+            } else {
+                finalMessage.innerText = "Khu rừng này còn nhiều bí ẩn. Đừng nản lòng, hãy dạo bước lại lần nữa!";
+            }
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('vi-VN');
+            
+            document.getElementById('end-time').innerText = `${timeString}, ${dateString}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        let availableVoices = [];
+        if ('speechSynthesis' in window) {
+            availableVoices = window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
+                availableVoices = window.speechSynthesis.getVoices();
+            };
+        }
+
+        window.speakWord = function(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                const auVoices = availableVoices.filter(v => v.lang.startsWith('en-AU'));
+                if (auVoices.length > 0) {
+                    const preferredVoice = auVoices.find(v => v.name.includes('Google') || v.name.includes('Natural')) || auVoices[0];
+                    utterance.voice = preferredVoice;
+                } else {
+                    const englishVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+                    if (englishVoices.length > 0) {
+                        utterance.voice = englishVoices[0];
+                    }
+                }
+                
+                utterance.lang = 'en-AU';
+                utterance.rate = 0.85; 
+                utterance.pitch = 1;
+                utterance.volume = 1;
+
+                try { window.speechSynthesis.speak(utterance); } catch(e) {}
+            }
+        };
+
+        function initApp() {
+            createFloatingItems();
+            document.getElementById('btn-start').addEventListener('click', startGame);
+            document.getElementById('btn-restart').addEventListener('click', startGame);
+            document.getElementById('btn-next').addEventListener('click', nextQuestion);
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    if (!screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); 
+                        nextQuestion();
+                    } else if (!screenStart.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    } else if (!screenEnd.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    }
+                }
+            });
+        }
+
+        initApp();
+
+    </script>
+</body>
+</html>
