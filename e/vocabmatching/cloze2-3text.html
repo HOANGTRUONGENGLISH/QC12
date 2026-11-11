@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze-text 2-3 - Matching</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e2e8f0; }
+        .galaxy-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        }
+        .stars {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: stars-animation 4s infinite alternate;
+        }
+        @keyframes stars-animation {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+        .glass-panel { 
+            background: rgba(13, 17, 28, 0.75); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .neon-text { text-shadow: 0 0 10px rgba(139, 92, 246, 0.6), 0 0 20px rgba(139, 92, 246, 0.3); }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; display: none; } }
+        
+        /* Hiệu ứng nảy 3D */
+        @keyframes bounceInUp {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+            60% { opacity: 1; transform: translateY(-10px) scale(1.02); }
+            80% { transform: translateY(5px) scale(0.99); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .bounce-up { animation: bounceInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        
+        /* Flashcard Flip Animation Classes */
+        .flip-card { perspective: 1000px; cursor: pointer; }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); 
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+        }
+        .flip-card-back { transform: rotateY(180deg); }
+        
+        /* Khắc phục lỗi chữ bị ngược (mirrored) khi chụp ảnh html2canvas */
+        .is-exporting .flip-card-inner { transform: none !important; transition: none !important; }
+        .is-exporting .flip-card-back { transform: none !important; }
+        .is-exporting .flip-card.flipped .flip-card-front { display: none !important; }
+        .is-exporting .flip-card:not(.flipped) .flip-card-back { display: none !important; }
+
+        /* Custom Scrollbar cho giao diện mượt mà trên Laptop/Mobile */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.6); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.9); }
+
+        /* Hiệu ứng mưa sao băng (Meteor Shower) */
+        .meteor-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 0; }
+        .meteor {
+            position: absolute;
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+            box-shadow: 0 0 15px 2px rgba(16, 185, 129, 0.5);
+            transform: rotate(225deg);
+            animation: meteor-fall linear infinite;
+            opacity: 0;
+        }
+        .meteor::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            right: 0;
+            top: -1.5px;
+            box-shadow: 0 0 15px 3px #fff, 0 0 20px 3px rgba(16,185,129,0.8);
+        }
+        @keyframes meteor-fall {
+            0% { transform: rotate(225deg) translateX(-200px); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: rotate(225deg) translateX(1500px); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-200">
+    <div class="galaxy-bg"><div class="stars"></div></div>
+    <div id="root"></div>
+
+    <!-- Dòng Copyright cố định ở đáy màn hình -->
+    <div class="fixed bottom-3 w-full text-center text-gray-400/50 text-sm font-medium tracking-wider z-20 pointer-events-none fade-in">
+        Copyright &copy; 2026 Hoàng Trường English
+    </div>
+
+    <script type="text/babel">
+        const vocabData = [
+            { id: 1, vocab: 'schedule', type: 'n', ipa: '/ˈʃedjuːl/', meaning: 'lịch trình', example: 'The manager prepares a new schedule so every employee knows when to start and finish work.', example_vi: 'Quản lý chuẩn bị một lịch trình mới để mọi nhân viên biết khi nào bắt đầu và kết thúc công việc.', example_vi_hidden: 'Quản lý chuẩn bị một ________ mới để mọi nhân viên biết khi nào bắt đầu và kết thúc công việc.' },
+            { id: 2, vocab: 'Reunification Day', type: 'n phrase', ipa: '/riːˌjuːnɪfɪˈkeɪʃən deɪ/', meaning: 'Ngày Giải phóng miền Nam', example: 'Many offices and schools close on Reunification Day, which is a public holiday in Vietnam.', example_vi: 'Nhiều văn phòng và trường học đóng cửa vào Ngày Giải phóng miền Nam, một ngày nghỉ lễ ở Việt Nam.', example_vi_hidden: 'Nhiều văn phòng và trường học đóng cửa vào ________, một ngày nghỉ lễ ở Việt Nam.' },
+            { id: 3, vocab: "International Workers' Day", type: 'n phrase', ipa: "/ˌɪntəˈnæʃənəl ˈwɜːkəz deɪ/", meaning: 'Ngày Quốc tế Lao động', example: "Employees usually have a public holiday on International Workers' Day on May 1.", example_vi: 'Nhân viên thường được nghỉ lễ vào Ngày Quốc tế Lao động vào ngày 1 tháng 5.', example_vi_hidden: 'Nhân viên thường được nghỉ lễ vào ________ vào ngày 1 tháng 5.' },
+            { id: 4, vocab: 'make up for', type: 'v phrase', ipa: '/meɪk ʌp fɔː(r)/', meaning: 'bù đắp cho', example: 'Employees may work an extra day to make up for time away from work.', example_vi: 'Nhân viên có thể làm thêm một ngày để bù đắp cho thời gian nghỉ làm.', example_vi_hidden: 'Nhân viên có thể làm thêm một ngày để ________ thời gian nghỉ làm.' },
+            { id: 5, vocab: 'compensate for', type: 'v phrase', ipa: '/ˈkɒmpenseɪt fɔː(r)/', meaning: 'bù đắp, đền bù cho', example: 'Extra rest days can compensate for long hours of work during a busy period.', example_vi: 'Những ngày nghỉ thêm có thể đền bù cho những giờ làm việc dài trong một khoảng thời gian bận rộn.', example_vi_hidden: 'Những ngày nghỉ thêm có thể ________ những giờ làm việc dài trong một khoảng thời gian bận rộn.' },
+            { id: 6, vocab: 'the extended break', type: 'n phrase', ipa: '/ði ɪkˌstendɪd ˈbreɪk/', meaning: 'kỳ nghỉ kéo dài', example: 'Many families use the extended break to travel, visit relatives, or spend time together.', example_vi: 'Nhiều gia đình sử dụng kỳ nghỉ kéo dài để đi du lịch, thăm người thân hoặc dành thời gian bên nhau.', example_vi_hidden: 'Nhiều gia đình sử dụng ________ để đi du lịch, thăm người thân hoặc dành thời gian bên nhau.' },
+            { id: 7, vocab: 'employee', type: 'n', ipa: '/ɪmˈplɔɪiː/', meaning: 'nhân viên, người lao động', example: 'Every employee needs to follow the company rules and complete their work on time.', example_vi: 'Mỗi nhân viên cần tuân thủ nội quy công ty và hoàn thành công việc đúng hạn.', example_vi_hidden: 'Mỗi ________ cần tuân thủ nội quy công ty và hoàn thành công việc đúng hạn.' },
+            { id: 8, vocab: "Hung Kings' Commemoration Day", type: 'n phrase', ipa: "/hʌŋ kɪŋz kəˌmeməˈreɪʃən deɪ/", meaning: 'Ngày Giỗ Tổ Hùng Vương', example: "Hung Kings' Commemoration Day is an important public holiday in Vietnam.", example_vi: 'Ngày Giỗ Tổ Hùng Vương là một ngày nghỉ lễ quan trọng ở Việt Nam.', example_vi_hidden: '________ là một ngày nghỉ lễ quan trọng ở Việt Nam.' },
+            { id: 9, vocab: 'due to', type: 'prep phrase', ipa: '/ˈdjuː tuː/', meaning: 'do, bởi vì', example: 'The office closes early due to a problem with the electricity system.', example_vi: 'Văn phòng đóng cửa sớm do có vấn đề với hệ thống điện.', example_vi_hidden: 'Văn phòng đóng cửa sớm ________ có vấn đề với hệ thống điện.' },
+            { id: 10, vocab: 'organization', type: 'n', ipa: '/ˌɔːɡənaɪˈzeɪʃən/', meaning: 'tổ chức', example: 'A large organization may have many departments and hundreds of employees.', example_vi: 'Một tổ chức lớn có thể có nhiều phòng ban và hàng trăm nhân viên.', example_vi_hidden: 'Một ________ lớn có thể có nhiều phòng ban và hàng trăm nhân viên.' },
+            { id: 11, vocab: 'adjust', type: 'v', ipa: '/əˈdʒʌst/', meaning: 'điều chỉnh', example: 'Managers can adjust the work schedule when employees need extra time off.', example_vi: 'Quản lý có thể điều chỉnh lịch làm việc khi nhân viên cần thêm thời gian nghỉ.', example_vi_hidden: 'Quản lý có thể ________ lịch làm việc khi nhân viên cần thêm thời gian nghỉ.' },
+            { id: 12, vocab: 'align with', type: 'v phrase', ipa: '/əˈlaɪn wɪð/', meaning: 'phù hợp với, thống nhất với', example: 'Company policies should align with national laws and the needs of employees.', example_vi: 'Các chính sách của công ty nên phù hợp với luật pháp quốc gia và nhu cầu của nhân viên.', example_vi_hidden: 'Các chính sách của công ty nên ________ luật pháp quốc gia và nhu cầu của nhân viên.' },
+            { id: 13, vocab: 'adequate', type: 'adj', ipa: '/ˈædɪkwət/', meaning: 'đầy đủ', example: 'Workers need adequate rest after long shifts to stay healthy and work safely.', example_vi: 'Công nhân cần nghỉ ngơi đầy đủ sau những ca làm việc dài để giữ gìn sức khỏe và làm việc an toàn.', example_vi_hidden: 'Công nhân cần nghỉ ngơi ________ sau những ca làm việc dài để giữ gìn sức khỏe và làm việc an toàn.' },
+            { id: 14, vocab: 'be entitled to', type: 'v phrase', ipa: '/bi ɪnˈtaɪtld tuː/', meaning: 'có quyền được hưởng', example: 'Employees may be entitled to extra pay when they work more than their normal hours.', example_vi: 'Nhân viên có thể có quyền được hưởng thêm lương khi họ làm việc nhiều hơn số giờ bình thường.', example_vi_hidden: 'Nhân viên có thể ________ thêm lương khi họ làm việc nhiều hơn số giờ bình thường.' },
+            { id: 15, vocab: 'overtime pay', type: 'n phrase', ipa: '/ˈəʊvətaɪm peɪ/', meaning: 'tiền làm thêm giờ', example: 'Workers can receive overtime pay when they work beyond their normal working hours.', example_vi: 'Công nhân có thể nhận tiền làm thêm giờ khi họ làm việc vượt quá số giờ làm việc bình thường.', example_vi_hidden: 'Công nhân có thể nhận ________ khi họ làm việc vượt quá số giờ làm việc bình thường.' },
+            { id: 16, vocab: 'outline', type: 'v', ipa: '/ˈaʊtlaɪn/', meaning: 'trình bày khái quát, nêu rõ', example: 'Managers should outline the new working arrangements before the holiday begins.', example_vi: 'Các nhà quản lý nên nêu rõ các sắp xếp làm việc mới trước khi kỳ nghỉ bắt đầu.', example_vi_hidden: 'Các nhà quản lý nên ________ các sắp xếp làm việc mới trước khi kỳ nghỉ bắt đầu.' },
+            { id: 17, vocab: 'day shifts', type: 'n phrase', ipa: '/deɪ ʃɪfts/', meaning: 'ca ngày', example: 'Some employees prefer day shifts because they can spend the evening with their families.', example_vi: 'Một số nhân viên thích ca ngày vì họ có thể dành buổi tối cùng gia đình.', example_vi_hidden: 'Một số nhân viên thích ________ vì họ có thể dành buổi tối cùng gia đình.' },
+            { id: 18, vocab: 'night shifts', type: 'n phrase', ipa: '/naɪt ʃɪfts/', meaning: 'ca đêm', example: 'Night shifts can be tiring, so workers need enough rest during the daytime.', example_vi: 'Những ca đêm có thể mệt mỏi, vì vậy công nhân cần nghỉ ngơi đủ vào ban ngày.', example_vi_hidden: 'Những ________ có thể mệt mỏi, vì vậy công nhân cần nghỉ ngơi đủ vào ban ngày.' },
+            { id: 19, vocab: 'wage', type: 'n', ipa: '/weɪdʒ/', meaning: 'tiền công, tiền lương', example: 'A worker usually receives a wage based on the number of hours or days they work.', example_vi: 'Một công nhân thường nhận được tiền lương dựa trên số giờ hoặc số ngày họ làm việc.', example_vi_hidden: 'Một công nhân thường nhận được ________ dựa trên số giờ hoặc số ngày họ làm việc.' },
+            { id: 20, vocab: 'arrange', type: 'v', ipa: '/əˈreɪndʒ/', meaning: 'sắp xếp', example: 'Employers can arrange different shifts so that the business can operate all day.', example_vi: 'Người sử dụng lao động có thể sắp xếp các ca làm việc khác nhau để doanh nghiệp có thể hoạt động cả ngày.', example_vi_hidden: 'Người sử dụng lao động có thể ________ các ca làm việc khác nhau để doanh nghiệp có thể hoạt động cả ngày.' },
+            { id: 21, vocab: 'extension', type: 'n', ipa: '/ɪkˈstenʃən/', meaning: 'sự gia hạn, kéo dài', example: 'The company gives an extension of the deadline because several employees are on holiday.', example_vi: 'Công ty cho phép sự gia hạn hạn chót vì một vài nhân viên đang nghỉ phép.', example_vi_hidden: 'Công ty cho phép ________ hạn chót vì một vài nhân viên đang nghỉ phép.' },
+            { id: 22, vocab: 'extendable', type: 'adj', ipa: '/ɪkˈstendəbl/', meaning: 'có thể gia hạn, có thể kéo dài', example: 'The contract is extendable, so the employee may continue working after the first year.', example_vi: 'Hợp đồng có thể gia hạn, vì vậy nhân viên có thể tiếp tục làm việc sau năm đầu tiên.', example_vi_hidden: 'Hợp đồng ________, vì vậy nhân viên có thể tiếp tục làm việc sau năm đầu tiên.' },
+            { id: 23, vocab: 'extend', type: 'v', ipa: '/ɪkˈstend/', meaning: 'kéo dài, gia hạn', example: 'The company may extend the holiday period if there is a special situation.', example_vi: 'Công ty có thể gia hạn khoảng thời gian nghỉ lễ nếu có một tình huống đặc biệt.', example_vi_hidden: 'Công ty có thể ________ khoảng thời gian nghỉ lễ nếu có một tình huống đặc biệt.' },
+            { id: 24, vocab: 'non-standard', type: 'adj', ipa: '/ˌnɒn ˈstændəd/', meaning: 'không theo tiêu chuẩn', example: 'Non-standard working hours may include night shifts, weekends, or public holidays.', example_vi: 'Giờ làm việc không theo tiêu chuẩn có thể bao gồm ca đêm, cuối tuần hoặc các ngày nghỉ lễ.', example_vi_hidden: 'Giờ làm việc ________ có thể bao gồm ca đêm, cuối tuần hoặc các ngày nghỉ lễ.' },
+            { id: 25, vocab: 'undergo', type: 'v', ipa: '/ˌʌndəˈɡəʊ/', meaning: 'trải qua', example: 'The library system may undergo maintenance to improve its online services.', example_vi: 'Hệ thống thư viện có thể trải qua bảo trì để cải thiện các dịch vụ trực tuyến.', example_vi_hidden: 'Hệ thống thư viện có thể ________ bảo trì để cải thiện các dịch vụ trực tuyến.' },
+            { id: 26, vocab: 'upgrade', type: 'n', ipa: '/ˈʌpɡreɪd/', meaning: 'sự nâng cấp', example: 'The system upgrade can make the website faster and easier to use.', example_vi: 'Sự nâng cấp hệ thống có thể làm cho trang web nhanh hơn và dễ sử dụng hơn.', example_vi_hidden: '________ hệ thống có thể làm cho trang web nhanh hơn và dễ sử dụng hơn.' },
+            { id: 27, vocab: 'catalogue', type: 'n', ipa: '/ˈkætəlɒɡ/', meaning: 'danh mục, mục lục', example: 'Students can use the online catalogue to find books and other library materials.', example_vi: 'Học sinh có thể sử dụng danh mục trực tuyến để tìm sách và các tài liệu thư viện khác.', example_vi_hidden: 'Học sinh có thể sử dụng ________ trực tuyến để tìm sách và các tài liệu thư viện khác.' },
+            { id: 28, vocab: 'electronic', type: 'adj', ipa: '/ɪˌlekˈtrɒnɪk/', meaning: 'điện tử', example: 'The library provides many electronic books and journals for students to read online.', example_vi: 'Thư viện cung cấp nhiều sách và tạp chí điện tử cho học sinh đọc trực tuyến.', example_vi_hidden: 'Thư viện cung cấp nhiều sách và tạp chí ________ cho học sinh đọc trực tuyến.' },
+            { id: 29, vocab: 'temporarily', type: 'adv', ipa: '/ˌtempəˈrerəli/', meaning: 'tạm thời', example: 'The website is temporarily unavailable while technicians repair the system.', example_vi: 'Trang web tạm thời không có sẵn trong khi các kỹ thuật viên sửa chữa hệ thống.', example_vi_hidden: 'Trang web ________ không có sẵn trong khi các kỹ thuật viên sửa chữa hệ thống.' },
+            { id: 30, vocab: 'unavailable', type: 'adj', ipa: '/ˌʌnəˈveɪləbl/', meaning: 'không có sẵn', example: 'Some online services may be unavailable during the system upgrade.', example_vi: 'Một số dịch vụ trực tuyến có thể không có sẵn trong quá trình nâng cấp hệ thống.', example_vi_hidden: 'Một số dịch vụ trực tuyến có thể ________ trong quá trình nâng cấp hệ thống.' },
+            { id: 31, vocab: 'appreciate', type: 'v', ipa: '/əˈpriːʃieɪt/', meaning: 'đánh giá cao, cảm kích', example: 'Staff appreciate your patience while they work to improve the service.', example_vi: 'Nhân viên cảm kích sự kiên nhẫn của bạn trong khi họ làm việc để cải thiện dịch vụ.', example_vi_hidden: 'Nhân viên ________ sự kiên nhẫn của bạn trong khi họ làm việc để cải thiện dịch vụ.' },
+            { id: 32, vocab: 'remain open', type: 'v phrase', ipa: '/rɪˌmeɪn ˈəʊpən/', meaning: 'vẫn mở cửa', example: 'The library can remain open during the upgrade, but some online services may not work.', example_vi: 'Thư viện có thể vẫn mở cửa trong quá trình nâng cấp, nhưng một số dịch vụ trực tuyến có thể không hoạt động.', example_vi_hidden: 'Thư viện có thể ________ trong quá trình nâng cấp, nhưng một số dịch vụ trực tuyến có thể không hoạt động.' },
+            { id: 33, vocab: 'regular hours', type: 'n phrase', ipa: '/ˈreɡjələ ˌaʊəz/', meaning: 'giờ hoạt động bình thường', example: 'The library operates during its regular hours from Monday to Saturday.', example_vi: 'Thư viện hoạt động trong giờ hoạt động bình thường từ thứ Hai đến thứ Bảy.', example_vi_hidden: 'Thư viện hoạt động trong ________ từ thứ Hai đến thứ Bảy.' },
+            { id: 34, vocab: 'article', type: 'n', ipa: '/ˈɑːtɪkl/', meaning: 'bài báo, bài viết', example: 'Students can read an article online to find useful information for their assignments.', example_vi: 'Sinh viên có thể đọc một bài báo trực tuyến để tìm thông tin hữu ích cho bài tập của họ.', example_vi_hidden: 'Sinh viên có thể đọc một ________ trực tuyến để tìm thông tin hữu ích cho bài tập của họ.' },
+            { id: 35, vocab: 'in advance', type: 'phrase', ipa: '/ɪn ədˈvɑːns/', meaning: 'trước, từ trước', example: 'Students should download important documents in advance before the system becomes unavailable.', example_vi: 'Sinh viên nên tải xuống các tài liệu quan trọng từ trước trước khi hệ thống không còn khả dụng.', example_vi_hidden: 'Sinh viên nên tải xuống các tài liệu quan trọng ________ trước khi hệ thống không còn khả dụng.' },
+            { id: 36, vocab: 'be expected to', type: 'v phrase', ipa: '/bi ɪkˈspektɪd tuː/', meaning: 'được dự kiến sẽ, được mong đợi sẽ', example: 'The online system may be expected to return to normal by Monday morning.', example_vi: 'Hệ thống trực tuyến được dự kiến sẽ trở lại bình thường vào sáng thứ Hai.', example_vi_hidden: 'Hệ thống trực tuyến ________ trở lại bình thường vào sáng thứ Hai.' },
+            { id: 37, vocab: 'restore', type: 'v', ipa: '/rɪˈstɔː(r)/', meaning: 'khôi phục', example: 'Technicians hope to restore all online services after the upgrade is complete.', example_vi: 'Các kỹ thuật viên hy vọng khôi phục tất cả các dịch vụ trực tuyến sau khi việc nâng cấp hoàn tất.', example_vi_hidden: 'Các kỹ thuật viên hy vọng ________ tất cả các dịch vụ trực tuyến sau khi việc nâng cấp hoàn tất.' },
+            { id: 38, vocab: 'for any further updates', type: 'phrase', ipa: '/fər ˌeni ˈfɜːðər ʌpˌdeɪts/', meaning: 'để biết thêm các cập nhật tiếp theo', example: 'Please check the university website for any further updates about the library service.', example_vi: 'Vui lòng kiểm tra trang web của trường đại học để biết thêm các cập nhật tiếp theo về dịch vụ thư viện.', example_vi_hidden: 'Vui lòng kiểm tra trang web của trường đại học ________ về dịch vụ thư viện.' },
+            { id: 39, vocab: 'patience', type: 'n', ipa: '/ˈpeɪʃəns/', meaning: 'sự kiên nhẫn', example: 'We appreciate your patience while the system is temporarily unavailable.', example_vi: 'Chúng tôi đánh giá cao sự kiên nhẫn của bạn trong khi hệ thống tạm thời không khả dụng.', example_vi_hidden: 'Chúng tôi đánh giá cao ________ của bạn trong khi hệ thống tạm thời không khả dụng.' },
+            { id: 40, vocab: 'endure', type: 'v', ipa: '/ɪnˈdjʊə(r)/', meaning: 'chịu đựng', example: 'Users may need to endure a short delay while technicians complete the upgrade.', example_vi: 'Người dùng có thể cần phải chịu đựng một sự chậm trễ ngắn trong khi các kỹ thuật viên hoàn tất nâng cấp.', example_vi_hidden: 'Người dùng có thể cần phải ________ một sự chậm trễ ngắn trong khi các kỹ thuật viên hoàn tất nâng cấp.' },
+            { id: 41, vocab: 'confront', type: 'v', ipa: '/kənˈfrʌnt/', meaning: 'đối mặt với', example: 'Staff may confront technical problems during a major system upgrade.', example_vi: 'Nhân viên có thể đối mặt với các vấn đề kỹ thuật trong một đợt nâng cấp hệ thống lớn.', example_vi_hidden: 'Nhân viên có thể ________ các vấn đề kỹ thuật trong một đợt nâng cấp hệ thống lớn.' }
+        ];
+
+        // Component Flashcard độc lập
+        const Flashcard = ({ item, playTTS }) => {
+            const [isFlipped, setIsFlipped] = React.useState(false);
+            
+            const handleFlip = () => {
+                const nextState = !isFlipped;
+                setIsFlipped(nextState);
+                // Phát âm từ vựng khi lật thẻ sang mặt xem nghĩa
+                if (nextState && playTTS) {
+                    playTTS(item.vocab);
+                }
+            };
+            
+            // Hàm bôi đậm từ vựng trong câu ví dụ
+            const renderHighlightedExample = (text, vocab) => {
+                if (!text) return null;
+                const regex = new RegExp(`(${vocab})`, 'gi');
+                const parts = text.split(regex);
+                return (
+                    <span>
+                        {parts.map((part, i) => 
+                            part.toLowerCase() === vocab.toLowerCase() 
+                                ? <span key={i} className="text-emerald-400 font-bold">{part}</span> 
+                                : part
+                        )}
+                    </span>
+                );
+            };
+            
+            return (
+                <div className={`flip-card h-60 md:h-64 ${isFlipped ? 'flipped' : ''}`} onClick={handleFlip}>
+                    <div className="flip-card-inner">
+                        {/* Mặt trước: Từ vựng tiếng Anh - Tối giản */}
+                        <div className="flip-card-front p-5 rounded-2xl bg-[#0b0f19] border border-gray-700/50 hover:border-emerald-500/40 transition-all duration-300 flex flex-col items-center justify-center text-center group shadow-lg">
+                            <span className="font-extrabold text-3xl md:text-4xl text-emerald-400 mb-2 group-hover:scale-105 transition-transform duration-300">{item.vocab}</span>
+                            <span className="text-sm md:text-base text-gray-400 italic tracking-wide">({item.type}) {item.ipa}</span>
+                        </div>
+                        
+                        {/* Mặt sau: Nghĩa và Ví dụ - Sạch sẽ, chuẩn cấu trúc phân cấp */}
+                        <div className="flip-card-back p-4 md:p-6 rounded-2xl bg-[#0b0f19] border border-emerald-500/30 flex flex-col justify-center items-center text-center shadow-lg">
+                            <div className="font-bold text-pink-300 text-sm md:text-base mb-4 tracking-wide bg-pink-900/40 border border-pink-500/50 rounded-full px-4 py-1.5 shadow-[0_0_10px_rgba(236,72,153,0.2)]">
+                                {item.meaning}
+                            </div>
+                            <div className="text-gray-200 text-sm md:text-base italic leading-relaxed w-full">"{renderHighlightedExample(item.example, item.vocab)}"</div>
+                            
+                            <div className="w-[85%] h-px bg-gray-700/60 my-3 md:my-4 shrink-0"></div>
+                            
+                            <div className="text-gray-500 text-xs md:text-sm italic leading-relaxed w-full">"{item.example_vi}"</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Component Hiệu ứng mưa sao băng
+        const MeteorShower = () => {
+            const meteors = Array.from({ length: 120 }); // Tăng số lượng sao băng lên rất nhiều
+            return (
+                <div className="meteor-container">
+                    {meteors.map((_, i) => {
+                        const top = Math.random() * 120 - 60 + '%'; // Vị trí ngẫu nhiên dọc
+                        const left = Math.random() * 150 + 20 + '%'; // Vị trí ngẫu nhiên ngang (bắt đầu từ phải)
+                        const animationDuration = Math.random() * 1.2 + 0.5 + 's'; // Tốc độ rơi nhanh hơn một chút
+                        const animationDelay = Math.random() * 2.5 + 's'; // Độ trễ đa dạng hơn
+                        return (
+                            <div key={i} className="meteor" style={{
+                                top, left, animationDuration, animationDelay
+                            }}></div>
+                        );
+                    })}
+                </div>
+            );
+        };
+
+        // Hàm xáo trộn mảng (tạo hàng đợi ngẫu nhiên ban đầu)
+        const shuffleArray = (array) => {
+            const newArr = [...array];
+            for (let i = newArr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+            }
+            return newArr;
+        };
+
+        function App() {
+            const [gameState, setGameState] = React.useState('start'); 
+            const [isChallengeMode, setIsChallengeMode] = React.useState(false);
+            const [tutorialStep, setTutorialStep] = React.useState(1);
+            const [playerName, setPlayerName] = React.useState('');
+            const [unsolvedItems, setUnsolvedItems] = React.useState([...vocabData]);
+            const [currentItem, setCurrentItem] = React.useState(null);
+            
+            const [currentVocabOptions, setCurrentVocabOptions] = React.useState([]);
+            const [currentMeaningOptions, setCurrentMeaningOptions] = React.useState([]);
+            const [currentTypeOptions, setCurrentTypeOptions] = React.useState([]);
+            
+            const [selectedVocab, setSelectedVocab] = React.useState(null);
+            const [selectedMeaning, setSelectedMeaning] = React.useState(null);
+            const [selectedType, setSelectedType] = React.useState(null);
+            
+            const [playStage, setPlayStage] = React.useState('vocab'); // 'vocab', 'type', 'meaning'
+            
+            const [attempts, setAttempts] = React.useState(0);
+            const [feedback, setFeedback] = React.useState({ type: '', message: '', isEmoji: false, stage: '' });
+            const [isChecking, setIsChecking] = React.useState(false);
+            const [shake, setShake] = React.useState(false);
+            const [score, setScore] = React.useState(0);
+            const [failedItems, setFailedItems] = React.useState(new Set());
+            const [totalMistakes, setTotalMistakes] = React.useState(0);
+            const [successBubble, setSuccessBubble] = React.useState(null);
+            const [typingCompleted, setTypingCompleted] = React.useState(false);
+            const [hasSeenUnikeyWarning, setHasSeenUnikeyWarning] = React.useState(false);
+            const [showChallengeHint, setShowChallengeHint] = React.useState(false);
+            const [mistakeOnCurrentWord, setMistakeOnCurrentWord] = React.useState(false);
+            
+            const [hintCount, setHintCount] = React.useState(0);
+            const [highlightVocab, setHighlightVocab] = React.useState(false);
+            const [highlightMeaning, setHighlightMeaning] = React.useState(false);
+            const [highlightType, setHighlightType] = React.useState(false);
+            const [vocabHintUsed, setVocabHintUsed] = React.useState(false);
+            const [meaningHintUsed, setMeaningHintUsed] = React.useState(false);
+            const [typeHintUsed, setTypeHintUsed] = React.useState(false);
+            
+            const [showTranslation, setShowTranslation] = React.useState(false);
+            const [typedSpelling, setTypedSpelling] = React.useState('');
+            const inputRef = React.useRef(null);
+            const [voices, setVoices] = React.useState([]);
+            const [elapsedTime, setElapsedTime] = React.useState(0);
+            const [isDownloading, setIsDownloading] = React.useState(false);
+            const [startTime, setStartTime] = React.useState(null);
+            const challengeInputRef = React.useRef(null);
+
+            React.useEffect(() => {
+                const loadVoices = () => setVoices(window.speechSynthesis.getVoices());
+                loadVoices();
+                if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                    window.speechSynthesis.onvoiceschanged = loadVoices;
+                }
+            }, []);
+
+            const playTTS = (enText, viText, callback) => {
+                if (!('speechSynthesis' in window)) {
+                    if (callback) callback();
+                    return;
+                }
+                window.speechSynthesis.cancel();
+                const enUtterance = new SpeechSynthesisUtterance(enText);
+                enUtterance.lang = 'en-US';
+                enUtterance.rate = 0.9;
+                enUtterance.pitch = 1.1;
+
+                const preferredVoices = ['Google US English', 'Samantha', 'Microsoft Zira', 'Victoria'];
+                let selectedVoice = null;
+                for (let name of preferredVoices) {
+                    selectedVoice = voices.find(v => v.name.includes(name) && v.lang.includes('en-US'));
+                    if (selectedVoice) break;
+                }
+                if (!selectedVoice) selectedVoice = voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman')));
+                if (!selectedVoice) selectedVoice = voices.find(v => v.lang === 'en-US' || v.lang === 'en_US');
+                if (selectedVoice) enUtterance.voice = selectedVoice;
+
+                enUtterance.onend = () => { if (callback) setTimeout(callback, 500); };
+                window.speechSynthesis.speak(enUtterance);
+            };
+
+            React.useEffect(() => {
+                let timer;
+                if (gameState === 'playing' || gameState === 'playing_challenge') {
+                    timer = setInterval(() => {
+                        setElapsedTime(prev => prev + 1);
+                    }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [gameState]);
+
+            const formatTime = (totalSeconds) => {
+                const m = Math.floor(totalSeconds / 60);
+                const s = totalSeconds % 60;
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            };
+
+            const downloadVocabImage = () => {
+                const captureContainer = document.getElementById('capture-vocab-list');
+                if (captureContainer && window.html2canvas) {
+                    setIsDownloading(true);
+                    window.html2canvas(captureContainer, {
+                        backgroundColor: '#090a0f',
+                        scale: 2 // Tăng chất lượng ảnh
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = 'vocabulary-list.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        setIsDownloading(false);
+                    }).catch(err => {
+                        console.error("Lỗi khi tạo ảnh", err);
+                        setIsDownloading(false);
+                    });
+                } else if (!window.html2canvas) {
+                    alert("Đang tải công cụ chụp ảnh, vui lòng thử lại sau giây lát.");
+                }
+            };
+
+            const startGame = () => setGameState('review');
+
+            const downloadListAsPNG = () => {
+                const el = document.getElementById('export-container');
+                if (!el || !window.html2canvas) return;
+                
+                window.html2canvas(el, { 
+                    backgroundColor: '#0b0f19', 
+                    scale: 2, // Tăng chất lượng ảnh
+                    logging: false,
+                    useCORS: true 
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'vocabulary-list.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            };
+
+            const startPlaying = () => {
+                setGameState('playing');
+                setIsChallengeMode(false);
+                setScore(0);
+                setFailedItems(new Set());
+                setHintCount(0);
+                setTotalMistakes(0);
+                setElapsedTime(0);
+                setHasSeenUnikeyWarning(false);
+                setStartTime(new Date());
+                setMistakeOnCurrentWord(false);
+                pickNextQuestion(shuffleArray([...vocabData]));
+            };
+
+            const startChallenge = () => {
+                setIsChallengeMode(true);
+                setGameState('playing_challenge');
+                setScore(0);
+                setFailedItems(new Set());
+                setHintCount(0); 
+                setTotalMistakes(0);
+                setElapsedTime(0);
+                setStartTime(new Date());
+                setTypedSpelling('');
+                setMistakeOnCurrentWord(false);
+                pickNextChallengeQuestion(shuffleArray([...vocabData]));
+            };
+
+            const pickNextChallengeQuestion = (remainingList) => {
+                if (remainingList.length === 0) {
+                    setGameState('challenge_finished');
+                    return;
+                }
+                const nextItem = remainingList[0]; // Bốc từ đầu tiên trong hàng đợi
+                setCurrentItem(nextItem);
+                setUnsolvedItems(remainingList);
+                setTypedSpelling('');
+                setFeedback({ type: '', message: '', isEmoji: false, stage: '' });
+                setIsChecking(false);
+                setShowChallengeHint(false);
+                setMistakeOnCurrentWord(false);
+            };
+
+            const pickNextQuestion = (remainingList) => {
+                if (remainingList.length === 0) {
+                    setGameState('finished');
+                    return;
+                }
+                const nextItem = remainingList[0]; // Bốc từ đầu tiên trong hàng đợi
+                setCurrentItem(nextItem);
+                setUnsolvedItems(remainingList);
+                setSelectedVocab(null);
+                setSelectedMeaning(null);
+                setSelectedType(null);
+                setPlayStage('vocab');
+                setAttempts(0);
+                setFeedback({ type: '', message: '', isEmoji: false, stage: '' });
+                setIsChecking(false);
+                setShowTranslation(false); // Đóng dịch nghĩa khi qua câu mới
+                setHighlightVocab(false);
+                setHighlightMeaning(false);
+                setHighlightType(false);
+                setVocabHintUsed(false);
+                setMeaningHintUsed(false);
+                setTypeHintUsed(false);
+                setMistakeOnCurrentWord(false);
+
+                // Tạo danh sách 4 lựa chọn (1 đúng + 3 nhiễu)
+                let distractors = vocabData.filter(item => item.id !== nextItem.id);
+                // Trộn ngẫu nhiên các từ nhiễu
+                for (let i = distractors.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [distractors[i], distractors[j]] = [distractors[j], distractors[i]];
+                }
+                const optionsItems = [nextItem, ...distractors.slice(0, 3)];
+                
+                // Hàm trộn ngẫu nhiên (Fisher-Yates) đảm bảo tính đa dạng
+                const shuffle = (array) => {
+                    const newArr = [...array];
+                    for (let i = newArr.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+                    }
+                    return newArr;
+                };
+
+                // Lọc trùng và trộn ĐỘC LẬP 3 danh sách để vị trí đáp án đúng luôn thay đổi
+                const vocabs = shuffle([...new Set(optionsItems.map(item => item.vocab))]);
+                const meanings = shuffle([...new Set(optionsItems.map(item => item.meaning))]);
+                
+                // Trích xuất các Từ Loại (Types) để làm nhiễu (Thêm 'adv' vào pool để làm đa dạng nhiễu)
+                const allTypes = [...new Set([...vocabData.map(item => item.type), 'adv'])];
+                let typeDistractors = allTypes.filter(t => t !== nextItem.type);
+                typeDistractors = shuffle(typeDistractors);
+                
+                const types = shuffle([nextItem.type, ...typeDistractors.slice(0, 3)]);
+                
+                setCurrentVocabOptions(vocabs);
+                setCurrentMeaningOptions(meanings);
+                setCurrentTypeOptions(types);
+            };
+
+            const handleHint = () => {
+                if (isChecking || !currentItem) return;
+                setHintCount(prev => prev + 1);
+                
+                if (playStage === 'vocab' && !vocabHintUsed) {
+                    setHighlightVocab(true);
+                    setVocabHintUsed(true);
+                    setTimeout(() => setHighlightVocab(false), 2000);
+                } else if (playStage === 'type' && !typeHintUsed) {
+                    setHighlightType(true);
+                    setTypeHintUsed(true);
+                    setTimeout(() => setHighlightType(false), 2000);
+                } else if (playStage === 'meaning' && !meaningHintUsed) {
+                    setHighlightMeaning(true);
+                    setMeaningHintUsed(true);
+                    setTimeout(() => setHighlightMeaning(false), 2000);
+                }
+            };
+
+            const handleSelectOption = (option) => {
+                if (isChecking) return;
+                setIsChecking(true);
+
+                let isCorrect = false;
+
+                if (playStage === 'vocab') {
+                    setSelectedVocab(option);
+                    isCorrect = (option === currentItem.vocab);
+                } else if (playStage === 'type') {
+                    setSelectedType(option);
+                    isCorrect = (option === currentItem.type);
+                } else if (playStage === 'meaning') {
+                    setSelectedMeaning(option);
+                    isCorrect = (option === currentItem.meaning);
+                }
+
+                if (isCorrect) {
+                    const emojis = ['❤️', '⭐', '🪷', '🌸', '🌻', '🍀', '🦋', '🌟', '✨', '🌿', '🌺', '🍁', '🍄', '🕊️'];
+                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    setFeedback({ type: 'success', message: randomEmoji, isEmoji: true, stage: playStage });
+                    if (playStage === 'vocab') playTTS(option, null, null);
+                    
+                    setTimeout(() => {
+                        setFeedback({ type: '', message: '', isEmoji: false, stage: '' });
+                        if (playStage === 'vocab') {
+                            setPlayStage('type');
+                            setIsChecking(false);
+                        } else if (playStage === 'type') {
+                            setPlayStage('meaning');
+                            setIsChecking(false);
+                        } else if (playStage === 'meaning') {
+                            const isRetry = failedItems.has(currentItem.id);
+                            if (!isRetry) setScore(prev => prev + 1);
+                            setTypedSpelling('');
+                            setSuccessBubble({ word: currentItem.vocab, type: currentItem.type, ipa: currentItem.ipa, meaning: currentItem.meaning, earnedPoint: !isRetry });
+                            playTTS(currentItem.vocab, null, null);
+                            setIsChecking(false);
+                        }
+                    }, 1000);
+                } else {
+                    setMistakeOnCurrentWord(true); // Đánh dấu đã có lỗi sai trong vòng này
+                    setFailedItems(prev => {
+                        const newSet = new Set(prev);
+                        if (currentItem) newSet.add(currentItem.id);
+                        return newSet;
+                    });
+                    setTotalMistakes(prev => prev + 1);
+                    const newAttempts = attempts + 1;
+                    setAttempts(newAttempts);
+                    setShake(true);
+                    setTimeout(() => setShake(false), 400);
+
+                    setFeedback({ type: 'warning', message: `❌ Sai rồi!`, isEmoji: false, stage: playStage });
+                    setTimeout(() => {
+                        if (playStage === 'vocab') setSelectedVocab(null);
+                        else if (playStage === 'type') setSelectedType(null);
+                        else if (playStage === 'meaning') setSelectedMeaning(null);
+                        setIsChecking(false);
+                        setFeedback({ type: '', message: '', isEmoji: false, stage: '' });
+                    }, 1500);
+                }
+            };
+
+            React.useEffect(() => {
+                if (successBubble && inputRef.current) {
+                    setTimeout(() => {
+                        if (inputRef.current) inputRef.current.focus();
+                    }, 100);
+                }
+            }, [successBubble]);
+
+            React.useEffect(() => {
+                const handleGlobalEnter = (e) => {
+                    if (e.key === 'Enter') {
+                        if (gameState === 'start' && playerName.trim()) {
+                            e.preventDefault(); 
+                            startGame(); 
+                        }
+                    }
+                };
+                window.addEventListener('keyup', handleGlobalEnter);
+                return () => window.removeEventListener('keyup', handleGlobalEnter);
+            }, [gameState, playerName]);
+
+            const handleTyping = (e) => {
+                if (!successBubble || successBubble.challengeMode) return;
+                const targetStr = successBubble.word.replace(/[\s-]/g, ''); 
+                const val = e.target.value.replace(/[^a-zA-Z]/g, '').slice(0, targetStr.length);
+                setTypedSpelling(val);
+            };
+
+            const submitTypingRegular = () => {
+                if (!successBubble || successBubble.challengeMode || isChecking) return;
+                if (typedSpelling.length === 0) return;
+                
+                const targetStr = successBubble.word.replace(/[\s-]/g, '');
+                setIsChecking(true);
+                if (typedSpelling.toLowerCase() === targetStr.toLowerCase()) {
+                    setTypingCompleted(true);
+                    setTimeout(() => {
+                        setSuccessBubble(null);
+                        setTypedSpelling('');
+                        setTypingCompleted(false);
+                        setHasSeenUnikeyWarning(true);
+                        setIsChecking(false);
+                        
+                        let newRemaining = unsolvedItems.slice(1);
+                        if (mistakeOnCurrentWord && currentItem) {
+                            newRemaining.push(currentItem);
+                        }
+                        pickNextQuestion(newRemaining);
+                    }, 1500); 
+                } else {
+                    setMistakeOnCurrentWord(true);
+                    setFailedItems(prev => {
+                        const newSet = new Set(prev);
+                        if (currentItem) newSet.add(currentItem.id);
+                        return newSet;
+                    });
+                    setShake(true);
+                    setTimeout(() => {
+                        setShake(false);
+                        setTypedSpelling('');
+                        setIsChecking(false);
+                    }, 400);
+                }
+            };
+
+            const handleKeyDown = (e) => {
+                if (!successBubble || successBubble.challengeMode || isChecking) return;
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitTypingRegular();
+                } else if (e.key === ' ') {
+                    e.preventDefault(); 
+                }
+            };
+
+            if (gameState === 'start') {
+                return (
+                    <div className="flex items-center justify-center min-h-screen relative z-10 px-4">
+                        <div className="glass-panel p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-3xl text-center max-w-lg w-full fade-in">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-4 md:mb-6 neon-text">Cloze-text 2-3</h1>
+                            <p className="text-gray-300 mb-6 md:mb-8 text-sm sm:text-base md:text-lg">Học, Học nữa, Học mãi!</p>
+                            <div className="mb-8">
+                                <input 
+                                    type="text" 
+                                    placeholder="Nhập tên của bạn..." 
+                                    value={playerName}
+                                    onChange={(e) => setPlayerName(e.target.value)}
+                                    className="w-full bg-gray-800 bg-opacity-70 border-2 border-purple-500 text-white rounded-full py-3 px-6 outline-none focus:border-pink-500 focus:shadow-[0_0_15px_rgba(236,72,153,0.5)] transition text-center text-lg placeholder-gray-400"
+                                />
+                            </div>
+                            <button 
+                                onClick={startGame} 
+                                disabled={!playerName.trim()}
+                                className={`font-bold py-3 px-10 rounded-full transition transform text-lg w-full md:w-auto
+                                    ${playerName.trim() 
+                                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.7)] hover:scale-110' 
+                                        : 'bg-gray-700 text-gray-500 cursor-not-allowed opacity-60'}`}
+                            >
+                                Bắt đầu
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'review') {
+                const handleDownloadVocab = () => {
+                    const vocabListElement = document.getElementById('vocab-list-container');
+                    if (!vocabListElement) return;
+
+                    // Store original styles to restore later
+                    const originalMaxHeight = vocabListElement.style.maxHeight;
+                    const originalOverflow = vocabListElement.style.overflow;
+                    const originalHeight = vocabListElement.style.height;
+
+                    // Temporarily modify styles to capture full content
+                    vocabListElement.style.maxHeight = 'none';
+                    vocabListElement.style.overflow = 'visible';
+                    vocabListElement.style.height = 'auto';
+                    vocabListElement.classList.add('is-exporting'); // Tạm thời chuyển sang 2D để tránh lỗi ngược chữ
+
+                    window.html2canvas(vocabListElement, {
+                        backgroundColor: '#0b0f19', // Match a dark background
+                        scale: window.devicePixelRatio || 2, // High resolution for smartphones
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = 'vocabulary_list.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    }).catch(err => console.error('Lỗi chụp ảnh:', err))
+                    .finally(() => {
+                        // Restore original styles
+                        vocabListElement.style.maxHeight = originalMaxHeight;
+                        vocabListElement.style.overflow = originalOverflow;
+                        vocabListElement.style.height = originalHeight;
+                        vocabListElement.classList.remove('is-exporting'); // Trả lại hiệu ứng xoay 3D
+                    });
+                };
+
+                return (
+                    <div className="min-h-screen py-4 sm:py-6 md:py-10 px-3 sm:px-4 relative z-10 flex flex-col items-center justify-center">
+                        <div className="max-w-5xl w-full glass-panel p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl fade-in flex flex-col max-h-[95vh] md:max-h-[90vh]">
+                            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-center text-purple-400 mb-3 md:mb-4 neon-text shrink-0">Vocabulary List</h2>
+                            <p className="text-center text-gray-300 mb-4 md:mb-6 text-sm md:text-base shrink-0">Chạm vào các thẻ để xem nghĩa trước khi khởi hành!</p>
+                            
+                            <div id="vocab-list-container" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-4 md:mb-6 overflow-y-auto p-3 md:p-4 bg-gray-900 bg-opacity-50 rounded-xl md:rounded-2xl border border-gray-700 flex-grow h-[65vh] md:h-[60vh] custom-scrollbar w-full">
+                                {vocabData.map((item) => (
+                                    <Flashcard key={item.id} item={item} playTTS={playTTS} />
+                                ))}
+                            </div>
+                            
+                            <div className="flex flex-col sm:flex-row justify-center gap-3 shrink-0 mt-1 md:mt-2">
+                                <button onClick={handleDownloadVocab} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 md:py-3 px-6 md:px-8 rounded-full shadow-[0_0_15px_rgba(79,70,229,0.5)] transition transform hover:scale-105 text-sm md:text-base w-full sm:w-auto flex items-center justify-center gap-2">
+                                    📸 List Từ
+                                </button>
+                                <button onClick={() => { setGameState('tutorial'); setTutorialStep(1); }} className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold py-2.5 md:py-3 px-8 md:px-12 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.7)] transition transform hover:scale-110 text-base md:text-lg w-full sm:w-auto">
+                                    Sẵn sàng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const renderExample = () => {
+                if (!currentItem) return null;
+                const regex = new RegExp(`(${currentItem.vocab})`, 'gi');
+                const parts = currentItem.example.split(regex);
+                return (
+                    <span>
+                        {parts.map((part, i) => {
+                            if (part.toLowerCase() === currentItem.vocab.toLowerCase()) {
+                                if (gameState === 'playing_challenge' || playStage === 'vocab') {
+                                    return <span key={i} className="text-gray-500 font-bold border-b-2 border-gray-500 pb-0.5 mx-1 tracking-widest px-4">?</span>;
+                                } else {
+                                    return <span key={i} className="text-emerald-400 font-bold border-b-2 border-emerald-400 pb-0.5 mx-1 px-1">{currentItem.vocab}</span>;
+                                }
+                            }
+                            return <span key={i}>{part}</span>;
+                        })}
+                    </span>
+                );
+            };
+
+            const handleChallengeTyping = (e) => {
+                if (!currentItem || isChecking) return;
+                const targetStr = currentItem.vocab.replace(/[\s-]/g, ''); 
+                const val = e.target.value.replace(/[^a-zA-Z]/g, '').slice(0, targetStr.length);
+                setTypedSpelling(val);
+            };
+
+            const submitTypingChallenge = () => {
+                if (!currentItem || isChecking) return;
+                if (typedSpelling.length === 0) return;
+                
+                const targetStr = currentItem.vocab.replace(/[\s-]/g, ''); 
+                setIsChecking(true);
+                
+                if (typedSpelling.toLowerCase() === targetStr.toLowerCase()) {
+                    const isRetry = failedItems.has(currentItem.id);
+                    if (!isRetry) setScore(prev => prev + 1);
+                    setFeedback({ type: 'success' });
+                    playTTS(currentItem.vocab, null, null);
+                    setSuccessBubble({ word: currentItem.vocab, type: currentItem.type, ipa: currentItem.ipa, meaning: currentItem.meaning, earnedPoint: !isRetry, challengeMode: true });
+                    setTypingCompleted(true);
+                    setHasSeenUnikeyWarning(true);
+                    
+                    setTimeout(() => {
+                        setSuccessBubble(null);
+                        setTypingCompleted(false);
+                        setIsChecking(false);
+                        
+                        let newRemaining = unsolvedItems.slice(1);
+                        if (mistakeOnCurrentWord && currentItem) {
+                            newRemaining.push(currentItem);
+                        }
+                        pickNextChallengeQuestion(newRemaining);
+                    }, 2000);
+                } else {
+                    setMistakeOnCurrentWord(true); 
+                    setTotalMistakes(prev => prev + 1);
+                    setFailedItems(prev => {
+                        const newSet = new Set(prev);
+                        newSet.add(currentItem.id);
+                        return newSet;
+                    });
+                    setShake(true);
+                    setFeedback({ type: 'warning' });
+                    setTimeout(() => {
+                        setShake(false);
+                        setTypedSpelling('');
+                        setIsChecking(false);
+                        setFeedback({ type: '', message: '', isEmoji: false, stage: '' });
+                    }, 800);
+                }
+            };
+
+            const handleChallengeKeyDown = (e) => {
+                if (!currentItem || isChecking) return;
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitTypingChallenge();
+                } else if (e.key === ' ') {
+                    e.preventDefault(); 
+                }
+            };
+
+            if (gameState === 'tutorial') {
+                return (
+                    <div className="flex items-center justify-center min-h-screen relative z-10 px-4 py-8">
+                        <div className="glass-panel p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-3xl text-center max-w-2xl w-full fade-in flex flex-col items-center">
+                            <h2 className="text-2xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500 mb-6 neon-text">Hướng dẫn</h2>
+                            
+                            <div className="w-full bg-gray-900/60 rounded-xl border border-indigo-500/30 p-6 mb-8 text-left h-48 flex items-center justify-center">
+                                {tutorialStep === 1 && <div className="text-lg md:text-xl text-gray-200 fade-in text-center leading-relaxed"><b>Bước 1:</b> Tìm ra <span className="text-blue-400 font-bold">Từ vựng (Vocabulary)</span> thích hợp để điền vào chỗ trống trong câu ví dụ.</div>}
+                                {tutorialStep === 2 && <div className="text-lg md:text-xl text-gray-200 fade-in text-center leading-relaxed"><b>Bước 2:</b> Chọn <span className="text-emerald-400 font-bold">Từ loại (Word Type)</span> tương ứng của từ đó.</div>}
+                                {tutorialStep === 3 && <div className="text-lg md:text-xl text-gray-200 fade-in text-center leading-relaxed"><b>Bước 3:</b> Chọn <span className="text-pink-400 font-bold">Nghĩa (Meaning)</span> chính xác nhất.</div>}
+                                {tutorialStep === 4 && <div className="text-lg md:text-xl text-gray-200 fade-in text-center leading-relaxed"><b>Bước 4:</b> <span className="text-yellow-400 font-bold">Gõ lại từ vựng</span> để ghi nhớ sâu hơn và ghi điểm!</div>}
+                            </div>
+                            
+                            <div className="flex justify-between w-full gap-4">
+                                {tutorialStep > 1 ? (
+                                    <button onClick={() => setTutorialStep(prev => prev - 1)} className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition w-1/2">
+                                        Quay lại
+                                    </button>
+                                ) : <div className="w-1/2"></div>}
+                                
+                                {tutorialStep < 4 ? (
+                                    <button onClick={() => setTutorialStep(prev => prev + 1)} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-full shadow-[0_0_15px_rgba(79,70,229,0.6)] transition w-1/2">
+                                        Tiếp tục
+                                    </button>
+                                ) : (
+                                    <button onClick={startPlaying} className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold py-3 px-6 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.7)] transition transform hover:scale-105 w-1/2">
+                                        Let's start!
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'finished') {
+                const retriedCount = failedItems.size;
+                const firstTryCount = vocabData.length - retriedCount;
+                const basePercentage = Math.round((firstTryCount / vocabData.length) * 100);
+                const penalty = hintCount * 2; // Trừ nhẹ 2% cho mỗi lần dùng hint
+                const percentage = Math.max(0, basePercentage - penalty);
+                
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('vi-VN');
+                const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                const startTimeStr = startTime ? startTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '--:--';
+
+                return (
+                    <div className="flex items-center justify-center min-h-screen relative z-10 px-4">
+                        <div className="glass-panel p-8 md:p-12 rounded-3xl text-center max-w-lg mx-auto fade-in w-full">
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 mb-6 neon-text">Hoàn tất!</h1>
+                            <p className="text-gray-300 mb-8 text-lg">Chúc mừng <span className="text-pink-400 font-bold">{playerName}</span> đã hoàn thành bài tập.</p>
+                            
+                            <div className="text-left bg-gray-900 bg-opacity-50 p-6 rounded-2xl mb-8 border border-gray-700">
+                                <p className="text-gray-300 text-lg mb-3">Ngày: <span className="text-emerald-400 font-bold">{dateStr}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Giờ bắt đầu: <span className="text-emerald-400 font-bold">{startTimeStr}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Thời gian: <span className="text-emerald-400 font-bold">{formatTime(elapsedTime)}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Đúng ngay lần 1: <span className="text-emerald-400 font-bold">{firstTryCount} / {vocabData.length}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Số lần dùng gợi ý: <span className="text-purple-400 font-bold">{hintCount}</span></p>
+                                <p className="text-gray-300 text-lg font-bold mt-4 pt-4 border-t border-gray-700 flex items-center flex-wrap">
+                                    Tỉ lệ chính xác: <span className={`text-2xl ml-2 ${percentage >= 80 ? 'text-emerald-400' : percentage >= 50 ? 'text-yellow-400' : 'text-red-400'}`}>{percentage}%</span>
+                                    {hintCount > 0 && <span className="text-sm text-yellow-500 font-medium ml-2">(-{penalty}% do dùng gợi ý)</span>}
+                                </p>
+                            </div>
+                            
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button onClick={() => { setGameState('start'); setPlayerName(''); setIsChallengeMode(false); }} className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)] transition transform hover:scale-105 w-full sm:w-auto">
+                                    Làm lại
+                                </button>
+                                <button onClick={startChallenge} className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(249,115,22,0.5)] transition transform hover:scale-105 w-full sm:w-auto">
+                                    🔥 Thử sức
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'challenge_finished') {
+                const retriedCount = failedItems.size;
+                const firstTryCount = vocabData.length - retriedCount;
+                const basePercentage = Math.round((firstTryCount / vocabData.length) * 100);
+                const penalty = hintCount * 2;
+                const percentage = Math.max(0, basePercentage - penalty);
+                
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('vi-VN');
+                const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                const startTimeStr = startTime ? startTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '--:--';
+
+                return (
+                    <div className="flex items-center justify-center min-h-screen relative z-10 px-4">
+                        <div className="glass-panel p-8 md:p-12 rounded-3xl text-center max-w-lg mx-auto fade-in w-full border-t-4 border-orange-500 shadow-[0_0_40px_rgba(249,115,22,0.3)]">
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-6 neon-text flex items-center justify-center gap-3">
+                                🔥 Vượt ải!
+                            </h1>
+                            <p className="text-gray-300 mb-8 text-lg">Tuyệt vời <span className="text-orange-400 font-bold">{playerName}</span>! Bạn đã hoàn thành bài Thử sức.</p>
+                            
+                            <div className="text-left bg-gray-900 bg-opacity-70 p-6 rounded-2xl mb-8 border border-orange-500/30">
+                                <p className="text-gray-300 text-lg mb-3">Ngày: <span className="text-orange-400 font-bold">{dateStr}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Giờ bắt đầu: <span className="text-orange-400 font-bold">{startTimeStr}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Thời gian: <span className="text-orange-400 font-bold">{formatTime(elapsedTime)}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Đúng ngay lần 1: <span className="text-orange-400 font-bold">{firstTryCount} / {vocabData.length}</span></p>
+                                <p className="text-gray-300 text-lg mb-3">Số lần dùng gợi ý: <span className="text-purple-400 font-bold">{hintCount}</span></p>
+                                <p className="text-gray-300 text-lg font-bold mt-4 pt-4 border-t border-gray-700 flex items-center flex-wrap">
+                                    Tỉ lệ chính xác: <span className={`text-2xl ml-2 ${percentage >= 80 ? 'text-orange-400' : percentage >= 50 ? 'text-yellow-400' : 'text-red-400'}`}>{percentage}%</span>
+                                    {hintCount > 0 && <span className="text-sm text-yellow-500 font-medium ml-2">(-{penalty}% do dùng gợi ý)</span>}
+                                </p>
+                            </div>
+                            
+                            <div className="flex justify-center">
+                                <button onClick={() => { setGameState('start'); setPlayerName(''); setIsChallengeMode(false); }} className="bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-bold py-3 px-10 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)] transition transform hover:scale-105 w-full sm:w-auto">
+                                    Về trang chủ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'playing_challenge') {
+                return (
+                    <div className="min-h-screen flex flex-col pt-4 md:pt-12 px-3 md:px-4 pb-20 fade-in relative z-10 items-center justify-center">
+                        {successBubble && (
+                            <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-gray-900 bg-opacity-95 fade-in backdrop-blur-md p-3 sm:p-4">
+                                <div className="z-20 flex flex-col items-center justify-center fade-in w-full h-full py-10">
+                                    <MeteorShower />
+                                    <div className="z-10 flex flex-col items-center justify-center">
+                                        <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-full shadow-[inset_-15px_-15px_30px_rgba(0,0,0,0.8),inset_10px_10px_20px_rgba(255,255,255,0.5),0_0_50px_rgba(14,165,233,0.9)] bg-[radial-gradient(circle_at_30%_30%,#38bdf8_0%,#0284c7_40%,#1e3a8a_80%,#0f172a_100%)] animate-bounce border border-sky-300/40 group overflow-hidden shrink-0">
+                                            <span className="absolute text-[150px] sm:text-[180px] md:text-[230px] opacity-30 mix-blend-overlay group-hover:rotate-12 transition-transform duration-700 select-none">🌍</span>
+                                            <div className="z-10 flex flex-col items-center justify-center p-4 text-center w-full">
+                                                <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-1 sm:mb-2 tracking-wider shadow-black drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] leading-tight break-words max-w-[95%]">{successBubble.word}</span>
+                                                <div className="flex items-baseline justify-center mt-1">
+                                                    <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-yellow-300 drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)]">+1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className={`max-w-4xl w-full flex flex-col gap-6 bounce-up ${shake ? 'shake' : ''}`}>
+                            <div className="glass-panel p-4 md:p-5 rounded-xl md:rounded-2xl flex flex-col justify-center items-center gap-3 w-full border-t-4 border-orange-500 shadow-[0_4px_20px_rgba(249,115,22,0.2)]">
+                                <div className="bg-orange-900/30 border border-orange-500/50 rounded-full px-5 py-1.5 md:py-2 shadow-[0_0_15px_rgba(249,115,22,0.3)] backdrop-blur-sm">
+                                    <h2 className="text-sm sm:text-base md:text-lg font-medium text-gray-300 text-center flex items-center gap-2">
+                                        🔥 <span className="hidden sm:inline">Chế độ Thử sức:</span> 
+                                        <span className="text-orange-400 font-extrabold text-lg md:text-xl drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]">{playerName}</span>
+                                    </h2>
+                                </div>
+
+                                <div className="flex gap-1.5 md:gap-2 text-xs sm:text-sm flex-wrap justify-center">
+                                    <div className="bg-gray-800/80 border border-gray-600 px-3 py-1.5 rounded-full font-bold text-gray-300 shadow-inner flex items-center">
+                                        ⏱ <span className="text-yellow-400 ml-1">{formatTime(elapsedTime)}</span>
+                                    </div>
+                                    <div className="bg-gray-800/80 border border-gray-600 px-3 py-1.5 rounded-full font-bold text-gray-300 shadow-inner">
+                                        Score: <span className="text-emerald-400 ml-1">{score}</span>
+                                    </div>
+                                    <div className="bg-gray-800/80 border border-gray-600 px-3 py-1.5 rounded-full font-bold text-gray-300 shadow-inner">
+                                        Target: <span className="text-cyan-400 ml-1">{unsolvedItems.length}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel p-6 md:p-10 rounded-2xl md:rounded-3xl border-t-4 border-emerald-500 text-center relative flex flex-col items-center justify-center flex-grow shadow-[0_0_30px_rgba(16,185,129,0.2)]" onClick={() => challengeInputRef.current && challengeInputRef.current.focus()}>
+                                <div className="text-base sm:text-lg md:text-2xl font-bold text-white tracking-wide leading-relaxed italic text-center w-full mb-6">
+                                    {renderExample()}
+                                </div>
+                                
+                                <div className="text-gray-400 text-sm md:text-lg italic mb-8">
+                                    "{currentItem?.example_vi}"
+                                </div>
+
+                                <div className="text-pink-400 font-bold text-sm md:text-base mb-4 px-5 py-2 rounded-full border border-pink-500/50 bg-pink-900/30">
+                                    {currentItem?.meaning}
+                                </div>
+                                
+                                <div className="flex justify-center gap-6 mt-2 mb-2">
+                                    <button 
+                                        onClick={() => { if (currentItem) playTTS(currentItem.vocab, null, null); }} 
+                                        className="text-2xl sm:text-3xl hover:scale-125 transition drop-shadow-[0_0_10px_rgba(56,189,248,0.6)]" 
+                                        title="Nghe phát âm"
+                                    >
+                                        🔊
+                                    </button>
+                                    <button 
+                                        onClick={() => { 
+                                            if (isChecking || !currentItem) return;
+                                            setHintCount(prev => prev + 1);
+                                            setShowChallengeHint(true);
+                                            setTimeout(() => setShowChallengeHint(false), 2000);
+                                            if (challengeInputRef.current) challengeInputRef.current.focus();
+                                        }} 
+                                        className="text-2xl sm:text-3xl hover:scale-125 transition drop-shadow-[0_0_10px_rgba(253,224,71,0.8)]" 
+                                        title="Gợi ý"
+                                    >
+                                        💡
+                                    </button>
+                                </div>
+
+                                <div className="flex flex-wrap justify-center gap-1 sm:gap-2 md:gap-3 mb-2 md:mb-4 mt-4 relative w-full items-center">
+                                    <input 
+                                        ref={challengeInputRef}
+                                        type="text"
+                                        value={typedSpelling}
+                                        onChange={handleChallengeTyping}
+                                        onKeyDown={handleChallengeKeyDown}
+                                        className="absolute opacity-0 w-10 h-10 top-0 left-0 -z-10"
+                                        autoFocus
+                                        autoComplete="off"
+                                        autoCorrect="off"
+                                        spellCheck="false"
+                                        autoCapitalize="none"
+                                    />
+                                    {currentItem && currentItem.vocab.split('').map((char, index) => {
+                                        if (char === ' ' || char === '-') return <div key={index} className="w-3 sm:w-4 text-gray-500 text-2xl md:text-3xl flex items-center justify-center">{char}</div>;
+                                        
+                                        const letterIndex = currentItem.vocab.substring(0, index).replace(/[\s-]/g, '').length;
+                                        const typedChar = typedSpelling[letterIndex] || '';
+                                        const isCurrentFocus = typedSpelling.length === letterIndex && !isChecking;
+
+                                        let boxColorClass = 'border-purple-500/50 bg-gray-800/80 text-white shadow-[inset_0_0_15px_rgba(139,92,246,0.3)]';
+                                        if (feedback?.type === 'warning' && typedChar !== '') {
+                                            boxColorClass = 'border-red-500 bg-red-900/80 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.8)]';
+                                        } else if (typedChar !== '') {
+                                            boxColorClass = 'border-emerald-500 bg-emerald-900/80 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.5)]';
+                                        }
+
+                                        return (
+                                            <div key={index} className={`w-8 h-12 sm:w-12 sm:h-16 md:w-14 md:h-18 lg:w-16 lg:h-20 rounded-lg md:rounded-xl border-2 flex items-center justify-center text-lg sm:text-2xl md:text-4xl font-bold transition-all duration-300 relative
+                                                ${boxColorClass}
+                                                ${isCurrentFocus ? 'ring-2 ring-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.7)] scale-110 z-10' : ''}
+                                            `}>
+                                                <span className="z-10 relative">{typedChar.toUpperCase()}</span>
+                                                {isCurrentFocus && <div className="absolute w-[2px] h-3/5 bg-orange-400 animate-pulse z-10"></div>}
+                                                {showChallengeHint && typedChar === '' && (
+                                                    <span className="absolute inset-0 flex items-center justify-center text-white/30 drop-shadow-[0_0_5px_rgba(255,255,255,0.4)] z-0">{char.toUpperCase()}</span>
+                                                )}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                {!hasSeenUnikeyWarning && (
+                                    <div className="bg-yellow-900/60 border border-yellow-500/60 text-yellow-300 text-xs sm:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full mt-4 shadow-[0_0_10px_rgba(234,179,8,0.3)] flex items-center gap-1.5 md:gap-2 animate-bounce max-w-full text-left">
+                                        <span className="text-base md:text-lg shrink-0">⚠️</span> <span>Nhớ tắt Unikey khi gõ nhé!</span>
+                                    </div>
+                                )}
+                                <button onClick={submitTypingChallenge} className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-2.5 px-8 rounded-full shadow-[0_0_15px_rgba(236,72,153,0.6)] transition transform hover:scale-105 mt-5 mb-2 border border-pink-400 animate-pulse">
+                                    Xác nhận (Enter)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen flex flex-col pt-4 md:pt-12 px-3 md:px-4 pb-20 fade-in relative z-10">
+                    {/* Bubble gõ lại từ vựng */}
+                    {successBubble && (
+                        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gray-900 bg-opacity-95 fade-in backdrop-blur-md p-3 sm:p-4" onClick={() => inputRef.current && inputRef.current.focus()}>
+                            <div className="z-20 flex flex-col items-center justify-center fade-in w-full h-full py-10">
+                                <MeteorShower />
+                                <div className="z-10 flex flex-col items-center justify-center">
+                                    <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-full shadow-[inset_-15px_-15px_30px_rgba(0,0,0,0.8),inset_10px_10px_20px_rgba(255,255,255,0.5),0_0_50px_rgba(14,165,233,0.9)] bg-[radial-gradient(circle_at_30%_30%,#38bdf8_0%,#0284c7_40%,#1e3a8a_80%,#0f172a_100%)] animate-bounce border border-sky-300/40 group overflow-hidden shrink-0">
+                                        <span className="absolute text-[150px] sm:text-[180px] md:text-[230px] opacity-30 mix-blend-overlay group-hover:rotate-12 transition-transform duration-700 select-none">🌍</span>
+                                        <div className="z-10 flex flex-col items-center justify-center p-4 text-center w-full">
+                                            <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-1 sm:mb-2 tracking-wider shadow-black drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] leading-tight break-words max-w-[95%]">{successBubble.word}</span>
+                                            {successBubble.earnedPoint && (
+                                                <div className="flex items-baseline justify-center mt-1">
+                                                    <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-yellow-300 drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)]">+1</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={`mt-8 sm:mt-10 md:mt-12 flex flex-col items-center w-full max-w-xs sm:max-w-md ${shake ? 'shake' : ''} z-20 shrink-0`}>
+                                    {!typingCompleted ? (
+                                        <>
+                                            <div className="relative w-full flex justify-center items-center mb-4">
+                                                <input
+                                                    ref={inputRef}
+                                                    type="text"
+                                                    value={typedSpelling}
+                                                    onChange={handleTyping}
+                                                    onKeyDown={handleKeyDown}
+                                                    className="absolute opacity-0 w-full h-full top-0 left-0 cursor-pointer z-20"
+                                                    autoFocus
+                                                    autoComplete="off"
+                                                    autoCorrect="off"
+                                                    spellCheck="false"
+                                                    autoCapitalize="none"
+                                                />
+                                                <div className="flex flex-wrap justify-center gap-1 sm:gap-2">
+                                                    {successBubble.word.split('').map((char, index) => {
+                                                        if (char === ' ' || char === '-') return <div key={index} className="w-3 sm:w-4 text-gray-500 text-2xl md:text-3xl flex items-center justify-center">{char}</div>;
+                                                        const letterIndex = successBubble.word.substring(0, index).replace(/[\s-]/g, '').length;
+                                                        const typedChar = typedSpelling[letterIndex] || '';
+                                                        const isCurrentFocus = typedSpelling.length === letterIndex && !isChecking;
+                                                        
+                                                        let boxColorClass = 'border-purple-500/50 bg-gray-800/80 text-white shadow-[inset_0_0_15px_rgba(139,92,246,0.3)]';
+                                                        if (isChecking && typedChar !== '') {
+                                                            boxColorClass = 'border-emerald-500 bg-emerald-900/80 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.5)]';
+                                                        }
+
+                                                        return (
+                                                            <div key={index} className={`w-8 h-12 sm:w-10 sm:h-14 md:w-12 md:h-16 rounded-lg md:rounded-xl border-2 flex items-center justify-center text-lg sm:text-2xl md:text-3xl font-bold transition-all duration-300 relative
+                                                                ${boxColorClass}
+                                                                ${isCurrentFocus ? 'ring-2 ring-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.7)] scale-110 z-10' : ''}
+                                                            `}>
+                                                                <span className="z-10 relative">{typedChar.toUpperCase()}</span>
+                                                                {isCurrentFocus && <div className="absolute w-[2px] h-3/5 bg-pink-400 animate-pulse z-10"></div>}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                            {!hasSeenUnikeyWarning && (
+                                                <div className="bg-yellow-900/60 border border-yellow-500/60 text-yellow-300 text-xs sm:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-full mb-3 shadow-[0_0_10px_rgba(234,179,8,0.3)] flex items-center gap-1.5 md:gap-2 animate-bounce max-w-full text-left">
+                                                    <span className="text-base md:text-lg shrink-0">⚠️</span> <span>Lưu ý: Tắt Unikey / chuyển sang bàn phím Tiếng Anh (US) để gõ chính xác nhất!</span>
+                                                </div>
+                                            )}
+                                            <button onClick={submitTypingRegular} className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-2.5 px-8 rounded-full shadow-[0_0_15px_rgba(236,72,153,0.6)] transition transform hover:scale-105 mt-1 mb-2 border border-pink-400 animate-pulse">
+                                                Xác nhận (Enter)
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <div className="flex flex-col items-center">
+                                            <div className="text-emerald-400 text-4xl sm:text-5xl animate-bounce mb-2">✨</div>
+                                            <div className="text-emerald-400 text-lg sm:text-xl md:text-2xl font-bold neon-text bg-emerald-900/40 px-4 sm:px-6 py-2 rounded-full border border-emerald-500/50">Perfect!</div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="max-w-6xl mx-auto w-full flex flex-col">
+                        {/* Header Stats */}
+                        <div className="glass-panel p-3 md:p-4 rounded-xl md:rounded-2xl flex flex-wrap justify-between items-center mb-4 md:mb-8 gap-3 border-l-4 border-indigo-500">
+                            <div className="flex items-center gap-2 md:gap-4 flex-wrap w-full md:w-auto justify-center md:justify-start">
+                                <span className="text-gray-300 font-medium text-sm md:text-base">Player: <span className="text-pink-400 font-bold ml-1">{playerName}</span></span>
+                                <div className="h-4 w-px bg-gray-600 hidden md:block"></div>
+                                <span className="text-gray-300 font-medium text-sm md:text-base bg-gray-800/80 px-3 py-1 rounded-full border border-gray-600 shadow-inner flex items-center gap-1.5">⏱ <span className="text-yellow-400">{formatTime(elapsedTime)}</span></span>
+                            </div>
+                            <div className="flex items-center gap-2 md:gap-4 flex-wrap w-full md:w-auto justify-center md:justify-end">
+                                <span className="text-gray-300 font-medium text-sm md:text-base bg-gray-800/80 px-3 py-1 rounded-full border border-gray-600 shadow-inner">Lượt: <span className="text-purple-400 font-bold ml-1">{attempts}</span></span>
+                                <span className="text-gray-300 font-medium text-sm md:text-base bg-gray-800/80 px-3 py-1 rounded-full border border-gray-600 shadow-inner">Score: <span className="text-emerald-400 font-bold ml-1 text-lg">{score}</span></span>
+                                <span className="text-gray-300 font-medium text-sm md:text-base bg-gray-800/80 px-3 py-1 rounded-full border border-gray-600 shadow-inner">Target: <span className="text-cyan-400 font-bold ml-1">{unsolvedItems.length}</span></span>
+                            </div>
+                        </div>
+
+                        {/* Main Grid */}
+                        <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 ${shake && !successBubble ? 'shake' : ''}`}>
+                            {/* Cột 1: Vocabulary */}
+                            <div key={`col1-${currentItem?.id}`} className={`glass-panel relative rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-5 transition-all duration-300 bounce-up delay-100 ${playStage !== 'vocab' ? 'opacity-50 grayscale' : ''}`}>
+                                
+                                {/* Example Context in Vocab Column */}
+                                <div className="mb-4 md:mb-6 bg-blue-900/20 border border-blue-500/30 rounded-xl p-3 md:p-4 text-center min-h-[5rem] flex items-center justify-center relative group cursor-pointer" onClick={() => setShowTranslation(!showTranslation)}>
+                                    <div className={`text-base md:text-lg font-medium text-gray-200 leading-relaxed italic transition-all duration-300 ${showTranslation ? 'opacity-0 absolute' : 'opacity-100'}`}>
+                                        "{renderExample()}"
+                                    </div>
+                                    <div className={`text-sm md:text-base font-medium text-blue-300 leading-relaxed italic transition-all duration-300 ${showTranslation ? 'opacity-100' : 'opacity-0 absolute'}`}>
+                                        "{currentItem?.example_vi_hidden}"
+                                    </div>
+                                    <div className="absolute -bottom-2.5 bg-gray-800 text-gray-400 text-[10px] px-2 rounded-full border border-gray-600 shadow-sm">Chạm để dịch</div>
+                                </div>
+
+                                <div className="flex justify-between items-center mb-3 md:mb-4 border-b border-gray-700 pb-2 md:pb-3">
+                                    <h3 className="text-base md:text-lg lg:text-xl font-bold text-blue-400 neon-text">Vocabulary</h3>
+                                    <div className="flex items-center gap-2">
+                                        {isChecking && feedback.isEmoji && playStage === 'vocab' && (
+                                            <span className="text-xl md:text-2xl animate-bounce drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] z-20">{feedback.message}</span>
+                                        )}
+                                        {isChecking && feedback.type === 'warning' && playStage === 'vocab' && (
+                                            <span className="text-xs font-bold text-red-300 bg-red-900/80 border border-red-500/50 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(239,68,68,0.5)] fade-in">Sai rồi!</span>
+                                        )}
+                                        <button 
+                                            onClick={handleHint} 
+                                            disabled={playStage !== 'vocab' || vocabHintUsed || isChecking}
+                                            className={`text-lg md:text-xl transition ${(playStage !== 'vocab' || vocabHintUsed) ? 'opacity-30 grayscale cursor-not-allowed' : 'hover:scale-125 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)]'}`}
+                                        >💡</button>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    {currentVocabOptions.map(v => (
+                                        <button 
+                                            key={v}
+                                            onClick={() => handleSelectOption(v)}
+                                            disabled={isChecking || playStage !== 'vocab'}
+                                            className={`px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-xl font-bold text-sm md:text-base transition-all duration-200 border-2 w-full
+                                                ${selectedVocab === v 
+                                                    ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)] scale-[1.02]' 
+                                                    : 'bg-gray-800 text-blue-300 border-gray-600 hover:border-blue-500 hover:bg-gray-700 hover:shadow-[0_0_10px_rgba(59,130,246,0.3)]'}
+                                                ${highlightVocab && v === currentItem?.vocab ? 'bg-yellow-500 text-black border-yellow-300 shadow-[0_0_15px_rgba(253,224,71,1)] animate-pulse z-10' : ''}
+                                                ${(isChecking || playStage !== 'vocab') && selectedVocab !== v ? 'cursor-not-allowed opacity-50' : ''}
+                                            `}
+                                        >
+                                            {v}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Cột 2: Word Type */}
+                            <div key={`col2-${currentItem?.id}`} className={`glass-panel relative rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-5 transition-all duration-300 bounce-up delay-200 ${playStage === 'vocab' ? 'opacity-50 grayscale pointer-events-none' : ''} ${playStage === 'meaning' && !selectedType ? 'opacity-50 grayscale' : ''}`}>
+                                
+                                <div className="flex justify-between items-center mb-3 md:mb-4 border-b border-gray-700 pb-2 md:pb-3">
+                                    <h3 className="text-base md:text-lg lg:text-xl font-bold text-emerald-400 neon-text">Word Type</h3>
+                                    <div className="flex items-center gap-2">
+                                        {isChecking && feedback.isEmoji && playStage === 'type' && (
+                                            <span className="text-xl md:text-2xl animate-bounce drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] z-20">{feedback.message}</span>
+                                        )}
+                                        {isChecking && feedback.type === 'warning' && playStage === 'type' && (
+                                            <span className="text-xs font-bold text-red-300 bg-red-900/80 border border-red-500/50 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(239,68,68,0.5)] fade-in">Sai rồi!</span>
+                                        )}
+                                        <button 
+                                            onClick={handleHint} 
+                                            disabled={playStage !== 'type' || typeHintUsed || isChecking}
+                                            className={`text-lg md:text-xl transition ${(playStage !== 'type' || typeHintUsed) ? 'opacity-30 grayscale cursor-not-allowed' : 'hover:scale-125 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)]'}`}
+                                        >💡</button>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    {currentTypeOptions.map(t => (
+                                        <button 
+                                            key={t}
+                                            onClick={() => handleSelectOption(t)}
+                                            disabled={isChecking || playStage !== 'type'}
+                                            className={`px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-xl font-bold text-sm md:text-base transition-all duration-200 border-2 w-full
+                                                ${selectedType === t 
+                                                    ? 'bg-emerald-600 text-white border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.6)] scale-[1.02]' 
+                                                    : 'bg-gray-800 text-emerald-300 border-gray-600 hover:border-emerald-500 hover:bg-gray-700 hover:shadow-[0_0_10px_rgba(16,185,129,0.3)]'}
+                                                ${highlightType && t === currentItem?.type ? 'bg-yellow-500 text-black border-yellow-300 shadow-[0_0_15px_rgba(253,224,71,1)] animate-pulse z-10' : ''}
+                                                ${(isChecking || playStage !== 'type') && selectedType !== t ? 'cursor-not-allowed opacity-50' : ''}
+                                            `}
+                                        >
+                                            {t}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Cột 3: Meaning */}
+                            <div key={`col3-${currentItem?.id}`} className={`glass-panel relative rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-5 transition-all duration-300 bounce-up delay-300 ${(playStage === 'vocab' || playStage === 'type') ? 'opacity-50 grayscale pointer-events-none' : ''}`}>
+                                
+                                <div className="flex justify-between items-center mb-3 md:mb-4 border-b border-gray-700 pb-2 md:pb-3">
+                                    <h3 className="text-base md:text-lg lg:text-xl font-bold text-pink-400 neon-text">Meanings</h3>
+                                    <div className="flex items-center gap-2">
+                                        {isChecking && feedback.isEmoji && playStage === 'meaning' && (
+                                            <span className="text-xl md:text-2xl animate-bounce drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] z-20">{feedback.message}</span>
+                                        )}
+                                        {isChecking && feedback.type === 'warning' && playStage === 'meaning' && (
+                                            <span className="text-xs font-bold text-red-300 bg-red-900/80 border border-red-500/50 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(239,68,68,0.5)] fade-in">Sai rồi!</span>
+                                        )}
+                                        <button 
+                                            onClick={handleHint} 
+                                            disabled={playStage !== 'meaning' || meaningHintUsed || isChecking}
+                                            className={`text-lg md:text-xl transition ${(playStage !== 'meaning' || meaningHintUsed) ? 'opacity-30 grayscale cursor-not-allowed' : 'hover:scale-125 drop-shadow-[0_0_10px_rgba(253,224,71,0.8)]'}`}
+                                        >💡</button>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    {currentMeaningOptions.map(m => (
+                                        <button 
+                                            key={m}
+                                            onClick={() => handleSelectOption(m)}
+                                            disabled={isChecking || playStage !== 'meaning'}
+                                            className={`px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-xl font-bold text-xs md:text-sm transition-all duration-200 border-2 w-full text-left
+                                                ${selectedMeaning === m 
+                                                    ? 'bg-pink-600 text-white border-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.6)] scale-[1.02]' 
+                                                    : 'bg-gray-800 text-pink-300 border-gray-600 hover:border-pink-500 hover:bg-gray-700 hover:shadow-[0_0_10px_rgba(236,72,153,0.3)]'}
+                                                ${highlightMeaning && m === currentItem?.meaning ? 'bg-yellow-500 text-black border-yellow-300 shadow-[0_0_15px_rgba(253,224,71,1)] animate-pulse z-10' : ''}
+                                                ${(isChecking || playStage !== 'meaning') && selectedMeaning !== m ? 'cursor-not-allowed opacity-50' : ''}
+                                            `}
+                                        >
+                                            {m}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
