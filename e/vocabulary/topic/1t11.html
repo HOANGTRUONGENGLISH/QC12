@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Vocab - Life Stories 3</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        h1, h2, h3, .heading-font {
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            background-color: #1c1917; /* stone-900 */
+        }
+
+        /* Animations */
+        @keyframes snow-fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(100vh) translateX(20px) rotate(360deg); opacity: 0; }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2rem;
+            animation: snow-fall linear infinite;
+            z-index: 0;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.4));
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Glassmorphism Nâu xám lạnh */
+        .glass-panel {
+            background: rgba(41, 37, 36, 0.65); /* stone-800 with opacity */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(214, 211, 209, 0.2); /* stone-300 border */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        .question-text strong {
+            color: #f5f5f4; /* stone-100 */
+            font-weight: 800;
+            font-size: 1.15em;
+            background: rgba(120, 113, 108, 0.5); /* stone-500 */
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .hidden { display: none !important; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1c1917; }
+        ::-webkit-scrollbar-thumb { background: #78716c; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+    </style>
+</head>
+<body class="text-stone-200 min-h-screen relative flex items-center justify-center p-4">
+
+    <!-- Background Layer (Núi tuyết nâu xám) -->
+    <div id="background-layer" class="fixed inset-0 overflow-hidden" style="z-index: 0; pointer-events: none;">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#292524] via-[#44403c] to-[#1c1917] opacity-95"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyIvPjwvc3ZnPg==')]"></div>
+        <div id="floating-container"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="main-content" class="relative w-full max-w-4xl transition-all duration-500" style="z-index: 10; pointer-events: auto;">
+        
+        <!-- START SCREEN -->
+        <div id="screen-start" class="glass-panel rounded-3xl p-8 md:p-12 text-center transform hover:scale-[1.02] transition-transform duration-300">
+            <div class="text-6xl md:text-7xl mb-6 drop-shadow-lg">🏔️❄️🌬️</div>
+            <h1 class="text-4xl md:text-5xl font-black mb-6 text-stone-100 heading-font tracking-tight drop-shadow-md">
+                Life Stories 3
+            </h1>
+            <p class="text-lg md:text-xl text-stone-300/90 mb-8 font-semibold">
+                <span id="total-count" class="font-black text-white bg-stone-700/60 px-3 py-1 rounded-lg border border-stone-400/50"></span> từ mới 🧗‍♂️
+            </p>
+            <button id="btn-start" class="px-8 py-4 bg-gradient-to-r from-stone-400 to-slate-400 hover:from-stone-300 hover:to-slate-300 text-stone-900 font-black rounded-full text-lg md:text-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all cursor-pointer transform hover:-translate-y-1 heading-font tracking-wide uppercase">
+                Bắt Đầu ⛏️
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-stone-400/60 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-6 md:p-10 hidden border-t-8 border-t-stone-400">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-4 border-b border-stone-600/50 pb-4">
+                <span id="progress-text" class="text-stone-300 font-black tracking-widest uppercase text-sm md:text-base heading-font">
+                    ĐỘ CAO 1
+                </span>
+                <span id="score-text" class="bg-stone-900/60 border border-stone-500/50 px-4 py-1.5 rounded-full text-white font-bold text-sm md:text-base shadow-inner">
+                    Cờ cắm: 0 🚩
+                </span>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-6 bg-stone-800/40 p-6 rounded-2xl border border-stone-600/30 shadow-sm">
+                <h2 id="question-text" class="text-xl md:text-2xl font-bold leading-relaxed question-text text-stone-100 whitespace-pre-wrap"></h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-8">
+                <!-- Buttons will be injected here by JS -->
+            </div>
+
+            <!-- Explanation & Next Button -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-stone-900/70 border-l-4 border-stone-400 rounded-r-xl p-5 md:p-6 mb-6 shadow-md relative overflow-hidden">
+                    <div id="rationale-text" class="hidden text-base md:text-lg">
+                        <span id="rationale-content" class="block text-stone-200 font-semibold"></span>
+                    </div>
+                </div>
+                
+                <button id="btn-next" class="w-full py-4 bg-gradient-to-r from-stone-500 to-slate-500 hover:from-stone-400 hover:to-slate-400 text-stone-950 font-black rounded-2xl text-lg md:text-xl shadow-lg transition-all flex justify-center items-center gap-2 cursor-pointer transform hover:-translate-y-0.5 heading-font tracking-wide uppercase">
+                    Tiếp Tục Leo ➔
+                </button>
+            </div>
+            <div class="mt-6 text-center text-xs md:text-sm text-stone-400/60 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end" class="glass-panel rounded-3xl p-8 md:p-10 text-center transform hover:scale-105 transition-transform duration-300 hidden">
+            <div class="text-6xl md:text-7xl mb-6 drop-shadow-md">🏔️🏆</div>
+            <h1 class="text-3xl md:text-4xl font-black mb-3 text-stone-100 heading-font tracking-tight drop-shadow-sm">
+                Bảng Tổng Kết!
+            </h1>
+            <p id="final-message" class="text-base md:text-lg text-stone-300 mb-8 font-bold"></p>
+
+            <!-- Bảng Tổng Kết -->
+            <div class="max-w-md mx-auto bg-stone-900/80 border border-stone-600/50 rounded-2xl p-6 text-left shadow-xl mb-8 relative overflow-hidden backdrop-blur-md">
+                <div class="absolute top-0 left-0 w-2 h-full bg-stone-400"></div>
+                <h3 class="text-xl font-black text-stone-200 mb-5 border-b border-stone-700 pb-3 text-center heading-font">Kết Quả</h3>
+                <ul class="space-y-4 text-stone-300 text-sm md:text-base font-bold">
+                    <li class="flex justify-between items-center border-b border-stone-700/50 pb-2">
+                        <span class="flex items-center gap-2">🕒 Thời gian:</span> 
+                        <span id="end-time" class="text-stone-400 text-xs md:text-sm font-mono"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-stone-700/50 pb-2">
+                        <span class="flex items-center gap-2">✅ Chắc bước (đúng lần 1):</span> 
+                        <span id="stat-correct" class="font-black text-emerald-400 text-xl heading-font drop-shadow-sm"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-stone-700/50 pb-2">
+                        <span class="flex items-center gap-2">⚠️ Trượt nhẹ (đúng lần 2):</span> 
+                        <span id="stat-second" class="font-black text-amber-300 text-xl heading-font"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2">❌ Lạc lối (sai 2 lần):</span> 
+                        <span id="stat-wrong" class="font-black text-rose-400 text-xl heading-font"></span>
+                    </li>
+                </ul>
+            </div>
+            
+            <button id="btn-restart" class="px-8 py-4 bg-transparent hover:bg-stone-800 border-2 border-stone-400 text-stone-200 font-black rounded-full text-lg transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-md heading-font tracking-wide uppercase">
+                🔄 Làm Lại
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-stone-400/60 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Database 29 Từ vựng - Chủ đề Life stories 3
+        const rawVocab = [
+            ["determined", "adj", "/dɪˈtɜːmɪnd/", "quyết tâm", "She is determined to reach her goals, even when she faces many challenges in life."],
+            ["inspirational", "adj", "/ˌɪnspəˈreɪʃənl/", "truyền cảm hứng", "His story is inspirational and encourages many young people to follow their dreams."],
+            ["memorable", "adj", "/ˈmemərəbl/", "đáng nhớ", "That experience is memorable because it teaches him an important lesson about life."],
+            ["successful", "adj", "/səkˈsesfl/", "thành công", "She is successful because she works hard and always believes in her ability."],
+            ["courageous", "adj", "/kəˈreɪdʒəs/", "dũng cảm", "It is courageous to face your fears and try again after failure."],
+            ["emotional", "adj", "/ɪˈməʊʃənl/", "xúc động", "He becomes emotional when he talks about his difficult childhood."],
+            ["motivated", "adj", "/ˈməʊtɪveɪtɪd/", "có động lực", "She feels motivated when she sees progress in her studies and receives support from others."],
+            ["resilient", "adj", "/rɪˈzɪliənt/", "kiên cường", "Resilient people stay strong and positive even during very hard times."],
+            ["hopeful", "adj", "/ˈhəʊpfl/", "đầy hy vọng", "He remains hopeful about the future despite many difficulties around him."],
+            ["remarkable", "adj", "/rɪˈmɑːkəbl/", "đáng chú ý", "Her progress is remarkable because she starts from a very difficult situation."],
+            ["passionate about", "phrase", "/ˈpæʃənət əˈbaʊt/", "đam mê về", "She is passionate about helping others and spends a lot of time doing volunteer work."],
+            ["independent", "adj", "/ˌɪndɪˈpendənt/", "độc lập", "Living alone helps him become more independent and responsible in daily life."],
+            ["thoughtful", "adj", "/ˈθɔːtfl/", "chu đáo", "He is thoughtful and always considers other people's feelings before making decisions."],
+            ["loyal", "adj", "/ˈlɔɪəl/", "trung thành", "A loyal friend stays with you and supports you in both good and bad times."],
+            ["confident", "adj", "/ˈkɒnfɪdənt/", "tự tin", "She feels confident when she prepares carefully and understands the topic well."],
+            ["faithful", "adj", "/ˈfeɪθfl/", "trung thành, chung thủy", "He remains faithful to his values and never changes his beliefs easily."],
+            ["influential", "adj", "/ˌɪnfluˈenʃl/", "có ảnh hưởng", "Teachers play an influential role in shaping students’ attitudes and behavior."],
+            ["supportive", "adj", "/səˈpɔːtɪv/", "hay hỗ trợ", "A supportive family gives strength and encouragement during difficult times."],
+            ["compassionate", "adj", "/kəmˈpæʃənət/", "giàu lòng trắc ẩn", "Compassionate people understand others' pain and try to help them sincerely."],
+            ["decisive", "adj", "/dɪˈsaɪsɪv/", "quyết đoán", "Being decisive helps people make quick and effective choices in important situations."],
+            ["reflective", "adj", "/rɪˈflektɪv/", "hay suy ngẫm", "A reflective person often thinks carefully about past experiences to learn from them."],
+            ["generous", "adj", "/ˈdʒenərəs/", "hào phóng", "He is generous and always shares his time and resources with those in need."],
+            ["sensitive", "adj", "/ˈsensətɪv/", "nhạy cảm", "Sensitive people easily understand others' feelings but can also get hurt quickly."],
+            ["respectful", "adj", "/rɪˈspektfl/", "tôn trọng", "Being respectful helps build strong and healthy relationships with others."],
+            ["self-aware", "adj", "/ˌself əˈweə(r)/", "tự nhận thức", "A self-aware person understands their strengths and weaknesses clearly."],
+            ["rational", "adj", "/ˈræʃənl/", "lý trí", "Rational thinking helps people make better decisions in difficult situations."],
+            ["gentle", "adj", "/ˈdʒentl/", "nhẹ nhàng", "She has a gentle personality and treats everyone with kindness and care."],
+            ["optimistic", "adj", "/ˌɒptɪˈmɪstɪk/", "lạc quan", "Optimistic people always look for positive solutions even in hard times."],
+            ["fearless", "adj", "/ˈfɪələs/", "không sợ hãi", "He appears fearless when facing challenges, but he still thinks carefully before acting."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        // Sinh Quiz Động
+        const quizData = rawVocab.map((item, index) => {
+            const word = item[0];
+            const type = item[1];
+            const ipa = item[2];
+            const meaning = item[3];
+            const example = item[4];
+
+            let wrongMeanings = [];
+            
+            while(wrongMeanings.length < 3) {
+                const randomItem = rawVocab[Math.floor(Math.random() * rawVocab.length)];
+                if(randomItem[3] !== meaning && !wrongMeanings.includes(randomItem[3])) {
+                    wrongMeanings.push(randomItem[3]);
+                }
+            }
+            
+            const options = [
+                { text: meaning, isCorrect: true },
+                { text: wrongMeanings[0], isCorrect: false },
+                { text: wrongMeanings[1], isCorrect: false },
+                { text: wrongMeanings[2], isCorrect: false }
+            ];
+
+            return {
+                questionNumber: index + 1,
+                word: word,
+                question: `Nghĩa của từ/cụm từ **${word}** là gì?`,
+                answerOptions: options,
+                rationale: `
+                    <div class="flex items-center flex-wrap gap-2 md:gap-3 mb-2 md:mb-3">
+                        <span class="text-2xl md:text-3xl font-black text-stone-100 heading-font">${word}</span>
+                        <span class="bg-stone-700/80 border border-stone-500/50 px-2 py-0.5 rounded-md text-stone-200 font-bold text-sm md:text-base shadow-sm">${type}</span>
+                        <span class="text-stone-300 tracking-wide font-bold text-base md:text-lg">${ipa}</span>
+                        <button onclick="speakWord('${word.replace(/'/g, "\\'")}')" class="p-2 bg-stone-200 hover:bg-white text-stone-900 rounded-full transition-colors flex items-center justify-center w-8 h-8 md:w-10 md:h-10 shadow-md" title="Nghe phát âm">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-stone-300 font-semibold text-base md:text-lg leading-relaxed mt-3 border-t border-stone-600/50 pt-3">
+                        <span class="text-white text-xl">💡</span> <span class="font-medium italic text-stone-100">${example}</span>
+                    </div>`
+            };
+        });
+
+        // Hạt tuyết rơi (thay thế lá)
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['❄️', '🏔️', '🌬️', '🧊', '🧗', '🎿', '❅', '❆'];
+            for (let i = 0; i < 30; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item text-white/40';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+                item.style.top = `-${Math.random() * 20}vh`; // Start above screen
+                
+                const duration = Math.random() * 15 + 10;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 10}s`;
+                
+                const scale = Math.random() * 0.5 + 0.4;
+                item.style.transform = `scale(${scale})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        // Biến trạng thái
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0; 
+        let hasAnswered = false;
+        let currentShuffledOptions = []; 
+
+        // DOM Elements
+        const screenStart = document.getElementById('screen-start');
+        const screenPlaying = document.getElementById('screen-playing');
+        const screenEnd = document.getElementById('screen-end');
+        
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        
+        const rationaleText = document.getElementById('rationale-text');
+        const rationaleContent = document.getElementById('rationale-content');
+        const btnNext = document.getElementById('btn-next');
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatMarkdownBold(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            hasAnswered = false;
+            
+            screenStart.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenPlaying.classList.remove('hidden');
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+            
+            const currentQ = quizData[currentQuestionIndex];
+            
+            progressText.innerText = `ĐỘ CAO ${currentQuestionIndex + 1} / ${quizData.length}`;
+            scoreText.innerText = `Cờ cắm: ${score} 🚩`;
+            
+            questionText.innerHTML = formatMarkdownBold(currentQ.question);
+            
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+            
+            optionsContainer.innerHTML = '';
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border border-stone-500/50 transition-all duration-300 text-base md:text-lg bg-stone-800/60 hover:bg-stone-700/80 hover:border-stone-300 text-stone-200 cursor-pointer shadow-sm font-bold";
+                btn.innerText = option.text;
+                btn.onclick = () => handleAnswer(index, option.isCorrect);
+                optionsContainer.appendChild(btn);
+            });
+
+            explanationContainer.classList.remove('max-h-[800px]', 'opacity-100');
+            explanationContainer.classList.add('max-h-0', 'opacity-0');
+            rationaleText.className = "hidden"; 
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                btnNext.innerText = 'Tiếp Tục Leo ➔';
+            } else {
+                btnNext.innerText = 'Chạm Đỉnh Núi 🏔️';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    score++; 
+                    scoreText.innerText = `Cờ cắm: ${score} 🚩`;
+                } else if (attempts === 1) {
+                    correctSecondTry++; 
+                }
+                
+                // Nút đúng: Trắng/Sáng lạnh
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-stone-200 border-white text-stone-900 shadow-[0_0_20px_rgba(255,255,255,0.4)] font-black";
+                
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-900/60')) {
+                        buttons[i].className += " opacity-40 cursor-not-allowed";
+                    }
+                }
+                
+                speakWord(currentQ.word);
+                showRationale(currentQ);
+            } else {
+                attempts++;
+                
+                // Nút sai: Đỏ thẫm, rung lắc
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border border-rose-500/50 transition-all duration-300 text-base md:text-lg bg-rose-900/60 text-rose-200 animate-shake";
+                btn.disabled = true; 
+                
+                setTimeout(() => {
+                    btn.classList.remove('animate-shake');
+                }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    failedQuestions++; 
+                    
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            buttons[i].className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-stone-200 border-white text-stone-900 shadow-[0_0_20px_rgba(255,255,255,0.4)] font-black";
+                        } else if (!buttons[i].classList.contains('bg-rose-900/60')) {
+                            buttons[i].className += " opacity-40 cursor-not-allowed";
+                        }
+                    }
+                    speakWord(currentQ.word);
+                    showRationale(currentQ);
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            rationaleContent.innerHTML = currentQ.rationale;
+            rationaleText.className = "block text-base md:text-lg";
+            
+            explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            explanationContainer.classList.add('max-h-[800px]', 'opacity-100');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            screenPlaying.classList.add('hidden');
+            screenEnd.classList.remove('hidden');
+            
+            const finalMessage = document.getElementById('final-message');
+            if (score >= quizData.length * 0.9) {
+                finalMessage.innerText = "Học, Học nữa, Học mãi! 🏔️✨";
+            } else if (score >= quizData.length * 0.5) {
+                finalMessage.innerText = "Hành trình rất tốt! Hãy tiếp tục nỗ lực để cắm cờ trên những đỉnh cao mới nhé! 🚩";
+            } else {
+                finalMessage.innerText = "Bão tuyết hơi dày. Đừng bỏ cuộc, hãy rèn luyện thêm và thử sức lại! ❄️";
+            }
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('vi-VN');
+            
+            document.getElementById('end-time').innerText = `${timeString}, ${dateString}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        let availableVoices = [];
+        if ('speechSynthesis' in window) {
+            availableVoices = window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
+                availableVoices = window.speechSynthesis.getVoices();
+            };
+        }
+
+        window.speakWord = function(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                const auVoices = availableVoices.filter(v => v.lang.startsWith('en-AU'));
+                if (auVoices.length > 0) {
+                    const preferredVoice = auVoices.find(v => v.name.includes('Google') || v.name.includes('Natural')) || auVoices[0];
+                    utterance.voice = preferredVoice;
+                } else {
+                    const englishVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+                    if (englishVoices.length > 0) {
+                        utterance.voice = englishVoices[0];
+                    }
+                }
+                
+                utterance.lang = 'en-AU';
+                utterance.rate = 0.85; 
+                utterance.pitch = 1;
+                utterance.volume = 1;
+
+                try { window.speechSynthesis.speak(utterance); } catch(e) {}
+            }
+        };
+
+        function initApp() {
+            createFloatingItems();
+            document.getElementById('btn-start').addEventListener('click', startGame);
+            document.getElementById('btn-restart').addEventListener('click', startGame);
+            document.getElementById('btn-next').addEventListener('click', nextQuestion);
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    if (!screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); 
+                        nextQuestion();
+                    } else if (!screenStart.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    } else if (!screenEnd.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    }
+                }
+            });
+        }
+
+        initApp();
+
+    </script>
+</body>
+</html>
