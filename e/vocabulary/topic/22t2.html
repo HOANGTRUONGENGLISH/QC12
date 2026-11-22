@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Vocab - Cultural Diversity 4</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts cho chủ đề Bầu Trời Sao Băng -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Typography */
+        h1, h2, h3, .heading-font {
+            font-family: 'Quicksand', sans-serif;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            background-color: #020617; /* Nền bầu trời đêm sâu */
+        }
+
+        /* Animations cho các ngôi sao lấp lánh */
+        @keyframes twinkle-star {
+            0%, 100% { opacity: 0.2; transform: scale(0.75); }
+            50% { opacity: 1; transform: scale(1.25); box-shadow: 0 0 8px rgba(224, 242, 254, 0.9); }
+        }
+
+        .star-dot {
+            position: absolute;
+            border-radius: 9999px;
+            background: #f8fafc;
+            animation: twinkle-star ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Animations cho mưa sao băng bay chéo qua bầu trời */
+        @keyframes meteor-fall {
+            0% {
+                transform: rotate(-35deg) translateX(0);
+                opacity: 0;
+            }
+            6% {
+                opacity: 1;
+            }
+            45% {
+                opacity: 0.95;
+            }
+            100% {
+                transform: rotate(-35deg) translateX(-1100px);
+                opacity: 0;
+            }
+        }
+
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(125, 211, 252, 0.85) 28%, rgba(167, 139, 250, 0.25) 65%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 0 0 10px rgba(186, 230, 253, 0.85);
+            animation: meteor-fall linear infinite;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 9999px;
+            background: #ffffff;
+            box-shadow: 0 0 12px 3px rgba(224, 242, 254, 0.95), 0 0 22px 5px rgba(56, 189, 248, 0.7);
+        }
+
+        /* Ánh tinh vân trôi nhẹ */
+        @keyframes nebula-pulse {
+            0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.35; }
+            50% { transform: scale(1.1) translate(18px, -12px); opacity: 0.55; }
+        }
+
+        .nebula-glow {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(70px);
+            animation: nebula-pulse ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Hiệu ứng rung lắc khi chọn sai */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Glassmorphism Bầu Trời Sao Băng */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 25px 60px -12px rgba(2, 6, 23, 0.85), 0 0 35px rgba(56, 189, 248, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        
+        /* Highlight từ khóa câu hỏi */
+        .question-text strong {
+            color: #e0f2fe; /* sky-100 */
+            font-weight: 800;
+            font-size: 1.15em;
+            background: linear-gradient(120deg, rgba(56, 189, 248, 0.28) 0%, rgba(139, 92, 246, 0.32) 100%);
+            border: 1px solid rgba(125, 211, 252, 0.45);
+            padding: 2px 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .hidden { display: none !important; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #818cf8; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen relative flex items-center justify-center p-4">
+
+    <!-- Background Layer: Bầu Trời Đầy Sao Băng -->
+    <div id="background-layer" class="fixed inset-0 overflow-hidden" style="z-index: 0; pointer-events: none;">
+        <!-- Nền trời đêm chuyển sắc ngân hà -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#1e1b4b]"></div>
+        
+        <!-- Dải tinh vân mờ ảo -->
+        <div class="nebula-glow w-96 h-96 bg-sky-500/20 top-[5%] left-[8%]" style="animation-duration: 12s;"></div>
+        <div class="nebula-glow w-[28rem] h-[28rem] bg-indigo-500/25 top-[15%] right-[5%]" style="animation-duration: 15s; animation-delay: 2s;"></div>
+        <div class="nebula-glow w-80 h-80 bg-violet-500/20 bottom-[12%] left-[22%]" style="animation-duration: 13s; animation-delay: 4s;"></div>
+
+        <!-- Container sao lấp lánh & mưa sao băng -->
+        <div id="floating-container" class="absolute inset-0"></div>
+
+        <!-- Bóng núi chân trời tạo chiều sâu cho bầu trời đêm -->
+        <svg class="absolute bottom-0 left-0 w-full h-28 md:h-40 opacity-90" viewBox="0 0 1440 240" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#0f172a" fill-opacity="0.7" d="M0,160L90,138C180,117,360,75,540,96C720,117,900,203,1080,192C1260,181,1350,117,1440,85L1440,240L0,240Z"></path>
+            <path fill="#020617" d="M0,205L120,185C240,165,480,125,720,145C960,165,1200,215,1320,205L1440,195L1440,240L0,240Z"></path>
+        </svg>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="main-content" class="relative w-full max-w-4xl transition-all duration-500" style="z-index: 10; pointer-events: auto;">
+        
+        <!-- START SCREEN -->
+        <div id="screen-start" class="glass-panel rounded-3xl p-8 md:p-12 text-center transform hover:scale-[1.01] transition-transform duration-300">
+            <div class="text-6xl md:text-7xl mb-6 drop-shadow-[0_0_20px_rgba(125,211,252,0.5)]">🌠🌌✨</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-sky-300 via-indigo-200 to-violet-300 heading-font tracking-tight">
+                Cultural Diversity 4
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 mb-8 font-bold">
+                <span id="total-count" class="font-black text-sky-300 bg-sky-500/15 px-3 py-1 rounded-lg border border-sky-400/35 shadow-sm"></span> từ vựng mới 🌠
+            </p>
+            <button id="btn-start" class="px-8 py-4 bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 hover:from-sky-400 hover:via-indigo-400 hover:to-violet-400 text-white font-black rounded-full text-lg md:text-xl shadow-[0_10px_30px_rgba(56,189,248,0.35)] transition-all cursor-pointer transform hover:-translate-y-1 heading-font tracking-wide">
+                Bắt Đầu
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-slate-400/70 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-6 md:p-10 hidden border-t-4 border-t-sky-400">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700/70 pb-4">
+                <span id="progress-text" class="text-sky-300 font-black tracking-widest uppercase text-sm md:text-base heading-font">
+                    SAO BĂNG 1
+                </span>
+                <span id="score-text" class="bg-sky-500/15 border border-sky-400/35 px-4 py-1.5 rounded-full text-sky-200 font-black text-sm md:text-base shadow-sm">
+                    Điểm: 0 ⭐
+                </span>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-6 bg-slate-900/60 p-6 rounded-2xl border border-slate-700/70 shadow-inner">
+                <h2 id="question-text" class="text-xl md:text-2xl font-bold leading-relaxed question-text text-slate-100 whitespace-pre-wrap"></h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-8">
+                <!-- Buttons will be injected here by JS -->
+            </div>
+
+            <!-- Explanation & Next Button -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-gradient-to-r from-slate-900/90 to-indigo-950/80 border-l-4 border-sky-400 rounded-r-xl p-5 md:p-6 mb-6 shadow-md relative overflow-hidden">
+                    <div id="rationale-text" class="hidden text-base md:text-lg">
+                        <span id="rationale-content" class="block text-slate-200 font-semibold"></span>
+                    </div>
+                </div>
+                
+                <button id="btn-next" class="w-full py-4 bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 hover:from-sky-400 hover:via-indigo-400 hover:to-violet-400 text-white font-black rounded-2xl text-lg md:text-xl shadow-[0_8px_25px_rgba(99,102,241,0.35)] transition-all flex justify-center items-center gap-2 cursor-pointer transform hover:-translate-y-0.5 heading-font tracking-wide">
+                    Đi Tiếp
+                </button>
+            </div>
+            <div class="mt-6 text-center text-xs md:text-sm text-slate-400/70 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end" class="glass-panel rounded-3xl p-8 md:p-10 text-center transform hover:scale-[1.02] transition-transform duration-300 hidden">
+            <div class="text-6xl md:text-7xl mb-6 drop-shadow-[0_0_20px_rgba(250,204,21,0.45)]">🌠🌟🏆</div>
+            <h1 class="text-3xl md:text-4xl font-black mb-3 bg-clip-text text-transparent bg-gradient-to-r from-sky-300 via-indigo-200 to-amber-200 heading-font tracking-tight">
+                Bảng Tổng Kết
+            </h1>
+            <p id="final-message" class="text-base md:text-lg text-slate-300 mb-8 font-bold"></p>
+
+            <!-- Bảng Tổng Kết -->
+            <div class="max-w-md mx-auto bg-slate-900/75 border border-slate-700/80 rounded-2xl p-6 text-left shadow-xl mb-8 relative overflow-hidden backdrop-blur-md">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-sky-400 via-indigo-400 to-violet-500"></div>
+                <h3 class="text-xl font-black text-sky-200 mb-5 border-b border-slate-700/70 pb-3 text-center heading-font">Kết Quả</h3>
+                <ul class="space-y-4 text-slate-200 text-sm md:text-base font-bold">
+                    <li class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="flex items-center gap-2">🕒 Thời gian:</span> 
+                        <span id="end-time" class="text-sky-300 text-xs md:text-sm font-mono"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="flex items-center gap-2">✅ Sao tỏa sáng (đúng lần 1):</span> 
+                        <span id="stat-correct" class="font-black text-emerald-400 text-xl heading-font"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="flex items-center gap-2">⚠️ Vệt sáng muộn (đúng lần 2):</span> 
+                        <span id="stat-second" class="font-black text-amber-300 text-xl heading-font"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2">❌ Lạc quỹ đạo (sai 2 lần):</span> 
+                        <span id="stat-wrong" class="font-black text-rose-400 text-xl heading-font"></span>
+                    </li>
+                </ul>
+            </div>
+            
+            <button id="btn-restart" class="px-8 py-4 bg-slate-900/70 hover:bg-sky-500/20 border-2 border-sky-400 text-sky-200 hover:text-white font-black rounded-full text-lg transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-md heading-font tracking-wide">
+                🔄 Quay Lại
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-slate-400/70 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Database 24 Từ vựng - Chủ đề Cultural Diversity 4
+        const rawVocab = [
+            ["diverse", "adj", "/daɪˈvɜːs/", "đa dạng", "A diverse society allows people from different cultures to share ideas and learn from each other."],
+            ["tolerant", "adj", "/ˈtɒlərənt/", "khoan dung", "Tolerant people accept cultural differences and treat others with respect."],
+            ["polite", "adj", "/pəˈlaɪt/", "lịch sự", "It is important to be polite when interacting with people from different cultural backgrounds."],
+            ["courteous", "adj", "/ˈkɜːtiəs/", "nhã nhặn", "Courteous behavior helps create a positive impression in multicultural environments."],
+            ["inclusive", "adj", "/ɪnˈkluːsɪv/", "hòa nhập", "An inclusive society makes everyone feel valued regardless of their culture."],
+            ["comprehensive", "adj", "/ˌkɒmprɪˈhensɪv/", "toàn diện", "A comprehensive understanding of culture helps reduce misunderstandings between groups."],
+            ["religious", "adj", "/rɪˈlɪdʒəs/", "thuộc tôn giáo", "Religious beliefs influence many cultural practices and traditions around the world."],
+            ["ethnic", "adj", "/ˈeθnɪk/", "thuộc dân tộc", "Ethnic diversity brings different customs, languages, and traditions into one community."],
+            ["receptive", "adj", "/rɪˈseptɪv/", "dễ tiếp nhận", "People who are receptive to new ideas often adapt better to different cultures."],
+            ["one-sided", "adj", "/ˌwʌn ˈsaɪdɪd/", "phiến diện", "A one-sided view of culture can lead to misunderstanding and unfair judgment."],
+            ["misjudged", "adj", "/ˌmɪsˈdʒʌdʒd/", "bị đánh giá sai", "Some traditions are misjudged when people do not understand their true meaning."],
+            ["misinterpreted", "adj", "/ˌmɪsɪnˈtɜːprɪtɪd/", "bị hiểu sai", "Cultural behaviors are sometimes misinterpreted by people from different backgrounds."],
+            ["discriminatory", "adj", "/dɪˈskrɪmɪnətəri/", "phân biệt đối xử", "Discriminatory attitudes create unfair treatment in diverse societies."],
+            ["distinctive", "adj", "/dɪˈstɪŋktɪv/", "đặc trưng", "Each culture has distinctive features that make it unique and interesting."],
+            ["pervasive", "adj", "/pəˈveɪsɪv/", "lan rộng", "Cultural influence is pervasive and affects many aspects of daily life."],
+            ["ubiquitous", "adj", "/juːˈbɪkwɪtəs/", "phổ biến khắp nơi", "Technology is ubiquitous and helps connect people from different cultures."],
+            ["generational", "adj", "/ˌdʒenəˈreɪʃənl/", "thuộc thế hệ", "Generational differences can affect how people view cultural traditions."],
+            ["cross-cultural", "adj", "/ˌkrɒs ˈkʌltʃərəl/", "liên văn hóa", "Cross-cultural communication is important in a globalized world."],
+            ["linguistic", "adj", "/lɪŋˈɡwɪstɪk/", "thuộc ngôn ngữ", "Linguistic diversity makes communication more interesting but sometimes challenging."],
+            ["customary", "adj", "/ˈkʌstəməri/", "theo phong tục", "It is customary to greet others politely in many cultures."],
+            ["indigenous", "adj", "/ɪnˈdɪdʒɪnəs/", "bản địa", "Indigenous cultures have rich traditions that need protection and respect."],
+            ["communal", "adj", "/kəˈmjuːnl/", "thuộc cộng đồng", "Communal activities help people feel connected and build stronger relationships."],
+            ["intolerant", "adj", "/ɪnˈtɒlərənt/", "không khoan dung", "Intolerant attitudes can create conflict between different cultural groups."],
+            ["narrow-minded", "adj", "/ˌnærəʊ ˈmaɪndɪd/", "hẹp hòi", "A narrow-minded person often refuses to accept ideas from other cultures."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        // Sinh Quiz Động và Xáo trộn
+        const quizData = rawVocab.map((item, index) => {
+            const word = item[0];
+            const type = item[1];
+            const ipa = item[2];
+            const meaning = item[3];
+            const example = item[4];
+
+            let wrongMeanings = [];
+            
+            // Random 3 đáp án nhiễu khác nghĩa đúng và không trùng nhau
+            while (wrongMeanings.length < 3) {
+                const randomItem = rawVocab[Math.floor(Math.random() * rawVocab.length)];
+                if (randomItem[3] !== meaning && !wrongMeanings.includes(randomItem[3])) {
+                    wrongMeanings.push(randomItem[3]);
+                }
+            }
+            
+            const options = [
+                { text: meaning, isCorrect: true },
+                { text: wrongMeanings[0], isCorrect: false },
+                { text: wrongMeanings[1], isCorrect: false },
+                { text: wrongMeanings[2], isCorrect: false }
+            ];
+
+            return {
+                questionNumber: index + 1,
+                word: word,
+                question: `Nghĩa của từ **${word}** là gì?`,
+                answerOptions: options,
+                rationale: `
+                    <div class="flex items-center flex-wrap gap-2 md:gap-3 mb-2 md:mb-3">
+                        <span class="text-2xl md:text-3xl font-black text-sky-300 heading-font">${word}</span>
+                        <span class="bg-sky-500/20 border border-sky-400/40 px-2.5 py-0.5 rounded-md text-sky-200 font-bold text-sm md:text-base shadow-sm">${type}</span>
+                        <span class="text-indigo-200 tracking-wide font-bold text-base md:text-lg">${ipa}</span>
+                        <button onclick="speakWord('${word.replace(/'/g, "\\'")}')" class="p-2 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-full transition-colors flex items-center justify-center w-9 h-9 md:w-10 md:h-10 shadow-md cursor-pointer" title="Nghe phát âm">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-slate-200 font-semibold text-base md:text-lg leading-relaxed mt-3 border-t border-slate-700/80 pt-3">
+                        <span class="text-sky-300 text-xl">🌠</span> <span class="font-medium italic text-slate-300">${example}</span>
+                    </div>`
+            };
+        });
+
+        // Tạo bầu trời đầy sao lấp lánh và mưa sao băng
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+
+            // 1. Hàng trăm ngôi sao nền lấp lánh
+            for (let i = 0; i < 140; i++) {
+                const star = document.createElement('div');
+                star.className = 'star-dot';
+                const size = Math.random() * 2.5 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 88}%`;
+                star.style.animationDuration = `${Math.random() * 3.5 + 1.8}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(star);
+            }
+
+            // 2. Các vệt sao băng bay liên tục trên bầu trời đêm
+            for (let i = 0; i < 14; i++) {
+                const meteor = document.createElement('div');
+                meteor.className = 'shooting-star';
+                meteor.style.top = `${Math.random() * 55 - 8}%`;
+                meteor.style.left = `${Math.random() * 85 + 20}%`;
+                meteor.style.width = `${Math.random() * 110 + 95}px`;
+                meteor.style.animationDuration = `${Math.random() * 3 + 2.8}s`;
+                meteor.style.animationDelay = `${Math.random() * 9}s`;
+                container.appendChild(meteor);
+            }
+        }
+
+        // Biến trạng thái
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0; 
+        let hasAnswered = false;
+        let currentShuffledOptions = []; 
+
+        // DOM Elements
+        const screenStart = document.getElementById('screen-start');
+        const screenPlaying = document.getElementById('screen-playing');
+        const screenEnd = document.getElementById('screen-end');
+        
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        
+        const rationaleText = document.getElementById('rationale-text');
+        const rationaleContent = document.getElementById('rationale-content');
+        const btnNext = document.getElementById('btn-next');
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatMarkdownBold(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            hasAnswered = false;
+            
+            screenStart.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenPlaying.classList.remove('hidden');
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+            
+            const currentQ = quizData[currentQuestionIndex];
+            
+            progressText.innerText = `SAO BĂNG ${currentQuestionIndex + 1} / ${quizData.length}`;
+            scoreText.innerText = `Điểm: ${score} ⭐`;
+            
+            questionText.innerHTML = formatMarkdownBold(currentQ.question);
+            
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+            
+            optionsContainer.innerHTML = '';
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-slate-900/65 border-slate-700/80 hover:bg-sky-500/15 hover:border-sky-400 hover:shadow-[0_0_18px_rgba(56,189,248,0.2)] text-slate-100 cursor-pointer shadow-sm font-bold";
+                btn.innerText = option.text;
+                btn.onclick = () => handleAnswer(index, option.isCorrect);
+                optionsContainer.appendChild(btn);
+            });
+
+            explanationContainer.classList.remove('max-h-[800px]', 'opacity-100');
+            explanationContainer.classList.add('max-h-0', 'opacity-0');
+            rationaleText.className = "hidden"; 
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                btnNext.innerText = 'Đi Tiếp';
+            } else {
+                btnNext.innerText = 'Về Đích 🌠';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    score++; 
+                    scoreText.innerText = `Điểm: ${score} ⭐`;
+                } else if (attempts === 1) {
+                    correctSecondTry++; 
+                }
+                
+                // Đáp án đúng: Ánh sáng xanh ngọc rực rỡ
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-emerald-500/20 border-emerald-400 text-emerald-200 shadow-[0_0_20px_rgba(52,211,153,0.3)] font-black";
+                
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-500/20')) {
+                        buttons[i].className += " opacity-40 cursor-not-allowed";
+                    }
+                }
+                
+                speakWord(currentQ.word);
+                showRationale(currentQ);
+            } else {
+                attempts++;
+                
+                // Đáp án sai: Đỏ hồng + rung lắc
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-rose-500/20 border-rose-400 text-rose-200 animate-shake";
+                btn.disabled = true; 
+                
+                setTimeout(() => {
+                    btn.classList.remove('animate-shake');
+                }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    failedQuestions++; 
+                    
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            buttons[i].className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-emerald-500/20 border-emerald-400 text-emerald-200 shadow-[0_0_20px_rgba(52,211,153,0.3)] font-black";
+                        } else if (!buttons[i].classList.contains('bg-rose-500/20')) {
+                            buttons[i].className += " opacity-40 cursor-not-allowed";
+                        }
+                    }
+                    speakWord(currentQ.word);
+                    showRationale(currentQ);
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            rationaleContent.innerHTML = currentQ.rationale;
+            rationaleText.className = "block text-base md:text-lg";
+            
+            explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            explanationContainer.classList.add('max-h-[800px]', 'opacity-100');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            screenPlaying.classList.add('hidden');
+            screenEnd.classList.remove('hidden');
+            
+            const finalMessage = document.getElementById('final-message');
+            if (score >= quizData.length * 0.9) {
+                finalMessage.innerText = "Học, Học nữa, Học mãi! 🌠✨";
+            } else if (score >= quizData.length * 0.5) {
+                finalMessage.innerText = "Học, Học nữa, Học mãi! ⭐";
+            } else {
+                finalMessage.innerText = "Bầu trời đêm vẫn còn nhiều vì sao chờ bạn chinh phục. Hãy thử lại nhé! 🌌";
+            }
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('vi-VN');
+            
+            document.getElementById('end-time').innerText = `${timeString}, ${dateString}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        // Phát âm giọng Anh-Úc (en-AU)
+        let availableVoices = [];
+        if ('speechSynthesis' in window) {
+            availableVoices = window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
+                availableVoices = window.speechSynthesis.getVoices();
+            };
+        }
+
+        window.speakWord = function(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                const auVoices = availableVoices.filter(v => v.lang.startsWith('en-AU'));
+                if (auVoices.length > 0) {
+                    const preferredVoice = auVoices.find(v => v.name.includes('Google') || v.name.includes('Natural')) || auVoices[0];
+                    utterance.voice = preferredVoice;
+                } else {
+                    const englishVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+                    if (englishVoices.length > 0) {
+                        utterance.voice = englishVoices[0];
+                    }
+                }
+                
+                utterance.lang = 'en-AU';
+                utterance.rate = 0.85; 
+                utterance.pitch = 1;
+                utterance.volume = 1;
+
+                try { window.speechSynthesis.speak(utterance); } catch (e) {}
+            }
+        };
+
+        function initApp() {
+            createFloatingItems();
+            document.getElementById('btn-start').addEventListener('click', startGame);
+            document.getElementById('btn-restart').addEventListener('click', startGame);
+            document.getElementById('btn-next').addEventListener('click', nextQuestion);
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    if (!screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); 
+                        nextQuestion();
+                    } else if (!screenStart.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    } else if (!screenEnd.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    }
+                }
+            });
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
