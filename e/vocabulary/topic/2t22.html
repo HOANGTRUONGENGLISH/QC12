@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Vocab - Cultural Diversity 3</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts cho chủ đề Thung Lũng Thơ Mộng -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Typography */
+        h1, h2, h3, .heading-font {
+            font-family: 'Quicksand', sans-serif;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            background-color: #ecfdf5; /* Màu nền thung lũng sáng dịu */
+        }
+
+        /* Animations cho hoa cỏ & cánh bướm bay trong thung lũng */
+        @keyframes float-dreamy {
+            0% { transform: translateY(105vh) translateX(0px) rotate(0deg) scale(0.8); opacity: 0; }
+            15% { opacity: 0.75; }
+            50% { transform: translateY(45vh) translateX(25px) rotate(12deg) scale(1.05); }
+            85% { opacity: 0.75; }
+            100% { transform: translateY(-15vh) translateX(-15px) rotate(-10deg) scale(1.1); opacity: 0; }
+        }
+
+        @keyframes drift-mist {
+            0%, 100% { transform: translateX(0) scale(1); opacity: 0.4; }
+            50% { transform: translateX(30px) scale(1.08); opacity: 0.65; }
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2rem;
+            animation: float-dreamy linear infinite;
+            z-index: 0;
+            opacity: 0;
+            pointer-events: none;
+            filter: drop-shadow(0px 4px 8px rgba(16, 185, 129, 0.25));
+        }
+
+        .mist-glow {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(55px);
+            animation: drift-mist ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Hiệu ứng rung lắc khi chọn sai */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Glassmorphism Thung Lũng Thơ Mộng */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 50px -12px rgba(15, 118, 110, 0.16), 0 0 30px rgba(167, 243, 208, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Highlight từ khóa câu hỏi */
+        .question-text strong {
+            color: #0f766e; /* teal-700 */
+            font-weight: 800;
+            font-size: 1.15em;
+            background: linear-gradient(120deg, #ccfbf1 0%, #fef3c7 100%);
+            border: 1px solid rgba(45, 212, 191, 0.45);
+            padding: 2px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.12);
+        }
+
+        .hidden { display: none !important; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #ecfdf5; }
+        ::-webkit-scrollbar-thumb { background: #34d399; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen relative flex items-center justify-center p-4">
+
+    <!-- Background Layer: Thung Lũng Thơ Mộng -->
+    <div id="background-layer" class="fixed inset-0 overflow-hidden" style="z-index: 0; pointer-events: none;">
+        <!-- Bầu trời bình minh dịu dàng chuyển sang sắc xanh thung lũng -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#e0f2fe] via-[#f5f3ff] to-[#d1fae5]"></div>
+        
+        <!-- Ánh nắng mai & sương mù thơ mộng -->
+        <div class="mist-glow w-80 h-80 bg-amber-200/60 top-[6%] left-[10%]" style="animation-duration: 9s;"></div>
+        <div class="mist-glow w-96 h-96 bg-pink-200/45 top-[18%] right-[8%]" style="animation-duration: 11s; animation-delay: 2s;"></div>
+        <div class="mist-glow w-80 h-80 bg-teal-200/50 bottom-[18%] left-[18%]" style="animation-duration: 10s; animation-delay: 1s;"></div>
+        <div class="mist-glow w-72 h-72 bg-emerald-200/50 bottom-[12%] right-[16%]" style="animation-duration: 8s; animation-delay: 3s;"></div>
+
+        <!-- Các lớp đồi núi & thung lũng mờ sương (SVG) -->
+        <svg class="absolute bottom-0 left-0 w-full h-44 md:h-64 opacity-85" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Dãy núi xa mờ sương -->
+            <path fill="#a7f3d0" fill-opacity="0.55" d="M0,192L60,181.3C120,171,240,149,360,165.3C480,181,600,235,720,229.3C840,224,960,160,1080,144C1200,128,1320,160,1380,176L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+            <!-- Đồi xanh trung cảnh -->
+            <path fill="#6ee7b7" fill-opacity="0.6" d="M0,224L80,234.7C160,245,320,267,480,250.7C640,235,800,181,960,181.3C1120,181,1280,235,1360,261.3L1440,288L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+            <!-- Thung lũng xanh mướt cận cảnh -->
+            <path fill="#34d399" fill-opacity="0.45" d="M0,288L60,277.3C120,267,240,245,360,250.7C480,256,600,288,720,282.7C840,277,960,235,1080,229.3C1200,224,1320,256,1380,272L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+        </svg>
+
+        <!-- Container các biểu tượng bay lơ lửng -->
+        <div id="floating-container"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="main-content" class="relative w-full max-w-4xl transition-all duration-500" style="z-index: 10; pointer-events: auto;">
+        
+        <!-- START SCREEN -->
+        <div id="screen-start" class="glass-panel rounded-3xl p-8 md:p-12 text-center transform hover:scale-[1.01] transition-transform duration-300">
+            <div class="text-6xl md:text-7xl mb-6 drop-shadow-sm">🏞️🦋🌼</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-teal-700 via-emerald-600 to-sky-600 heading-font tracking-tight">
+                Cultural Diversity 3
+            </h1>
+            <p class="text-lg md:text-xl text-slate-600 mb-8 font-bold">
+                <span id="total-count" class="font-black text-teal-700 bg-teal-50 px-3 py-1 rounded-lg border border-teal-200 shadow-sm"></span> từ vựng mới 🌿
+            </p>
+            <button id="btn-start" class="px-8 py-4 bg-gradient-to-r from-teal-500 via-emerald-500 to-sky-500 hover:from-teal-600 hover:via-emerald-600 hover:to-sky-600 text-white font-black rounded-full text-lg md:text-xl shadow-[0_10px_25px_rgba(20,184,166,0.35)] transition-all cursor-pointer transform hover:-translate-y-1 heading-font tracking-wide">
+                Bắt Đầu
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-teal-900/50 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- PLAYING SCREEN -->
+        <div id="screen-playing" class="glass-panel rounded-3xl p-6 md:p-10 hidden border-t-4 border-t-teal-400">
+            <!-- Header: Progress & Score -->
+            <div class="flex justify-between items-center mb-4 border-b border-teal-100 pb-4">
+                <span id="progress-text" class="text-teal-700 font-black tracking-widest uppercase text-sm md:text-base heading-font">
+                    THUNG LŨNG 1
+                </span>
+                <span id="score-text" class="bg-teal-50/90 border border-teal-200 px-4 py-1.5 rounded-full text-teal-700 font-black text-sm md:text-base shadow-sm">
+                    Điểm: 0 🌼
+                </span>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-6 bg-white/75 p-6 rounded-2xl border border-teal-100 shadow-sm">
+                <h2 id="question-text" class="text-xl md:text-2xl font-bold leading-relaxed question-text text-slate-800 whitespace-pre-wrap"></h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-8">
+                <!-- Buttons will be injected here by JS -->
+            </div>
+
+            <!-- Explanation & Next Button -->
+            <div id="explanation-container" class="transition-all duration-500 overflow-hidden max-h-0 opacity-0">
+                <div class="bg-gradient-to-r from-teal-50/90 to-emerald-50/80 border-l-4 border-teal-500 rounded-r-xl p-5 md:p-6 mb-6 shadow-sm relative overflow-hidden">
+                    <div id="rationale-text" class="hidden text-base md:text-lg">
+                        <span id="rationale-content" class="block text-slate-700 font-semibold"></span>
+                    </div>
+                </div>
+                
+                <button id="btn-next" class="w-full py-4 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-black rounded-2xl text-lg md:text-xl shadow-[0_8px_20px_rgba(16,185,129,0.3)] transition-all flex justify-center items-center gap-2 cursor-pointer transform hover:-translate-y-0.5 heading-font tracking-wide">
+                    Đi Tiếp
+                </button>
+            </div>
+            <div class="mt-6 text-center text-xs md:text-sm text-teal-900/50 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+        <!-- END SCREEN -->
+        <div id="screen-end" class="glass-panel rounded-3xl p-8 md:p-10 text-center transform hover:scale-[1.02] transition-transform duration-300 hidden">
+            <div class="text-6xl md:text-7xl mb-6 drop-shadow-sm">🏞️🌸🏆</div>
+            <h1 class="text-3xl md:text-4xl font-black mb-3 bg-clip-text text-transparent bg-gradient-to-r from-teal-700 to-emerald-600 heading-font tracking-tight">
+                Bảng Tổng Kết
+            </h1>
+            <p id="final-message" class="text-base md:text-lg text-slate-600 mb-8 font-bold"></p>
+
+            <!-- Bảng Tổng Kết -->
+            <div class="max-w-md mx-auto bg-white/85 border border-teal-100 rounded-2xl p-6 text-left shadow-lg mb-8 relative overflow-hidden backdrop-blur-md">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-teal-400 to-emerald-500"></div>
+                <h3 class="text-xl font-black text-teal-800 mb-5 border-b border-teal-100 pb-3 text-center heading-font">Kết Quả</h3>
+                <ul class="space-y-4 text-slate-700 text-sm md:text-base font-bold">
+                    <li class="flex justify-between items-center border-b border-teal-50 pb-2">
+                        <span class="flex items-center gap-2">🕒 Thời gian:</span> 
+                        <span id="end-time" class="text-sky-600 text-xs md:text-sm font-mono"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-teal-50 pb-2">
+                        <span class="flex items-center gap-2">✅ Hoa nở rộ (đúng lần 1):</span> 
+                        <span id="stat-correct" class="font-black text-emerald-600 text-xl heading-font"></span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-teal-50 pb-2">
+                        <span class="flex items-center gap-2">⚠️ Gió nhẹ (đúng lần 2):</span> 
+                        <span id="stat-second" class="font-black text-amber-500 text-xl heading-font"></span>
+                    </li>
+                    <li class="flex justify-between items-center pb-1">
+                        <span class="flex items-center gap-2">❌ Lạc sương (sai 2 lần):</span> 
+                        <span id="stat-wrong" class="font-black text-rose-500 text-xl heading-font"></span>
+                    </li>
+                </ul>
+            </div>
+            
+            <button id="btn-restart" class="px-8 py-4 bg-white hover:bg-teal-50 border-2 border-teal-400 text-teal-700 hover:text-teal-800 font-black rounded-full text-lg transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-sm heading-font tracking-wide">
+                🔄 Quay Lại
+            </button>
+            <div class="mt-8 text-xs md:text-sm text-teal-900/50 font-bold tracking-widest uppercase">© Copyright 2026 by Hoang Truong English</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Database 23 Từ vựng - Chủ đề Cultural Diversity 3
+        const rawVocab = [
+            ["outlook", "n", "/ˈaʊtlʊk/", "quan điểm sống", "A positive outlook helps people accept cultural differences and build better relationships."],
+            ["misunderstanding", "n", "/ˌmɪsʌndəˈstændɪŋ/", "sự hiểu lầm", "Cultural misunderstanding can create conflict if people do not communicate clearly."],
+            ["symbolism", "n", "/ˈsɪmbəlɪzəm/", "tính biểu tượng", "Cultural symbolism appears in art, clothing, and traditional festivals."],
+            ["patriotism", "n", "/ˈpætriətɪzəm/", "lòng yêu nước", "Patriotism encourages people to respect and protect their national culture."],
+            ["earn respect", "v", "/ɜːn rɪˈspekt/", "giành được sự tôn trọng", "People earn respect when they treat others fairly and show understanding in difficult situations."],
+            ["show respect for", "v", "/ʃəʊ rɪˈspekt fɔː/", "thể hiện sự tôn trọng", "Students show respect for other cultures by learning about their traditions and values."],
+            ["acceptance", "n", "/əkˈseptəns/", "sự chấp nhận", "Acceptance of diversity creates a more inclusive and friendly society."],
+            ["representation", "n", "/ˌreprɪzenˈteɪʃən/", "sự đại diện", "Cultural representation in media helps people understand different communities better."],
+            ["approval", "n", "/əˈpruːvl/", "sự tán thành", "Social approval often influences how people behave in different cultural settings."],
+            ["recognition", "n", "/ˌrekəɡˈnɪʃən/", "sự công nhận", "Recognition of cultural diversity is important for equality and fairness."],
+            ["inclusion", "n", "/ɪnˈkluːʒən/", "sự hòa nhập", "Inclusion ensures that everyone feels valued regardless of their background."],
+            ["coexistence", "n", "/ˌkəʊɪɡˈzɪstəns/", "sự cùng tồn tại", "Peaceful coexistence requires mutual respect and understanding between cultures."],
+            ["nationality", "n", "/ˌnæʃəˈnæləti/", "quốc tịch", "Nationality often shapes a person's identity and cultural habits."],
+            ["belonging", "n", "/bɪˈlɒŋɪŋ/", "sự thuộc về", "A strong feeling of belonging helps people feel comfortable in a community."],
+            ["a sense of belonging", "n", "/ə sens əv bɪˈlɒŋɪŋ/", "cảm giác thuộc về", "Schools create a sense of belonging by supporting students from different cultures."],
+            ["civilization", "n", "/ˌsɪvəlaɪˈzeɪʃən/", "nền văn minh", "Ancient civilizations influence modern culture and social systems."],
+            ["convention", "n", "/kənˈvenʃən/", "quy ước", "Cultural conventions guide how people behave in social situations."],
+            ["kinship", "n", "/ˈkɪnʃɪp/", "quan hệ họ hàng", "Kinship plays an important role in maintaining traditions in many cultures."],
+            ["bias", "n", "/ˈbaɪəs/", "sự thiên vị", "Bias can affect decisions and lead to unfair treatment in society."],
+            ["unfairness", "n", "/ʌnˈfeənəs/", "sự bất công", "Unfairness creates tension and reduces trust between cultural groups."],
+            ["solidarity", "n", "/ˌsɒlɪˈdærəti/", "sự đoàn kết", "Solidarity helps people support each other during difficult times."],
+            ["harmony", "n", "/ˈhɑːməni/", "sự hòa hợp", "Cultural harmony allows people from different backgrounds to live peacefully together."],
+            ["open-mindedness", "n", "/ˌəʊpən ˈmaɪndɪdnəs/", "sự cởi mở", "Open-mindedness helps people accept new ideas and respect cultural differences."]
+        ];
+
+        document.getElementById('total-count').innerText = rawVocab.length;
+
+        // Sinh Quiz Động và Xáo trộn
+        const quizData = rawVocab.map((item, index) => {
+            const word = item[0];
+            const type = item[1];
+            const ipa = item[2];
+            const meaning = item[3];
+            const example = item[4];
+
+            let wrongMeanings = [];
+            
+            // Random 3 đáp án nhiễu khác nghĩa đúng và không trùng nhau
+            while (wrongMeanings.length < 3) {
+                const randomItem = rawVocab[Math.floor(Math.random() * rawVocab.length)];
+                if (randomItem[3] !== meaning && !wrongMeanings.includes(randomItem[3])) {
+                    wrongMeanings.push(randomItem[3]);
+                }
+            }
+            
+            const options = [
+                { text: meaning, isCorrect: true },
+                { text: wrongMeanings[0], isCorrect: false },
+                { text: wrongMeanings[1], isCorrect: false },
+                { text: wrongMeanings[2], isCorrect: false }
+            ];
+
+            return {
+                questionNumber: index + 1,
+                word: word,
+                question: `Nghĩa của từ/cụm từ **${word}** là gì?`,
+                answerOptions: options,
+                rationale: `
+                    <div class="flex items-center flex-wrap gap-2 md:gap-3 mb-2 md:mb-3">
+                        <span class="text-2xl md:text-3xl font-black text-teal-800 heading-font">${word}</span>
+                        <span class="bg-white border border-teal-200 px-2.5 py-0.5 rounded-md text-teal-700 font-bold text-sm md:text-base shadow-sm">${type}</span>
+                        <span class="text-slate-600 tracking-wide font-bold text-base md:text-lg">${ipa}</span>
+                        <button onclick="speakWord('${word.replace(/'/g, "\\'")}')" class="p-2 bg-teal-500 hover:bg-teal-600 text-white rounded-full transition-colors flex items-center justify-center w-9 h-9 md:w-10 md:h-10 shadow-md cursor-pointer" title="Nghe phát âm">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-slate-700 font-semibold text-base md:text-lg leading-relaxed mt-3 border-t border-teal-200/70 pt-3">
+                        <span class="text-teal-600 text-xl">🌿</span> <span class="font-medium italic text-slate-600">${example}</span>
+                    </div>`
+            };
+        });
+
+        // Tạo các biểu tượng thung lũng thơ mộng bay lơ lửng
+        function createFloatingItems() {
+            const container = document.getElementById('floating-container');
+            const icons = ['🦋', '🌼', '🌸', '🍃', '☁️', '✨', '🌿'];
+            for (let i = 0; i < 24; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+                
+                const duration = Math.random() * 16 + 13;
+                item.style.animationDuration = `${duration}s`;
+                item.style.animationDelay = `${Math.random() * 18}s`;
+                
+                const scale = Math.random() * 0.45 + 0.55;
+                item.style.transform = `scale(${scale})`;
+
+                container.appendChild(item);
+            }
+        }
+
+        // Biến trạng thái
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctSecondTry = 0;
+        let failedQuestions = 0;
+        let attempts = 0; 
+        let hasAnswered = false;
+        let currentShuffledOptions = []; 
+
+        // DOM Elements
+        const screenStart = document.getElementById('screen-start');
+        const screenPlaying = document.getElementById('screen-playing');
+        const screenEnd = document.getElementById('screen-end');
+        
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        
+        const rationaleText = document.getElementById('rationale-text');
+        const rationaleContent = document.getElementById('rationale-content');
+        const btnNext = document.getElementById('btn-next');
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatMarkdownBold(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            correctSecondTry = 0;
+            failedQuestions = 0;
+            hasAnswered = false;
+            
+            screenStart.classList.add('hidden');
+            screenEnd.classList.add('hidden');
+            screenPlaying.classList.remove('hidden');
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            attempts = 0;
+            
+            const currentQ = quizData[currentQuestionIndex];
+            
+            progressText.innerText = `THUNG LŨNG ${currentQuestionIndex + 1} / ${quizData.length}`;
+            scoreText.innerText = `Điểm: ${score} 🌼`;
+            
+            questionText.innerHTML = formatMarkdownBold(currentQ.question);
+            
+            currentShuffledOptions = shuffleArray(currentQ.answerOptions);
+            
+            optionsContainer.innerHTML = '';
+            currentShuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-white/85 border-teal-100 hover:bg-teal-50/90 hover:border-teal-400 hover:shadow-md text-slate-700 cursor-pointer shadow-sm font-bold";
+                btn.innerText = option.text;
+                btn.onclick = () => handleAnswer(index, option.isCorrect);
+                optionsContainer.appendChild(btn);
+            });
+
+            explanationContainer.classList.remove('max-h-[800px]', 'opacity-100');
+            explanationContainer.classList.add('max-h-0', 'opacity-0');
+            rationaleText.className = "hidden"; 
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                btnNext.innerText = 'Đi Tiếp';
+            } else {
+                btnNext.innerText = 'Về Đích 🏞️';
+            }
+        }
+
+        function handleAnswer(selectedIndex, isCorrect) {
+            if (hasAnswered) return;
+
+            const currentQ = quizData[currentQuestionIndex];
+            const buttons = optionsContainer.children;
+            const btn = buttons[selectedIndex];
+
+            if (isCorrect) {
+                hasAnswered = true;
+                if (attempts === 0) {
+                    score++; 
+                    scoreText.innerText = `Điểm: ${score} 🌼`;
+                } else if (attempts === 1) {
+                    correctSecondTry++; 
+                }
+                
+                // Đáp án đúng: Xanh ngọc tươi mát
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-emerald-50 border-emerald-500 text-emerald-800 shadow-[0_6px_18px_rgba(16,185,129,0.2)] font-black";
+                
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    if (i !== selectedIndex && !buttons[i].classList.contains('bg-rose-50')) {
+                        buttons[i].className += " opacity-45 cursor-not-allowed";
+                    }
+                }
+                
+                speakWord(currentQ.word);
+                showRationale(currentQ);
+            } else {
+                attempts++;
+                
+                // Đáp án sai: Hồng đỏ dịu + rung lắc
+                btn.className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-rose-50 border-rose-400 text-rose-700 animate-shake";
+                btn.disabled = true; 
+                
+                setTimeout(() => {
+                    btn.classList.remove('animate-shake');
+                }, 400);
+
+                if (attempts >= 2) {
+                    hasAnswered = true;
+                    failedQuestions++; 
+                    
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].disabled = true;
+                        if (currentShuffledOptions[i].isCorrect) {
+                            buttons[i].className = "text-left p-4 md:p-5 rounded-2xl border-2 transition-all duration-300 text-base md:text-lg bg-emerald-50 border-emerald-500 text-emerald-800 shadow-[0_6px_18px_rgba(16,185,129,0.2)] font-black";
+                        } else if (!buttons[i].classList.contains('bg-rose-50')) {
+                            buttons[i].className += " opacity-45 cursor-not-allowed";
+                        }
+                    }
+                    speakWord(currentQ.word);
+                    showRationale(currentQ);
+                }
+            }
+        }
+
+        function showRationale(currentQ) {
+            rationaleContent.innerHTML = currentQ.rationale;
+            rationaleText.className = "block text-base md:text-lg";
+            
+            explanationContainer.classList.remove('max-h-0', 'opacity-0');
+            explanationContainer.classList.add('max-h-[800px]', 'opacity-100');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            screenPlaying.classList.add('hidden');
+            screenEnd.classList.remove('hidden');
+            
+            const finalMessage = document.getElementById('final-message');
+            if (score >= quizData.length * 0.9) {
+                finalMessage.innerText = "Học, Học nữa, Học mãi! 🏞️✨";
+            } else if (score >= quizData.length * 0.5) {
+                finalMessage.innerText = "Học, Học nữa, Học mãi! 🌼";
+            } else {
+                finalMessage.innerText = "Thung lũng còn nhiều hoa đẹp chờ bạn khám phá. Hãy thử lại nhé! 🦋";
+            }
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('vi-VN');
+            
+            document.getElementById('end-time').innerText = `${timeString}, ${dateString}`;
+            document.getElementById('stat-correct').innerText = `${score}`;
+            document.getElementById('stat-second').innerText = `${correctSecondTry}`;
+            document.getElementById('stat-wrong').innerText = `${failedQuestions}`;
+        }
+
+        // Phát âm giọng Anh-Úc (en-AU)
+        let availableVoices = [];
+        if ('speechSynthesis' in window) {
+            availableVoices = window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
+                availableVoices = window.speechSynthesis.getVoices();
+            };
+        }
+
+        window.speakWord = function(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                const auVoices = availableVoices.filter(v => v.lang.startsWith('en-AU'));
+                if (auVoices.length > 0) {
+                    const preferredVoice = auVoices.find(v => v.name.includes('Google') || v.name.includes('Natural')) || auVoices[0];
+                    utterance.voice = preferredVoice;
+                } else {
+                    const englishVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+                    if (englishVoices.length > 0) {
+                        utterance.voice = englishVoices[0];
+                    }
+                }
+                
+                utterance.lang = 'en-AU';
+                utterance.rate = 0.85; 
+                utterance.pitch = 1;
+                utterance.volume = 1;
+
+                try { window.speechSynthesis.speak(utterance); } catch (e) {}
+            }
+        };
+
+        function initApp() {
+            createFloatingItems();
+            document.getElementById('btn-start').addEventListener('click', startGame);
+            document.getElementById('btn-restart').addEventListener('click', startGame);
+            document.getElementById('btn-next').addEventListener('click', nextQuestion);
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    if (!screenPlaying.classList.contains('hidden') && hasAnswered) {
+                        event.preventDefault(); 
+                        nextQuestion();
+                    } else if (!screenStart.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    } else if (!screenEnd.classList.contains('hidden')) {
+                        event.preventDefault();
+                        startGame();
+                    }
+                }
+            });
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
